@@ -30,8 +30,11 @@ jobs:
       - name: Install deno
         run: curl -fsSL https://deno.land/x/install/install.sh | sh
 
-      - name: Install vega-cli
-        run: npm install -g vega-lite vega-cli
+      - name: Install Python and matplotlib
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip
+          pip3 install matplotlib
 
       - name: Benchmark npm (cold cache)
         id: npm_cold
@@ -83,7 +86,7 @@ jobs:
         id: deno_warm
         run: echo "deno_warm=$(TIMEFORMAT=%R; { time deno cache; } 2>&1)" >> $GITHUB_ENV
 
-      - name: Generate Vega-Lite Spec
+      - name: Generate Python Script for Chart
         run: |
           npm_cold=${{ env.npm_cold }}
           npm_warm=${{ env.npm_warm }}
@@ -96,34 +99,37 @@ jobs:
           deno_cold=${{ env.deno_cold }}
           deno_warm=${{ env.deno_warm }}
 
-          cat <<EOF > benchmark.json
-          {
-            "\$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-            "description": "Package Manager Benchmark",
-            "data": {
-              "values": [
-                {"manager": "npm (cold)", "time": $npm_cold},
-                {"manager": "npm (warm)", "time": $npm_warm},
-                {"manager": "yarn (cold)", "time": $yarn_cold},
-                {"manager": "yarn (warm)", "time": $yarn_warm},
-                {"manager": "pnpm (cold)", "time": $pnpm_cold},
-                {"manager": "pnpm (warm)", "time": $pnpm_warm},
-                {"manager": "bun (cold)", "time": $bun_cold},
-                {"manager": "bun (warm)", "time": $bun_warm},
-                {"manager": "deno (cold)", "time": $deno_cold},
-                {"manager": "deno (warm)", "time": $deno_warm}
-              ]
-            },
-            "mark": "bar",
-            "encoding": {
-              "x": {"field": "manager", "type": "nominal", "axis": {"labelAngle": 0}},
-              "y": {"field": "time", "type": "quantitative"}
-            }
-          }
-          EOF
+          cat <<EOF > generate_chart.py
+import matplotlib.pyplot as plt
 
-      - name: Generate SVG Chart
-        run: vega benchmark.json -o benchmark.svg
+data = {
+    "npm (cold)": float("$npm_cold"),
+    "npm (warm)": float("$npm_warm"),
+    "yarn (cold)": float("$yarn_cold"),
+    "yarn (warm)": float("$yarn_warm"),
+    "pnpm (cold)": float("$pnpm_cold"),
+    "pnpm (warm)": float("$pnpm_warm"),
+    "bun (cold)": float("$bun_cold"),
+    "bun (warm)": float("$bun_warm"),
+    "deno (cold)": float("$deno_cold"),
+    "deno (warm)": float("$deno_warm")
+}
+
+names = list(data.keys())
+values = list(data.values())
+
+plt.figure(figsize=(10, 5))
+plt.bar(names, values)
+plt.xlabel('Package Manager')
+plt.ylabel('Time (seconds)')
+plt.title('Package Manager Benchmark')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('benchmark.svg')
+EOF
+
+      - name: Run Python Script to Generate Chart
+        run: python3 generate_chart.py
 
       - name: Upload SVG Chart
         uses: actions/upload-artifact@v4
