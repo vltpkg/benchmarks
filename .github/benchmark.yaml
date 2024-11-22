@@ -1,5 +1,7 @@
 name: Package Manager Benchmarks
-on: [push]
+on: 
+  push:
+  workflow_dispatch:
 
 jobs:
   benchmark:
