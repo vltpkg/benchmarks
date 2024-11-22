@@ -30,78 +30,49 @@ jobs:
       - name: Install deno
         run: curl -fsSL https://deno.land/x/install/install.sh | sh
 
-      - name: Benchmark npm (cold cache)
-        id: npm_cold
+      - name: Install hyperfine
+        run: sudo apt-get install -y hyperfine
+
+      - name: Benchmark package managers
         run: |
-          rm -rf node_modules package-lock.json
-          echo "npm_cold=$(TIMEFORMAT=%R; { time npm install; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking npm (cold cache)..."
+          hyperfine --prepare 'rm -rf node_modules package-lock.json' 'npm install' --export-markdown npm_cold.md
 
-      - name: Benchmark npm (warm cache)
-        id: npm_warm
-        run: echo "npm_warm=$(TIMEFORMAT=%R; { time npm install; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking npm (warm cache)..."
+          hyperfine 'npm install' --export-markdown npm_warm.md
 
-      - name: Benchmark yarn (cold cache)
-        id: yarn_cold
-        run: |
-          rm -rf node_modules yarn.lock
-          echo "yarn_cold=$(TIMEFORMAT=%R; { time yarn install; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking yarn (cold cache)..."
+          hyperfine --prepare 'rm -rf node_modules yarn.lock' 'yarn install' --export-markdown yarn_cold.md
 
-      - name: Benchmark yarn (warm cache)
-        id: yarn_warm
-        run: echo "yarn_warm=$(TIMEFORMAT=%R; { time yarn install; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking yarn (warm cache)..."
+          hyperfine 'yarn install' --export-markdown yarn_warm.md
 
-      - name: Benchmark pnpm (cold cache)
-        id: pnpm_cold
-        run: |
-          rm -rf node_modules pnpm-lock.yaml
-          echo "pnpm_cold=$(TIMEFORMAT=%R; { time pnpm install; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking pnpm (cold cache)..."
+          hyperfine --prepare 'rm -rf node_modules pnpm-lock.yaml' 'pnpm install' --export-markdown pnpm_cold.md
 
-      - name: Benchmark pnpm (warm cache)
-        id: pnpm_warm
-        run: echo "pnpm_warm=$(TIMEFORMAT=%R; { time pnpm install; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking pnpm (warm cache)..."
+          hyperfine 'pnpm install' --export-markdown pnpm_warm.md
 
-      - name: Benchmark bun (cold cache)
-        id: bun_cold
-        run: |
-          rm -rf node_modules bun.lockb
-          echo "bun_cold=$(TIMEFORMAT=%R; { time bun install; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking bun (cold cache)..."
+          hyperfine --prepare 'rm -rf node_modules bun.lockb' 'bun install' --export-markdown bun_cold.md
 
-      - name: Benchmark bun (warm cache)
-        id: bun_warm
-        run: echo "bun_warm=$(TIMEFORMAT=%R; { time bun install; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking bun (warm cache)..."
+          hyperfine 'bun install' --export-markdown bun_warm.md
 
-      - name: Benchmark deno (cold cache)
-        id: deno_cold
-        run: |
-          rm -rf deno_modules
-          echo "deno_cold=$(TIMEFORMAT=%R; { time deno cache; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking deno (cold cache)..."
+          hyperfine --prepare 'rm -rf deno_modules' 'deno cache' --export-markdown deno_cold.md
 
-      - name: Benchmark deno (warm cache)
-        id: deno_warm
-        run: echo "deno_warm=$(TIMEFORMAT=%R; { time deno cache; } 2>&1)" >> $GITHUB_ENV
+          echo "Benchmarking deno (warm cache)..."
+          hyperfine 'deno cache' --export-markdown deno_warm.md
 
-      - name: Log Benchmark Results
-        run: |
-          npm_cold=${{ env.npm_cold }}
-          npm_warm=${{ env.npm_warm }}
-          yarn_cold=${{ env.yarn_cold }}
-          yarn_warm=${{ env.yarn_warm }}
-          pnpm_cold=${{ env.pnpm_cold }}
-          pnpm_warm=${{ env.pnpm_warm }}
-          bun_cold=${{ env.bun_cold }}
-          bun_warm=${{ env.bun_warm }}
-          deno_cold=${{ env.deno_cold }}
-          deno_warm=${{ env.deno_warm }}
-
-          echo "Package Manager Benchmark Results:"
-          echo "----------------------------------"
-          echo "npm (cold): $npm_cold seconds"
-          echo "npm (warm): $npm_warm seconds"
-          echo "yarn (cold): $yarn_cold seconds"
-          echo "yarn (warm): $yarn_warm seconds"
-          echo "pnpm (cold): $pnpm_cold seconds"
-          echo "pnpm (warm): $pnpm_warm seconds"
-          echo "bun (cold): $bun_cold seconds"
-          echo "bun (warm): $bun_warm seconds"
-          echo "deno (cold): $deno_cold seconds"
-          echo "deno (warm): $deno_warm seconds"
+          echo "Benchmark Results:"
+          cat npm_cold.md
+          cat npm_warm.md
+          cat yarn_cold.md
+          cat yarn_warm.md
+          cat pnpm_cold.md
+          cat pnpm_warm.md
+          cat bun_cold.md
+          cat bun_warm.md
+          cat deno_cold.md
+          cat deno_warm.md
