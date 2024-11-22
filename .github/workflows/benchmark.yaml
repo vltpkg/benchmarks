@@ -15,6 +15,9 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Install vlt
+        run: npm install -g npm
+
       - name: Install npm
         run: npm install -g npm
 
@@ -35,6 +38,9 @@ jobs:
 
       - name: Benchmark package managers
         run: |
+          echo "Benchmarking vlt (cold cache)..."
+          hyperfine -i --prepare 'rm -rf node_modules vlt-lock.json' 'vlt install' --export-markdown vlt_cold.md
+
           echo "Benchmarking npm (cold cache)..."
           hyperfine -i --prepare 'rm -rf node_modules package-lock.json .npmrc' 'npm install' --export-markdown npm_cold.md
 
@@ -48,10 +54,12 @@ jobs:
           hyperfine -i --prepare 'rm -rf node_modules bun.lockb' 'bun install' --export-markdown bun_cold.md
 
           echo "Benchmarking deno (cold cache)..."
-          hyperfine -i --prepare 'rm -rf deno_modules' 'deno cache' --export-markdown deno_cold.md
+          hyperfine -i --prepare 'rm -rf node_modules deno.json' 'deno cache' --export-markdown deno_cold.md
 
           echo "Combining benchmark results..."
           echo "# Package Manager Benchmark Results" > combined_results.md
+          echo "## vlt (cold cache)" >> combined_results.md
+          cat vlt_cold.md >> combined_results.md
           echo "## npm (cold cache)" >> combined_results.md
           cat npm_cold.md >> combined_results.md
           echo "## yarn (cold cache)" >> combined_results.md
