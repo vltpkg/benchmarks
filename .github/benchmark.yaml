@@ -1,0 +1,69 @@
+name: Package Manager Benchmarks
+on: [push]
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install npm
+        run: npm install -g npm
+
+      - name: Install yarn
+        run: npm install -g yarn
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install bun
+        run: curl -fsSL https://bun.sh/install | bash
+
+      - name: Install deno
+        run: curl -fsSL https://deno.land/x/install/install.sh | sh
+
+      - name: Benchmark npm (cold cache)
+        run: |
+          rm -rf node_modules package-lock.json
+          time npm install
+
+      - name: Benchmark npm (warm cache)
+        run: time npm install
+
+      - name: Benchmark yarn (cold cache)
+        run: |
+          rm -rf node_modules yarn.lock
+          time yarn install
+
+      - name: Benchmark yarn (warm cache)
+        run: time yarn install
+
+      - name: Benchmark pnpm (cold cache)
+        run: |
+          rm -rf node_modules pnpm-lock.yaml
+          time pnpm install
+
+      - name: Benchmark pnpm (warm cache)
+        run: time pnpm install
+
+      - name: Benchmark bun (cold cache)
+        run: |
+          rm -rf node_modules bun.lockb
+          time bun install
+
+      - name: Benchmark bun (warm cache)
+        run: time bun install
+
+      - name: Benchmark deno (cold cache)
+        run: |
+          rm -rf deno_modules
+          time deno cache
+
+      - name: Benchmark deno (warm cache)
+        run: time deno cache
