@@ -30,8 +30,8 @@ jobs:
       - name: Install deno
         run: curl -fsSL https://deno.land/x/install/install.sh | sh
 
-      - name: Install chart-cli
-        run: npm install -g chart-cli
+      - name: Install vega-cli
+        run: npm install -g vega-lite vega-cli
 
       - name: Benchmark npm (cold cache)
         id: npm_cold
@@ -83,7 +83,7 @@ jobs:
         id: deno_warm
         run: echo "deno_warm=$(TIMEFORMAT=%R; { time deno cache; } 2>&1)" >> $GITHUB_ENV
 
-      - name: Generate SVG Chart
+      - name: Generate Vega-Lite Spec
         run: |
           npm_cold=${{ env.npm_cold }}
           npm_warm=${{ env.npm_warm }}
@@ -96,18 +96,34 @@ jobs:
           deno_cold=${{ env.deno_cold }}
           deno_warm=${{ env.deno_warm }}
 
-          echo "npm (cold),$npm_cold" > benchmark.csv
-          echo "npm (warm),$npm_warm" >> benchmark.csv
-          echo "yarn (cold),$yarn_cold" >> benchmark.csv
-          echo "yarn (warm),$yarn_warm" >> benchmark.csv
-          echo "pnpm (cold),$pnpm_cold" >> benchmark.csv
-          echo "pnpm (warm),$pnpm_warm" >> benchmark.csv
-          echo "bun (cold),$bun_cold" >> benchmark.csv
-          echo "bun (warm),$bun_warm" >> benchmark.csv
-          echo "deno (cold),$deno_cold" >> benchmark.csv
-          echo "deno (warm),$deno_warm" >> benchmark.csv
+          cat <<EOF > benchmark.json
+          {
+            "\$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "description": "Package Manager Benchmark",
+            "data": {
+              "values": [
+                {"manager": "npm (cold)", "time": $npm_cold},
+                {"manager": "npm (warm)", "time": $npm_warm},
+                {"manager": "yarn (cold)", "time": $yarn_cold},
+                {"manager": "yarn (warm)", "time": $yarn_warm},
+                {"manager": "pnpm (cold)", "time": $pnpm_cold},
+                {"manager": "pnpm (warm)", "time": $pnpm_warm},
+                {"manager": "bun (cold)", "time": $bun_cold},
+                {"manager": "bun (warm)", "time": $bun_warm},
+                {"manager": "deno (cold)", "time": $deno_cold},
+                {"manager": "deno (warm)", "time": $deno_warm}
+              ]
+            },
+            "mark": "bar",
+            "encoding": {
+              "x": {"field": "manager", "type": "nominal", "axis": {"labelAngle": 0}},
+              "y": {"field": "time", "type": "quantitative"}
+            }
+          }
+          EOF
 
-          chart bar benchmark.csv --title "Package Manager Benchmark" --output benchmark.svg
+      - name: Generate SVG Chart
+        run: vega benchmark.json -o benchmark.svg
 
       - name: Upload SVG Chart
         uses: actions/upload-artifact@v4
