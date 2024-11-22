@@ -30,12 +30,6 @@ jobs:
       - name: Install deno
         run: curl -fsSL https://deno.land/x/install/install.sh | sh
 
-      - name: Install Python and matplotlib
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3 python3-pip
-          pip3 install matplotlib
-
       - name: Benchmark npm (cold cache)
         id: npm_cold
         run: |
@@ -86,7 +80,7 @@ jobs:
         id: deno_warm
         run: echo "deno_warm=$(TIMEFORMAT=%R; { time deno cache; } 2>&1)" >> $GITHUB_ENV
 
-      - name: Generate Python Script for Chart
+      - name: Log Benchmark Results
         run: |
           npm_cold=${{ env.npm_cold }}
           npm_warm=${{ env.npm_warm }}
@@ -99,40 +93,15 @@ jobs:
           deno_cold=${{ env.deno_cold }}
           deno_warm=${{ env.deno_warm }}
 
-          cat <<EOF > generate_chart.py
-import matplotlib.pyplot as plt
-
-data = {
-    "npm (cold)": float("$npm_cold"),
-    "npm (warm)": float("$npm_warm"),
-    "yarn (cold)": float("$yarn_cold"),
-    "yarn (warm)": float("$yarn_warm"),
-    "pnpm (cold)": float("$pnpm_cold"),
-    "pnpm (warm)": float("$pnpm_warm"),
-    "bun (cold)": float("$bun_cold"),
-    "bun (warm)": float("$bun_warm"),
-    "deno (cold)": float("$deno_cold"),
-    "deno (warm)": float("$deno_warm")
-}
-
-names = list(data.keys())
-values = list(data.values())
-
-plt.figure(figsize=(10, 5))
-plt.bar(names, values)
-plt.xlabel('Package Manager')
-plt.ylabel('Time (seconds)')
-plt.title('Package Manager Benchmark')
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-plt.savefig('benchmark.svg')
-EOF
-
-      - name: Run Python Script to Generate Chart
-        run: python3 generate_chart.py
-
-      - name: Upload SVG Chart
-        uses: actions/upload-artifact@v4
-        with:
-          name: benchmark-chart
-          path: benchmark.svg
+          echo "Package Manager Benchmark Results:"
+          echo "----------------------------------"
+          echo "npm (cold): $npm_cold seconds"
+          echo "npm (warm): $npm_warm seconds"
+          echo "yarn (cold): $yarn_cold seconds"
+          echo "yarn (warm): $yarn_warm seconds"
+          echo "pnpm (cold): $pnpm_cold seconds"
+          echo "pnpm (warm): $pnpm_warm seconds"
+          echo "bun (cold): $bun_cold seconds"
+          echo "bun (warm): $bun_warm seconds"
+          echo "deno (cold): $deno_cold seconds"
+          echo "deno (warm): $deno_warm seconds"
