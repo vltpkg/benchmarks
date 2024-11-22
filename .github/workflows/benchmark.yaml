@@ -30,42 +30,87 @@ jobs:
       - name: Install deno
         run: curl -fsSL https://deno.land/x/install/install.sh | sh
 
+      - name: Install chart-cli
+        run: npm install -g chart-cli
+
       - name: Benchmark npm (cold cache)
+        id: npm_cold
         run: |
           rm -rf node_modules package-lock.json
-          time npm install
+          echo "npm_cold=$(TIMEFORMAT=%R; { time npm install; } 2>&1)" >> $GITHUB_ENV
 
       - name: Benchmark npm (warm cache)
-        run: time npm install
+        id: npm_warm
+        run: echo "npm_warm=$(TIMEFORMAT=%R; { time npm install; } 2>&1)" >> $GITHUB_ENV
 
       - name: Benchmark yarn (cold cache)
+        id: yarn_cold
         run: |
           rm -rf node_modules yarn.lock
-          time yarn install
+          echo "yarn_cold=$(TIMEFORMAT=%R; { time yarn install; } 2>&1)" >> $GITHUB_ENV
 
       - name: Benchmark yarn (warm cache)
-        run: time yarn install
+        id: yarn_warm
+        run: echo "yarn_warm=$(TIMEFORMAT=%R; { time yarn install; } 2>&1)" >> $GITHUB_ENV
 
       - name: Benchmark pnpm (cold cache)
+        id: pnpm_cold
         run: |
           rm -rf node_modules pnpm-lock.yaml
-          time pnpm install
+          echo "pnpm_cold=$(TIMEFORMAT=%R; { time pnpm install; } 2>&1)" >> $GITHUB_ENV
 
       - name: Benchmark pnpm (warm cache)
-        run: time pnpm install
+        id: pnpm_warm
+        run: echo "pnpm_warm=$(TIMEFORMAT=%R; { time pnpm install; } 2>&1)" >> $GITHUB_ENV
 
       - name: Benchmark bun (cold cache)
+        id: bun_cold
         run: |
           rm -rf node_modules bun.lockb
-          time bun install
+          echo "bun_cold=$(TIMEFORMAT=%R; { time bun install; } 2>&1)" >> $GITHUB_ENV
 
       - name: Benchmark bun (warm cache)
-        run: time bun install
+        id: bun_warm
+        run: echo "bun_warm=$(TIMEFORMAT=%R; { time bun install; } 2>&1)" >> $GITHUB_ENV
 
       - name: Benchmark deno (cold cache)
+        id: deno_cold
         run: |
           rm -rf deno_modules
-          time deno cache
+          echo "deno_cold=$(TIMEFORMAT=%R; { time deno cache; } 2>&1)" >> $GITHUB_ENV
 
       - name: Benchmark deno (warm cache)
-        run: time deno cache
+        id: deno_warm
+        run: echo "deno_warm=$(TIMEFORMAT=%R; { time deno cache; } 2>&1)" >> $GITHUB_ENV
+
+      - name: Generate SVG Chart
+        run: |
+          npm_cold=${{ env.npm_cold }}
+          npm_warm=${{ env.npm_warm }}
+          yarn_cold=${{ env.yarn_cold }}
+          yarn_warm=${{ env.yarn_warm }}
+          pnpm_cold=${{ env.pnpm_cold }}
+          pnpm_warm=${{ env.pnpm_warm }}
+          bun_cold=${{ env.bun_cold }}
+          bun_warm=${{ env.bun_warm }}
+          deno_cold=${{ env.deno_cold }}
+          deno_warm=${{ env.deno_warm }}
+
+          echo "npm (cold),$npm_cold" > benchmark.csv
+          echo "npm (warm),$npm_warm" >> benchmark.csv
+          echo "yarn (cold),$yarn_cold" >> benchmark.csv
+          echo "yarn (warm),$yarn_warm" >> benchmark.csv
+          echo "pnpm (cold),$pnpm_cold" >> benchmark.csv
+          echo "pnpm (warm),$pnpm_warm" >> benchmark.csv
+          echo "bun (cold),$bun_cold" >> benchmark.csv
+          echo "bun (warm),$bun_warm" >> benchmark.csv
+          echo "deno (cold),$deno_cold" >> benchmark.csv
+          echo "deno (warm),$deno_warm" >> benchmark.csv
+
+          chart bar benchmark.csv --title "Package Manager Benchmark" --output benchmark.svg
+
+      - name: Upload SVG Chart
+        uses: actions/upload-artifact@v2
+        with:
+          name: benchmark-chart
+          path: benchmark.svg
