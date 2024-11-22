@@ -110,7 +110,7 @@ jobs:
           chart bar benchmark.csv --title "Package Manager Benchmark" --output benchmark.svg
 
       - name: Upload SVG Chart
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: benchmark-chart
           path: benchmark.svg
