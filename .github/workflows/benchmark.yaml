@@ -26,7 +26,7 @@ jobs:
       - name: Run Benchmarks
         run: |
           echo "npm@$(npm -v)";
-          echo "vlt@$(vlt -v);
+          echo "vlt@$(vlt -v)";
           echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 -v)";
           echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest -v)";
           echo "pnpm@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest -v)";
