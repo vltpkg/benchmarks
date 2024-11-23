@@ -18,6 +18,7 @@ jobs:
       - name: Install Tools
         run: |
           npm install -g vlt
+          corepack enable yarn pnpm
           curl -fsSL https://bun.sh/install | bash
           curl -fsSL https://deno.land/x/install/install.sh | sh
           sudo apt-get install -y hyperfine
@@ -32,14 +33,13 @@ jobs:
           hyperfine --warmup 3 -i --prepare 'rm -rf node_modules package-lock.json .npmrc' 'npm install' --export-markdown npm.md
 
           echo "Benchmarking yarn v1..."
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules yarn.lock .yarnrc' 'yarn install' --export-markdown yarn.md
-
-          corepack enable yarn pnpm
-          echo "Benchmarking pnpm..."
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules pnpm-lock.yaml .npmrc' 'pnpm install' --export-markdown pnpm.md
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules yarn.lock .yarnrc' 'corepack yarn@1 install' --export-markdown yarn.md
 
           echo "Benchmarking yarn v2+..."
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules yarn.lock .yarnrc && npm i -g @yarnpkg/cli-dist' 'yarn install' --export-markdown yarn2.md
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules yarn.lock .yarnrc' 'corepack yarn@latest install' --export-markdown yarn2.md
+
+          echo "Benchmarking pnpm..."
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules pnpm-lock.yaml .npmrc' 'corepack pnpm install' --export-markdown pnpm.md
 
           echo "Benchmarking bun..."
           hyperfine --warmup 3 -i --prepare 'rm -rf node_modules package-lock.json bun.lockb' 'bun install' --export-markdown bun.md
