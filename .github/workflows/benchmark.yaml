@@ -26,30 +26,31 @@ jobs:
         run: |
           echo "Benchmarking vlt..."
           npm -v
-          hyperfine -i --prepare 'rm -rf node_modules vlt-lock.json' 'vlt install' --export-markdown vlt.md
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules vlt-lock.json' 'vlt install' --export-markdown vlt.md
 
           echo "Benchmarking npm..."
-          hyperfine -i --prepare 'rm -rf node_modules package-lock.json .npmrc' 'npm install' --export-markdown npm.md
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules package-lock.json .npmrc' 'npm install' --export-markdown npm.md
 
           echo "Benchmarking yarn v1..."
-          hyperfine -i --prepare 'rm -rf node_modules yarn.lock .yarnrc' 'yarn install' --export-markdown yarn.md
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules yarn.lock .yarnrc' 'yarn install' --export-markdown yarn.md
 
           corepack enable yarn pnpm
           echo "Benchmarking pnpm..."
-          hyperfine -i --prepare 'rm -rf node_modules pnpm-lock.yaml .npmrc' 'pnpm install' --export-markdown pnpm.md
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules pnpm-lock.yaml .npmrc' 'pnpm install' --export-markdown pnpm.md
 
           echo "Benchmarking yarn v2+..."
-          hyperfine -i --prepare 'rm -rf node_modules yarn.lock .yarnrc && npm i -g @yarnpkg/cli-dist' 'yarn install' --export-markdown yarn.md
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules yarn.lock .yarnrc && npm i -g @yarnpkg/cli-dist' 'yarn install' --export-markdown yarn2.md
 
           echo "Benchmarking bun..."
-          hyperfine -i --prepare 'rm -rf node_modules bun.lockb' 'bun install' --export-markdown bun.md
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules package-lock.json bun.lockb' 'bun install' --export-markdown bun.md
 
           echo "Benchmarking deno..."
-          hyperfine -i --prepare 'rm -rf node_modules deno.json' 'deno cache' --export-markdown deno.md
+          hyperfine -i --prepare 'rm -rf node_modules deno.json' 'deno install' --export-markdown deno.md
 
           cat vlt.md >> combined_results.md
           cat npm.md >> combined_results.md
           cat yarn.md >> combined_results.md
+          cat yarn2.md >> combined_results.md
           cat pnpm.md >> combined_results.md
           cat bun.md >> combined_results.md
           cat deno.md >> combined_results.md
