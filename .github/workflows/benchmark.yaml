@@ -25,33 +25,13 @@ jobs:
 
       - name: Run Benchmarks
         run: |
-          echo "Benchmarking vlt..."
           npm -v
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules vlt-lock.json' 'vlt install' --export-markdown vlt.md
-
-          echo "Benchmarking npm..."
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules package-lock.json .npmrc' 'npm install' --export-markdown npm.md
-
-          echo "Benchmarking yarn v1..."
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules yarn.lock .yarnrc' 'corepack yarn@1 install' --export-markdown yarn.md
-
-          echo "Benchmarking yarn v2+..."
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules yarn.lock .yarnrc' 'corepack yarn@latest install' --export-markdown yarn2.md
-
-          echo "Benchmarking pnpm..."
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules pnpm-lock.yaml .npmrc' 'corepack pnpm install' --export-markdown pnpm.md
-
-          echo "Benchmarking bun..."
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules package-lock.json bun.lockb' 'bun install' --export-markdown bun.md
-
-          echo "Benchmarking deno..."
-          hyperfine -i --prepare 'rm -rf node_modules deno.json' 'deno install' --export-markdown deno.md
-
-          cat vlt.md >> combined_results.md
-          cat npm.md >> combined_results.md
-          cat yarn.md >> combined_results.md
-          cat yarn2.md >> combined_results.md
-          cat pnpm.md >> combined_results.md
-          cat bun.md >> combined_results.md
-          cat deno.md >> combined_results.md
-          cat combined_results.md
+          vlt -v
+          corepack yarn@1 -v
+          corepack yarn@latest -v
+          corepack pnpm@latest -v
+          bun -v
+          deno -v
+          echo "Benchmarking..."
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules vlt-lock.json package-lock.json .npmrc yarn.lock .yarnrc pnpm-lock.yaml bun.lockb deno.json' 'vlt install' 'npm install' 'corepack yarn@1 install' 'corepack yarn@latest install' 'corepack pnpm@latest install' 'bun install' 'deno install' --export-markdown benchmark.md
+          cat benchmark.md
