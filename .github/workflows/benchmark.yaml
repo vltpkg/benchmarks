@@ -25,13 +25,54 @@ jobs:
 
       - name: Run Benchmarks
         run: |
-          echo "npm@$(npm -v)";
-          echo "vlt@$(vlt -v)";
-          echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 -v)";
-          echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest -v)";
-          echo "pnpm@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest -v)";
-          echo "bun@$(bun -v)";
-          echo "deno@$(deno -v)";
-          echo "Benchmarking...";
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules vlt-lock.json package-lock.json .npmrc yarn.lock .yarnrc pnpm-lock.yaml bun.lockb deno.json' 'vlt install' 'npm install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' 'bun install' 'deno install --allow-scripts' --export-markdown benchmark.md;
-          cat benchmark.md
+          CLEAN='node_modules vlt-lock.json package-lock.json .npmrc yarn.lock .yarnrc pnpm-lock.yaml bun.lockb deno.json'
+          GET_PACKAGES='cd node_modules && find . -name "package.json" -type f | wc -l'
+          function NPM_INSTALL { npm install; }
+          function VLT_INSTALL { vlt install; }
+          function YARN_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install; }
+          function YARN2_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install; }
+          function PNPM_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install --package-manager-strict=false; }
+          function BUN_INSTALL { bun install; }
+          function DENO_INSTALL { deno install --allow-scripts; }
+          export -f NPM_INSTALL VLT_INSTALL YARN_INSTALL YARN2_INSTALL PNPM_INSTALL BUN_INSTALL DENO_INSTALL
+
+          echo "VERSIONS:"
+          echo "npm@$(npm -v)"
+          echo "vlt@$(vlt -v)"
+          echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 -v)"
+          echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest -v)"
+          echo "pnpm@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest -v --package-manager-strict=false)"
+          echo "bun@$(bun -v)"
+          echo "deno@$(deno -v)"
+
+          echo "BENCHMARKS:"
+          hyperfine --shell=bash --warmup 3 -i --prepare 'rm -rf $(CLEAN)' VLT_INSTALL NPM_INSTALL YARN_INSTALL YARN2_INSTALL PNPM_INSTALL BUN_INSTALL DENO_INSTALL
+
+          echo "PACKAGES:";
+          NPM_INSTALL;
+          echo "npm: $($GET_PACKAGES)";
+          rm -rf $(CLEAN);
+
+          VLT_INSTALL;
+          echo "vlt: $($GET_PACKAGES)";
+          rm -rf $(CLEAN);
+
+          YARN_INSTALL;
+          echo "yarn@1: $($GET_PACKAGES)";
+          rm -rf $(CLEAN);
+
+          YARN2_INSTALL;
+          echo "yarn@latest: $($GET_PACKAGES)";
+          rm -rf $(CLEAN);
+
+          PNPM_INSTALL;
+          echo "pnpm@latest: $($GET_PACKAGES)";
+          rm -rf $(CLEAN);
+
+          BUN_INSTALL;
+          echo "bun: $($GET_PACKAGES)";
+          rm -rf $(CLEAN);
+
+          DENO_INSTALL;
+          echo "deno: $($GET_PACKAGES)";
+          rm -rf $(CLEAN);
