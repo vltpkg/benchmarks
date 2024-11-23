@@ -25,6 +25,7 @@ jobs:
 
       - name: Run Benchmarks
         run: |
+          COREPACK_ENABLE_AUTO_PIN=0 
           npm -v
           vlt -v
           corepack yarn@1 -v
