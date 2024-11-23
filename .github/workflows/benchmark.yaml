@@ -17,10 +17,8 @@ jobs:
 
       - name: Run Benchmarks
         run: |
-          npm install -g vlt
+          npm install -g vlt bun deno-bin
           corepack enable yarn pnpm
-          curl -fsSL https://bun.sh/install | bash
-          curl -fsSL https://deno.land/x/install/install.sh | sh
           sudo apt-get install -y hyperfine
 
           CLEAN='rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb'
