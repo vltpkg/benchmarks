@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install Tools
+      - name: Run Benchmarks
         run: |
           npm install -g vlt
           corepack enable yarn pnpm
@@ -23,8 +23,6 @@ jobs:
           curl -fsSL https://deno.land/x/install/install.sh | sh
           sudo apt-get install -y hyperfine
 
-      - name: Run Benchmarks
-        run: |
           CLEAN='rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb'
           GET_PACKAGES='cd node_modules && find . -name "package.json" -type f | wc -l'
 
@@ -77,4 +75,3 @@ jobs:
           deno install --allow-scripts
           echo "deno: $($GET_PACKAGES)"
           rm -rf $(CLEAN)
-          
