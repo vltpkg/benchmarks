@@ -15,61 +15,42 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install vlt
-        run: npm install -g npm
-
-      - name: Install npm
-        run: npm install -g npm
-
-      - name: Install yarn
-        run: npm install -g yarn
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install bun
-        run: curl -fsSL https://bun.sh/install | bash
-
-      - name: Install deno
-        run: curl -fsSL https://deno.land/x/install/install.sh | sh
-
-      - name: Install hyperfine
-        run: sudo apt-get install -y hyperfine
-
-      - name: Benchmark package managers
+      - name: Install Tools
         run: |
-          echo "Benchmarking vlt (cold cache)..."
-          hyperfine -i --prepare 'rm -rf node_modules vlt-lock.json' 'vlt install' --export-markdown vlt_cold.md
+          npm install -g vlt
+          curl -fsSL https://bun.sh/install | bash
+          curl -fsSL https://deno.land/x/install/install.sh | sh
+          sudo apt-get install -y hyperfine
 
-          echo "Benchmarking npm (cold cache)..."
-          hyperfine -i --prepare 'rm -rf node_modules package-lock.json .npmrc' 'npm install' --export-markdown npm_cold.md
+      - name: Run Benchmarks
+        run: |
+          echo "Benchmarking vlt..."
+          npm -v
+          hyperfine -i --prepare 'rm -rf node_modules vlt-lock.json' 'vlt install' --export-markdown vlt.md
 
-          echo "Benchmarking yarn (cold cache)..."
-          hyperfine -i --prepare 'rm -rf node_modules yarn.lock .yarnrc' 'yarn install' --export-markdown yarn_cold.md
+          echo "Benchmarking npm..."
+          hyperfine -i --prepare 'rm -rf node_modules package-lock.json .npmrc' 'npm install' --export-markdown npm.md
 
-          echo "Benchmarking pnpm (cold cache)..."
-          hyperfine -i --prepare 'rm -rf node_modules pnpm-lock.yaml .npmrc' 'pnpm install' --export-markdown pnpm_cold.md
+          echo "Benchmarking yarn v1..."
+          hyperfine -i --prepare 'rm -rf node_modules yarn.lock .yarnrc' 'yarn install' --export-markdown yarn.md
 
-          echo "Benchmarking bun (cold cache)..."
-          hyperfine -i --prepare 'rm -rf node_modules bun.lockb' 'bun install' --export-markdown bun_cold.md
+          corepack enable yarn pnpm
+          echo "Benchmarking pnpm..."
+          hyperfine -i --prepare 'rm -rf node_modules pnpm-lock.yaml .npmrc' 'pnpm install' --export-markdown pnpm.md
 
-          echo "Benchmarking deno (cold cache)..."
-          hyperfine -i --prepare 'rm -rf node_modules deno.json' 'deno cache' --export-markdown deno_cold.md
+          echo "Benchmarking yarn v2+..."
+          hyperfine -i --prepare 'rm -rf node_modules yarn.lock .yarnrc && npm i -g @yarnpkg/cli-dist' 'yarn install' --export-markdown yarn.md
 
-          echo "Combining benchmark results..."
-          echo "# Package Manager Benchmark Results" > combined_results.md
-          echo "## vlt (cold cache)" >> combined_results.md
-          cat vlt_cold.md >> combined_results.md
-          echo "## npm (cold cache)" >> combined_results.md
-          cat npm_cold.md >> combined_results.md
-          echo "## yarn (cold cache)" >> combined_results.md
-          cat yarn_cold.md >> combined_results.md
-          echo "## pnpm (cold cache)" >> combined_results.md
-          cat pnpm_cold.md >> combined_results.md
-          echo "## bun (cold cache)" >> combined_results.md
-          cat bun_cold.md >> combined_results.md
-          echo "## deno (cold cache)" >> combined_results.md
-          cat deno_cold.md >> combined_results.md
+          echo "Benchmarking bun..."
+          hyperfine -i --prepare 'rm -rf node_modules bun.lockb' 'bun install' --export-markdown bun.md
 
-          echo "Benchmark Results:"
+          echo "Benchmarking deno..."
+          hyperfine -i --prepare 'rm -rf node_modules deno.json' 'deno cache' --export-markdown deno.md
+
+          cat vlt.md >> combined_results.md
+          cat npm.md >> combined_results.md
+          cat yarn.md >> combined_results.md
+          cat pnpm.md >> combined_results.md
+          cat bun.md >> combined_results.md
+          cat deno.md >> combined_results.md
           cat combined_results.md
