@@ -25,15 +25,13 @@ jobs:
 
       - name: Run Benchmarks
         run: |
-          COREPACK_ENABLE_STRICT=0
-          COREPACK_ENABLE_AUTO_PIN=0
-          npm -v
-          vlt -v
-          corepack yarn@1 -v
-          corepack yarn@latest -v
-          corepack pnpm@latest -v
-          bun -v
-          deno -v
-          echo "Benchmarking..."
-          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules vlt-lock.json package-lock.json .npmrc yarn.lock .yarnrc pnpm-lock.yaml bun.lockb deno.json' 'vlt install' 'npm install' 'corepack yarn@1 install' 'corepack yarn@latest install' 'corepack pnpm@latest install' 'bun install' 'deno install' --export-markdown benchmark.md
+          npm -v;
+          vlt -v;
+          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 -v;
+          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest -v;
+          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest -v;
+          bun -v;
+          deno -v;
+          echo "Benchmarking...";
+          hyperfine --warmup 3 -i --prepare 'rm -rf node_modules vlt-lock.json package-lock.json .npmrc yarn.lock .yarnrc pnpm-lock.yaml bun.lockb deno.json' 'vlt install' 'npm install' 'corepack yarn@1 install' 'corepack yarn@latest install' 'corepack pnpm@latest install' 'bun install' 'deno install' --export-markdown benchmark.md;
           cat benchmark.md
