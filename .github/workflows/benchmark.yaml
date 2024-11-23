@@ -27,13 +27,13 @@ jobs:
           GET_PACKAGES='cd node_modules && find . -name "package.json" -type f | wc -l'
 
           # CLEAR CACHES
-          npm cache clean --force
-          rm -rf $(vlt config get cache)
-          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 cache clean --all
-          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest cache clean --all
-          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm cache delete *
-          rm -rf $(bun pm cache)
-          deno clean
+          # npm cache clean --force
+          # rm -rf $(vlt config get cache)
+          # COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 cache clean --all
+          # COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest cache clean --all
+          # COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm cache delete *
+          # rm -rf $(bun pm cache)
+          # deno clean
 
           echo "VERSIONS:"
           echo "npm@$(npm -v)"
