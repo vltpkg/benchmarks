@@ -25,16 +25,8 @@ jobs:
 
       - name: Run Benchmarks
         run: |
-          CLEAN='node_modules vlt-lock.json package-lock.json .npmrc yarn.lock .yarnrc pnpm-lock.yaml bun.lockb deno.json deno.lock'
+          CLEAN='rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb'
           GET_PACKAGES='cd node_modules && find . -name "package.json" -type f | wc -l'
-          function NPM_INSTALL { npm install; }
-          function VLT_INSTALL { vlt install; }
-          function YARN_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install; }
-          function YARN2_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install; }
-          function PNPM_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install; }
-          function BUN_INSTALL { bun install; }
-          function DENO_INSTALL { deno install --allow-scripts; }
-          export -f NPM_INSTALL VLT_INSTALL YARN_INSTALL YARN2_INSTALL PNPM_INSTALL BUN_INSTALL DENO_INSTALL
 
           # CLEAR CACHES
           npm cache clean --force
@@ -55,33 +47,34 @@ jobs:
           echo "deno@$(deno -v)"
 
           echo "BENCHMARKS:"
-          hyperfine --shell=bash --warmup 3 -i --prepare 'rm -rf $(CLEAN)' 'VLT_INSTALL' 'NPM_INSTALL' 'YARN_INSTALL' 'YARN2_INSTALL' 'PNPM_INSTALL' 'BUN_INSTALL' 'DENO_INSTALL'
+          hyperfine --shell=bash --warmup 3 -i --prepare 'rm -rf $(CLEAN)' 'vlt install' 'npm install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' 'bun install' 'deno install --allow-scripts'
 
-          echo "PACKAGES:";
-          NPM_INSTALL;
-          echo "npm: $($GET_PACKAGES)";
-          rm -rf $(CLEAN);
+          echo "PACKAGES:"
+          npm install
+          echo "npm: $($GET_PACKAGES)"
+          rm -rf $(CLEAN)
 
-          VLT_INSTALL;
-          echo "vlt: $($GET_PACKAGES)";
-          rm -rf $(CLEAN);
+          vlt install
+          echo "vlt: $($GET_PACKAGES)"
+          rm -rf $(CLEAN)
 
-          YARN_INSTALL;
-          echo "yarn@1: $($GET_PACKAGES)";
-          rm -rf $(CLEAN);
+          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install
+          echo "yarn@1: $($GET_PACKAGES)"
+          rm -rf $(CLEAN)
 
-          YARN2_INSTALL;
-          echo "yarn@latest: $($GET_PACKAGES)";
-          rm -rf $(CLEAN);
+          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install
+          echo "yarn@latest: $($GET_PACKAGES)"
+          rm -rf $(CLEAN)
 
-          PNPM_INSTALL;
-          echo "pnpm@latest: $($GET_PACKAGES)";
-          rm -rf $(CLEAN);
+          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install
+          echo "pnpm@latest: $($GET_PACKAGES)"
+          rm -rf $(CLEAN)
 
-          BUN_INSTALL;
-          echo "bun: $($GET_PACKAGES)";
-          rm -rf $(CLEAN);
+          bun install
+          echo "bun: $($GET_PACKAGES)"
+          rm -rf $(CLEAN)
 
-          DENO_INSTALL;
-          echo "deno: $($GET_PACKAGES)";
-          rm -rf $(CLEAN);
+          deno install --allow-scripts
+          echo "deno: $($GET_PACKAGES)"
+          rm -rf $(CLEAN)
+          
