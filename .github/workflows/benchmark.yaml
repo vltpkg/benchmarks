@@ -25,28 +25,37 @@ jobs:
 
       - name: Run Benchmarks
         run: |
-          CLEAN='node_modules vlt-lock.json package-lock.json .npmrc yarn.lock .yarnrc pnpm-lock.yaml bun.lockb deno.json'
+          CLEAN='node_modules vlt-lock.json package-lock.json .npmrc yarn.lock .yarnrc pnpm-lock.yaml bun.lockb deno.json deno.lock'
           GET_PACKAGES='cd node_modules && find . -name "package.json" -type f | wc -l'
           function NPM_INSTALL { npm install; }
           function VLT_INSTALL { vlt install; }
           function YARN_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install; }
           function YARN2_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install; }
-          function PNPM_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install --package-manager-strict=false; }
+          function PNPM_INSTALL { COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install; }
           function BUN_INSTALL { bun install; }
           function DENO_INSTALL { deno install --allow-scripts; }
           export -f NPM_INSTALL VLT_INSTALL YARN_INSTALL YARN2_INSTALL PNPM_INSTALL BUN_INSTALL DENO_INSTALL
+
+          # CLEAR CACHES
+          npm cache clean --force
+          rm -rf $(vlt config get cache)
+          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 cache clean --all
+          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest cache clean --all
+          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm cache delete *
+          rm -rf $(bun pm cache)
+          deno clean
 
           echo "VERSIONS:"
           echo "npm@$(npm -v)"
           echo "vlt@$(vlt -v)"
           echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 -v)"
           echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest -v)"
-          echo "pnpm@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest -v --package-manager-strict=false)"
+          echo "pnpm@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest -v)"
           echo "bun@$(bun -v)"
           echo "deno@$(deno -v)"
 
           echo "BENCHMARKS:"
-          hyperfine --shell=bash --warmup 3 -i --prepare 'rm -rf $(CLEAN)' VLT_INSTALL NPM_INSTALL YARN_INSTALL YARN2_INSTALL PNPM_INSTALL BUN_INSTALL DENO_INSTALL
+          hyperfine --shell=bash --warmup 3 -i --prepare 'rm -rf $(CLEAN)' 'VLT_INSTALL' 'NPM_INSTALL' 'YARN_INSTALL' 'YARN2_INSTALL' 'PNPM_INSTALL' 'BUN_INSTALL' 'DENO_INSTALL'
 
           echo "PACKAGES:";
           NPM_INSTALL;
