@@ -44,32 +44,4 @@ jobs:
 
           echo "BENCHMARKS:"
           hyperfine --shell=bash --warmup 3 -i --prepare 'rm -rf $(CLEAN)' 'vlt install' 'npm install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' 'bun install' 'deno install --allow-scripts'
-
-          echo "PACKAGES:"
-          npm install
-          echo "npm: $($GET_PACKAGES)"
-          rm -rf $(CLEAN)
-
-          vlt install
-          echo "vlt: $($GET_PACKAGES)"
-          rm -rf $(CLEAN)
-
-          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install
-          echo "yarn@1: $($GET_PACKAGES)"
-          rm -rf $(CLEAN)
-
-          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install
-          echo "yarn@latest: $($GET_PACKAGES)"
-          rm -rf $(CLEAN)
-
-          COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install
-          echo "pnpm@latest: $($GET_PACKAGES)"
-          rm -rf $(CLEAN)
-
-          bun install
-          echo "bun: $($GET_PACKAGES)"
-          rm -rf $(CLEAN)
-
-          deno install --allow-scripts
-          echo "deno: $($GET_PACKAGES)"
-          rm -rf $(CLEAN)
+          
