@@ -17,7 +17,7 @@ jobs:
 
       - name: Run Benchmarks
         run: |
-          npm install -g vlt bun deno-bin
+          npm install -g npm@latest vlt@latest bun@latest deno-bin@latest
           corepack enable yarn pnpm
           sudo apt-get install -y hyperfine
 
