@@ -19,7 +19,7 @@ jobs:
           - name: Windows
             os: windows-latest
             shell: cmd
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform.os }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
