@@ -29,8 +29,10 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Run Benchmarks
+      - name: Run Next.js Benchmarks
         run: |
+          cd ./next/
+
           npm install -g npm@latest vlt@latest bun@latest deno-bin@latest
           corepack enable yarn pnpm
           sudo apt-get install -y hyperfine
