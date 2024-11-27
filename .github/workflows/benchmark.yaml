@@ -43,5 +43,5 @@ jobs:
           echo "deno@$(deno -v)"
 
           echo "BENCHMARKS:"
-          hyperfine --shell=bash --warmup 3 -i --prepare 'rm -rf $(CLEAN)' 'vlt install' 'npm install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' 'bun install' 'deno install --allow-scripts'
+          hyperfine --warmup 3 --runs 3 -i --prepare 'rm -rf $(CLEAN)' 'vlt install' 'npm install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' 'bun install' 'deno install --allow-scripts'
           
