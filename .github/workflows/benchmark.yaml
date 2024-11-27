@@ -21,9 +21,8 @@ jobs:
           corepack enable yarn pnpm
           sudo apt-get install -y hyperfine
 
-          CLEAN='rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb'
-          GET_PACKAGES='cd node_modules && find . -name "package.json" -type f | wc -l'
-
+          # GET_PACKAGES='cd node_modules && find . -name "package.json" -type f | wc -l'
+          
           # CLEAR CACHES
           # npm cache clean --force
           # rm -rf $(vlt config get cache)
@@ -43,5 +42,5 @@ jobs:
           echo "deno@$(deno -v)"
 
           echo "BENCHMARKS:"
-          hyperfine --show-output --warmup 3 --runs 3 -i --prepare 'rm -rf $(CLEAN)' 'npm install' 'vlt install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' 'bun install' 'deno install --allow-scripts'
+          hyperfine --show-output --warmup 3 --runs 3 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb' 'npm install' 'vlt install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest install' 'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' 'bun install' 'deno install --allow-scripts'
           
