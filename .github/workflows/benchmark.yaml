@@ -5,6 +5,7 @@ on:
 
 jobs:
   benchmark:
+    name: 'Benchmark'
     strategy:
       fail-fast: false
       matrix:
@@ -18,7 +19,7 @@ jobs:
           - name: Windows
             os: windows-latest
             shell: cmd
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
