@@ -50,7 +50,7 @@ jobs:
           cd ./next
           echo "$(pwd)"
           echo "BENCHMARKS:"
-          hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
+          hyperfine --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
@@ -63,7 +63,7 @@ jobs:
           cd ./next
           echo "$(pwd)"
           echo "BENCHMARKS:"
-          hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
+          hyperfine --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
@@ -76,7 +76,7 @@ jobs:
           cd ./svelte
           echo "$(pwd)"
           echo "BENCHMARKS:"
-          hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
+          hyperfine --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
@@ -89,7 +89,7 @@ jobs:
           cd ./vue
           echo "$(pwd)"
           echo "BENCHMARKS:"
-          hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
+          hyperfine --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
