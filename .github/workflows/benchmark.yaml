@@ -56,7 +56,8 @@ jobs:
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
             'bun install' \
             'deno install --allow-scripts' \
-            'npm install --no-audit --no-fund'
+            'npm install --no-audit --no-fund' \
+            'vlt install'
       
       - name: Astro Benchmarks
         run: |
@@ -69,7 +70,8 @@ jobs:
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
             'bun install' \
             'deno install --allow-scripts' \
-            'npm install --no-audit --no-fund'
+            'npm install --no-audit --no-fund' \
+            'vlt install'
       
       - name: Svelte Benchmarks
         run: |
@@ -82,7 +84,8 @@ jobs:
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
             'bun install' \
             'deno install --allow-scripts' \
-            'npm install --no-audit --no-fund'
+            'npm install --no-audit --no-fund' \
+            'vlt install'
 
       - name: Vue Benchmarks
         run: |
@@ -95,5 +98,6 @@ jobs:
             'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
             'bun install' \
             'deno install --allow-scripts' \
-            'npm install --no-audit --no-fund'
+            'npm install --no-audit --no-fund' \
+            'vlt install'
       
