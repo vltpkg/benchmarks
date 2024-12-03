@@ -13,9 +13,9 @@ jobs:
           - name: Linux
             os: ubuntu-latest
             shell: bash
-          # - name: macOS
-          #   os: macos-latest
-          #   shell: bash
+          - name: macOS
+            os: macos-latest
+            shell: bash
           # - name: Windows
           #   os: windows-latest
           #   shell: cmd
@@ -29,13 +29,12 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Run Next.js Benchmarks
+      - name: Install Tools
         run: |
-          cd ./next/
+          cargo install hyperfine
 
           npm install -g npm@latest vlt@latest bun@latest deno-bin@latest
           corepack enable yarn pnpm
-          sudo apt-get install -y hyperfine
 
           echo "VERSIONS:"
           echo "npm@$(npm -v)"
@@ -46,18 +45,55 @@ jobs:
           echo "bun@$(bun -v)"
           echo "deno@$(deno -v)"
 
+      - name: Next Benchmarks
+        run: |
+          cd /next
           echo "$(pwd)"
-
           echo "BENCHMARKS:"
           hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
-            'vlt install'
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
+            'bun install' \
+            'deno install --allow-scripts' \
+            'npm install --no-audit --no-fund'
+      
+      - name: Astro Benchmarks
+        run: |
+          cd /next
+          echo "$(pwd)"
+          echo "BENCHMARKS:"
+          hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
+            'bun install' \
+            'deno install --allow-scripts' \
+            'npm install --no-audit --no-fund'
+      
+      - name: Svelte Benchmarks
+        run: |
+          cd /svelte
+          echo "$(pwd)"
+          echo "BENCHMARKS:"
+          hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
+            'bun install' \
+            'deno install --allow-scripts' \
+            'npm install --no-audit --no-fund'
 
-          # echo "BENCHMARKS:"
-          # hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
-          #   'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
-          #   'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
-          #   'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
-          #   'bun install' \
-          #   'deno install --allow-scripts' \
-          #   'npm install --no-audit --no-fund' \
-          #   'vlt install'
+      - name: Vue Benchmarks
+        run: |
+          cd /vue
+          echo "$(pwd)"
+          echo "BENCHMARKS:"
+          hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
+            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
+            'bun install' \
+            'deno install --allow-scripts' \
+            'npm install --no-audit --no-fund'
+      
