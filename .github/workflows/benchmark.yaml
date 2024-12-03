@@ -13,9 +13,9 @@ jobs:
           - name: Linux
             os: ubuntu-latest
             shell: bash
-          - name: macOS
-            os: macos-latest
-            shell: bash
+          # - name: macOS
+          #   os: macos-latest
+          #   shell: bash
           # - name: Windows
           #   os: windows-latest
           #   shell: cmd
@@ -47,7 +47,7 @@ jobs:
 
       - name: Next Benchmarks
         run: |
-          cd /next
+          cd ./next
           echo "$(pwd)"
           echo "BENCHMARKS:"
           hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
@@ -60,7 +60,7 @@ jobs:
       
       - name: Astro Benchmarks
         run: |
-          cd /next
+          cd ./next
           echo "$(pwd)"
           echo "BENCHMARKS:"
           hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
@@ -73,7 +73,7 @@ jobs:
       
       - name: Svelte Benchmarks
         run: |
-          cd /svelte
+          cd ./svelte
           echo "$(pwd)"
           echo "BENCHMARKS:"
           hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
@@ -86,7 +86,7 @@ jobs:
 
       - name: Vue Benchmarks
         run: |
-          cd /vue
+          cd ./vue
           echo "$(pwd)"
           echo "BENCHMARKS:"
           hyperfine --show-output --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
