@@ -16,9 +16,9 @@ jobs:
           - name: macOS
             os: macos-latest
             shell: bash
-          # - name: Windows
-          #   os: windows-latest
-          #   shell: cmd
+          - name: Windows
+            os: windows-latest
+            shell: cmdˆ
     runs-on: ${{ matrix.platform.os }}
     steps:
       - name: Checkout repository
