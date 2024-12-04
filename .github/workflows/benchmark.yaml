@@ -21,9 +21,9 @@ jobs:
             os: ubuntu-latest
             shell: bash
         
-          - name: macOS
-            os: macos-latest
-            shell: bash
+          # - name: macOS
+          #   os: macos-latest
+          #   shell: bash
         
           # - name: Windows
           #   os: windows-latest
