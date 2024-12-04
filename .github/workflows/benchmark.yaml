@@ -6,21 +6,33 @@ on:
 jobs:
   benchmark:
     name: 'Benchmark'
+    
+    env: 
+      COREPACK_ENABLE_STRICT: 0
+      COREPACK_ENABLE_AUTO_PIN: 0
+      YARN_ENABLE_IMMUTABLE_INSTALLS: false
+
     strategy:
       fail-fast: false
       matrix:
         platform:
+
           - name: Linux
             os: ubuntu-latest
             shell: bash
+        
           - name: macOS
             os: macos-latest
             shell: bash
-          - name: Windows
-            os: windows-latest
-            shell: cmdˆ
+        
+          # - name: Windows
+          #   os: windows-latest
+          #   shell: cmd
+
     runs-on: ${{ matrix.platform.os }}
+    
     steps:
+    
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -29,75 +41,38 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install Tools
+      - name: Install Tooling
         run: |
           cargo install hyperfine
-
           npm install -g npm@latest vlt@latest bun@latest deno-bin@latest
-          corepack enable yarn pnpm
-
-          echo "VERSIONS:"
-          echo "npm@$(npm -v)"
-          echo "vlt@$(vlt -v)"
-          echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 -v)"
-          echo "yarn@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@latest -v)"
-          echo "pnpm@$(COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest -v)"
-          echo "bun@$(bun -v)"
-          echo "deno@$(deno -v)"
+          corepack enable yarn pnpm --quiet
+      
+      - name: Get Versions
+        run: |
+          echo "npm $(npm -v)"
+          echo "vlt $(vlt -v)"
+          echo "yarn $(corepack yarn@1 -v)"
+          echo "yarn $(corepack yarn@latest -v)"
+          echo "pnpm $(corepack pnpm@latest -v)"
+          echo "bun $(bun -v)"
+          echo "$(deno -v)"
 
       - name: Next Benchmarks
-        run: |
-          cd ./next
-          echo "$(pwd)"
-          echo "BENCHMARKS:"
-          hyperfine --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
-            'bun install' \
-            'deno install --allow-scripts' \
-            'npm install --no-audit --no-fund' \
-            'vlt install'
+        uses: ./.github/workflows/run.yaml
+        with:
+          LOCATION: next
       
       - name: Astro Benchmarks
-        run: |
-          cd ./next
-          echo "$(pwd)"
-          echo "BENCHMARKS:"
-          hyperfine --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
-            'bun install' \
-            'deno install --allow-scripts' \
-            'npm install --no-audit --no-fund' \
-            'vlt install'
+        uses: ./.github/workflows/run.yaml
+        with:
+          LOCATION: astro
       
       - name: Svelte Benchmarks
-        run: |
-          cd ./svelte
-          echo "$(pwd)"
-          echo "BENCHMARKS:"
-          hyperfine --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
-            'bun install' \
-            'deno install --allow-scripts' \
-            'npm install --no-audit --no-fund' \
-            'vlt install'
+        uses: ./.github/workflows/run.yaml
+        with:
+          LOCATION: svelte
 
       - name: Vue Benchmarks
-        run: |
-          cd ./vue
-          echo "$(pwd)"
-          echo "BENCHMARKS:"
-          hyperfine --warmup 3 --runs 10 -i --prepare 'rm -rf ./node_modules/; rm -rf package-lock.json; rm -rf pnpm-lock.yaml; rm -rf yarn.lock; rm -rf .yarnrc.yml; rm -rf .yarnrc; rm -rf .npmrc; rm -rf .pnp.js; rm -rf .pnp.cjs; rm -rf .yarn; rm -rf .yarnrc; rm -rf .yarn-integrity; rm -rf .yarn-metadata.json; rm -rf bun.lockb; npm pkg delete packageManager; git add .; git stash;' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 YARN_ENABLE_IMMUTABLE_INSTALLS=false corepack yarn@latest install' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack yarn@1 install' \
-            'COREPACK_ENABLE_STRICT=0 COREPACK_ENABLE_AUTO_PIN=0 corepack pnpm@latest install' \
-            'bun install' \
-            'deno install --allow-scripts' \
-            'npm install --no-audit --no-fund' \
-            'vlt install'
-      
+        uses: ./.github/workflows/run.yaml
+        with:
+          LOCATION: vue
