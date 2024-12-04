@@ -43,9 +43,9 @@ jobs:
 
       - name: Install Tooling
         run: |
-          cargo install hyperfine
+          cargo install hyperfine --quiet
           npm install -g npm@latest vlt@latest bun@latest deno-bin@latest
-          corepack enable yarn pnpm --quiet
+          corepack enable yarn pnpm
       
       - name: Get Versions
         run: |
