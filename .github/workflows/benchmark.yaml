@@ -33,8 +33,6 @@ jobs:
     
     steps:
       
-      - uses: actions/checkout@v4
-
       - name: Install Node
         uses: actions/setup-node@v2
         with:
@@ -56,6 +54,7 @@ jobs:
           echo "bun $(bun -v)"
           echo "$(deno -v)"
 
+      - uses: actions/checkout@v4
       - name: Run Project Benchmarks (Next)
         uses: ./.github/workflows/run.yaml
         with:
