@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow-template.json
+
 name: Run hyperfine benchmark
 
 on:
@@ -13,16 +15,16 @@ jobs:
       - name: configuration
         run: |
           echo "LOCATION: ${{ inputs.LOCATION }}"
-          echo "COREPACK_ENABLE_STRICT: ${{ COREPACK_ENABLE_STRICT }}"
-          echo "COREPACK_ENABLE_AUTO_PIN: ${{ COREPACK_ENABLE_AUTO_PIN }}"
-          echo "YARN_ENABLE_IMMUTABLE_INSTALLS: ${{ YARN_ENABLE_IMMUTABLE_INSTALLS}}"
+          echo "COREPACK_ENABLE_STRICT: ${{ env.COREPACK_ENABLE_STRICT }}"
+          echo "COREPACK_ENABLE_AUTO_PIN: ${{ env.COREPACK_ENABLE_AUTO_PIN }}"
+          echo "YARN_ENABLE_IMMUTABLE_INSTALLS: ${{ env.YARN_ENABLE_IMMUTABLE_INSTALLS }}"
       - name: run
         run: |
           cd ${{ inputs.LOCATION }}
           hyperfine --export-json --warmup 3 --runs 10 -i --prepare ' \
               rm -rf ./node_modules/; \
               rm -rf .npm*; \
-              rm -rf .yarn*; \ 
+              rm -rf .yarn*; \
               rm -rf .pnp*; \
               rm -rf .vlt*; \
               rm -rf package-lock.json; \
@@ -33,14 +35,14 @@ jobs:
               rm -rf deno.lock; \
               npm cache clean --force; \
               yarn@1 cache clean --all; \
-              yarn@latest cache clean --all'; \
+              yarn@latest cache clean --all; \
               pnpm cache delete *; \
               rm -rf $(vlt config get cache); \
               rm -rf $(bun pm cache); \
               deno clean; \
               npm pkg delete packageManager; \
               git add .; \
-              git stash;' \
+              git stash' \
             'npm install --no-audit --no-fund' \
             'corepack yarn@1 install' \
             'corepack yarn@latest install' \
@@ -48,4 +50,3 @@ jobs:
             'vlt install' \
             'bun install' \
             'deno install --allow-scripts'
-            
