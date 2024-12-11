@@ -56,21 +56,21 @@ jobs:
 
       - uses: actions/checkout@v4
       - name: Run Project Benchmarks (Next)
-        uses: vltpkg/benchmarks/.github/workflows/run.yaml@main
+        uses: ./.github/actions/run.yaml
         with:
           LOCATION: next
       
       - name: Run Project Benchmarks (Astro)
-        uses: vltpkg/benchmarks/.github/workflows/run.yaml@main
+        uses: ./.github/actions/run.yaml
         with:
           LOCATION: astro
       
       - name: Run Project Benchmarks (Svelte)
-        uses: vltpkg/benchmarks/.github/workflows/run.yaml@main
+        uses: ./.github/actions/run.yaml
         with:
           LOCATION: svelte
 
       - name: Run Project Benchmarks (Vue)
-        uses: vltpkg/benchmarks/.github/workflows/run.yaml@main
+        uses: ./.github/actions/run.yaml
         with:
           LOCATION: vue
