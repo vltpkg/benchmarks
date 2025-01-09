@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://json.schemastore.org/github-workflow-template.json
+eal# yaml-language-server: $schema=https://json.schemastore.org/github-workflow-template.json
 
 name: Run hyperfine benchmark
 
