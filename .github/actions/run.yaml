@@ -12,6 +12,7 @@ on:
 jobs:
   hyperfine:
     steps:
+      - uses: actions/checkout@v4
       - name: configuration
         run: |
           echo "LOCATION: ${{ inputs.LOCATION }}"
