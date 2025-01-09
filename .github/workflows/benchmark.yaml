@@ -59,18 +59,22 @@ jobs:
         uses: ./.github/actions/run.yaml
         with:
           LOCATION: next
+          OS: ${{ matrix.platform.os }}
       
       - name: Run Project Benchmarks (Astro)
         uses: ./.github/actions/run.yaml
         with:
           LOCATION: astro
+          OS: ${{ matrix.platform.os }}
       
       - name: Run Project Benchmarks (Svelte)
         uses: ./.github/actions/run.yaml
         with:
           LOCATION: svelte
+          OS: ${{ matrix.platform.os }}
 
       - name: Run Project Benchmarks (Vue)
         uses: ./.github/actions/run.yaml
         with:
           LOCATION: vue
+          OS: ${{ matrix.platform.os }}

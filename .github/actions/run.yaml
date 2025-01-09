@@ -8,8 +8,11 @@ on:
       LOCATION:
         required: true
         type: string
-
+      OS:
+        required: true
+        type: string
 jobs:
+  runs-on: ${{ inputs.OS }}
   hyperfine:
     steps:
       - uses: actions/checkout@v4
