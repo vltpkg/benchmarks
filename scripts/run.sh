@@ -4,7 +4,7 @@
 echo "WARNING: This script removes all installed packages, cache files & uncommitted git history."
 
 # Navigate to the fixture directory
-cd ./fixtures/$1
+cd ./fixtures/run
 
 # Run the benchmark suite
 hyperfine --export-json=../../results/run.json --warmup 3 --runs 10 -i --prepare 'bash ../../scripts/clean.sh' \
