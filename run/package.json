@@ -1,0 +1,9 @@
+{
+  "name": "run",
+  "version": "1.0.0",
+  "private": false,
+  "scripts": {
+    "test": "echo \"benchmarking script execution...\""
+  },
+  "license": "MIT"
+}
