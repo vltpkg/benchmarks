@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $1
+
 hyperfine --export-json=../next.json --warmup 3 --runs 10 -i --prepare ' \
     rm -rf ./node_modules/; \
     rm -rf .npm*; \

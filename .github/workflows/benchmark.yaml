@@ -64,8 +64,7 @@ jobs:
 
       - name: Run Project Benchmarks (Next)        
         run: |
-          cd next
-          bash scripts/run.sh
+          bash scripts/run.sh next
 
       - name: Run Project Benchmarks (Astro)
         run: |
