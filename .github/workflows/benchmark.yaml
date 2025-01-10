@@ -33,6 +33,8 @@ jobs:
     
     steps:
       
+      - uses: actions/checkout@v4
+      
       - name: Install Node
         uses: actions/setup-node@v2
         with:
@@ -44,7 +46,7 @@ jobs:
           npm install -g npm@latest vlt@latest bun@latest deno-bin@latest --silent
           corepack enable yarn pnpm
       
-      - name: Log Package Manager Versions
+      - name: Package Manager Versions
         run: |
           echo "npm $(npm -v)"
           echo "vlt $(vlt -v)"
@@ -54,27 +56,140 @@ jobs:
           echo "bun $(bun -v)"
           echo "$(deno -v)"
 
-      - uses: actions/checkout@v4
+      - name: Configuration
+        run: |
+          echo "COREPACK_ENABLE_STRICT: ${{ env.COREPACK_ENABLE_STRICT }}"
+          echo "COREPACK_ENABLE_AUTO_PIN: ${{ env.COREPACK_ENABLE_AUTO_PIN }}"
+          echo "YARN_ENABLE_IMMUTABLE_INSTALLS: ${{ env.YARN_ENABLE_IMMUTABLE_INSTALLS }}"
+
       - name: Run Project Benchmarks (Next)
-        uses: ./.github/actions/run.yaml
-        with:
-          LOCATION: next
-          OS: ${{ matrix.platform.os }}
+        run: |
+          cd next
+          hyperfine --export-json --warmup 3 --runs 10 -i --prepare ' \
+              rm -rf ./node_modules/; \
+              rm -rf .npm*; \
+              rm -rf .yarn*; \
+              rm -rf .pnp*; \
+              rm -rf .vlt*; \
+              rm -rf package-lock.json; \
+              rm -rf yarn.lock; \
+              rm -rf pnpm-lock.yaml; \
+              rm -rf vlt-lock.json; \
+              rm -rf bun.lockb; \
+              rm -rf deno.lock; \
+              npm cache clean --force; \
+              yarn@1 cache clean --all; \
+              yarn@latest cache clean --all; \
+              pnpm cache delete *; \
+              rm -rf $(vlt config get cache); \
+              rm -rf $(bun pm cache); \
+              deno clean; \
+              npm pkg delete packageManager; \
+              git add .; \
+              git stash' \
+            'npm install --no-audit --no-fund' \
+            'corepack yarn@1 install' \
+            'corepack yarn@latest install' \
+            'corepack pnpm@latest install' \
+            'vlt install' \
+            'bun install' \
+            'deno install --allow-scripts'
       
       - name: Run Project Benchmarks (Astro)
-        uses: ./.github/actions/run.yaml
-        with:
-          LOCATION: astro
-          OS: ${{ matrix.platform.os }}
-      
+        run: |
+          cd astro
+          hyperfine --export-json --warmup 3 --runs 10 -i --prepare ' \
+              rm -rf ./node_modules/; \
+              rm -rf .npm*; \
+              rm -rf .yarn*; \
+              rm -rf .pnp*; \
+              rm -rf .vlt*; \
+              rm -rf package-lock.json; \
+              rm -rf yarn.lock; \
+              rm -rf pnpm-lock.yaml; \
+              rm -rf vlt-lock.json; \
+              rm -rf bun.lockb; \
+              rm -rf deno.lock; \
+              npm cache clean --force; \
+              yarn@1 cache clean --all; \
+              yarn@latest cache clean --all; \
+              pnpm cache delete *; \
+              rm -rf $(vlt config get cache); \
+              rm -rf $(bun pm cache); \
+              deno clean; \
+              npm pkg delete packageManager; \
+              git add .; \
+              git stash' \
+            'npm install --no-audit --no-fund' \
+            'corepack yarn@1 install' \
+            'corepack yarn@latest install' \
+            'corepack pnpm@latest install' \
+            'vlt install' \
+            'bun install' \
+            'deno install --allow-scripts'
+
       - name: Run Project Benchmarks (Svelte)
-        uses: ./.github/actions/run.yaml
-        with:
-          LOCATION: svelte
-          OS: ${{ matrix.platform.os }}
+        run: |
+          cd svelte
+          hyperfine --export-json --warmup 3 --runs 10 -i --prepare ' \
+              rm -rf ./node_modules/; \
+              rm -rf .npm*; \
+              rm -rf .yarn*; \
+              rm -rf .pnp*; \
+              rm -rf .vlt*; \
+              rm -rf package-lock.json; \
+              rm -rf yarn.lock; \
+              rm -rf pnpm-lock.yaml; \
+              rm -rf vlt-lock.json; \
+              rm -rf bun.lockb; \
+              rm -rf deno.lock; \
+              npm cache clean --force; \
+              yarn@1 cache clean --all; \
+              yarn@latest cache clean --all; \
+              pnpm cache delete *; \
+              rm -rf $(vlt config get cache); \
+              rm -rf $(bun pm cache); \
+              deno clean; \
+              npm pkg delete packageManager; \
+              git add .; \
+              git stash' \
+            'npm install --no-audit --no-fund' \
+            'corepack yarn@1 install' \
+            'corepack yarn@latest install' \
+            'corepack pnpm@latest install' \
+            'vlt install' \
+            'bun install' \
+            'deno install --allow-scripts'
 
       - name: Run Project Benchmarks (Vue)
-        uses: ./.github/actions/run.yaml
-        with:
-          LOCATION: vue
-          OS: ${{ matrix.platform.os }}
+        run: |
+          cd vue
+          hyperfine --export-json --warmup 3 --runs 10 -i --prepare ' \
+              rm -rf ./node_modules/; \
+              rm -rf .npm*; \
+              rm -rf .yarn*; \
+              rm -rf .pnp*; \
+              rm -rf .vlt*; \
+              rm -rf package-lock.json; \
+              rm -rf yarn.lock; \
+              rm -rf pnpm-lock.yaml; \
+              rm -rf vlt-lock.json; \
+              rm -rf bun.lockb; \
+              rm -rf deno.lock; \
+              npm cache clean --force; \
+              yarn@1 cache clean --all; \
+              yarn@latest cache clean --all; \
+              pnpm cache delete *; \
+              rm -rf $(vlt config get cache); \
+              rm -rf $(bun pm cache); \
+              deno clean; \
+              npm pkg delete packageManager; \
+              git add .; \
+              git stash' \
+            'npm install --no-audit --no-fund' \
+            'corepack yarn@1 install' \
+            'corepack yarn@latest install' \
+            'corepack pnpm@latest install' \
+            'vlt install' \
+            'bun install' \
+            'deno install --allow-scripts'
