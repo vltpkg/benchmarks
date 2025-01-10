@@ -37,7 +37,7 @@ The installation tests we run today mimic a cold-cache scenario for a variety of
 - `deno`
 - `bun`
 
-### Testing Script Execution
+### Testing Script Execution (WIP)
 
 This suite also tests the performance of basic script execution (ex. `npm run foo`). Notably, for any given build, test or deployment task the spawning of the process is a fraction of the overall execution time. That said, this is a commonly tracked workflow by various developer tools as it involves the common set of tasks: startup, filesystem read (`package.json`) & finally, spawning the process/command.
 
@@ -53,3 +53,7 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 - `node`
 - `turborepo`
 - `nx`
+
+### Output
+
+Results of the test runs are found in the Actions Artifacts "results". We will eventually add a visualization of the results at some point in the future.
