@@ -2,32 +2,52 @@
 
 cd $1
 
-hyperfine --export-json=../next.json --warmup 3 --runs 10 -i --prepare ' \
-    rm -rf ./node_modules/; \
-    rm -rf .npm*; \
-    rm -rf .yarn*; \
-    rm -rf .pnp*; \
-    rm -rf .vlt*; \
-    rm -rf package-lock.json; \
-    rm -rf yarn.lock; \
-    rm -rf pnpm-lock.yaml; \
-    rm -rf vlt-lock.json; \
-    rm -rf bun.lockb; \
-    rm -rf deno.lock; \
-    npm cache clean --force; \
-    yarn@1 cache clean --all; \
-    yarn@latest cache clean --all; \
-    pnpm cache delete *; \
-    rm -rf $(vlt config get cache); \
-    rm -rf $(bun pm cache); \
-    deno clean; \
-    npm pkg delete packageManager; \
-    git add .; \
-    git stash' \
-  'npm install --no-audit --no-fund' \
-  'corepack yarn@1 install' \
-  'corepack yarn@latest install' \
-  'corepack pnpm@latest install' \
-  'vlt install' \
-  'bun install' \
-  'deno install --allow-scripts'
+# Create the results directory
+mkdir -p ../results/$1
+
+# Run the benchmark suite
+hyperfine --export-json=../results/$1/benchmarks.json --warmup 3 --runs 10 -i --prepare 'bash ../scripts/clean.sh' \
+  'bash ../scripts/install/npm.sh' \
+  'bash ../scripts/install/yarn.sh' \
+  'bash ../scripts/install/berry.sh' \
+  'bash ../scripts/install/pnpm.sh' \
+  'bash ../scripts/install/vlt.sh' \
+  'bash ../scripts/install/bun.sh' \
+  'bash ../scripts/install/deno.sh'
+
+# Count the number of packages installed
+
+# npm
+bash ../scripts/clean.sh
+bash ../scripts/install/npm.sh
+bash ../scripts/package-count.sh >> "../results/$1/npm" 
+
+# yarn
+bash ../scripts/clean.sh
+bash ../scripts/install/yarn.sh
+bash ../scripts/package-count.sh >> "../results/$1/yarn" 
+
+# yarn berry
+bash ../scripts/clean.sh
+bash ../scripts/install/berry.sh
+bash ../scripts/package-count.sh >> "../results/$1/berry"
+
+# pnpm
+bash ../scripts/clean.sh
+bash ../scripts/install/pnpm.sh
+bash ../scripts/package-count.sh >> "../results/$1/pnpm"
+
+# vlt
+bash ../scripts/clean.sh
+bash ../scripts/install/vlt.sh
+bash ../scripts/package-count.sh >>  >> "../results/$1/vlt"
+
+# bun
+bash ../scripts/clean.sh
+bash ../scripts/install/bun.sh
+bash ../scripts/package-count.sh >> "../results/$1/bun"
+
+# deno
+bash ../scripts/clean.sh
+bash ../scripts/install/deno.sh
+bash ../scripts/package-count.sh >> "../results/$1/deno"
