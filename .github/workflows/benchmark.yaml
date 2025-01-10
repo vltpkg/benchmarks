@@ -32,15 +32,17 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install & Setup Package Managers & Benchmark Tools
+      - name: Install & Setup Tools
         run: |
+          # Install Package Managers & Benchmark Tools
           cargo install hyperfine --quiet
           npm install -g npm@latest vlt@latest bun@latest deno-bin@latest --silent
           corepack enable yarn pnpm
-          mkdir -p ../results/
+          
+          # Create Results Directory
+          mkdir -p ./results/
 
-      - name: Package Manager Versions
-        run: |
+          # Log Package Manager Versions
           NPM_VERSION="$(npm -v)"
           VLT_VERSION="$(vlt -v)"
           YARN_VERSION="$(corepack yarn@1 -v)"
@@ -56,32 +58,31 @@ jobs:
             bun: $BUN_VERSION /
             deno: $DENO_VERSION"
           echo $ALL
-          echo $ALL > ../results/versions
+          echo $ALL > ./results/versions
 
-      - name: Configuration
-        run: |
+          # Log Benchmark Configurations
           echo "COREPACK_ENABLE_STRICT: ${{ env.COREPACK_ENABLE_STRICT }}"
           echo "COREPACK_ENABLE_AUTO_PIN: ${{ env.COREPACK_ENABLE_AUTO_PIN }}"
           echo "YARN_ENABLE_IMMUTABLE_INSTALLS: ${{ env.YARN_ENABLE_IMMUTABLE_INSTALLS }}"
 
       - name: Run Project Benchmarks (Next)        
         run: |
-          bash scripts/run.sh next
+          bash ./scripts/run.sh next
 
       - name: Run Project Benchmarks (Astro)
         run: |
-          bash scripts/run.sh astro
+          bash ./scripts/run.sh astro
 
       - name: Run Project Benchmarks (Svelte)
         run: |
-          bash scripts/run.sh svelte
+          bash ./scripts/run.sh svelte
 
       - name: Run Project Benchmarks (Vue)
         run: |
-          bash scripts/run.sh vue
+          bash ./scripts/run.sh vue
 
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-results
-          path: results/
+          path: ./results/
