@@ -58,7 +58,6 @@ jobs:
 
       - name: Configuration
         run: |
-          store=find . -path "*package.json" -not -path "./package.json" -type f | wc -l | xargs > ../count/npm
           echo "COREPACK_ENABLE_STRICT: ${{ env.COREPACK_ENABLE_STRICT }}"
           echo "COREPACK_ENABLE_AUTO_PIN: ${{ env.COREPACK_ENABLE_AUTO_PIN }}"
           echo "YARN_ENABLE_IMMUTABLE_INSTALLS: ${{ env.YARN_ENABLE_IMMUTABLE_INSTALLS }}"
