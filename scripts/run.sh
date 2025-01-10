@@ -7,7 +7,7 @@ echo "WARNING: This script removes all installed packages, cache files & uncommi
 cd ./fixtures/run
 
 # Run the benchmark suite
-hyperfine --export-json=../../results/run.json --warmup 3 --runs 10 -i --prepare 'bash ../../scripts/clean.sh' \
+hyperfine --export-json=../../results/run.json --warmup 3 --runs 10 -i --prepare 'bash ../../scripts/clean.sh; npm install' \
   -n 'npm' 'npm run test' \
   -n 'yarn' 'corepack yarn@1 run test' \
   -n 'berry' 'corepack yarn@latest run test' \
