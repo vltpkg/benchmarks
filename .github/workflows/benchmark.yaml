@@ -73,19 +73,19 @@ jobs:
 
       - name: Run Project Benchmarks (Next)        
         run: |
-          bash ./scripts/run.sh next
+          bash ./scripts/install.sh next
 
       - name: Run Project Benchmarks (Astro)
         run: |
-          bash ./scripts/run.sh astro
+          bash ./scripts/install.sh astro
 
       - name: Run Project Benchmarks (Svelte)
         run: |
-          bash ./scripts/run.sh svelte
+          bash ./scripts/install.sh svelte
 
       - name: Run Project Benchmarks (Vue)
         run: |
-          bash ./scripts/run.sh vue
+          bash ./scripts/install.sh vue
 
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
