@@ -65,6 +65,10 @@ jobs:
           echo "COREPACK_ENABLE_AUTO_PIN: ${{ env.COREPACK_ENABLE_AUTO_PIN }}"
           echo "YARN_ENABLE_IMMUTABLE_INSTALLS: ${{ env.YARN_ENABLE_IMMUTABLE_INSTALLS }}"
 
+      - name: Run Task Execution Benchmarks        
+        run: |
+          bash ./scripts/run.sh
+
       - name: Run Project Benchmarks (Next)        
         run: |
           bash ./scripts/run.sh next
