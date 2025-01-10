@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # WARNING
-echo "WARNING: This script removes all installed packages, cache files & uncommitted git history."
+echo "WARNING: This script removes all installed packages, cache files & uncommitted git history. Changes have been stashed if this was unintended."
 
 # Navigate to the fixture directory
 cd ./fixtures/run
