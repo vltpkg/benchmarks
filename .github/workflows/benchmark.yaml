@@ -62,10 +62,10 @@ jobs:
           echo "COREPACK_ENABLE_AUTO_PIN: ${{ env.COREPACK_ENABLE_AUTO_PIN }}"
           echo "YARN_ENABLE_IMMUTABLE_INSTALLS: ${{ env.YARN_ENABLE_IMMUTABLE_INSTALLS }}"
 
-      - name: Run Project Benchmarks (Next)
+      - name: Run Project Benchmarks (Next)        
         run: |
           cd next
-          hyperfine --export-json --warmup 3 --runs 10 -i --prepare ' \
+          hyperfine --export-json=../next.json --warmup 3 --runs 10 -i --prepare ' \
               rm -rf ./node_modules/; \
               rm -rf .npm*; \
               rm -rf .yarn*; \
@@ -98,7 +98,7 @@ jobs:
       - name: Run Project Benchmarks (Astro)
         run: |
           cd astro
-          hyperfine --export-json --warmup 3 --runs 10 -i --prepare ' \
+          hyperfine --export-json=../astro.json --warmup 3 --runs 10 -i --prepare ' \
               rm -rf ./node_modules/; \
               rm -rf .npm*; \
               rm -rf .yarn*; \
@@ -131,7 +131,7 @@ jobs:
       - name: Run Project Benchmarks (Svelte)
         run: |
           cd svelte
-          hyperfine --export-json --warmup 3 --runs 10 -i --prepare ' \
+          hyperfine --export-json=../svelte.json --warmup 3 --runs 10 -i --prepare ' \
               rm -rf ./node_modules/; \
               rm -rf .npm*; \
               rm -rf .yarn*; \
@@ -164,7 +164,7 @@ jobs:
       - name: Run Project Benchmarks (Vue)
         run: |
           cd vue
-          hyperfine --export-json --warmup 3 --runs 10 -i --prepare ' \
+          hyperfine --export-json=../vue.json --warmup 3 --runs 10 -i --prepare ' \
               rm -rf ./node_modules/; \
               rm -rf .npm*; \
               rm -rf .yarn*; \
@@ -193,3 +193,13 @@ jobs:
             'vlt install' \
             'bun install' \
             'deno install --allow-scripts'
+
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: benchmarks-results
+          path: |
+            next.json
+            astro.json
+            svelte.json
+            vue.json
