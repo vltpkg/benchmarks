@@ -40,7 +40,7 @@ bash ../../scripts/package-count.sh >> "../../results/$1/pnpm"
 # vlt
 bash ../../scripts/clean.sh
 bash ../../scripts/install/vlt.sh
-bash ../../scripts/package-count.sh >>  >> "../../results/$1/vlt"
+bash ../../scripts/package-count.sh >> "../../results/$1/vlt"
 
 # bun
 bash ../../scripts/clean.sh
