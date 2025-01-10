@@ -2,3 +2,7 @@
 .nx
 node_modules
 package-lock.json
+
+
+.nx/cache
+.nx/workspace-data

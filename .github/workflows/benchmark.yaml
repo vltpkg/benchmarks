@@ -13,6 +13,7 @@ jobs:
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_TOKEN }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAMID: ${{ secrets.TURBO_TEAMID }}
 
     strategy:
       fail-fast: false

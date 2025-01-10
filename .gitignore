@@ -1,2 +1,5 @@
 .DS_Store
 results
+.nx/installation
+.nx/cache
+.nx/workspace-data
