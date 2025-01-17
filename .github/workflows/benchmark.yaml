@@ -53,12 +53,12 @@ jobs:
           PNPM_VERSION="$(corepack pnpm@latest -v)"
           BUN_VERSION="$(bun -v)"
           DENO_VERSION="$(echo "${$(deno -v)/deno/}" | xargs)"
-          ALL="npm: $NPM_VERSION /
-            vlt: $VLT_VERSION /
-            yarn: $YARN_VERSION /
-            berry: $BERRY_VERSION /
-            pnpm: $PNPM_VERSION /
-            bun: $BUN_VERSION /
+          ALL="npm: $NPM_VERSION \n
+            vlt: $VLT_VERSION \n
+            yarn: $YARN_VERSION \n
+            berry: $BERRY_VERSION \n
+            pnpm: $PNPM_VERSION \n
+            bun: $BUN_VERSION \n
             deno: $DENO_VERSION"
           echo $ALL
           echo $ALL > ./results/versions
