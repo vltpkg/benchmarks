@@ -15,6 +15,8 @@ npm cache clean --force;
 corepack yarn@1 cache clean --all;
 corepack yarn@latest cache clean --all;
 corepack pnpm cache delete *;
+corepack pnpm cache delete *;
+rm -rf $(corepack pnpm store path);
 rm -rf $(vlt config get cache);
 rm -rf $(bun pm cache);
 rm -rf nx.json;
