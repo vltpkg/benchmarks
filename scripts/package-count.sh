@@ -1,3 +1,3 @@
 #!/bin/bash
 
-find . -path "*package.json" -not -path "./package.json" -type f | wc -l | xargs
+find node_modules -name package.json -type f | grep -E 'node_modules\/[^\/]+\/package.json$|node_modules/@[^\/]+\/[^\/]+\/package.json$' | wc -l | xargs
