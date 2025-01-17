@@ -39,7 +39,7 @@ jobs:
         run: |
           # Install Package Managers & Benchmark Tools
           cargo install hyperfine --quiet
-          npm install -g npm@latest vlt@latest bun@latest deno-bin@latest --silent
+          npm install -g npm@latest vlt@latest bun@latest deno@latest --silent
           corepack enable yarn pnpm
           
           # Create Results Directory
