@@ -16,5 +16,4 @@ hyperfine --export-json=../../results/run.json --warmup 3 --runs 10 -i --prepare
   -n 'bun' 'bun run test' \
   -n 'deno' 'deno run test' \
   -n 'nx' 'nx run test' \
-  -n 'turbo' 'turbo run test --dangerously-disable-package-manager-check'
-  
+  -n 'turbo' 'turbo run test --dangerously-disable-package-manager-check --cache-dir=.cache'
