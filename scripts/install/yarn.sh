@@ -1,3 +1,3 @@
 #!/bin/bash
 
-corepack yarn@1 install
+corepack yarn@1 install --silent

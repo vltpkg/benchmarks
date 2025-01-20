@@ -1,3 +1,3 @@
 #!/bin/bash
 
-corepack yarn@latest install
+corepack yarn@latest install >/dev/null

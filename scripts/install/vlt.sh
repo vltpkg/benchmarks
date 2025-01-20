@@ -1,3 +1,3 @@
 #!/bin/bash
 
-vlt install
+vlt install >/dev/null

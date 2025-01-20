@@ -1,3 +1,3 @@
 #!/bin/bash
 
-bun install
+bun install --silent

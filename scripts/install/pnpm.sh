@@ -1,3 +1,3 @@
 #!/bin/bash
 
-corepack pnpm@latest install
+corepack pnpm@latest install --silent
