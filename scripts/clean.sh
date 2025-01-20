@@ -18,6 +18,7 @@ corepack pnpm cache delete * --silent;
 rm -rf $(corepack pnpm store path);
 rm -rf $(vlt config get cache);
 rm -rf $(bun pm cache);
+nx daemon --stop >/dev/null;
 nx clear-cache >/dev/null;
 nx reset >/dev/null;
 rm -rf nx.json;
