@@ -24,34 +24,45 @@ hyperfine --export-json=../../results/$1/benchmarks.json --warmup 3 --runs 10 -i
 # npm
 bash ../../scripts/clean.sh
 bash ../../scripts/install/npm.sh
-bash ../../scripts/package-count.sh >> "../../results/$1/npm" 
+NPM_COUNT=$(bash ../../scripts/package-count.sh)
 
 # yarn
 bash ../../scripts/clean.sh
 bash ../../scripts/install/yarn.sh
-bash ../../scripts/package-count.sh >> "../../results/$1/yarn" 
+YARN_COUNT=$(bash ../../scripts/package-count.sh)
 
 # yarn berry
 bash ../../scripts/clean.sh
 bash ../../scripts/install/berry.sh
-bash ../../scripts/package-count.sh >> "../../results/$1/berry"
+BERRY_COUNT=$(bash ../../scripts/package-count.sh)
 
 # pnpm
 bash ../../scripts/clean.sh
 bash ../../scripts/install/pnpm.sh
-bash ../../scripts/package-count.sh >> "../../results/$1/pnpm"
+PNPM_COUNT=$(bash ../../scripts/package-count.sh)
 
 # vlt
 bash ../../scripts/clean.sh
 bash ../../scripts/install/vlt.sh
-bash ../../scripts/package-count.sh >> "../../results/$1/vlt"
+VLT_COUNT=$(bash ../../scripts/package-count.sh)
 
 # bun
 bash ../../scripts/clean.sh
 bash ../../scripts/install/bun.sh
-bash ../../scripts/package-count.sh >> "../../results/$1/bun"
+BUN_COUNT=$(bash ../../scripts/package-count.sh)
 
 # deno
 bash ../../scripts/clean.sh
 bash ../../scripts/install/deno.sh
-bash ../../scripts/package-count.sh >> "../../results/$1/deno"
+DENO_COUNT=$(bash ../../scripts/package-count.sh)
+
+# Write the results to a file
+echo "{
+  \"npm\": $NPM_COUNT,
+  \"yarn\": $YARN_COUNT,
+  \"berry\": $BERRY_COUNT,
+  \"pnpm\": $PNPM_COUNT,
+  \"vlt\": $VLT_COUNT,
+  \"bun\": $BUN_COUNT,
+  \"deno\": $DENO_COUNT
+}" > ../../results/$1/package-count.json
