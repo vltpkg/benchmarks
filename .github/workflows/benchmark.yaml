@@ -116,4 +116,5 @@ jobs:
         with:
           path: results
           merge-multiple: true
-    - run: ls -R results
+      - name: List the results
+        run: ls -R results
