@@ -5,7 +5,7 @@ YARN_ENABLE_IMMUTABLE_INSTALLS=false
 
 # Install Package Managers & Benchmark Tools
 cargo install hyperfine --quiet
-npm install -g npm@latest vlt@latest bun@latest deno@latest --silent
+npm install -g npm@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest --silent
 corepack enable yarn pnpm
 
 # Create Results Directory
@@ -19,6 +19,8 @@ BERRY_VERSION="$(corepack yarn@latest -v)"
 PNPM_VERSION="$(corepack pnpm@latest -v)"
 BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
+NX_VERSION="$(npm view nx@latest version)"
+TURBO_VERSION="$(npm view turbo@latest version)"
 
 echo "npm: $NPM_VERSION"
 echo "vlt: $VLT_VERSION"
@@ -27,5 +29,7 @@ echo "berry: $BERRY_VERSION"
 echo "pnpm: $PNPM_VERSION"
 echo "bun: $BUN_VERSION"
 echo "deno: $DENO_VERSION"
+echo "nx: $NX_VERSION"
+echo "turbo: $TURBO_VERSION"
 
-echo "{ npm: \"$NPM_VERSION\", vlt: \"$VLT_VERSION\", yarn: \"$YARN_VERSION\", berry: \"$BERRY_VERSION\", pnpm: \"$PNPM_VERSION\", bun: \"$BUN_VERSION\", deno: \"$DENO_VERSION\" }" > ./results/versions.json
+echo "{ npm: \"$NPM_VERSION\", vlt: \"$VLT_VERSION\", yarn: \"$YARN_VERSION\", berry: \"$BERRY_VERSION\", pnpm: \"$PNPM_VERSION\", bun: \"$BUN_VERSION\", deno: \"$DENO_VERSION\", nx: \"$NX_VERSION\", turbo: \"$TURBO_VERSION\" }" > ./results/versions.json
