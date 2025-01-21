@@ -2,8 +2,6 @@
 <html>
   <head>
     <title>Benchmark</title>
-    <link rel="stylesheet" href="/chartist.min.css">
-    <script src="/chartist.min.js"></script>
     <style type="text/css">
       :root {
         --npm: #cb0606;
@@ -16,75 +14,89 @@
         --nx: #3b82f6;
         --turbo: #ff1e56;
       }
-
-      .ct-chart {
-        width: 100%;
-        height: 800px;
-      } 
-      /* npm */
-      .ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
-        stroke: var(--npm);
-      }
-      /* pnpm */
-      .ct-series-b .ct-bar, .ct-series-b .ct-line, .ct-series-b .ct-point, .ct-series-b .ct-slice-donut {
-        stroke: var(--pnpm);
-      }
-      /* yarn */
-      .ct-series-c .ct-bar, .ct-series-c .ct-line, .ct-series-c .ct-point, .ct-series-c .ct-slice-donut {
-        stroke: var(--yarn);
-      }
-      /* yarn v2+ */
-      .ct-series-d .ct-bar, .ct-series-d .ct-line, .ct-series-d .ct-point, .ct-series-d .ct-slice-donut {
-        stroke: var(--yarn2);
-      }
-      /* deno */
-      .ct-series-e .ct-bar, .ct-series-e .ct-line, .ct-series-e .ct-point, .ct-series-e .ct-slice-donut {
-        stroke: var(--deno);
-      }
-      /* bun */
-      .ct-series-f .ct-bar, .ct-series-f .ct-line, .ct-series-f .ct-point, .ct-series-f .ct-slice-donut {
-        stroke: var(--bun);
-      }
-      /* vlt */
-      .ct-series-g .ct-bar, .ct-series-g .ct-line, .ct-series-g .ct-point, .ct-series-g .ct-slice-donut {
-        stroke: var(--vlt);
-      }
-      /* nx */
-      .ct-series-h .ct-bar, .ct-series-h .ct-line, .ct-series-h .ct-point, .ct-series-h .ct-slice-donut {
-        stroke: var(--nx);
-      }
-      /* turbo */
-      .ct-series-i .ct-bar, .ct-series-i .ct-line, .ct-series-i .ct-point, .ct-series-i .ct-slice-donut {
-        stroke: var(--turbo);
-      }
     </style>
   </head>
   <body>
-    <div class="ct-chart ct-perfect-fourth"></div>
-    <script defer>
-      var data = {
-        labels: ['Next', 'Vue', 'Astro', 'Svelte', 'Run'],
-        series: [
-          [5, 4, 3, 7, 10], // npm
-          [5, 4, 3, 7, 2], // pnpm
-          [5, 4, 3, 7, 3], // yarn
-          [5, 4, 3, 7, 1], // yarn v2+
-          [5, 4, 3, 7, 7], // deno
-          [5, 4, 3, 7, 6], // bun
-          [3, 1, 4, 2, 10], // vlt
-          [0, 0, 0, 0, 11], // nx
-          [0, 0, 0, 0, 12]  // turbo
-        ]
-      };
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const npm = '#cb0606';
+      const yarn = '#117cad';
+      const pnpm = '#f9ad00';
+      const yarn2 = '#9555bb';
+      const deno = '#70ffaf';
+      const bun = '#f472b6';
+      const vlt = '#000000';
+      const nx = '#3b82f6';
+      const turbo = '#ff1e56';
+      const node = '#84ba64';
 
-      var options = {
-        seriesBarDistance: 15,
-        axisX: {
-          showGrid: false
+      const ctx = document.getElementById('myChart');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Install Next Project', 'Install Astro Project', 'Install Svelte Project', 'Install Vue Project', 'Running Scripts'],
+          datasets: [{
+            label: 'npm',
+            data: [12, 19, 3, 5, 3],
+            backgroundColor: npm
+          },{
+            label: 'yarn',
+            data: [12, 19, 3, 5, 2],
+            backgroundColor: yarn
+          },{
+            label: 'pnpm',
+            data: [12, 19, 3, 5, 2],
+            backgroundColor: pnpm
+          },{
+            label: 'yarn2',
+            data: [12, 19, 3, 5, 2],
+            backgroundColor: yarn2
+          },{
+            label: 'deno',
+            data: [12, 19, 3, 5, 2],
+            backgroundColor: deno
+          },{
+            label: 'bun',
+            data: [12, 19, 3, 5, 2],
+            backgroundColor: bun
+          },{
+            label: 'vlt',
+            data: [12, 19, 3, 5, 2],
+            backgroundColor: vlt
+          },{
+            label: 'nx',
+            data: [0, 0, 0, 0, 12],
+            backgroundColor: nx
+          },{
+            label: 'turbo',
+            data: [0, 0, 0, 0, 12],
+            backgroundColor: turbo
+          },{
+            label: 'node',
+            data: [0, 0, 0, 0, 12],
+            backgroundColor: node
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                footer: () => {
+                  return 'Packages: 1k \n Total Time: 9999s';
+                }
+              }
+            }
+          }
         }
-      };
-
-      new Chartist.Bar('.ct-chart', data, options);
+      });
     </script>
   </body>
 </html>
