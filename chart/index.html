@@ -13,6 +13,8 @@
         --deno: #70ffaf;
         --bun: #f472b6;
         --vlt: #000000;
+        --nx: #3b82f6;
+        --turbo: #ff1e56;
       }
 
       .ct-chart {
@@ -47,26 +49,39 @@
       .ct-series-g .ct-bar, .ct-series-g .ct-line, .ct-series-g .ct-point, .ct-series-g .ct-slice-donut {
         stroke: var(--vlt);
       }
+      /* nx */
+      .ct-series-h .ct-bar, .ct-series-h .ct-line, .ct-series-h .ct-point, .ct-series-h .ct-slice-donut {
+        stroke: var(--nx);
+      }
+      /* turbo */
+      .ct-series-i .ct-bar, .ct-series-i .ct-line, .ct-series-i .ct-point, .ct-series-i .ct-slice-donut {
+        stroke: var(--turbo);
+      }
     </style>
   </head>
   <body>
     <div class="ct-chart ct-perfect-fourth"></div>
     <script defer>
       var data = {
-        labels: ['Linux (Next)', 'Linux (Vue)', 'Linux (Astro)', 'Linux (Svelte)'],
-          series: [
-          [5, 4, 3, 7],
-          [3, 2, 9, 5],
-          [3, 2, 9, 5],
-          [3, 2, 9, 5],
-          [3, 2, 9, 5],
-          [3, 2, 9, 5],
-          [3, 2, 9, 5]
+        labels: ['Next', 'Vue', 'Astro', 'Svelte', 'Run'],
+        series: [
+          [5, 4, 3, 7, 10], // npm
+          [5, 4, 3, 7, 2], // pnpm
+          [5, 4, 3, 7, 3], // yarn
+          [5, 4, 3, 7, 1], // yarn v2+
+          [5, 4, 3, 7, 7], // deno
+          [5, 4, 3, 7, 6], // bun
+          [3, 1, 4, 2, 10], // vlt
+          [0, 0, 0, 0, 11], // nx
+          [0, 0, 0, 0, 12]  // turbo
         ]
       };
 
       var options = {
-        seriesBarDistance: 10
+        seriesBarDistance: 15,
+        axisX: {
+          showGrid: false
+        }
       };
 
       new Chartist.Bar('.ct-chart', data, options);
