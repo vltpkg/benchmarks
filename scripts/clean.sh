@@ -27,5 +27,5 @@ rm -rf .nx;
 rm -rf .turbo;
 rm -rf .cache;
 deno clean --quiet;
-git add . --quiet;
-git stash --quiet;
+git add . >/dev/null;
+git stash >/dev/null;
