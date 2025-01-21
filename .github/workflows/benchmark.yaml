@@ -22,8 +22,8 @@ jobs:
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
-          name: benchmark-results
-          path: ./results/
+          name: task-benchmark-results
+          path: ./results/run/
   next:
     name: 'Benchmark Next Project'  
     runs-on: ubuntu-latest
@@ -42,8 +42,8 @@ jobs:
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
-          name: benchmark-results
-          path: ./results/
+          name: next-benchmark-results
+          path: ./results/next/
   astro:
     name: 'Benchmark Astro Project'  
     runs-on: ubuntu-latest
@@ -62,8 +62,8 @@ jobs:
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
-          name: benchmark-results
-          path: ./results/
+          name: astro-benchmark-results
+          path: ./results/astro/
   svelte:
     name: 'Benchmark Svelte Project'  
     runs-on: ubuntu-latest
@@ -82,8 +82,8 @@ jobs:
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
-          name: benchmark-results
-          path: ./results/
+          name: svelete-benchmark-results
+          path: ./results/svelte/
   vue:
     name: 'Benchmark Vue Project'  
     runs-on: ubuntu-latest
@@ -102,5 +102,32 @@ jobs:
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
+          name: vue-benchmark-results
+          path: ./results/vue/
+  
+  # make a chart with the results
+  chart:
+    name: 'Chart the Benchmark Results'
+    runs-on: ubuntu-latest
+    needs: [task, next, astro, svelte, vue]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
           name: benchmark-results
           path: ./results/
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+      - name: Install & Setup Tools
+        run: |
+          bash ./scripts/setup.sh
+      - name: Generate Chart
+        run: |
+          bash ./scripts/chart.sh
+      - name: Upload Chart
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-chart
+          path: ./results/chart/
+    

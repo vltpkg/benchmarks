@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Environment Configuration
 COREPACK_ENABLE_STRICT=0
 COREPACK_ENABLE_AUTO_PIN=0
