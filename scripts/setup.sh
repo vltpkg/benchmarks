@@ -1,3 +1,11 @@
+# Environment Configuration
+COREPACK_ENABLE_STRICT=0
+COREPACK_ENABLE_AUTO_PIN=0
+YARN_ENABLE_IMMUTABLE_INSTALLS=false
+NX_CLOUD_ACCESS_TOKEN=${{ secrets.NX_TOKEN }}
+TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
+TURBO_TEAMID=${{ secrets.TURBO_TEAMID }}
+
 # Install Package Managers & Benchmark Tools
 cargo install hyperfine --quiet
 npm install -g npm@latest vlt@latest bun@latest deno@latest --silent

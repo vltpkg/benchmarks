@@ -4,14 +4,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  env: 
-    COREPACK_ENABLE_STRICT: 0
-    COREPACK_ENABLE_AUTO_PIN: 0
-    YARN_ENABLE_IMMUTABLE_INSTALLS: false
-    NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_TOKEN }}
-    TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-    TURBO_TEAMID: ${{ secrets.TURBO_TEAMID }}
-
   task:
     name: 'Benchmark Running Tasks'
     runs-on: ubuntu-latest
