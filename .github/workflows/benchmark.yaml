@@ -110,7 +110,6 @@ jobs:
     name: 'Chart the Benchmark Results'
     runs-on: ubuntu-latest
     needs: [task, next, astro, svelte, vue]
-    if: ${{ always() && !cancelled() && needs.build.result == 'success' }}
     steps:
       - uses: actions/download-artifact@v4
         with:
