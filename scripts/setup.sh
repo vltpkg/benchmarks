@@ -23,7 +23,7 @@ BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"
 TURBO_VERSION="$(npm view turbo@latest version)"
-NODE_VERSION="$(node -v)"
+NODE_VERSION=$(node -e "console.log(process.version.substr(1))")
 
 echo "npm: $NPM_VERSION"
 echo "vlt: $VLT_VERSION"

@@ -12,7 +12,7 @@ We current only test the latest `linux` runner which is the most common GitHub A
 - Storage (SSD): 14 GB
 - Workflow label: `ubuntu-latest`
 
-We may add Mac/Windows in the future but the it will likely exponentially increase the already slow run time of the suite (**~1hr**).
+We may add Mac/Windows in the future but the it will likely exponentially increase the already slow run time of the suite (**~20min**).
 
 ### Configuration/Normalization
 
