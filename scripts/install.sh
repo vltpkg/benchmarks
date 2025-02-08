@@ -16,6 +16,7 @@ hyperfine --export-json=../../results/$1/benchmarks.json --warmup 3 --runs 10 -i
   -n 'berry' 'bash ../../scripts/install/berry.sh' \
   -n 'pnpm' 'bash ../../scripts/install/pnpm.sh' \
   -n 'vlt' 'bash ../../scripts/install/vlt.sh' \
+  -n 'blt' 'bash ../../scripts/install/blt.sh' \
   -n 'bun' 'bash ../../scripts/install/bun.sh' \
   -n 'deno' 'bash ../../scripts/install/deno.sh'
 
@@ -45,6 +46,11 @@ PNPM_COUNT=$(bash ../../scripts/package-count.sh)
 bash ../../scripts/clean.sh
 bash ../../scripts/install/vlt.sh
 VLT_COUNT=$(bash ../../scripts/package-count.sh)
+
+# blt
+bash ../../scripts/clean.sh
+bash ../../scripts/install/blt.sh
+BLT_COUNT=$(bash ../../scripts/package-count.sh)
 
 # bun
 bash ../../scripts/clean.sh

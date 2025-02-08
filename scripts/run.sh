@@ -13,6 +13,7 @@ hyperfine --export-json=../../results/run.json --warmup 3 --runs 10 -i --prepare
   -n 'berry' 'corepack yarn@latest run test' \
   -n 'pnpm' 'corepack pnpm@latest run test' \
   -n 'vlt' 'vlt run test' \
+  -n 'blt' 'blt run test' \
   -n 'bun' 'bun run test' \
   -n 'deno' 'deno run test' \
   -n 'nx' 'nx run test' \
