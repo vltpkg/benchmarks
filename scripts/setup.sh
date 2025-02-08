@@ -11,7 +11,7 @@ cargo install hyperfine --quiet
 npm config set loglevel silent # make npm silent
 npm install -g npm@latest vlt@compiled # update npm to latest & install the compiled vlt
 mv "$(which vlt)" "$(dirname $(which vlt))/blt" # rename the compiled vlt to "blt"
-npm vlt@latest bun@latest deno@latest nx@latest turbo@latest # install all other tools
+npm install -g vlt@latest bun@latest deno@latest nx@latest turbo@latest # install all other tools
 corepack enable yarn pnpm # enable yarn & pnpm via corepack (as is their preferred method)
 
 # Create Results Directory

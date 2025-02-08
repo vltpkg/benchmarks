@@ -69,6 +69,7 @@ echo "{
   \"berry\": $BERRY_COUNT,
   \"pnpm\": $PNPM_COUNT,
   \"vlt\": $VLT_COUNT,
+  \"blt\": $BLT_COUNT,
   \"bun\": $BUN_COUNT,
   \"deno\": $DENO_COUNT
 }" > ../../results/$1/package-count.json
