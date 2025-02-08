@@ -8,11 +8,16 @@ YARN_ENABLE_IMMUTABLE_INSTALLS=false
 # Install Package Managers & Benchmark Tools
 apt-get install jq
 cargo install hyperfine --quiet
-npm config set loglevel silent # make npm silent
-npm install -g npm@latest corepack@latest vlt@compiled # update to latest npm, corepack & the compiled vlt
-mv "$(which vlt)" "$(dirname $(which vlt))/blt" # rename the compiled vlt to "blt"
-npm install -g vlt@latest bun@latest deno@latest nx@latest turbo@latest # install all other tools
+npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest # install all other tools
+
+# Configure Package Managers
 corepack enable yarn pnpm # enable yarn & pnpm via corepack (as is their preferred method)
+npm config set loglevel silent # make npm silent
+
+# Get the compiled vlt & rename to blt
+curl "https://registry.npmjs.org/@vltpkg/cli-linux-arm64/-/cli-linux-arm64-$(npm view vlt@latest version).tgz" | tar -xvf -
+mv ./package/vlt "$HOME/.local/bin/blt"
+echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
 # Create Results Directory
 mkdir -p ./results/
