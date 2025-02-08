@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  task:
-    name: 'Benchmark Running Tasks'
+  setup: 
+    name: 'Setup'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,6 +16,11 @@ jobs:
       - name: Install & Setup Tools
         run: |
           bash ./scripts/setup.sh
+  task:
+    name: 'Benchmark Running Tasks'
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
       - name: Run Task Execution Benchmarks
         run: |
           bash ./scripts/run.sh
@@ -27,15 +32,8 @@ jobs:
   next:
     name: 'Benchmark Next Project'  
     runs-on: ubuntu-latest
+    needs: [setup]
     steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
-      - name: Install & Setup Tools
-        run: |
-          bash ./scripts/setup.sh
       - name: Run Project Benchmarks        
         run: |
           bash ./scripts/install.sh next
@@ -47,15 +45,8 @@ jobs:
   astro:
     name: 'Benchmark Astro Project'  
     runs-on: ubuntu-latest
+    needs: [setup]
     steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
-      - name: Install & Setup Tools
-        run: |
-          bash ./scripts/setup.sh
       - name: Run Project Benchmarks
         run: |
           bash ./scripts/install.sh astro
@@ -67,15 +58,8 @@ jobs:
   svelte:
     name: 'Benchmark Svelte Project'  
     runs-on: ubuntu-latest
+    needs: [setup]
     steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
-      - name: Install & Setup Tools
-        run: |
-          bash ./scripts/setup.sh
       - name: Run Project Benchmarks
         run: |
           bash ./scripts/install.sh svelte
@@ -87,15 +71,8 @@ jobs:
   vue:
     name: 'Benchmark Vue Project'  
     runs-on: ubuntu-latest
+    needs: [setup]
     steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
-      - name: Install & Setup Tools
-        run: |
-          bash ./scripts/setup.sh
       - name: Run Project Benchmarks (Vue)
         run: |
           bash ./scripts/install.sh vue
