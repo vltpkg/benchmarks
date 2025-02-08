@@ -17,7 +17,7 @@ npm config set loglevel silent # make npm silent
 # Get the compiled vlt & rename to blt
 curl "$(npm view @vltpkg/cli-linux-arm64@latest dist.tarball)" | tar -xzv
 mv ./package/vlt "./package/blt"
-echo "$PWD/package" >> $GITHUB_PATH
+echo "$PWD/package/blt" >> $GITHUB_PATH
 
 # Create Results Directory
 mkdir -p ./results/
