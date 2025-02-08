@@ -14,10 +14,12 @@ npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@l
 corepack enable yarn pnpm # enable yarn & pnpm via corepack (as is their preferred method)
 npm config set loglevel silent # make npm silent
 
-# Get the compiled vlt & rename to blt
+# Get the compiled vlt, rename to blt & copy all bins into a cache directory
 curl "$(npm view @vltpkg/cli-linux-arm64@latest dist.tarball)" | tar -xzv
-mv ./package/vlt "./package/blt"
-echo "$PWD/package/blt" >> $GITHUB_PATH
+mkdir -p ./bins
+mv ./package/vlt "./bins/blt"
+cp "$(which jq)" "$(which hyperine)" "$(which npm)" "$(which corepack)" "$(which vlt)" "$(which bun)" "$(which deno)" "$(which nx)" "$(which turbo)" ./bins/
+echo "$PWD/bins" >> $GITHUB_PATH
 
 # Create Results Directory
 mkdir -p ./results/

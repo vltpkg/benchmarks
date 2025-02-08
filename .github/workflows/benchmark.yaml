@@ -14,6 +14,10 @@ jobs:
         with:
           node-version: '22'
       - name: Install & Setup Tools
+        uses: actions/cache@v4
+        with:
+          path: bins
+          key: bins
         run: |
           bash ./scripts/setup.sh
   task:
@@ -22,6 +26,10 @@ jobs:
     needs: [setup]
     steps:
       - name: Run Task Execution Benchmarks
+        uses: actions/cache/restore@v4
+        with:
+          path: bins
+          key: bins
         run: |
           bash ./scripts/run.sh
       - name: Upload Benchmark Results
@@ -34,7 +42,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup]
     steps:
-      - name: Run Project Benchmarks        
+      - name: Run Project Benchmarks
+        uses: actions/cache/restore@v4
+        with:
+          path: bins
+          key: bins
         run: |
           bash ./scripts/install.sh next
       - name: Upload Benchmark Results
@@ -48,6 +60,10 @@ jobs:
     needs: [setup]
     steps:
       - name: Run Project Benchmarks
+        uses: actions/cache/restore@v4
+        with:
+          path: bins
+          key: bins
         run: |
           bash ./scripts/install.sh astro
       - name: Upload Benchmark Results
@@ -61,6 +77,10 @@ jobs:
     needs: [setup]
     steps:
       - name: Run Project Benchmarks
+        uses: actions/cache/restore@v4
+        with:
+          path: bins
+          key: bins
         run: |
           bash ./scripts/install.sh svelte
       - name: Upload Benchmark Results
@@ -74,6 +94,10 @@ jobs:
     needs: [setup]
     steps:
       - name: Run Project Benchmarks (Vue)
+        uses: actions/cache/restore@v4
+        with:
+          path: bins
+          key: bins
         run: |
           bash ./scripts/install.sh vue
       - name: Upload Benchmark Results
