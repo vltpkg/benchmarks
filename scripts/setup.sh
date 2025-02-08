@@ -16,8 +16,12 @@ npm config set loglevel silent # make npm silent
 
 # Get the compiled vlt, rename to blt & copy all bins into a cache directory
 curl "$(npm view @vltpkg/cli-linux-x64@latest dist.tarball)" | tar -xzv
+./package/vlt --help
+
+# rename to blt
 mkdir -p ./bins
 mv ./package/vlt ./bins/blt
+
 cp "$(which jq)" "$(which hyperfine)" "$(which npm)" "$(which corepack)" "$(which vlt)" "$(which bun)" "$(which deno)" "$(which nx)" "$(which turbo)" ./bins
 echo "$PWD/bins" >> "$GITHUB_PATH"
 
