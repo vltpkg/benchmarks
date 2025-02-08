@@ -15,7 +15,7 @@ corepack enable yarn pnpm # enable yarn & pnpm via corepack (as is their preferr
 npm config set loglevel silent # make npm silent
 
 # Get the compiled vlt & rename to blt
-curl "https://registry.npmjs.org/@vltpkg/cli-linux-arm64/-/cli-linux-arm64-$(npm view vlt@latest version).tgz" | tar -xvf -
+curl "$(npm view @vltpkg/cli-linux-arm64@latest dist.tarball)" | tar -xvf -
 mv ./package/vlt "$HOME/.local/bin/blt"
 echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
