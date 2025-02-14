@@ -111,6 +111,87 @@ jobs:
         with:
           name: vue-benchmark-results
           path: ./results/vue/
+  next-warm:
+    name: 'Benchmark Next Project (warm cache)'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+      - name: Install & Setup Tools
+        run: |
+          bash ./scripts/setup.sh
+      - name: Run Project Benchmarks        
+        run: |
+          bash ./scripts/install-warm.sh next
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-benchmark-results
+          path: ./results/next/
+  astro-warm:
+    name: 'Benchmark Astro Project (warm cache)'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+      - name: Install & Setup Tools
+        run: |
+          bash ./scripts/setup.sh
+      - name: Run Project Benchmarks
+        run: |
+          bash ./scripts/install-warm.sh astro
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: astro-benchmark-results
+          path: ./results/astro/
+  svelte-warm:
+    name: 'Benchmark Svelte Project (warm cache)'  
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+      - name: Install & Setup Tools
+        run: |
+          bash ./scripts/setup.sh
+      - name: Run Project Benchmarks
+        run: |
+          bash ./scripts/install-warm.sh svelte
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: svelete-benchmark-results
+          path: ./results/svelte/
+  vue-warm:
+    name: 'Benchmark Vue Project (warm cache)'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+      - name: Install & Setup Tools
+        run: |
+          bash ./scripts/setup.sh
+      - name: Run Project Benchmarks (Vue)
+        run: |
+          bash ./scripts/install-warm.sh vue
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: vue-benchmark-results
+          path: ./results/vue/
+  
   
   # make a chart with the results
   chart:
