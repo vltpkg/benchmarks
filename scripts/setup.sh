@@ -19,7 +19,7 @@ fi
 # Install system dependencies
 echo "Installing system dependencies..."
 sudo apt-get update && sudo apt-get install -y jq
-cargo install hyperfine --quiet
+sudo apt-get install -y hyperfine
 
 # Install Node.js package managers and tools
 echo "Installing package managers and tools..."
