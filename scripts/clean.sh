@@ -14,7 +14,6 @@ safe_remove() {
 clean_npm_cache() {
     if command -v npm &> /dev/null; then
         npm cache clean --force --silent
-        npm pkg delete packageManager
     fi
 }
 
@@ -69,6 +68,12 @@ clean_deno_cache() {
         deno clean --quiet
     fi
 }
+
+# Remove packageManager field from package.json
+echo "Removing packageManager field from package.json..."
+if command -v npm &> /dev/null; then
+    npm pkg delete packageManager
+fi
 
 # Clean package manager files
 echo "Cleaning package manager files..."
