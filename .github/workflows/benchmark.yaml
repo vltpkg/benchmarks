@@ -60,6 +60,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '22'
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq hyperfine
       - name: Restore Bins
         uses: actions/cache/restore@v4
         with:
@@ -90,6 +94,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '22'
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq hyperfine
       - name: Restore Bins
         uses: actions/cache/restore@v4
         with:
