@@ -3,10 +3,16 @@ on:
   push:
   workflow_dispatch:
 
+# Prevent multiple runs from interfering with each other
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   setup: 
     name: 'Setup'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Cache Bins
@@ -21,11 +27,61 @@ jobs:
       - name: Install & Setup Tools
         run: |
           bash ./scripts/setup.sh
+
+  benchmark:
+    name: 'Run Benchmarks'
+    runs-on: ubuntu-latest
+    needs: [setup]
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        project: [next, astro, svelte, vue]
+        cache: [cold, warm]
+        include:
+          - project: next
+            cache: cold
+          - project: astro
+            cache: cold
+          - project: svelte
+            cache: cold
+          - project: vue
+            cache: cold
+          - project: next
+            cache: warm
+          - project: astro
+            cache: warm
+          - project: svelte
+            cache: warm
+          - project: vue
+            cache: warm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore Bins
+        uses: actions/cache/restore@v4
+        with:
+          path: bins
+          key: bins
+      - name: Run Project Benchmarks
+        run: |
+          if [ "${{ matrix.cache }}" = "warm" ]; then
+            bash ./scripts/install-warm.sh ${{ matrix.project }}
+          else
+            bash ./scripts/install.sh ${{ matrix.project }}
+          fi
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.project }}-${{ matrix.cache }}-results
+          path: ./results/${{ matrix.project }}/
+          retention-days: 7
+
   task:
     name: 'Benchmark Running Tasks'
     runs-on: ubuntu-latest
     needs: [setup]
+    timeout-minutes: 15
     steps:
+      - uses: actions/checkout@v4
       - name: Restore Bins
         uses: actions/cache/restore@v4
         with:
@@ -39,169 +95,45 @@ jobs:
         with:
           name: task-benchmark-results
           path: ./results/run.json
-  next:
-    name: 'Benchmark Next Project'  
+          retention-days: 7
+
+  process:
+    name: 'Process Results'
     runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
-      - name: Restore Bins
-        uses: actions/cache/restore@v4
-        with:
-          path: bins
-          key: bins
-      - name: Run Project Benchmarks
-        run: |
-          bash ./scripts/install.sh next
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: next-benchmark-results
-          path: ./results/next/
-  astro:
-    name: 'Benchmark Astro Project'  
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
-      - name: Restore Bins
-        uses: actions/cache/restore@v4
-        with:
-          path: bins
-          key: bins
-      - name: Run Project Benchmarks
-        run: |
-          bash ./scripts/install.sh astro
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: astro-benchmark-results
-          path: ./results/astro/
-  svelte:
-    name: 'Benchmark Svelte Project'  
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
-      - name: Restore Bins
-        uses: actions/cache/restore@v4
-        with:
-          path: bins
-          key: bins
-      - name: Run Project Benchmarks
-        run: |
-          bash ./scripts/install.sh svelte
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: svelete-benchmark-results
-          path: ./results/svelte/
-  vue:
-    name: 'Benchmark Vue Project'  
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
-      - name: Restore Bins
-        uses: actions/cache/restore@v4
-        with:
-          path: bins
-          key: bins
-      - name: Run Project Benchmarks (Vue)
-        run: |
-          bash ./scripts/install.sh vue
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: vue-benchmark-results
-          path: ./results/vue/
-  next-warm:
-    name: 'Benchmark Next Project (warm cache)'
-    runs-on: ubuntu-latest
+    needs: [benchmark, task]
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
-      - name: Install & Setup Tools
-        run: |
-          bash ./scripts/setup.sh
-      - name: Run Project Benchmarks        
-        run: |
-          bash ./scripts/install-warm.sh next
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: next-benchmark-results
-          path: ./results/next/
-  astro-warm:
-    name: 'Benchmark Astro Project (warm cache)'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
-      - name: Install & Setup Tools
-        run: |
-          bash ./scripts/setup.sh
-      - name: Run Project Benchmarks
-        run: |
-          bash ./scripts/install-warm.sh astro
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: astro-benchmark-results
-          path: ./results/astro/
-  svelte-warm:
-    name: 'Benchmark Svelte Project (warm cache)'  
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
-      - name: Install & Setup Tools
-        run: |
-          bash ./scripts/setup.sh
-      - name: Run Project Benchmarks
-        run: |
-          bash ./scripts/install-warm.sh svelte
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: svelete-benchmark-results
-          path: ./results/svelte/
-  vue-warm:
-    name: 'Benchmark Vue Project (warm cache)'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
-      - name: Install & Setup Tools
-        run: |
-          bash ./scripts/setup.sh
-      - name: Run Project Benchmarks (Vue)
-        run: |
-          bash ./scripts/install-warm.sh vue
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: vue-benchmark-results
-          path: ./results/vue/
-  
-  
-  # make a chart with the results
-  chart:
-    name: 'Chart the Benchmark Results'
-    runs-on: ubuntu-latest
-    needs: [task, next, astro, svelte, vue]
-    steps:
-      - uses: actions/download-artifact@v4
+      - name: Download Results
+        uses: actions/download-artifact@v4
         with:
           path: results
           merge-multiple: true
-      - name: List the results
-        run: ls -R results
+      - name: Process Results
+        run: |
+          bash ./scripts/process-results.sh
+      - name: Upload Processed Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: processed-results
+          path: chart/results/
+          retention-days: 7
+
+  deploy:
+    name: 'Deploy Results'
+    runs-on: ubuntu-latest
+    needs: [process]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Results
+        uses: actions/download-artifact@v4
+        with:
+          name: processed-results
+          path: chart/results/
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: chart/results
+          force_orphan: true

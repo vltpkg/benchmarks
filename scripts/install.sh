@@ -1,66 +1,62 @@
 #!/bin/bash
 
+# Exit on error
+set -e
+
+# Check if project name is provided
+if [ -z "$1" ]; then
+    echo "Error: Project name not provided"
+    echo "Usage: $0 <project-name>"
+    exit 1
+fi
+
 # WARNING
 echo "WARNING: This script removes all installed packages, cache files & uncommitted git history. Changes have been stashed if this was unintended."
 
 # Navigate to the fixture directory
-cd ./fixtures/$1
+cd "./fixtures/$1"
 
 # Create the results directory
-mkdir -p ../../results/$1
+mkdir -p "../../results/$1"
 
 # Run the benchmark suite
-hyperfine --export-json=../../results/$1/benchmarks.json --warmup 3 --runs 10 -i --prepare 'bash ../../scripts/clean.sh' \
-  -n 'npm' 'bash ../../scripts/install/npm.sh' \
-  -n 'yarn' 'bash ../../scripts/install/yarn.sh' \
-  -n 'berry' 'bash ../../scripts/install/berry.sh' \
-  -n 'pnpm' 'bash ../../scripts/install/pnpm.sh' \
-  -n 'vlt' 'bash ../../scripts/install/vlt.sh' \
-  -n 'blt' 'bash ../../scripts/install/blt.sh' \
-  -n 'bun' 'bash ../../scripts/install/bun.sh' \
-  -n 'deno' 'bash ../../scripts/install/deno.sh'
+echo "Running installation benchmark suite for $1..."
+hyperfine --export-json="../../results/$1/benchmarks.json" \
+    --warmup 3 \
+    --runs 10 \
+    --timeout 600 \
+    --max-runs 15 \
+    -i \
+    --prepare 'bash ../../scripts/clean.sh' \
+    --ignore-failure \
+    -n 'npm' 'bash ../../scripts/install/npm.sh || true' \
+    -n 'yarn' 'bash ../../scripts/install/yarn.sh || true' \
+    -n 'berry' 'bash ../../scripts/install/berry.sh || true' \
+    -n 'pnpm' 'bash ../../scripts/install/pnpm.sh || true' \
+    -n 'vlt' 'bash ../../scripts/install/vlt.sh || true' \
+    -n 'bun' 'bash ../../scripts/install/bun.sh || true' \
+    -n 'deno' 'bash ../../scripts/install/deno.sh || true'
 
 # Count the number of packages installed
+echo "Counting installed packages..."
 
-# npm
-bash ../../scripts/clean.sh
-bash ../../scripts/install/npm.sh
-NPM_COUNT=$(bash ../../scripts/package-count.sh)
+# Function to count packages for a specific package manager
+count_packages() {
+    local pm=$1
+    echo "Counting packages for $pm..."
+    bash ../../scripts/clean.sh
+    bash "../../scripts/install/$pm.sh" || true
+    bash ../../scripts/package-count.sh || echo "0"
+}
 
-# yarn
-bash ../../scripts/clean.sh
-bash ../../scripts/install/yarn.sh
-YARN_COUNT=$(bash ../../scripts/package-count.sh)
-
-# yarn berry
-bash ../../scripts/clean.sh
-bash ../../scripts/install/berry.sh
-BERRY_COUNT=$(bash ../../scripts/package-count.sh)
-
-# pnpm
-bash ../../scripts/clean.sh
-bash ../../scripts/install/pnpm.sh
-PNPM_COUNT=$(bash ../../scripts/package-count.sh)
-
-# vlt
-bash ../../scripts/clean.sh
-bash ../../scripts/install/vlt.sh
-VLT_COUNT=$(bash ../../scripts/package-count.sh)
-
-# blt
-bash ../../scripts/clean.sh
-bash ../../scripts/install/blt.sh
-BLT_COUNT=$(bash ../../scripts/package-count.sh)
-
-# bun
-bash ../../scripts/clean.sh
-bash ../../scripts/install/bun.sh
-BUN_COUNT=$(bash ../../scripts/package-count.sh)
-
-# deno
-bash ../../scripts/clean.sh
-bash ../../scripts/install/deno.sh
-DENO_COUNT=$(bash ../../scripts/package-count.sh)
+# Count packages for each package manager
+NPM_COUNT=$(count_packages "npm")
+YARN_COUNT=$(count_packages "yarn")
+BERRY_COUNT=$(count_packages "berry")
+PNPM_COUNT=$(count_packages "pnpm")
+VLT_COUNT=$(count_packages "vlt")
+BUN_COUNT=$(count_packages "bun")
+DENO_COUNT=$(count_packages "deno")
 
 # Write the results to a file
 echo "{
@@ -69,7 +65,8 @@ echo "{
   \"berry\": $BERRY_COUNT,
   \"pnpm\": $PNPM_COUNT,
   \"vlt\": $VLT_COUNT,
-  \"blt\": $BLT_COUNT,
   \"bun\": $BUN_COUNT,
   \"deno\": $DENO_COUNT
-}" > ../../results/$1/package-count.json
+}" > "../../results/$1/package-count.json"
+
+echo "Installation benchmark suite completed successfully!"
