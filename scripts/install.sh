@@ -24,7 +24,6 @@ echo "Running installation benchmark suite for $1..."
 hyperfine --export-json="../../results/$1/benchmarks.json" \
     --warmup 3 \
     --runs 10 \
-    --max-runs 15 \
     -i \
     --prepare 'bash ../../scripts/clean.sh' \
     -n 'npm' 'bash ../../scripts/install/npm.sh || true' \
