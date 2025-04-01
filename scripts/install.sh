@@ -27,7 +27,6 @@ hyperfine --export-json="../../results/$1/benchmarks.json" \
     --max-runs 15 \
     -i \
     --prepare 'bash ../../scripts/clean.sh' \
-    --ignore-failure \
     -n 'npm' 'bash ../../scripts/install/npm.sh || true' \
     -n 'yarn' 'bash ../../scripts/install/yarn.sh || true' \
     -n 'berry' 'bash ../../scripts/install/berry.sh || true' \
