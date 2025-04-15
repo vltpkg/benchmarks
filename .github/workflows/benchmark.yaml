@@ -2,6 +2,8 @@ name: Package Manager Benchmarks
 on: 
   push:
   workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
 
 # Prevent multiple runs from interfering with each other
 concurrency:
