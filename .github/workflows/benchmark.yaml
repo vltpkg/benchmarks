@@ -13,17 +13,17 @@ concurrency:
 jobs:
   setup: 
     name: 'Setup'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Cache Bins
-        uses: actions/cache@v4
+        uses: useblacksmith/cache@v5
         with:
           path: bins
           key: bins
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: useblacksmith/setup-node@v5
         with:
           node-version: '22'
       - name: Install & Setup Tools
@@ -32,7 +32,7 @@ jobs:
 
   benchmark:
     name: 'Run Benchmarks'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: [setup]
     timeout-minutes: 30
     strategy:
@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: useblacksmith/setup-node@v5
         with:
           node-version: '22'
       - name: Install System Dependencies
@@ -67,7 +67,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y jq hyperfine
       - name: Restore Bins
-        uses: actions/cache/restore@v4
+        uses: useblacksmith/cache/restore@v5
         with:
           path: bins
           key: bins
@@ -87,13 +87,13 @@ jobs:
 
   task:
     name: 'Benchmark Running Tasks'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: [setup]
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: useblacksmith/setup-node@v5
         with:
           node-version: '22'
       - name: Install System Dependencies
@@ -101,7 +101,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y jq hyperfine
       - name: Restore Bins
-        uses: actions/cache/restore@v4
+        uses: useblacksmith/cache/restore@v5
         with:
           path: bins
           key: bins
@@ -117,13 +117,13 @@ jobs:
 
   process:
     name: 'Process Results'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: [benchmark, task]
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: useblacksmith/setup-node@v5
         with:
           node-version: '22'
       - name: Download Results
@@ -143,7 +143,7 @@ jobs:
 
   deploy:
     name: 'Deploy Results'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: [process]
     if: github.ref == 'refs/heads/main'
     steps:
@@ -163,7 +163,7 @@ jobs:
   cleanup:
     name: 'Cleanup'
     needs: [deploy]
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     if: always()
     steps:
       - name: Delete old artifacts
