@@ -7,7 +7,7 @@ if (!DATE) {
   process.exit(1);
 }
 
-const RESULTS_DIR = path.join(__dirname, '..', 'chart', 'results', DATE);
+const RESULTS_DIR = path.resolve('chart', 'results', DATE);
 if (!fs.existsSync(RESULTS_DIR)) {
   console.error(`Error: Results directory ${RESULTS_DIR} does not exist`);
   process.exit(1);
@@ -48,57 +48,60 @@ function readResults(file) {
 
 // Generate chart data
 function generateChartData() {
-  const projects = ['next', 'astro', 'svelte', 'vue'];
-  const datasets = [];
+  const fixtures = ['next', 'astro', 'svelte', 'vue'];
+  const variations = ['cache', 'cache+lockfile', 'cache+lockfile+node_modules', 'cache+node_modules', 'clean', 'lockfile', 'lockfile+node_modules', 'node_modules', 'run'];
+  const result = {};
   
-  // Process each package manager
-  Object.keys(COLORS).forEach(pm => {
-    const data = [];
-    const stddev = [];
+  // Process each variation
+  variations.forEach(variation => {
+    const datasets = [];
     
-    // Add project installation times
-    projects.forEach(project => {
-      const coldFile = path.join(RESULTS_DIR, `${project}-cold.json`);
-      const warmFile = path.join(RESULTS_DIR, `${project}-warm.json`);
+    // Process each package manager
+      const seenFixtures = new Set();
+    Object.keys(COLORS).forEach(pm => {
+      const data = [];
+      const stddev = [];
+        
+      // Collect data for this package manager across all fixtures
+      fixtures.forEach(fixture => {
+        const file = path.resolve(RESULTS_DIR, `${fixture}-${variation}.json`);
+        
+        if (fs.existsSync(file)) {
+          const results = readResults(file);
+          const pmResult = results.find(r => r.command === pm);
+          if (!pmResult?.mean) {
+            return;
+          }
+          seenFixtures.add(fixture);
+          data.push(pmResult.mean);
+          stddev.push(pmResult.stddev);
+        }
+      });
       
-      let result = null;
-      if (fs.existsSync(coldFile)) {
-        const results = readResults(coldFile);
-        result = results.find(r => r.command === pm);
+      if (data.length > 0) {
+        datasets.push({
+          label: pm,
+          data: data,
+          stddev: stddev,
+          backgroundColor: COLORS[pm],
+          borderColor: COLORS[pm],
+          borderWidth: 1
+        });
       }
-      
-      data.push(result ? result.mean : null);
-      stddev.push(result ? result.stddev : null);
     });
     
-    // Add task execution time
-    const taskFile = path.join(RESULTS_DIR, 'task-execution.json');
-    let taskResult = null;
-    if (fs.existsSync(taskFile)) {
-      const results = readResults(taskFile);
-      taskResult = results.find(r => r.command === pm);
-    }
-    
-    data.push(taskResult ? taskResult.mean : null);
-    stddev.push(taskResult ? taskResult.stddev : null);
-    
-    // Only add dataset if we have any valid data
-    if (data.some(v => v !== null)) {
-      datasets.push({
-        label: pm,
-        data: data,
-        stddev: stddev,
-        backgroundColor: COLORS[pm]
-      });
+    if (datasets.length > 0) {
+      // Store chart data for this variation
+      result[variation] = {
+        labels: Array.from(seenFixtures),
+        datasets: datasets
+      };
     }
   });
   
   return {
-    labels: [
-      ...projects.map(p => `Install ${p} Project`),
-      'Running Scripts'
-    ],
-    datasets: datasets
+    labels: Object.keys(result),
+    result: result
   };
 }
 
@@ -114,6 +117,11 @@ function generateHtml(chartData) {
     <div class="container">
       <h1>Package Manager Benchmarks</h1>
       <p class="date">Results from ${DATE}</p>
+      <div class="tabs">
+        ${chartData.labels.map((label, index) => 
+          `<button class="tab-button ${index === 0 ? 'active' : ''}" onclick="showChart('${label}')">${label}</button>`
+        ).join('')}
+      </div>
       <div class="chart-container">
         <canvas id="myChart"></canvas>
       </div>
@@ -122,34 +130,60 @@ function generateHtml(chartData) {
     <script>
       const chartData = ${JSON.stringify(chartData)};
       const ctx = document.getElementById('myChart');
-      new Chart(ctx, {
-        type: 'bar',
-        data: chartData,
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Time (seconds)'
+      let chart;
+      
+      function showChart(variation) {
+        // Update active tab
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        const targetButton = Array.from(document.querySelectorAll('.tab-button')).find(btn => btn.textContent === variation);
+        if (targetButton) {
+          targetButton.classList.add('active');
+        }
+        
+        // Destroy existing chart if it exists
+        if (chart) {
+          chart.destroy();
+        }
+        
+        // Get chart data for this variation
+        const variationData = chartData.result[variation];
+        if (!variationData) {
+          console.error('No data found for variation:', variation);
+          return;
+        }
+        
+        // Create new chart with selected dataset
+        chart = new Chart(ctx, {
+          type: 'bar',
+          data: variationData,
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Time (seconds)'
+                }
               }
-            }
-          },
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: (context) => {
-                  const value = context.raw;
-                  const stddev = context.dataset.stddev[context.dataIndex];
-                  if (value === null) return \`\${context.dataset.label}: No data\`;
-                  return \`\${context.dataset.label}: \${value.toFixed(2)}s (±\${stddev.toFixed(2)}s)\`;
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    const value = context.raw;
+                    if (value === null) return \`\${context.dataset.label}: No data\`;
+                    return \`\${context.dataset.label}: \${value.toFixed(2)}s\`;
+                  }
                 }
               }
             }
           }
-        }
-      });
+        });
+      }
+      
+      // Initialize with first chart
+      showChart(chartData.labels[0]);
     </script>
   </body>
 </html>`;
@@ -158,9 +192,10 @@ function generateHtml(chartData) {
 // Main execution
 try {
   const chartData = generateChartData();
+  console.log(require('util').inspect(chartData, { depth: null }));
   
   // Check if we have any data to display
-  if (chartData.datasets.length === 0) {
+  if (Object.keys(chartData.result).length === 0) {
     console.error('Error: No valid benchmark data found to generate chart');
     process.exit(1);
   }
