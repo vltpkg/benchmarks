@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package Manager Benchmarks - 2025-07-19</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Package Manager Benchmarks</h1>
+      <p class="date">Results from 2025-07-19</p>
+      <div class="tabs">
+        <button class="tab-button active" onclick="showChart('cache')">cache</button><button class="tab-button " onclick="showChart('clean')">clean</button><button class="tab-button " onclick="showChart('lockfile')">lockfile</button><button class="tab-button " onclick="showChart('run')">run</button>
+      </div>
+      <div class="chart-container">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const chartData = {"labels":["cache","clean","lockfile","run"],"result":{"cache":{"labels":["vue"],"datasets":[{"label":"npm","data":[8.21539415546],"stddev":[0.017441518492164892],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"pnpm","data":[3.32032961896],"stddev":[0.11347327254500171],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"vlt","data":[7.2256537534600005],"stddev":[0.33623483231350376],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"clean":{"labels":["vue"],"datasets":[{"label":"npm","data":[0.4195868743400001],"stddev":[0.017144548493308428],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"pnpm","data":[1.89091112534],"stddev":[0.060341756910323584],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"vlt","data":[6.93897033334],"stddev":[0.21076731049009967],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"lockfile":{"labels":["vue"],"datasets":[{"label":"npm","data":[2.65048187],"stddev":[0.02316608528702323],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"pnpm","data":[1.5157771385],"stddev":[0.013945904299563614],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"vlt","data":[6.8131765479999995],"stddev":[0.2799357074017065],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"run":{"labels":["vue"],"datasets":[{"label":"npm","data":[0.0649611272],"stddev":[0.0037584811385069482],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"pnpm","data":[0.28888239920000003],"stddev":[0.01109240458257004],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"vlt","data":[0.13050240570000002],"stddev":[0.0037634372499362866],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]}}};
+      const ctx = document.getElementById('myChart');
+      let chart;
+      
+      function showChart(variation) {
+        // Update active tab
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        const targetButton = Array.from(document.querySelectorAll('.tab-button')).find(btn => btn.textContent === variation);
+        if (targetButton) {
+          targetButton.classList.add('active');
+        }
+        
+        // Destroy existing chart if it exists
+        if (chart) {
+          chart.destroy();
+        }
+        
+        // Get chart data for this variation
+        const variationData = chartData.result[variation];
+        if (!variationData) {
+          console.error('No data found for variation:', variation);
+          return;
+        }
+        
+        // Create new chart with selected dataset
+        chart = new Chart(ctx, {
+          type: 'bar',
+          data: variationData,
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Time (seconds)'
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    const value = context.raw;
+                    if (value === null) return `${context.dataset.label}: No data`;
+                    return `${context.dataset.label}: ${value.toFixed(2)}s`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+      
+      // Initialize with first chart
+      showChart(chartData.labels[0]);
+    </script>
+  </body>
+</html>
