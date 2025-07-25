@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Package Manager Benchmarks - 2025-07-25</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      .results-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2em;
+      }
+      .results-table th, .results-table td {
+        border: 1px solid #ccc;
+        padding: 0.4em 0.7em;
+        text-align: center;
+      }
+      .results-table th {
+        background: #f3f3f3;
+      }
+      .results-table td:first-child, .results-table th:first-child {
+        text-align: left;
+        font-weight: bold;
+        background: #fafafa;
+      }
+      .results-table tr:nth-child(even) td {
+        background: #fcfcfc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Package Manager Benchmarks</h1>
+      <p class="date">Results from 2025-07-25</p>
+      <div class="tabs">
+        <button class="tab-button active" onclick="showChart('cache')">cache</button><button class="tab-button " onclick="showChart('cache+lockfile')">cache+lockfile</button><button class="tab-button " onclick="showChart('cache+lockfile+node_modules')">cache+lockfile+node_modules</button><button class="tab-button " onclick="showChart('cache+node_modules')">cache+node_modules</button><button class="tab-button " onclick="showChart('clean')">clean</button><button class="tab-button " onclick="showChart('lockfile')">lockfile</button><button class="tab-button " onclick="showChart('lockfile+node_modules')">lockfile+node_modules</button><button class="tab-button " onclick="showChart('node_modules')">node_modules</button><button class="tab-button " onclick="showChart('run')">run</button>
+      </div>
+      <h2 id="per-package-chart-title">
+        Per-Package install time (milliseconds)
+        <span id="variation-title-perpkg" style="font-weight: normal">
+          with cache
+        </span>
+      </h2>
+      <div class="chart-container">
+        <canvas id="myChartPerPackage"></canvas>
+      </div>
+      <h2 id="main-title">
+        Total install time (seconds)
+        <span id="variation-title-total" style="font-weight: normal">
+          with cache
+        </span>
+      </h2>
+      <div class="chart-container">
+        <canvas id="myChart"></canvas>
+      </div>
+      <h2>Summary</h2>
+      <div id="results-table-container"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const chartData = {"labels":["cache","cache+lockfile","cache+lockfile+node_modules","cache+node_modules","clean","lockfile","lockfile+node_modules","node_modules","run"],"result":{"cache":{"labels":["next","astro","svelte","vue"],"datasets":[{"label":"npm","data":[9.09298692736,5.99070714604,1.9126369523199998,8.44257482566],"stddev":[0.06412062129800959,0.038496990889628324,0.15067918935794905,0.026142778476310583],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[9.43900933206,3.72552683364,2.37325146672,11.07170620106],"stddev":[0.9248020459173716,0.10792835966526519,0.16701755185430112,0.5189429819784611],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[28.931250793959997,2.8825768411399997,1.3230202979199999,3.823813742960001],"stddev":[2.3425023519247516,1.351574829238788,0.1549196685235279,0.08086936541088323],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[5.43871992716,2.7188177486400003,1.62412617202,4.146739786060001],"stddev":[0.08419948701659684,0.04204724511393586,0.04786107933844997,0.04788316759503442],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[0.94813859536,0.51445529904,0.21080756832,0.96976672276],"stddev":[0.0159649221793178,0.003927384674505225,0.003708987290800367,0.01401567288676957],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[0.37272943506000006,0.21511437404000003,0.07098512422,0.31126393746000003],"stddev":[0.005982085164798078,0.0029391388192856454,0.0007751827942209692,0.0018356748822532076],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[5.993989793160001,14.827766941940002,2.9758489626199998,10.71246272656],"stddev":[0.06846775100298413,0.160508554348616,0.018135469597566272,0.07223201463820106],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"cache+lockfile":{"labels":["next","astro","svelte","vue"],"datasets":[{"label":"npm","data":[6.5644959624,2.64024626386,0.9350381403200002,3.1865803340599994],"stddev":[0.05663568096675038,0.018416100635526126,0.005982526677106768,0.017932971157778692],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[3.8966823014999994,1.98141052006,0.7198098021200001,2.88977371786],"stddev":[0.03755070122755777,0.03710031351546133,0.016502992421938395,0.5938142859997059],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[26.6687593463,1.0871582692600001,0.7208963771200001,1.2363677111600002],"stddev":[2.3611360744446355,0.02925241705109698,0.030277229953557982,0.008529668409104296],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[4.154974038800001,2.0765723393599997,1.0659755506200002,2.87633682196],"stddev":[0.0201956812030679,0.022014335113603123,0.012120013141237652,0.027431979226265526],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[0.45502359020000005,0.35191394416000005,0.17359631652000002,0.50285052766],"stddev":[0.01508913444971359,0.010757799918044424,0.005813295665738144,0.023395745137755476],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[0.3412828082,0.20943410696000003,0.06796484432,0.29262585306],"stddev":[0.004708680007006063,0.0031007857341476637,0.0015034487062869865,0.005577035632879054],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[5.913736886600001,15.24132696046,3.01174660942,10.80532793926],"stddev":[0.04460302447333278,0.11194147272742525,0.027465867237884627,0.06867634846970425],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"cache+lockfile+node_modules":{"labels":["next","astro","svelte","vue"],"datasets":[{"label":"npm","data":[0.60859047206,0.51480291522,0.32788868796000004,0.6148120439400001],"stddev":[0.009726785238283889,0.004462321917398869,0.0028542923365342554,0.006091592137541157],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[0.32718536175999996,0.28898690531999993,0.22976657356000002,0.30178141664],"stddev":[0.00946562113069028,0.010317890375077323,0.001426734266656925,0.0022668668258150272],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[28.677212403459997,0.7630208001200002,0.58817238926,0.7549670793400001],"stddev":[2.746770810912446,0.019044418941026577,0.018610394741054206,0.0171702880069112],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[1.15516995356,0.8166145057200002,0.60829510586,1.0061209868399998],"stddev":[0.021179329125264715,0.16701063135461605,0.009342982015330967,0.007881533958344861],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[0.055604071160000004,0.04090480072,0.03714405206,0.04715412854],"stddev":[0.0008947661428254685,0.0005492558192432231,0.0012696225611615668,0.0009486328018537522],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[0.01204945006,0.010275203220000001,0.00572836736,0.014177158640000001],"stddev":[0.0006841395179628204,0.0007550672092942308,0.00010625843073187177,0.0005712718257701066],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[3.4318018306600004,9.64505285702,2.1072784079600004,8.201896444340003],"stddev":[0.04050629205187662,0.0986399912933029,0.007666157831268721,0.06836468380457499],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"cache+node_modules":{"labels":["next","astro","svelte","vue"],"datasets":[{"label":"npm","data":[0.6557470050800001,0.5632240445200001,0.35530011976,0.68578428096],"stddev":[0.03234628956017877,0.007450772058270719,0.003552879893395218,0.007618301876311274],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[6.2275180722800005,2.8197975482199995,2.29054598306,8.248133955059998],"stddev":[0.25220061678474776,0.09928656371594373,0.21357411179767904,0.4930315162931415],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[29.944718485780005,1.0443497238200001,0.7056319052600002,1.21056844676],"stddev":[1.753844917752265,0.055013865312426476,0.00775988839028122,0.02436725673611887],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[2.35206450528,1.59382512872,1.2277478574600003,2.30995632666],"stddev":[0.22669215464916323,0.20049927236452966,0.07186973751963056,0.33036403914421103],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[0.6561024472800001,0.30558786762,0.15473810496,0.6497926905600001],"stddev":[0.0354077542568175,0.0037769353907864548,0.004339354475144006,0.00976113166548662],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[0.03892934488,0.018283448620000003,0.01035172766,0.03815412946],"stddev":[0.0008575067899292244,0.00032305568662633233,0.0002449364577323861,0.0005479356881996679],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[3.4589875871799998,9.733164369720003,2.19439937936,8.14379938176],"stddev":[0.08280304669090677,0.10011224095604113,0.016688288683066228,0.04506976966625699],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"clean":{"labels":["next","astro","svelte","vue"],"datasets":[{"label":"npm","data":[18.312893854480006,24.68114976096,6.355641070519999,27.633086867439992],"stddev":[0.9475311089836105,1.6649924541941663,0.810189304704068,1.299935399012145],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[29.16556821378,11.371641182160001,6.185891330320001,20.54547823044],"stddev":[10.2718109003523,0.32011576114367035,0.831420468865867,0.606156253606375],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[31.042062993880002,4.213478735860001,1.84921401562,5.98238589194],"stddev":[3.506957549828768,0.27977352859628846,0.04040914793242782,0.8662099119738277],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[8.88710258218,4.44807371566,2.92067305252,6.692436627240001],"stddev":[0.17580546845710776,0.25062555277376664,0.10539826420810827,0.14669665673169824],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[10.13788712668,8.66882312266,2.66911341992,17.32331722224],"stddev":[1.6203433427026763,1.8374669861233228,0.36479007593269813,3.896074134862191],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[2.8339134480799997,1.9057316583600001,0.6054816085200001,1.78949962544],"stddev":[0.10803620873687267,0.7610184138681201,0.1125045379456597,0.14394614357046584],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[5.89986173008,14.910737709260001,3.0161701633200004,10.850686278840001],"stddev":[0.03949049707158533,0.13125244933909547,0.04103184022672008,0.11481581029229528],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"lockfile":{"labels":["next","astro","svelte","vue"],"datasets":[{"label":"npm","data":[8.17937535562,3.56723602102,1.3877800023199998,4.70849986042],"stddev":[0.06080607338437921,0.02341454011372927,0.05075520581295281,0.027533619895644866],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[27.860202592919997,9.00616224482,4.20330626512,11.400893263019999],"stddev":[17.22896116398806,0.09350739432121719,0.1019254536496444,0.10191238399257031],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[30.09630880642,2.7508082532199998,1.4632501274199998,3.1434331742199997],"stddev":[3.254412318084412,0.10972904276011507,0.04342806122912601,0.03897026553712036],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[7.63741094642,3.5585215360199998,2.54379260342,5.20933748442],"stddev":[0.19949613697629673,0.10861401811447241,0.07377088809574255,0.14009723470300575],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[4.30859281062,3.3443154848199996,2.5377049239200002,3.27452146742],"stddev":[0.36214801328442847,0.28182283400119884,0.6254464938151469,0.31088125512527964],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[1.8802679010199999,0.50151412812,0.3482486590200001,0.6288819920200001],"stddev":[0.08238743407250719,0.010106983930576165,0.09404701707182597,0.042390104574566885],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[6.07280072262,14.713022994420001,3.0639470558200004,10.70540406322],"stddev":[0.05525431667004681,0.11744353846516695,0.06061827676616961,0.08050632347987317],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"lockfile+node_modules":{"labels":["next","astro","svelte","vue"],"datasets":[{"label":"npm","data":[0.5971071831000001,0.52689815172,0.332238745,0.6340825313799999],"stddev":[0.006369086933870083,0.004279252445755588,0.004065108902254856,0.007943758507783165],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[0.31544245500000007,0.29291257532,0.23120703789999997,0.30780516428000004],"stddev":[0.003839369063509354,0.003504840666934201,0.0031376597705644717,0.0037502713658088016],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[28.3220486569,0.66869624532,0.6423942076,0.73829414368],"stddev":[3.296268553799047,0.01791411813970977,0.03751298292912027,0.021080756247722116],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[4.7869393873999995,2.34230531032,2.0395636567,3.4593095197800006],"stddev":[0.17673557747129912,0.02542392203305682,0.07493089940664752,0.059743481695967],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[0.19882316100000003,0.042877267620000006,0.03697570010000001,0.15650217718],"stddev":[0.050003736940185416,0.0007650145287632988,0.0005404354357788115,0.01100884038226996],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[0.0124387088,0.01053638942,0.0058193932,0.013961234179999999],"stddev":[0.0008779486263471485,0.000892414994804323,0.00035899972149323775,0.000522359207028139],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[3.4398805034,9.797548040719999,2.1381325031,8.24633657008],"stddev":[0.06651490877899378,0.09101983629392167,0.036732409620211154,0.06229970179405674],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"node_modules":{"labels":["next","astro","svelte","vue"],"datasets":[{"label":"npm","data":[0.6420624494400001,0.5699561019400001,0.35899739456000007,0.6874408517200001],"stddev":[0.005517979102491071,0.006529652746745911,0.005935833859725327,0.011496967358610397],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[25.03515154504,12.126191179140001,7.19135118386,17.62744803522],"stddev":[0.6936246730052569,0.30207198572521526,0.9404935938449024,0.4884919797026268],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[30.191241541039993,3.4513501119399996,1.95141626386,3.239547064920001],"stddev":[4.450028233086276,0.13082782638192747,0.08314878027070148,0.07929703865064022],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[6.1149787490400005,3.3265202948399994,2.9214650722599997,4.492350807519999],"stddev":[0.22668042285398823,0.06586699615750959,0.07378370500573926,0.09516069640212316],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[8.722106496839999,8.955136055440002,3.06827081086,11.14925618112],"stddev":[1.6557587881817526,0.9588245212866905,0.5482048372804806,0.9694549081582611],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[3.01449453854,1.5678929252400002,0.73839261936,1.2457582678199999],"stddev":[0.3477704633050566,0.14402911824801265,0.14293180945960107,0.08953098836433385],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[3.3344383688400008,9.68165548774,2.17097810486,8.24228323912],"stddev":[0.027102372942475833,0.10286105196054508,0.02150146367030433,0.05573437184233608],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"run":{"labels":["run"],"datasets":[{"label":"npm","data":[0.09985302328000001],"stddev":[0.002118115832781856],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[0.17923141348000002],"stddev":[0.0014247967726966897],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[0.44783782328],"stddev":[0.048438561589149345],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[0.32335949758],"stddev":[0.016398197973470013],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[0.056648860280000005],"stddev":[0.0007537360537285435],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[0.0032690925799999998],"stddev":[0.00003786355672616553],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[0.17901357028000003],"stddev":[0.002243527811076872],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1},{"label":"nx","data":[0.81477050808],"stddev":[0.00614093849739684],"backgroundColor":"#3b82f6","borderColor":"#3b82f6","borderWidth":1},{"label":"turbo","data":[0.33872604898],"stddev":[0.1334023262733348],"backgroundColor":"#ff1e56","borderColor":"#ff1e56","borderWidth":1},{"label":"node","data":[0.00543656378],"stddev":[0.00009262851110994084],"backgroundColor":"#84ba64","borderColor":"#84ba64","borderWidth":1}]}}};
+      const perPackageCountChartData = {"labels":["cache","cache+lockfile","cache+lockfile+node_modules","cache+node_modules","clean","lockfile","lockfile+node_modules","node_modules","run"],"result":{"cache":{"labels":["next","astro","svelte","vue"],"datasets":[{"count":463,"label":"npm","data":[25.049550764077136,20.946528482657342,34.154231291428566,18.234502863196543],"stddev":[0.06412062129800959,0.038496990889628324,0.15067918935794905,0.026142778476310583],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"count":458,"label":"yarn","data":[26.074611414530388,12.935857061250001,41.63599064421053,24.17403100668122],"stddev":[0.9248020459173716,0.10792835966526519,0.16701755185430112,0.5189429819784611],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"count":436,"label":"pnpm","data":[28.931250793959997,9.974314329204152,23.21088241964912,8.770215006788993],"stddev":[2.3425023519247516,1.351574829238788,0.1549196685235279,0.08086936541088323],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"count":451,"label":"berry","data":[15.234509599887955,9.539711398736843,29.002253071785717,9.194544980177387],"stddev":[0.08419948701659684,0.04204724511393586,0.04786107933844997,0.04788316759503442],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"count":437,"label":"deno","data":[2.716729499598854,1.7801221420069204,3.6983783915789474,2.219145818672769],"stddev":[0.0159649221793178,0.003927384674505225,0.003708987290800367,0.01401567288676957],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"count":460,"label":"bun","data":[1.021176534410959,0.7443403946020762,1.2453530564912283,0.6766607336086957],"stddev":[0.005982085164798078,0.0029391388192856454,0.0007751827942209692,0.0018356748822532076],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"count":580,"label":"vlt","data":[15.251882425343513,19.306988205651045,18.834487105189872,18.469763321655172],"stddev":[0.06846775100298413,0.160508554348616,0.018135469597566272,0.07223201463820106],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"cache+lockfile":{"labels":["next","astro","svelte","vue"],"datasets":[{"count":464,"label":"npm","data":[17.886909979291552,9.135800220968857,16.40417790035088,6.867630030301722],"stddev":[0.05663568096675038,0.018416100635526126,0.005982526677106768,0.017932971157778692],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"count":458,"label":"yarn","data":[10.764315749999998,6.879897639097223,12.628242142456141,6.30954960231441],"stddev":[0.03755070122755777,0.03710031351546133,0.016502992421938395,0.5938142859997059],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"count":436,"label":"pnpm","data":[26.6687593463,3.7617933192387545,12.647304861754389,2.835705759541285],"stddev":[2.3611360744446355,0.02925241705109698,0.030277229953557982,0.008529668409104296],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"count":451,"label":"berry","data":[11.638582741736696,7.28621873459649,19.03527768964286,6.377686966651884],"stddev":[0.0201956812030679,0.022014335113603123,0.012120013141237652,0.027431979226265526],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"count":437,"label":"deno","data":[1.3037925220630373,1.2176953085121107,3.0455494126315794,1.1506877063157896],"stddev":[0.01508913444971359,0.010757799918044424,0.005813295665738144,0.023395745137755476],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"count":460,"label":"bun","data":[0.9350213923287672,0.7246854912110727,1.1923656898245614,0.636143158826087],"stddev":[0.004708680007006063,0.0031007857341476637,0.0015034487062869865,0.005577035632879054],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"count":580,"label":"vlt","data":[15.047676556234098,19.84547781309896,19.0616874013924,18.629875757344827],"stddev":[0.04460302447333278,0.11194147272742525,0.027465867237884627,0.06867634846970425],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"cache+lockfile+node_modules":{"labels":["next","astro","svelte","vue"],"datasets":[{"count":463,"label":"npm","data":[1.6765577742699724,1.800010193076923,5.855155142142858,1.3278877838876892],"stddev":[0.009726785238283889,0.004462321917398869,0.0028542923365342554,0.006091592137541157],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"count":458,"label":"yarn","data":[0.9038269661878452,1.003426754583333,4.030992518596491,0.6589113900436682],"stddev":[0.00946562113069028,0.010317890375077323,0.001426734266656925,0.0022668668258150272],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"count":436,"label":"pnpm","data":[28.677212403459997,2.6402103810380626,10.318813846666666,1.7315758700458717],"stddev":[2.746770810912446,0.019044418941026577,0.018610394741054206,0.0171702880069112],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"count":451,"label":"berry","data":[3.2357701780392154,2.8653140551578953,10.862412604642858,2.2308669331263853],"stddev":[0.021179329125264715,0.16701063135461605,0.009342982015330967,0.007881533958344861],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"count":437,"label":"deno","data":[0.15932398613180518,0.14153910283737026,0.651650036140351,0.1079041843020595],"stddev":[0.0008947661428254685,0.0005492558192432231,0.0012696225611615668,0.0009486328018537522],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"count":460,"label":"bun","data":[0.03301219194520548,0.035554336401384085,0.10049767298245614,0.030819910086956524],"stddev":[0.0006841395179628204,0.0007550672092942308,0.00010625843073187177,0.0005712718257701066],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"count":579,"label":"vlt","data":[8.732320179796439,12.55866257424479,13.337205113670889,14.165624256200351],"stddev":[0.04050629205187662,0.0986399912933029,0.007666157831268721,0.06836468380457499],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"cache+node_modules":{"labels":["next","astro","svelte","vue"],"datasets":[{"count":463,"label":"npm","data":[1.8064655787327826,1.9693148409790215,6.344644995714285,1.4811755528293735],"stddev":[0.03234628956017877,0.007450772058270719,0.003552879893395218,0.007618301876311274],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"count":458,"label":"yarn","data":[17.203088597458564,9.79096370909722,40.18501724666666,18.00902610275109],"stddev":[0.25220061678474776,0.09928656371594373,0.21357411179767904,0.4930315162931415],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"count":436,"label":"pnpm","data":[29.944718485780005,3.6136668644290664,12.379507109824564,2.776533134770642],"stddev":[1.753844917752265,0.055013865312426476,0.00775988839028122,0.02436725673611887],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"count":451,"label":"berry","data":[6.58841598117647,5.592368872701755,21.924068883214293,5.121854382838137],"stddev":[0.22669215464916323,0.20049927236452966,0.07186973751963056,0.33036403914421103],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"count":437,"label":"deno","data":[1.8799497056733527,1.0573974658131489,2.714703595789474,1.486939795331808],"stddev":[0.0354077542568175,0.0037769353907864548,0.004339354475144006,0.00976113166548662],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"count":460,"label":"bun","data":[0.10665573939726027,0.06326452809688582,0.18160925719298246,0.08294375969565217],"stddev":[0.0008575067899292244,0.00032305568662633233,0.0002449364577323861,0.0005479356881996679],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"count":579,"label":"vlt","data":[8.801495132773537,12.673391106406253,13.888603666835444,14.065283906321241],"stddev":[0.08280304669090677,0.10011224095604113,0.016688288683066228,0.04506976966625699],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"clean":{"labels":["next","astro","svelte","vue"],"datasets":[{"count":463,"label":"npm","data":[50.44874340077136,86.29772643692307,113.49359054499998,59.682693018228925],"stddev":[0.9475311089836105,1.6649924541941663,0.810189304704068,1.299935399012145],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"count":458,"label":"yarn","data":[80.5678679938674,39.48486521583334,108.52440930385967,44.85912277388646],"stddev":[10.2718109003523,0.32011576114367035,0.831420468865867,0.606156253606375],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"count":436,"label":"pnpm","data":[31.042062993880002,14.579511196747408,32.442351151228074,13.721068559495412],"stddev":[3.506957549828768,0.27977352859628846,0.04040914793242782,0.8662099119738277],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"count":451,"label":"berry","data":[24.893844768011206,15.607276195298244,52.15487593785715,14.839105603636366],"stddev":[0.17580546845710776,0.25062555277376664,0.10539826420810827,0.14669665673169824],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"count":437,"label":"deno","data":[29.048387182464186,29.9959277600692,46.826551226666666,39.641458174462244],"stddev":[1.6203433427026763,1.8374669861233228,0.36479007593269813,3.896074134862191],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"count":460,"label":"bun","data":[7.764146433095889,6.594227191557094,10.622484360000001,3.8902165770434785],"stddev":[0.10803620873687267,0.7610184138681201,0.1125045379456597,0.14394614357046584],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"count":580,"label":"vlt","data":[15.012370814452925,19.41502305893229,19.089684577974683,18.70807979110345],"stddev":[0.03949049707158533,0.13125244933909547,0.04103184022672008,0.11481581029229528],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"lockfile":{"labels":["next","astro","svelte","vue"],"datasets":[{"count":464,"label":"npm","data":[22.28712630959128,12.343377235363322,24.3470175845614,10.147629009525861],"stddev":[0.06080607338437921,0.02341454011372927,0.05075520581295281,0.027533619895644866],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"count":458,"label":"yarn","data":[76.9618856158011,31.271396683402777,73.74221517754387,24.892780050262004],"stddev":[17.22896116398806,0.09350739432121719,0.1019254536496444,0.10191238399257031],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"count":436,"label":"pnpm","data":[30.09630880642,9.518367658200692,25.67105486701754,7.209709115183486],"stddev":[3.254412318084412,0.10972904276011507,0.04342806122912601,0.03897026553712036],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"count":451,"label":"berry","data":[21.393307973165268,12.486040477263156,45.42486791821428,11.550637437738358],"stddev":[0.19949613697629673,0.10861401811447241,0.07377088809574255,0.14009723470300575],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"count":437,"label":"deno","data":[12.345538139312321,11.572025899031141,44.52113901614035,7.49318413597254],"stddev":[0.36214801328442847,0.28182283400119884,0.6254464938151469,0.31088125512527964],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"count":460,"label":"bun","data":[5.15141890690411,1.7353430038754325,6.109625596842107,1.3671347652608699],"stddev":[0.08238743407250719,0.010106983930576165,0.09404701707182597,0.042390104574566885],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"count":579,"label":"vlt","data":[15.452419141526718,19.157582023984375,19.392069973544306,18.48947161177893],"stddev":[0.05525431667004681,0.11744353846516695,0.06061827676616961,0.08050632347987317],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"lockfile+node_modules":{"labels":["next","astro","svelte","vue"],"datasets":[{"count":463,"label":"npm","data":[1.644923369421488,1.84230122979021,5.932834732142857,1.3695087070842331],"stddev":[0.006369086933870083,0.004279252445755588,0.004065108902254856,0.007943758507783165],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"count":458,"label":"yarn","data":[0.8713879972375692,1.0170575531944444,4.056263822807017,0.672063677467249],"stddev":[0.003839369063509354,0.003504840666934201,0.0031376597705644717,0.0037502713658088016],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"count":436,"label":"pnpm","data":[28.3220486569,2.313827838477509,11.270073817543858,1.6933351919266055],"stddev":[3.296268553799047,0.01791411813970977,0.03751298292912027,0.021080756247722116],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"count":451,"label":"berry","data":[13.408793802240895,8.218615123929824,36.42077958392857,7.670309356496675],"stddev":[0.17673557747129912,0.02542392203305682,0.07493089940664752,0.059743481695967],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"count":437,"label":"deno","data":[0.569693871060172,0.14836424782006924,0.6486964929824564,0.35812855189931353],"stddev":[0.050003736940185416,0.0007650145287632988,0.0005404354357788115,0.01100884038226996],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"count":460,"label":"bun","data":[0.03407865424657534,0.03645809487889273,0.10209461754385965,0.03035050908695652],"stddev":[0.0008779486263471485,0.000892414994804323,0.00035899972149323775,0.000522359207028139],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"count":580,"label":"vlt","data":[8.752876598982189,12.757224011354165,13.532484196835442,14.217821672551725],"stddev":[0.06651490877899378,0.09101983629392167,0.036732409620211154,0.06229970179405674],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"node_modules":{"labels":["next","astro","svelte","vue"],"datasets":[{"count":463,"label":"npm","data":[1.7687670783471077,1.9928535032867136,6.410667760000002,1.4847534594384453],"stddev":[0.005517979102491071,0.006529652746745911,0.005935833859725327,0.011496967358610397],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"count":458,"label":"yarn","data":[69.15787719624309,42.104830483125,126.16405585719298,38.4878778061572],"stddev":[0.6936246730052569,0.30207198572521526,0.9404935938449024,0.4884919797026268],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"count":436,"label":"pnpm","data":[30.191241541039993,11.942387930588234,34.23537305017544,7.430153818623856],"stddev":[4.450028233086276,0.13082782638192747,0.08314878027070148,0.07929703865064022],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"count":451,"label":"berry","data":[17.12879201411765,11.672001034526314,52.169019147499995,9.960866535521063],"stddev":[0.22668042285398823,0.06586699615750959,0.07378370500573926,0.09516069640212316],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"count":437,"label":"deno","data":[24.991709159999996,30.986629949619385,53.82931247122807,25.5131720391762],"stddev":[1.6557587881817526,0.9588245212866905,0.5482048372804806,0.9694549081582611],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"count":460,"label":"bun","data":[8.258889146684933,5.425235035432527,12.95425648,2.7081701474347826],"stddev":[0.3477704633050566,0.14402911824801265,0.14293180945960107,0.08953098836433385],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"count":582,"label":"vlt","data":[8.484576002137407,12.60632224966146,13.740367752278482,14.16199869264605],"stddev":[0.027102372942475833,0.10286105196054508,0.02150146367030433,0.05573437184233608],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1}]},"run":{"labels":["run"],"datasets":[{"label":"npm","data":[0.09985302328000001],"stddev":[0.002118115832781856],"backgroundColor":"#cb0606","borderColor":"#cb0606","borderWidth":1},{"label":"yarn","data":[0.17923141348000002],"stddev":[0.0014247967726966897],"backgroundColor":"#117cad","borderColor":"#117cad","borderWidth":1},{"label":"pnpm","data":[0.44783782328],"stddev":[0.048438561589149345],"backgroundColor":"#f9ad00","borderColor":"#f9ad00","borderWidth":1},{"label":"berry","data":[0.32335949758],"stddev":[0.016398197973470013],"backgroundColor":"#9555bb","borderColor":"#9555bb","borderWidth":1},{"label":"deno","data":[0.056648860280000005],"stddev":[0.0007537360537285435],"backgroundColor":"#70ffaf","borderColor":"#70ffaf","borderWidth":1},{"label":"bun","data":[0.0032690925799999998],"stddev":[0.00003786355672616553],"backgroundColor":"#f472b6","borderColor":"#f472b6","borderWidth":1},{"label":"vlt","data":[0.17901357028000003],"stddev":[0.002243527811076872],"backgroundColor":"#000000","borderColor":"#000000","borderWidth":1},{"label":"nx","data":[0.81477050808],"stddev":[0.00614093849739684],"backgroundColor":"#3b82f6","borderColor":"#3b82f6","borderWidth":1},{"label":"turbo","data":[0.33872604898],"stddev":[0.1334023262733348],"backgroundColor":"#ff1e56","borderColor":"#ff1e56","borderWidth":1},{"label":"node","data":[0.00543656378],"stddev":[0.00009262851110994084],"backgroundColor":"#84ba64","borderColor":"#84ba64","borderWidth":1}]}}};
+      // Chart.js context for both charts
+      const ctx = document.getElementById('myChart');
+      const ctxPerPackage = document.getElementById('myChartPerPackage');
+      let chart;
+      let chartPerPackage;
+
+      function showChart(variation) {
+        // Update active tab
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        const targetButton = Array.from(document.querySelectorAll('.tab-button')).find(btn => btn.textContent === variation);
+        if (targetButton) {
+          targetButton.classList.add('active');
+        }
+
+        // Update main title for "run" variation
+        const mainTitle = document.getElementById('main-title');
+        const totalTitleSpan = document.getElementById('variation-title-total');
+        if (mainTitle) {
+          if (variation === 'run') {
+            mainTitle.innerHTML = 'Total run time (seconds)';
+          } else {
+            mainTitle.innerHTML = `Total install time (seconds)
+              <span id="variation-title-total" style="font-weight: normal">
+                with ${variation}
+              </span>`;
+          }
+        }
+        // Update variation titles in h2s (per-package)
+        const perPkgTitleSpan = document.getElementById('variation-title-perpkg');
+        if (perPkgTitleSpan) {
+          perPkgTitleSpan.textContent = 'with ' + variation;
+        }
+
+        // Destroy existing chart if it exists
+        if (chart) {
+          chart.destroy();
+        }
+        if (chartPerPackage) {
+          chartPerPackage.destroy();
+        }
+
+        // Get chart data for this variation
+        const variationData = chartData.result[variation];
+        if (!variationData) {
+          console.error('No data found for variation:', variation);
+        } else {
+          chart = new Chart(ctx, {
+            type: 'bar',
+            data: variationData,
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: 'Time (seconds)'
+                  }
+                }
+              },
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: (context) => {
+                      const value = context.raw;
+                      if (value === null) return `${context.dataset.label}: No data`;
+                      return `${context.dataset.label}: ${value.toFixed(2)}s`;
+                    }
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // Get per-package chart data for this variation
+        if (perPackageCountChartData && perPackageCountChartData.result && perPackageCountChartData.result[variation] && variation !== 'run') {
+          document.getElementById('per-package-chart-title').style.display = 'block';
+          const perPkgVariationData = perPackageCountChartData.result[variation];
+          chartPerPackage = new Chart(ctxPerPackage, {
+            type: 'bar',
+            data: perPkgVariationData,
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: 'Time (ms per package)'
+                  }
+                }
+              },
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: (context) => {
+                      const value = context.raw;
+                      if (value === null) return `${context.dataset.label}: No data`;
+                      return `${context.dataset.label}: ${value.toFixed(4)} ms/pkg`;
+                    }
+                  }
+                }
+              }
+            }
+          });
+        } else {
+          // If no per-package data, clear the chart area
+          if (ctxPerPackage && ctxPerPackage.getContext) {
+            const c = ctxPerPackage.getContext('2d');
+            c.clearRect(0, 0, ctxPerPackage.width, ctxPerPackage.height);
+          }
+          document.getElementById('per-package-chart-title').style.display = 'none';
+        }
+      }
+
+      // --- Static Table Generation ---
+      function generateResultsTable(chartData, perPackageCountChartData) {
+        // Gather all unique PMs from datasets
+        const allPMsSet = new Set();
+        const excludePMs = new Set(['node', 'nx', 'turbo']);
+        Object.values(chartData.result).forEach(variationObj => {
+          if (variationObj && Array.isArray(variationObj.datasets)) {
+            variationObj.datasets.filter(ds => !excludePMs.has(ds.label)).forEach(ds => allPMsSet.add(ds.label));
+          }
+        });
+        const allPMs = Array.from(allPMsSet);
+
+        // Gather all fixture+variation combinations
+        // We'll use the labels (fixtures) and chartData.labels (variations)
+        const rows = [];
+        for (const variation of chartData.labels) {
+          if (variation === 'run') continue; // do not render run results in summary table
+          const variationObj = chartData.result[variation];
+          const perPkgVariationObj = perPackageCountChartData.result[variation];
+          if (!variationObj || !perPkgVariationObj) continue;
+          const fixtures = variationObj.labels || [];
+          for (const fixture of fixtures) {
+            // For each PM, find the dataset for this fixture
+            // The datasets' data arrays are in the same order as fixtures
+            // We'll build a map: pm -> {count, totalInstall, singlePkgInstall}
+            const pmData = {};
+            for (const pm of allPMs) {
+              // Find dataset for this pm
+              const ds = variationObj.datasets.find(d => d.label === pm);
+              const dsPerPkg = perPkgVariationObj.datasets.find(d => d.label === pm);
+              // Find index of this fixture in labels
+              const idx = variationObj.labels.indexOf(fixture);
+              // Package count
+              let count = null;
+              if (dsPerPkg && typeof dsPerPkg.count === 'number') {
+                count = dsPerPkg.count;
+              }
+              // Total install time (seconds)
+              let totalInstall = null;
+              if (ds && Array.isArray(ds.data) && ds.data[idx] !== undefined) {
+                // Average over data array (should be one value per fixture)
+                totalInstall = ds.data[idx];
+              }
+              // Single package install time (ms)
+              let singlePkgInstall = null;
+              if (dsPerPkg && Array.isArray(dsPerPkg.data) && dsPerPkg.data[idx] !== undefined) {
+                singlePkgInstall = dsPerPkg.data[idx];
+              }
+              pmData[pm] = {
+                count,
+                totalInstall,
+                singlePkgInstall
+              };
+            }
+            // Add three rows: package count, total install, single package install
+            rows.push({
+              label: `${fixture} & ${variation} total package count`,
+              type: 'count',
+              pmValues: allPMs.map(pm => pmData[pm]?.count != null ? pmData[pm].count : '')
+            });
+            rows.push({
+              label: `${fixture} & ${variation} total install time`,
+              type: 'totalInstall',
+              pmValues: allPMs.map(pm => {
+                const v = pmData[pm]?.totalInstall;
+                return v != null && !isNaN(v) ? v.toFixed(2) + 's' : '';
+              })
+            });
+            rows.push({
+              label: `${fixture} & ${variation} per-package install time`,
+              type: 'singlePkgInstall',
+              pmValues: allPMs.map(pm => {
+                const v = pmData[pm]?.singlePkgInstall;
+                return v != null && !isNaN(v) ? v.toFixed(2) + 'ms' : '';
+              })
+            });
+          }
+        }
+
+        // Build HTML table
+        let html = '<table class="results-table">';
+        html += '<thead><tr><th></th>' + allPMs.map(pm => ('<th>' + pm + '</th>')).join('') + '</tr></thead>';
+        html += '<tbody>';
+        for (const row of rows) {
+          html += '<tr><td>' + row.label + '</td>' + row.pmValues.map(val => ('<td>' + val + '</td>')).join('') + '</tr>';
+        }
+        html += '</tbody></table>';
+        return html;
+      }
+
+      // Render the static table once on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        const tableHtml = generateResultsTable(chartData, perPackageCountChartData);
+        document.getElementById('results-table-container').innerHTML = tableHtml;
+      });
+
+      // Initialize with first chart
+      showChart(chartData.labels[0]);
+    </script>
+  </body>
+</html>
