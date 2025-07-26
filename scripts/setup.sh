@@ -9,7 +9,7 @@ COREPACK_ENABLE_AUTO_PIN=0
 YARN_ENABLE_IMMUTABLE_INSTALLS=false
 
 # Check Node version
-REQUIRED_NODE_VERSION="22"
+REQUIRED_NODE_VERSION="24"
 CURRENT_NODE_VERSION=$(node -v | cut -d'v' -f2)
 if [[ "$CURRENT_NODE_VERSION" != "$REQUIRED_NODE_VERSION"* ]]; then
     echo "Error: Node.js version $REQUIRED_NODE_VERSION is required, but version $CURRENT_NODE_VERSION is installed"
@@ -19,7 +19,16 @@ fi
 # Install system dependencies
 echo "Installing system dependencies..."
 sudo apt-get update && sudo apt-get install -y jq
-sudo apt-get install -y hyperfine
+
+# Install Hyperfine
+wget https://github.com/sharkdp/hyperfine/releases/download/v1.19.0/hyperfine_1.19.0_amd64.deb
+sudo dpkg -i hyperfine_1.19.0_amd64.deb
+
+echo "Required system dependencies installed successfully!"
+JQ_VERSION=$(jq --version)
+HYPERFINE_VERSION=$(hyperfine --version)
+echo "jq: $JQ_VERSION"
+echo "hyperfine: $HYPERFINE_VERSION"
 
 # Install Node.js package managers and tools
 echo "Installing package managers and tools..."
@@ -46,7 +55,7 @@ BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"
 TURBO_VERSION="$(npm view turbo@latest version)"
-NODE_VERSION=$(node -e "console.log(process.version.substr(1))")
+NODE_VERSION=$(node -v)
 
 # Output versions
 echo "npm: $NPM_VERSION"

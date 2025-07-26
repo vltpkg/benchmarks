@@ -12,16 +12,17 @@ We currently only test the latest `linux` runner which is the most common GitHub
 - Storage (SSD): 14 GB
 - Workflow label: `ubuntu-latest`
 
-We may add Mac/Windows in the future but it will likely exponentially increase the already slow run time of the suite (**~20min**).
+We may add Mac/Windows in the future but it will likely exponentially increase the already slow run time of the suite (**~40min**).
 
 ## Overview
 
 The benchmarks measure:
-- Project installation times (cold and warm cache)
-- Task execution performance
+- Per-package installation times
+- Total Project installation times
+- Run script execution performance
 - Standard deviation of results
 
-### Project Types
+### Project Types (fixtures)
 - Next.js
 - Astro
 - Svelte
@@ -49,7 +50,7 @@ We do a best-effort job to configure each tool to behave as similar as possible 
 
 ## Testing Package Installation
 
-The installation tests we run today mimic a cold-cache scenario for a variety of test fixtures (ie. we install the packages of a `next`, `vue`, `svelte` & `astro` starter project). We will likely add lockfile & warm cache tests in the near future.
+The installation tests we run today mimic a matrix of different variations (cold cache, warm cache, cold cache with lockfile, etc) for a variety of test fixtures (ie. we install the packages of a `next`, `vue`, `svelte` & `astro` starter project).
 
 #### Supported Tools
 
@@ -61,7 +62,7 @@ The installation tests we run today mimic a cold-cache scenario for a variety of
 - `deno`
 - `bun`
 
-## Testing Script Execution (WIP)
+## Testing Script Execution
 
 This suite also tests the performance of basic script execution (ex. `npm run foo`). Notably, for any given build, test or deployment task the spawning of the process is a fraction of the overall execution time. That said, this is a commonly tracked workflow by various developer tools as it involves the common set of tasks: startup, filesystem read (`package.json`) & finally, spawning the process/command.
 
@@ -82,19 +83,26 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 
 ### Local Development
 
-1. Install dependencies:
+1. Setup:
+
+1.1 Install `jq` using your OS package manager
+1.2 Install `hyperfine`, version >= 1.19.0 is required
+1.3 Install package managers and corepack:
 ```bash
-bash ./scripts/setup.sh
+npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
+```
+1.4 Make a new `results` folder:
+```bash
+mkdir -p results
 ```
 
 2. Run benchmarks:
 ```bash
 # Install and benchmark a specific project
-bash ./scripts/install.sh <project>  # cold cache
-bash ./scripts/install-warm.sh <project>  # warm cache
+bash ./scripts/benchmark.sh <fixture> <variation>
 
-# Run task execution benchmarks
-bash ./scripts/run.sh
+# Example: Benchmark Next.js with cold cache
+bash ./scripts/benchmark.sh next clean
 ```
 
 ### GitHub Actions
@@ -124,52 +132,26 @@ package-manager: X.XXs (stddev: X.XXs)
 ### Generated Results
 
 Results are organized by date in the `chart/results/YYYY-MM-DD/` directory:
-- `project-cold.json`: Cold cache installation results
-- `project-warm.json`: Warm cache installation results
-- `task-execution.json`: Task execution benchmark results
+- `<fixture>-<variation>.json`: Cold cache installation results
+- `<fixture>-<variation>-package-count.json`: The count of packages installed for each package manager for a given fixture and variation
 - `index.html`: Interactive visualization
-- `styles.css`: Chart styling
-- `script.js`: Chart configuration
 
 ### Visualization
 
 The generated charts show:
-- Installation times for each project type
-- Task execution performance
+- Per-package installation times for each fixture and variation combination
+- Total installation times for each different combination
+- Run scripts execution performance
 - Standard deviation in tooltips
-- Missing data handling
-- Responsive design
+- Summary table with total installation times and package counts
 
-### GitHub Pages
+### View Results Online
 
 Results are automatically deployed to GitHub Pages when running on the main branch:
-```
-https://<username>.github.io/<repo>/results/
-```
 
-Each run creates a new dated directory with its results, making it easy to track performance over time.
+<https://vltpkg.github.io/benchmarks/>
 
-## Project Structure
-
-```
-.
-├── .github/
-│   └── workflows/
-│       └── benchmark.yaml    # GitHub Actions workflow
-├── chart/
-│   ├── results/             # Generated results
-│   ├── index.html           # Chart template
-│   ├── styles.css           # Chart styling
-│   └── script.js            # Chart configuration
-├── scripts/
-│   ├── setup.sh             # Environment setup
-│   ├── install.sh           # Cold cache installation
-│   ├── install-warm.sh      # Warm cache installation
-│   ├── run.sh               # Task execution
-│   ├── process-results.sh   # Results processing
-│   └── generate-chart.js    # Chart generation
-└── results/                 # Raw benchmark results
-```
+Each run creates a new dated html file with its results, making it easy to track performance over time.
 
 ## Contributing
 
@@ -181,4 +163,4 @@ Each run creates a new dated directory with its results, making it easy to track
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the BSD-2-Clause-Patent License - see the LICENSE file for details.
