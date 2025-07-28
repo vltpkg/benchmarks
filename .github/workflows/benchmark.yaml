@@ -1,9 +1,25 @@
 name: Package Manager Benchmarks
-on: 
+on:
   push:
   workflow_dispatch:
+    inputs:
+      fixtures:
+        description: 'The fixture to run the benchmarks on'
+        default: '["next", "astro", "svelte", "vue"]'
+      variations:
+        description: 'The benchmark variations to run'
+        default: '["cache", "cache+lockfile", "cache+node_modules", "cache+lockfile+node_modules", "clean", "lockfile", "lockfile+node_modules", "node_modules"]'
+      binaries:
+        description: 'The binaries to run the benchmarks on'
+        default: '"npm,yarn,berry,pnpm,vlt,bun,deno,nx,turbo,node"'
+      warmup:
+        description: 'The number of warmup runs on each benchmark'
+        default: '2'
+      runs:
+        description: 'The number of runs on each benchmark'
+        default: '10'
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "5 23 * * *"
 
 # Prevent multiple runs from interfering with each other
 concurrency:
@@ -11,161 +27,86 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  setup: 
-    name: 'Setup'
-    runs-on: blacksmith-4vcpu-ubuntu-2404
-    timeout-minutes: 10
+  benchmark:
+    name: 'Run Benchmarks'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        fixture: ${{ fromJson(inputs.fixtures || '["next", "astro", "vue", "svelte"]') }}
+        variation: ${{ fromJson(inputs.variations || '["cache", "cache+lockfile", "cache+node_modules", "cache+lockfile+node_modules", "clean", "lockfile", "lockfile+node_modules", "node_modules"]') }}
+        include:
+          - variation: "run"
+            fixture: "run"
+    env:
+      BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,pnpm,vlt,bun,deno,nx,turbo,node"') }}
+      BENCH_WARMUP: ${{ inputs.warmup || '2' }}
+      BENCH_RUNS: ${{ inputs.runs || '10' }}
     steps:
       - uses: actions/checkout@v4
-      - name: Cache Bins
-        uses: useblacksmith/cache@v5
-        with:
-          path: bins
-          key: bins
       - name: Install Node
-        uses: useblacksmith/setup-node@v5
+        uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
       - name: Install & Setup Tools
         run: |
           bash ./scripts/setup.sh
-
-  benchmark:
-    name: 'Run Benchmarks'
-    runs-on: blacksmith-4vcpu-ubuntu-2404
-    needs: [setup]
-    timeout-minutes: 30
-    strategy:
-      matrix:
-        project: [next, astro, svelte, vue]
-        cache: [cold, warm]
-        include:
-          - project: next
-            cache: cold
-          - project: astro
-            cache: cold
-          - project: svelte
-            cache: cold
-          - project: vue
-            cache: cold
-          - project: next
-            cache: warm
-          - project: astro
-            cache: warm
-          - project: svelte
-            cache: warm
-          - project: vue
-            cache: warm
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: useblacksmith/setup-node@v5
-        with:
-          node-version: '22'
-      - name: Install System Dependencies
+      - name: Run Benchmarks variations
         run: |
-          sudo apt-get update
-          sudo apt-get install -y jq hyperfine
-      - name: Restore Bins
-        uses: useblacksmith/cache/restore@v5
-        with:
-          path: bins
-          key: bins
-      - name: Run Project Benchmarks
-        run: |
-          if [ "${{ matrix.cache }}" = "warm" ]; then
-            bash ./scripts/install-warm.sh ${{ matrix.project }}
+          if [ "${{ matrix.variation }}" = "run" ]; then
+            bash ./scripts/benchmark.sh run run
           else
-            bash ./scripts/install.sh ${{ matrix.project }}
+            bash ./scripts/benchmark.sh ${{ matrix.fixture }} ${{ matrix.variation }}
           fi
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.project }}-${{ matrix.cache }}-results
-          path: ./results/${{ matrix.project }}/
+          name: results-${{ matrix.fixture }}-${{ matrix.variation }}
+          path: ./results/${{ matrix.fixture }}/${{ matrix.variation }}/
           retention-days: 7
-
-  task:
-    name: 'Benchmark Running Tasks'
-    runs-on: blacksmith-4vcpu-ubuntu-2404
-    needs: [setup]
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Node
-        uses: useblacksmith/setup-node@v5
-        with:
-          node-version: '22'
-      - name: Install System Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq hyperfine
-      - name: Restore Bins
-        uses: useblacksmith/cache/restore@v5
-        with:
-          path: bins
-          key: bins
-      - name: Run Task Execution Benchmarks
-        run: |
-          bash ./scripts/run.sh
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: task-benchmark-results
-          path: ./results/run.json
-          retention-days: 7
-
   process:
     name: 'Process Results'
-    runs-on: blacksmith-4vcpu-ubuntu-2404
-    needs: [benchmark, task]
+    runs-on: ubuntu-latest
+    needs: [benchmark]
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - name: Install Node
-        uses: useblacksmith/setup-node@v5
+        uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
       - name: Download Results
         uses: actions/download-artifact@v4
         with:
           path: results
-          merge-multiple: true
+          pattern: results-*
       - name: Process Results
         run: |
           bash ./scripts/process-results.sh
       - name: Upload Processed Results
         uses: actions/upload-artifact@v4
         with:
-          name: processed-results
-          path: chart/results/
+          name: charts
+          path: charts
           retention-days: 7
-
   deploy:
     name: 'Deploy Results'
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     needs: [process]
+    permissions:
+      contents: write
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
       - name: Download Results
         uses: actions/download-artifact@v4
         with:
-          name: processed-results
-          path: chart/results/
+          name: charts
+          path: charts/
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: chart/results
+          publish_dir: charts
           force_orphan: true
 
-  cleanup:
-    name: 'Cleanup'
-    needs: [deploy]
-    runs-on: blacksmith-4vcpu-ubuntu-2404
-    if: always()
-    steps:
-      - name: Delete old artifacts
-        run: |
-          gh api repos/${{ github.repository }}/actions/artifacts --paginate | jq -r '.artifacts[] | select(.expired) | .id' | xargs -I {} gh api repos/${{ github.repository }}/actions/artifacts/{} -X DELETE
