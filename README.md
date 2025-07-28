@@ -83,27 +83,31 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 
 ### Local Development
 
-1. Setup:
+- 1. Setup:
 
-1.1 Install `jq` using your OS package manager
-1.2 Install `hyperfine`, version >= 1.19.0 is required
-1.3 Install package managers and corepack:
-```bash
-npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
-```
-1.4 Make a new `results` folder:
-```bash
-mkdir -p results
-```
+  - 1.1 Install `jq` using your OS package manager
+  
+  - 1.2 Install `hyperfine`, version >= 1.19.0 is required
+  
+  - 1.3 Install package managers and corepack:
+    ```bash
+    npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
+    ```
+  
+  - 1.4 Make a new `results` folder:
+    ```bash
+    mkdir -p results
+    ```
 
-2. Run benchmarks:
-```bash
-# Install and benchmark a specific project
-bash ./scripts/benchmark.sh <fixture> <variation>
+- 2. Run benchmarks:
 
-# Example: Benchmark Next.js with cold cache
-bash ./scripts/benchmark.sh next clean
-```
+  ```bash
+  # Install and benchmark a specific project
+  bash ./scripts/benchmark.sh <fixture> <variation>
+
+  # Example: Benchmark Next.js with cold cache
+  bash ./scripts/benchmark.sh next clean
+  ```
 
 ### GitHub Actions
 
