@@ -1,4 +1,13 @@
-export const CHART_DATA_URL = "./chart/results/2025-07-30/chart-data.json";
+
+export const TODAY = new Date();
+
+export const DATE_YEAR = TODAY.getFullYear();
+
+export const DATE_MONTH = TODAY.getMonth() + 1;
+
+export const DATE_DAY = TODAY.getDate();
+
+export const CHART_DATA_URL = `./charts/${DATE_YEAR}-${DATE_MONTH}-${DATE_DAY}/chart-data.json`;
 
 export const CHART_DEFAULTS = {
   HEIGHT: 300,
@@ -16,4 +25,4 @@ export const ERROR_MESSAGES = {
   INVALID_DATA: "Invalid chart data format received from server",
   INVALID_VARIATION: "The requested variation is not valid",
   NETWORK_ERROR: "Network error occurred while fetching data",
-} as const; 
+} as const;

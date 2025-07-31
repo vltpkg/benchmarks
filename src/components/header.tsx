@@ -9,6 +9,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { BenchmarkChartData, Variation } from "@/types/chart-data";
+import { DATE_YEAR, DATE_MONTH, DATE_DAY } from "@/constants";
 
 interface HeaderProps {
   chartData: BenchmarkChartData | null;
@@ -35,7 +36,7 @@ export const Header = ({ chartData }: HeaderProps) => {
             </h1>
             {chartData && (
               <p className="text-sm text-muted-foreground mt-1 font-medium">
-                Results from {chartData.metadata.date}
+                Results from {DATE_YEAR}-{DATE_MONTH}-{DATE_DAY}
               </p>
             )}
           </div>
