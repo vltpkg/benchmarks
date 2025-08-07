@@ -32,29 +32,23 @@ clean_berry_cache() {
 clean_pnpm_cache() {
   if command -v corepack &> /dev/null; then
     corepack pnpm cache delete * --silent || true
-    if [ -n "$(corepack pnpm store path 2>/dev/null)" ]; then
-      safe_remove "$(corepack pnpm store path)"
-    fi
+    safe_remove "$(corepack pnpm store path | xargs)"
   fi
 }
 
 # Function to safely clean vlt cache
 clean_vlt_cache() {
   if command -v vlt &> /dev/null; then
-    if [ -n "$(vlt config get cache 2>/dev/null)" ]; then
-      safe_remove "$(vlt config get cache)"
-    fi
+    safe_remove "$(vlt config get cache | xargs)"
   fi
 }
 
 # Function to safely clean bun cache
 clean_bun_cache() {
   if command -v bun &> /dev/null; then
-    if [ -n "$(bun pm cache 2>/dev/null)" ]; then
-      bun pm cache rm || true
-      # also clear global cache dir
-      safe_remove "~/.bun/install/cache"
-    fi
+    bun pm cache rm || true
+    # also clear global cache dir
+    safe_remove "~/.bun/install/cache"
   fi
 }
 
