@@ -5,7 +5,7 @@ set -Eeuxo pipefail
 DATE=$(date +%Y-%m-%d)
 
 # Create results directory structure
-mkdir -p "charts/$DATE"
+mkdir -p "results/$DATE"
 
 # Function to print summary of results
 print_summary() {
@@ -50,16 +50,16 @@ echo "Processing results..."
 # Process variations results
 for fixture in next astro svelte vue; do
     for variation in cache cache+lockfile cache+lockfile+node_modules cache+node_modules clean lockfile lockfile+node_modules node_modules run; do
-        if [ -f "results-$fixture-$variation/benchmarks.json" ]; then
-            print_summary "results-$fixture-$variation/benchmarks.json" "$fixture" "$variation"
-            cp "results-$fixture-$variation/benchmarks.json" "charts/$DATE/$fixture-$variation.json"
+        if [ -f "results/results-$fixture-$variation/benchmarks.json" ]; then
+            print_summary "results/results-$fixture-$variation/benchmarks.json" "$fixture" "$variation"
+            cp "results/results-$fixture-$variation/benchmarks.json" "results/$DATE/$fixture-$variation.json"
         else
             echo "Warning: No results found for $fixture & $variation"
         fi
 
-        if [ -f "results-$fixture-$variation/package-count.json" ]; then
-            print_package_count "results-$fixture-$variation/package-count.json" "$fixture" "$variation"
-            cp "results-$fixture-$variation/package-count.json" "charts/$DATE/$fixture-$variation-package-count.json"
+        if [ -f "results/results-$fixture-$variation/package-count.json" ]; then
+            print_package_count "/results/results-$fixture-$variation/package-count.json" "$fixture" "$variation"
+            cp "results/results-$fixture-$variation/package-count.json" "results/$DATE/$fixture-$variation-package-count.json"
         else
             echo "Warning: No package count found for $fixture & $variation"
         fi
@@ -67,15 +67,15 @@ for fixture in next astro svelte vue; do
 done
 
 # Process run results
-if [ -f "results-run-run/benchmarks.json" ]; then
-    print_summary "results-run-run/benchmarks.json" "run" "run"
-    cp "results-run-run/benchmarks.json" "charts/$DATE/run-run.json"
+if [ -f "results/results-run-run/benchmarks.json" ]; then
+    print_summary "/results/results-run-run/benchmarks.json" "run" "run"
+    cp "results/results-run-run/benchmarks.json" "results/$DATE/run-run.json"
 else
     echo "Warning: No results found for run"
 fi
 
 # Create a results directory
-mkdir -p charts/$DATE
+mkdir -p results/$DATE
 
 # Generate visualization
 echo "Generating visualization..."

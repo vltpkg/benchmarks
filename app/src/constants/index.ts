@@ -7,7 +7,7 @@ export const DATE_MONTH = TODAY.getMonth() + 1;
 
 export const DATE_DAY = TODAY.getDate();
 
-export const CHART_DATA_URL = `./charts/${DATE_YEAR}-${DATE_MONTH}-${DATE_DAY}/chart-data.json`;
+export const CHART_DATA_URL = `/${DATE_YEAR}-${DATE_MONTH}-${DATE_DAY}/chart-data.json`;
 
 export const CHART_DEFAULTS = {
   HEIGHT: 300,

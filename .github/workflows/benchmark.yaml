@@ -84,12 +84,12 @@ jobs:
           bash ./scripts/process-results.sh
       - name: Build Charts View
         run: |
-          vlr build
+          cd app && vlt install && vlr build
       - name: Upload Processed Results
         uses: actions/upload-artifact@v4
         with:
-          name: charts
-          path: charts
+          name: results
+          path: results/
           retention-days: 7
   deploy:
     name: 'Deploy Results'
@@ -103,12 +103,12 @@ jobs:
       - name: Download Results
         uses: actions/download-artifact@v4
         with:
-          name: charts
-          path: charts/
+          name: results
+          path: results/
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: charts
+          publish_dir: results
           keep_files: true
 

@@ -51,7 +51,7 @@ for pm in npm yarn berry pnpm vlt bun deno nx turbo node; do
     eval "BENCH_INCLUDE_${CHOICE}="
   fi
 done
-BENCH_OUTPUT_FOLDER="$BENCH_FIXTURE/$BENCH_VARIATION"
+BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
 BENCH_COMMAND_NPM="npm install --no-audit --no-fund --silent >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_YARN="corepack yarn@1 install --silent > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BERRY_PRE=$(cat <<EOF

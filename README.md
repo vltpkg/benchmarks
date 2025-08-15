@@ -135,7 +135,7 @@ package-manager: X.XXs (stddev: X.XXs)
 
 ### Generated Results
 
-Results are organized by date in the `charts/YYYY-MM-DD/` directory:
+Results are organized by date in the `YYYY-MM-DD/` directory:
 - `<fixture>-<variation>.json`: Cold cache installation results
 - `<fixture>-<variation>-package-count.json`: The count of packages installed for each package manager for a given fixture and variation
 - `index.html`: Interactive visualization

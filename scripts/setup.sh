@@ -41,6 +41,9 @@ corepack enable yarn pnpm
 # Make npm silent
 npm config set loglevel silent
 
+# Create Results Directory
+mkdir -p ./results/
+
 # Log Package Manager Versions
 echo "Logging package manager versions..."
 NPM_VERSION="$(npm -v)"
@@ -78,6 +81,6 @@ echo "{
   \"nx\": \"$NX_VERSION\",
   \"turbo\": \"$TURBO_VERSION\",
   \"node\": \"$NODE_VERSION\"
-}" > ./versions.json
+}" > ./results/versions.json
 
 echo "Setup completed successfully!"

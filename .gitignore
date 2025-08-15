@@ -9,6 +9,7 @@ node_modules
 .nx/cache
 .nx/workspace-data
 
-results
 dist
 chart
+charts
+results

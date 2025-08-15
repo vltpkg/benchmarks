@@ -34,7 +34,7 @@ export const usePackageCountData = (
 
       for (const fixture of fixtures) {
         try {
-          const url = `./charts/${DATE_YEAR}-${DATE_MONTH}-${DATE_DAY}/${fixture}-${variation}-package-count.json`;
+          const url = `/${DATE_YEAR}-${DATE_MONTH}-${DATE_DAY}/${fixture}-${variation}-package-count.json`;
           const response = await fetch(url);
 
           if (response.ok) {
