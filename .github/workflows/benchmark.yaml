@@ -62,7 +62,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: results-${{ matrix.fixture }}-${{ matrix.variation }}
-          path: ./${{ matrix.fixture }}/${{ matrix.variation }}/
+          path: ./results/${{ matrix.fixture }}/${{ matrix.variation }}/
           retention-days: 7
   process:
     name: 'Process Results'
@@ -78,7 +78,8 @@ jobs:
       - name: Download Results
         uses: actions/download-artifact@v4
         with:
-          path: ./
+          path: results
+          pattern: results-*
       - name: Process Results
         run: |
           bash ./scripts/process-results.sh
