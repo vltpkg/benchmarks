@@ -7,7 +7,7 @@ if (!DATE) {
   process.exit(1);
 }
 
-const RESULTS_DIR = DATE;
+const RESULTS_DIR = path.resolve("results", DATE);
 if (!fs.existsSync(RESULTS_DIR)) {
   console.error(`Error: Results directory ${RESULTS_DIR} does not exist`);
   process.exit(1);
