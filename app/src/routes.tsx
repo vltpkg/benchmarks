@@ -17,7 +17,7 @@ export const routes: RouteObject[] = [
 ];
 
 const router = createBrowserRouter(routes, {
-  basename: "/",
+  basename: "/benchmarks",
 });
 
 export const Router = () => <RouterProvider router={router} />;

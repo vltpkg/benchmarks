@@ -54,7 +54,7 @@ export const Header = ({ chartData }: HeaderProps) => {
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuContent align="end" className="w-64">
                   {chartData.chartData.variations.map(
                     (variation: Variation) => (
                       <DropdownMenuItem key={variation} asChild>
