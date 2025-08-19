@@ -1,5 +1,15 @@
+# system
 .DS_Store
-results
+
+# deps
+node_modules
+
+# build
 .nx/installation
 .nx/cache
 .nx/workspace-data
+
+dist
+chart
+charts
+results
