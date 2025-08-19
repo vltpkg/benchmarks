@@ -58,7 +58,7 @@ for fixture in next astro svelte vue; do
         fi
 
         if [ -f "results/results-$fixture-$variation/package-count.json" ]; then
-            print_package_count "/results/results-$fixture-$variation/package-count.json" "$fixture" "$variation"
+            print_package_count "results/results-$fixture-$variation/package-count.json" "$fixture" "$variation"
             cp "results/results-$fixture-$variation/package-count.json" "results/$DATE/$fixture-$variation-package-count.json"
         else
             echo "Warning: No package count found for $fixture & $variation"
@@ -68,7 +68,7 @@ done
 
 # Process run results
 if [ -f "results/results-run-run/benchmarks.json" ]; then
-    print_summary "/results/results-run-run/benchmarks.json" "run" "run"
+    print_summary "results/results-run-run/benchmarks.json" "run" "run"
     cp "results/results-run-run/benchmarks.json" "results/$DATE/run-run.json"
 else
     echo "Warning: No results found for run"
