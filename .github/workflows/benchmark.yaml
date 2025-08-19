@@ -80,6 +80,9 @@ jobs:
         with:
           path: results
           pattern: results-*
+      - name: Install vlt
+        run: |
+          npm install -g vlt@latest
       - name: Process Results
         run: |
           bash ./scripts/process-results.sh
