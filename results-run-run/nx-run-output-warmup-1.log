@@ -1,0 +1,10 @@
+
+> nx run run:test
+
+benchmarking script execution...
+
+
+
+ NX   Successfully ran target test for project run
+
+

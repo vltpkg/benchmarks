@@ -1,0 +1,12 @@
+ WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
+• Running test
+• Remote caching disabled
+::group::test
+cache bypass, force executing 39c7e5d1fe1d173a
+benchmarking script execution...
+::endgroup::
+
+ Tasks:    1 successful, 1 total
+Cached:    0 cached, 1 total
+  Time:    115ms 
+
