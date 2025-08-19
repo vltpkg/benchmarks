@@ -1,0 +1,6 @@
+Request Error: Request failed
+  Code: ETIMEDOUT
+  URL: https://registry.npmjs.org/expect-type
+  Method: GET
+
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-27133.log
