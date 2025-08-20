@@ -190,12 +190,12 @@ jobs:
             }
 
             console.log('Benchmark cleaning completed');
-      - name: Install vlt
-        run: |
-          npm install -g vlt@latest
       - name: Process Results
         run: |
           bash ./scripts/process-results.sh
+      - name: Install vlt
+        run: |
+          npm install -g vlt@latest
       - name: Build Charts View
         run: |
           cd app && vlt install && vlr build
