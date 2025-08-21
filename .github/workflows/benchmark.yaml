@@ -198,7 +198,10 @@ jobs:
           npm install -g vlt@latest
       - name: Build Charts View
         run: |
-          cd app && vlt install && vlr build
+          pushd app
+          vlt install || true
+          vlt run build
+          popd
       - name: Upload Processed Results
         uses: actions/upload-artifact@v4
         with:
