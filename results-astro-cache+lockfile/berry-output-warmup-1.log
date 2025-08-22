@@ -1,0 +1,21 @@
+[94m➤[39m YN0000: · Yarn 4.9.3
+[94m➤[39m [90mYN0000[39m: ┌ Resolution step
+::group::Resolution step
+::endgroup::
+[94m➤[39m [90mYN0000[39m: └ Completed
+[94m➤[39m [90mYN0000[39m: ┌ Post-resolution validation
+::group::Post-resolution validation
+[93m➤[39m YN0086: │ Some peer dependencies are incorrectly met by dependencies; run [38;5;111myarn explain peer-requirements[39m for details.
+::endgroup::
+[94m➤[39m [90mYN0000[39m: └ Completed
+[94m➤[39m [90mYN0000[39m: ┌ Fetch step
+::group::Fetch step
+::endgroup::
+[94m➤[39m [90mYN0000[39m: └ Completed
+[94m➤[39m [90mYN0000[39m: ┌ Link step
+::group::Link step
+[94m➤[39m YN0007: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.25.9[39m must be built because it never has been before or the last one failed
+[94m➤[39m YN0007: │ [38;5;173msharp[39m[38;5;111m@[39m[38;5;111mnpm:0.33.5[39m must be built because it never has been before or the last one failed
+::endgroup::
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 363ms
+[93m➤[39m YN0000: · Done with warnings in 1s 646ms

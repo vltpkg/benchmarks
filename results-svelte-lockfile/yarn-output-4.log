@@ -1,0 +1,7 @@
+warning package.json: No license field
+warning demo@0.0.1: No license field
+(node:10406) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+error https://registry.yarnpkg.com/@rollup/rollup-freebsd-x64/-/rollup-freebsd-x64-4.47.1.tgz: Request failed "500 Internal Server Error"
+warning Workspaces can only be enabled in private projects.
+error Error: ENOENT: no such file or directory, open '/home/runner/.cache/yarn/v6/npm-@rollup-rollup-freebsd-x64-4.47.1-933feaff864feb03bbbcd0c18ea351ade957cf79-integrity/node_modules/@rollup/rollup-freebsd-x64/.yarn-metadata.json'
