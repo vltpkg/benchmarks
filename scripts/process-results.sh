@@ -6,6 +6,7 @@ DATE=$(date +%Y-%m-%d)
 
 # Create results directory structure
 mkdir -p "results/$DATE"
+mkdir -p "results/latest"
 
 # Function to print summary of results
 print_summary() {
@@ -53,6 +54,7 @@ for fixture in next astro svelte vue; do
         if [ -f "results/results-$fixture-$variation/benchmarks.json" ]; then
             print_summary "results/results-$fixture-$variation/benchmarks.json" "$fixture" "$variation"
             cp "results/results-$fixture-$variation/benchmarks.json" "results/$DATE/$fixture-$variation.json"
+            cp "results/results-$fixture-$variation/benchmarks.json" "results/latest/$fixture-$variation.json"
         else
             echo "Warning: No results found for $fixture & $variation"
         fi
@@ -60,6 +62,7 @@ for fixture in next astro svelte vue; do
         if [ -f "results/results-$fixture-$variation/package-count.json" ]; then
             print_package_count "results/results-$fixture-$variation/package-count.json" "$fixture" "$variation"
             cp "results/results-$fixture-$variation/package-count.json" "results/$DATE/$fixture-$variation-package-count.json"
+            cp "results/results-$fixture-$variation/package-count.json" "results/latest/$fixture-$variation-package-count.json"
         else
             echo "Warning: No package count found for $fixture & $variation"
         fi
@@ -70,12 +73,10 @@ done
 if [ -f "results/results-run-run/benchmarks.json" ]; then
     print_summary "results/results-run-run/benchmarks.json" "run" "run"
     cp "results/results-run-run/benchmarks.json" "results/$DATE/run-run.json"
+    cp "results/results-run-run/benchmarks.json" "results/latest/run-run.json"
 else
     echo "Warning: No results found for run"
 fi
-
-# Create a results directory
-mkdir -p results/$DATE
 
 # Generate visualization
 echo "Generating visualization..."
