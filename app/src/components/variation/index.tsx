@@ -43,21 +43,21 @@ export const VariationPage = () => {
   return (
     <div className="space-y-12">
       <VariationChart
-        title="Total Install Time by Fixture"
-        variationData={totalVariationData}
-        packageManagers={packageManagers}
-        colors={colors}
-        chartData={chartData}
-        isPerPackage={false}
-      />
-
-      <VariationChart
         title="Per Package Install Time by Fixture"
         variationData={perPackageVariationData}
         packageManagers={packageManagers}
         colors={colors}
         chartData={chartData}
         isPerPackage={true}
+      />
+
+      <VariationChart
+        title="Total Install Time by Fixture"
+        variationData={totalVariationData}
+        packageManagers={packageManagers}
+        colors={colors}
+        chartData={chartData}
+        isPerPackage={false}
       />
 
       <div className="space-y-8">

@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router";
+import { RouterProvider, createHashRouter } from "react-router";
 import App from "@/app";
 import { VariationPage } from "@/components/variation";
 import type { RouteObject } from "react-router";
@@ -16,6 +16,6 @@ export const routes: RouteObject[] = [
   },
 ];
 
-const router = createBrowserRouter(routes);
+const router = createHashRouter(routes);
 
 export const Router = () => <RouterProvider router={router} />;
