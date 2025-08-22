@@ -5,7 +5,6 @@ import type {
   PackageCountData,
   PackageCountTableRow,
 } from "@/types/chart-data";
-import { DATE_YEAR, DATE_MONTH, DATE_DAY } from "@/constants";
 
 interface UsePackageCountDataReturn {
   packageCountData: PackageCountTableRow[];
@@ -34,7 +33,7 @@ export const usePackageCountData = (
 
       for (const fixture of fixtures) {
         try {
-          const url = `/benchmarks/${DATE_YEAR}-${DATE_MONTH}-${DATE_DAY}/${fixture}-${variation}-package-count.json`;
+          const url = `/benchmarks/latest/${fixture}-${variation}-package-count.json`;
           const response = await fetch(url);
 
           if (response.ok) {

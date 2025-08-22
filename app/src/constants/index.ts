@@ -1,13 +1,4 @@
-
-export const TODAY = new Date();
-
-export const DATE_YEAR = TODAY.getFullYear();
-
-export const DATE_MONTH = String(TODAY.getMonth() + 1).padStart(2, "0");
-
-export const DATE_DAY = String(TODAY.getDate()).padStart(2, "0");
-
-export const CHART_DATA_URL = `/benchmarks/${DATE_YEAR}-${DATE_MONTH}-${DATE_DAY}/chart-data.json`;
+export const CHART_DATA_URL = `/benchmarks/latest/chart-data.json`;
 
 export const CHART_DEFAULTS = {
   HEIGHT: 300,
