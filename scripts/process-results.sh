@@ -85,5 +85,8 @@ if ! node scripts/generate-chart.js "$DATE"; then
     exit 1
 fi
 
+# Copy chart data to latest
+cp "results/$DATE/chart-data.json" "results/latest/chart-data.json"
+
 echo "Results processing complete!"
 
