@@ -16,8 +16,6 @@ export const routes: RouteObject[] = [
   },
 ];
 
-const router = createHashRouter(routes, {
-  basename: "/benchmarks",
-});
+const router = createHashRouter(routes);
 
 export const Router = () => <RouterProvider router={router} />;
