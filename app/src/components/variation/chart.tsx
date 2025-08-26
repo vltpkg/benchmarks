@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/chart";
 import type { ChartConfig } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/components/theme-provider";
 import { CHART_DEFAULTS } from "@/constants";
 import type {
   BenchmarkChartData,
@@ -49,6 +50,13 @@ export const VariationChart = ({
   colors,
   isPerPackage,
 }: VariationChartProps) => {
+  const { theme } = useTheme();
+
+  // Resolve the actual theme (dark/light) when user selects "system"
+  const resolvedTheme = theme === "system"
+    ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+    : theme;
+
   const [selectedPackageManagers, setSelectedPackageManagers] = useState<
     Set<string>
   >(new Set(packageManagers));
@@ -213,7 +221,7 @@ export const VariationChart = ({
             .map((pm) => ({
               name: pm,
               value: chartData[pm],
-              fill: colors[pm],
+              fill: (pm === "vlt" && resolvedTheme === "dark") ? "white" : colors[pm],
             }));
 
           return (
