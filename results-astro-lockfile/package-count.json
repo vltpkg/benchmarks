@@ -20,6 +20,8 @@
     "count": 289
   },
   "deno": {
-    "count": 289
+    "count": 266,
+    "minCount": 7,
+    "maxCount": 289
   }
 }
