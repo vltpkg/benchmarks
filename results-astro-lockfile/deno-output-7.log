@@ -1,4 +1,0 @@
-[0m[1m[31merror[0m: Failed caching npm package '@img/sharp-libvips-linuxmusl-x64@1.0.4'
-
-Caused by:
-    error reading a body from connection
