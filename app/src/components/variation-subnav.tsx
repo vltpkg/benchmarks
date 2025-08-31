@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router";
 import { cn, getVariationCategories } from "@/lib/utils";
+import { Leaderboard } from "@/components/leaderboard";
 import type { BenchmarkChartData } from "@/types/chart-data";
 
 interface VariationSubnavProps {
@@ -13,10 +14,11 @@ export const VariationSubnav = ({ chartData }: VariationSubnavProps) => {
 
   const categories = getVariationCategories(chartData.chartData.variations);
 
-  return (
+                return (
     <div className="border-b border-border/50 bg-card/30 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="space-y-6">
+          {/* Variation Categories */}
           {categories.map((category) => (
             <div key={category.title} className="space-y-3">
               <div>
@@ -51,6 +53,9 @@ export const VariationSubnav = ({ chartData }: VariationSubnavProps) => {
               </div>
             </div>
           ))}
+
+          {/* Horizontal Leaderboard */}
+          <Leaderboard chartData={chartData} />
         </div>
       </div>
     </div>

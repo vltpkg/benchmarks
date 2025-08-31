@@ -45,6 +45,90 @@ export const getVariationCategories = (variations: Variation[]): VariationCatego
   return categories;
 };
 
+interface RankingData {
+  packageManager: PackageManager;
+  wins: number;
+  totalScore: number;
+  averageRank: number;
+  totalRanks: number;
+}
+
+export const calculateLeaderboard = (chartData: any): RankingData[] => {
+  // Define package managers only (exclude tools like node, nx, turbo)
+  const packageManagers = ['npm', 'pnpm', 'yarn', 'berry', 'bun', 'deno', 'vlt'];
+  const availablePackageManagers = chartData.chartData.packageManagers.filter((pm: string) =>
+    packageManagers.includes(pm)
+  ) as PackageManager[];
+
+    const packageManagerCounts: Record<PackageManager, { wins: number; totalRanks: number; rankSum: number }> = {} as any;
+  
+  // Initialize counts for package managers only
+  availablePackageManagers.forEach(pm => {
+    packageManagerCounts[pm] = { wins: 0, totalRanks: 0, rankSum: 0 };
+  });
+
+  // Get package management variations (excluding "run")
+  const packageManagementVariations = getVariationCategories(chartData.chartData.variations)
+    .find(cat => cat.title === "Package Management")?.variations || [];
+
+  // Calculate rankings for each fixture and variation
+  packageManagementVariations.forEach(variation => {
+    const variationData = chartData.chartData.data[variation];
+    if (!variationData) return;
+
+    variationData.forEach((fixtureResult: any) => {
+      // Get all package manager times for this fixture
+      const times: Array<{ pm: PackageManager; time: number }> = [];
+
+      availablePackageManagers.forEach(pm => {
+        const time = fixtureResult[pm];
+        if (typeof time === 'number' && time > 0) {
+          times.push({ pm, time });
+        }
+      });
+
+      // Sort by time (ascending - faster is better)
+      times.sort((a, b) => a.time - b.time);
+
+            // Award points based on ranking - account for ALL positions
+      times.forEach((item, index) => {
+        const rank = index + 1;
+        const counts = packageManagerCounts[item.pm];
+        
+        // Only count wins (1st place)
+        if (rank === 1) counts.wins++;
+        
+        counts.totalRanks++;
+        counts.rankSum += rank;
+      });
+    });
+  });
+
+    // Calculate final rankings with improved scoring
+  const leaderboard: RankingData[] = availablePackageManagers.map(pm => {
+    const counts = packageManagerCounts[pm];
+    // Simple scoring based on wins, but rank by average rank for all positions
+    const totalScore = counts.wins;
+    const averageRank = counts.totalRanks > 0 ? counts.rankSum / counts.totalRanks : Number.MAX_SAFE_INTEGER;
+
+    return {
+      packageManager: pm,
+      wins: counts.wins,
+      totalScore,
+      averageRank,
+      totalRanks: counts.totalRanks
+    };
+  });
+
+  // Sort primarily by average rank (lower is better), then by wins as tiebreaker
+  return leaderboard.sort((a, b) => {
+    // Primary sort: average rank (ascending - lower is better)
+    if (a.averageRank !== b.averageRank) return a.averageRank - b.averageRank;
+    // Tiebreaker: wins (descending - more wins is better)
+    return b.wins - a.wins;
+  });
+};
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
