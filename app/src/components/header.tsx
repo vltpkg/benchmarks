@@ -10,6 +10,24 @@ import { ChevronDown } from "lucide-react";
 import { cn, sortVariations } from "@/lib/utils";
 import type { BenchmarkChartData, Variation } from "@/types/chart-data";
 
+const BarChartIcon = () => (
+  <svg
+    data-testid="geist-icon"
+    height="20"
+    strokeLinejoin="round"
+    viewBox="0 0 16 16"
+    width="20"
+    style={{ color: "currentcolor" }}
+  >
+    <path
+      fill="currentColor"
+      fillRule="evenodd"
+      d="M1 1v11.75A2.25 2.25 0 0 0 3.25 15H15v-1.5H3.25a.75.75 0 0 1-.75-.75V1H1Zm8.5 2.75V3H8v9h1.5V3.75ZM6 8v4H4.5V8H6Zm7-1.25V6h-1.5v6H13V6.75Z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
 interface HeaderProps {
   chartData: BenchmarkChartData | null;
 }
@@ -25,7 +43,8 @@ export const Header = ({ chartData }: HeaderProps) => {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between gap-6">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
+              <BarChartIcon />
               Benchmarks
               {location.pathname !== "/" && (
                 <span className="text-muted-foreground font-normal">

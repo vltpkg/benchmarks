@@ -25,6 +25,24 @@ import type {
   PackageManagerVersions,
 } from "@/types/chart-data";
 
+const PackageIcon = () => (
+  <svg
+    data-testid="geist-icon"
+    height="18"
+    strokeLinejoin="round"
+    viewBox="0 0 16 16"
+    width="18"
+    style={{ color: "currentcolor" }}
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8 0.154663L8.34601 0.334591L14.596 3.58459L15 3.79466V4.25V11.75V12.2053L14.596 12.4154L8.34601 15.6654L8 15.8453L7.65399 15.6654L1.40399 12.4154L1 12.2053V11.75V4.25V3.79466L1.40399 3.58459L7.65399 0.334591L8 0.154663ZM2.5 11.2947V5.44058L7.25 7.81559V13.7647L2.5 11.2947ZM8.75 13.7647L13.5 11.2947V5.44056L8.75 7.81556V13.7647ZM8 1.84534L12.5766 4.22519L7.99998 6.51352L3.42335 4.2252L8 1.84534Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
 interface PackageCountTableProps {
   title: string;
   description?: string;
@@ -126,7 +144,10 @@ export const PackageCountTable = ({
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold tracking-tight mb-2">{title}</h3>
+          <h3 className="text-lg font-semibold tracking-tight mb-2 flex items-center gap-2">
+            <PackageIcon />
+            {title}
+          </h3>
           {description && (
             <p className="text-muted-foreground">{description}</p>
           )}
