@@ -5,7 +5,8 @@ import { VariationChart } from "@/components/variation/chart";
 import { VariationTable } from "@/components/variation/table";
 import { PackageCountTable } from "@/components/variation/package-count-table";
 import { usePackageCountData } from "@/hooks/use-package-count-data";
-import type { BenchmarkChartData, Variation } from "@/types/chart-data";
+import type { BenchmarkChartData, Variation, FixtureResult } from "@/types/chart-data";
+import { sortFixtures } from "@/lib/utils";
 
 interface OutletContext {
   chartData: BenchmarkChartData;
@@ -40,11 +41,26 @@ export const VariationPage = () => {
   const packageManagers = chartData.chartData.packageManagers;
   const colors = chartData.chartData.colors;
 
+  // Sort fixture data based on preferred order
+  const sortFixtureData = (data: FixtureResult[]) => {
+    if (!data) return data;
+
+    const fixtureOrder = sortFixtures(data.map(item => item.fixture));
+    return data.sort((a, b) => {
+      const indexA = fixtureOrder.indexOf(a.fixture);
+      const indexB = fixtureOrder.indexOf(b.fixture);
+      return indexA - indexB;
+    });
+  };
+
+  const sortedTotalVariationData = sortFixtureData(totalVariationData);
+  const sortedPerPackageVariationData = sortFixtureData(perPackageVariationData);
+
   return (
     <div className="space-y-12">
       <VariationChart
         title="Per Package Install Time by Fixture"
-        variationData={perPackageVariationData}
+        variationData={sortedPerPackageVariationData}
         packageManagers={packageManagers}
         colors={colors}
         chartData={chartData}
@@ -53,7 +69,7 @@ export const VariationPage = () => {
 
       <VariationChart
         title="Total Install Time by Fixture"
-        variationData={totalVariationData}
+        variationData={sortedTotalVariationData}
         packageManagers={packageManagers}
         colors={colors}
         chartData={chartData}
@@ -63,7 +79,7 @@ export const VariationPage = () => {
       <div className="space-y-8">
         <VariationTable
           title="Total Install Time Data"
-          variationData={totalVariationData}
+          variationData={sortedTotalVariationData}
           packageManagers={packageManagers}
           chartData={chartData}
           isPerPackage={false}
@@ -71,7 +87,7 @@ export const VariationPage = () => {
 
         <VariationTable
           title="Per Package Install Time Data"
-          variationData={perPackageVariationData}
+          variationData={sortedPerPackageVariationData}
           packageManagers={packageManagers}
           chartData={chartData}
           isPerPackage={true}
@@ -91,6 +107,7 @@ export const VariationPage = () => {
             description="Number of packages installed by each package manager for this variation"
             packageCountData={packageCountData}
             packageManagers={packageManagers}
+            versions={chartData.versions}
           />
         ) : null}
       </div>

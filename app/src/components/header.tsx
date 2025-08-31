@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, sortVariations } from "@/lib/utils";
 import type { BenchmarkChartData, Variation } from "@/types/chart-data";
 
 interface HeaderProps {
@@ -16,8 +16,9 @@ interface HeaderProps {
 
 export const Header = ({ chartData }: HeaderProps) => {
   const location = useLocation();
+  const sortedVariations = chartData ? sortVariations([...chartData.chartData.variations]) : [];
   const currentVariation =
-    location.pathname.slice(1) || chartData?.chartData.variations[0];
+    location.pathname.slice(1) || sortedVariations[0];
 
   return (
     <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-50">
@@ -37,19 +38,23 @@ export const Header = ({ chartData }: HeaderProps) => {
 
           {chartData && (
             <nav role="navigation" aria-label="Benchmark variations">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="font-medium text-sm gap-2 bg-white hover:bg-neutral-100 hover:text-foreground dark:hover:text-foreground border-[1px] dark:hover:bg-neutral-700 dark:bg-neutral-800 border-muted shadow-none"
-                  >
-                    {currentVariation}
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-muted-foreground">
+                  Fixture:
+                </span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="font-medium text-sm gap-2 bg-white hover:bg-neutral-100 hover:text-foreground dark:hover:text-foreground border-[1px] dark:hover:bg-neutral-700 dark:bg-neutral-800 border-muted shadow-none"
+                    >
+                      {currentVariation}
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-64">
-                  {chartData.chartData.variations.map(
+                  {sortedVariations.map(
                     (variation: Variation) => (
                       <DropdownMenuItem key={variation} asChild>
                         <Link
@@ -66,7 +71,8 @@ export const Header = ({ chartData }: HeaderProps) => {
                     ),
                   )}
                 </DropdownMenuContent>
-              </DropdownMenu>
+                </DropdownMenu>
+              </div>
             </nav>
           )}
         </div>

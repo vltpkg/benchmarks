@@ -18,9 +18,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { getPackageManagerVersion } from "@/lib/utils";
 import type {
   PackageCountTableRow,
   PackageManager,
+  PackageManagerVersions,
 } from "@/types/chart-data";
 
 interface PackageCountTableProps {
@@ -28,6 +30,7 @@ interface PackageCountTableProps {
   description?: string;
   packageCountData: PackageCountTableRow[];
   packageManagers: PackageManager[];
+  versions?: PackageManagerVersions;
 }
 
 const columnHelper = createColumnHelper<PackageCountTableRow>();
@@ -37,6 +40,7 @@ export const PackageCountTable = ({
   description,
   packageCountData,
   packageManagers,
+  versions,
 }: PackageCountTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -53,12 +57,22 @@ export const PackageCountTable = ({
           (row) => row.packageCounts[pm],
           {
             id: pm,
-            header: pm,
+            header: () => {
+              const version = getPackageManagerVersion(pm, versions);
+              return version ? (
+                <div className="text-center">
+                  <div className="font-bold">{pm}</div>
+                  <div className="text-xs text-muted-foreground">{version}</div>
+                </div>
+              ) : (
+                <span className="font-bold">{pm}</span>
+              );
+            },
             cell: (info) => {
               const entry = info.getValue();
               if (entry && typeof entry.count === "number") {
                 const { count, minCount, maxCount } = entry;
-                
+
                 // For vlt, show range if min/max are available
                 if (pm === "vlt" && minCount !== undefined && maxCount !== undefined && minCount !== maxCount) {
                   return (
@@ -70,7 +84,7 @@ export const PackageCountTable = ({
                     </div>
                   );
                 }
-                
+
                 return <span className="font-mono">{count}</span>;
               }
               return <span className="text-muted-foreground">-</span>;
@@ -90,7 +104,7 @@ export const PackageCountTable = ({
         )
       ),
     ],
-    [packageManagers]
+    [packageManagers, versions]
   );
 
   const table = useReactTable({
@@ -136,7 +150,12 @@ export const PackageCountTable = ({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className={`${
+                      header.column.id === 'fixture' ? 'w-28' : 'w-18'
+                    }`}
+                  >
                     {header.column.getCanSort() ? (
                       <Button
                         variant="ghost"
@@ -181,7 +200,12 @@ export const PackageCountTable = ({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="font-medium pl-6">
+                    <TableCell
+                      key={cell.id}
+                      className={`font-medium text-center ${
+                        cell.column.id === 'fixture' ? 'pl-6 text-left' : 'px-3'
+                      }`}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -225,4 +249,4 @@ export const PackageCountTable = ({
       </div>
     </div>
   );
-}; 
+};

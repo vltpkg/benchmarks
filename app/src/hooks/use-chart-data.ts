@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { isBenchmarkChartData } from "@/types/chart-data";
 import { CHART_DATA_URL, ERROR_MESSAGES } from "@/constants";
-import type { BenchmarkChartData } from "@/types/chart-data";
+import type { BenchmarkChartData, PackageManagerVersions } from "@/types/chart-data";
 
 interface UseChartDataReturn {
   chartData: BenchmarkChartData | null;
@@ -20,21 +20,41 @@ export const useChartData = (): UseChartDataReturn => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(CHART_DATA_URL);
+      // Fetch chart data
+      const chartResponse = await fetch(CHART_DATA_URL);
 
-      if (!response.ok) {
+      if (!chartResponse.ok) {
         throw new Error(
-          `${ERROR_MESSAGES.FETCH_FAILED}: ${response.status} ${response.statusText}`,
+          `${ERROR_MESSAGES.FETCH_FAILED}: ${chartResponse.status} ${chartResponse.statusText}`,
         );
       }
 
-      const data: unknown = await response.json();
+      const chartData: unknown = await chartResponse.json();
 
-      if (!isBenchmarkChartData(data)) {
+      if (!isBenchmarkChartData(chartData)) {
         throw new Error(ERROR_MESSAGES.INVALID_DATA);
       }
 
-      setChartData(data);
+      // Fetch versions data (optional)
+      let versions: PackageManagerVersions | undefined;
+      try {
+        const versionsResponse = await fetch(`/latest/versions.json`);
+        if (versionsResponse.ok) {
+          versions = await versionsResponse.json() as PackageManagerVersions;
+        } else {
+          console.warn("Versions data not available");
+        }
+      } catch (versionsError) {
+        console.warn("Failed to fetch versions data:", versionsError);
+      }
+
+      // Combine chart data with versions
+      const combinedData: BenchmarkChartData = {
+        ...chartData,
+        versions,
+      };
+
+      setChartData(combinedData);
     } catch (e) {
       const errorMessage =
         e instanceof Error ? e.message : "Unknown error occurred";

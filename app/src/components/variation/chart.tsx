@@ -10,6 +10,7 @@ import type { ChartConfig } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { CHART_DEFAULTS } from "@/constants";
+import { getPackageManagerVersion, formatPackageManagerLabel } from "@/lib/utils";
 import type {
   BenchmarkChartData,
   FixtureResult,
@@ -48,6 +49,7 @@ export const VariationChart = ({
   variationData,
   packageManagers,
   colors,
+  chartData,
   isPerPackage,
 }: VariationChartProps) => {
   const { theme } = useTheme();
@@ -71,6 +73,18 @@ export const VariationChart = ({
     });
     return config;
   }, [packageManagers, colors]);
+
+  const individualChartConfig = useMemo(() => {
+    const config: ChartConfig = {};
+    packageManagers.forEach((pm) => {
+      const labelWithVersion = formatPackageManagerLabel(pm, chartData.versions);
+      config[labelWithVersion] = {
+        label: labelWithVersion,
+        color: colors[pm],
+      };
+    });
+    return config;
+  }, [packageManagers, colors, chartData.versions]);
 
   const yAxisLabel = isPerPackage ? "Time (ms per package)" : "Time (seconds)";
 
@@ -123,6 +137,54 @@ export const VariationChart = ({
     return fixtureMap;
   }, [variationData, packageManagers]);
 
+  const CustomXAxisTick = (props: any) => {
+    const { x, y, payload } = props;
+
+    if (!payload || !payload.value) {
+      return <g></g>; // Return empty group instead of null
+    }
+
+    const text = payload.value;
+
+    // Split the text into package manager and version
+    const parts = text.split(' v');
+    const packageManager = parts[0];
+    const version = parts[1] ? `v${parts[1]}` : '';
+
+    return (
+      <g transform={`translate(${x},${y})`}>
+        {/* Package manager name - bold, top line */}
+        <text
+          x={0}
+          y={0}
+          dy={6}
+          textAnchor="middle"
+          fill="#374151"
+          fontSize="11"
+          fontFamily="var(--font-mono)"
+          fontWeight="bold"
+        >
+          {packageManager}
+        </text>
+        {/* Version - normal weight, bottom line */}
+        {version && (
+          <text
+            x={0}
+            y={0}
+            dy={20}
+            textAnchor="middle"
+            fill="#6B7280"
+            fontSize="10"
+            fontFamily="var(--font-mono)"
+            fontWeight="normal"
+          >
+            {version}
+          </text>
+        )}
+      </g>
+    );
+  };
+
   const CustomLegendContent = ({ payload }: CustomLegendProps) => {
     if (!payload || !payload.length) return null;
 
@@ -130,6 +192,9 @@ export const VariationChart = ({
       <div className="flex flex-wrap justify-center gap-4 mt-4">
         {payload.map((entry: LegendPayloadEntry) => {
           const isSelected = selectedPackageManagers.has(entry.dataKey);
+          const packageManager = entry.dataKey as PackageManager;
+          const version = getPackageManagerVersion(packageManager, chartData.versions);
+
           return (
             <button
               key={entry.dataKey}
@@ -142,7 +207,12 @@ export const VariationChart = ({
                 className="w-3 h-3 rounded-sm"
                 style={{ backgroundColor: entry.color }}
               />
-              <span className="text-sm font-medium">{entry.value}</span>
+              <div className="text-center">
+                <div className="text-sm font-medium">{packageManager}</div>
+                {version && (
+                  <div className="text-xs text-muted-foreground">{version}</div>
+                )}
+              </div>
             </button>
           );
         })}
@@ -176,10 +246,13 @@ export const VariationChart = ({
                 label={{
                   value: yAxisLabel,
                   angle: -90,
-                  position: "insideLeft",
+                  position: "outside",
+                  style: { textAnchor: "middle" },
+                  offset: -10,
                 }}
                 tickCount={CHART_DEFAULTS.TICK_COUNT}
                 tick={{ fontFamily: "var(--font-mono)", fontSize: 12 }}
+                width={80}
               />
               <ChartTooltip
                 content={<ChartTooltipContent />}
@@ -194,7 +267,7 @@ export const VariationChart = ({
                 <Bar
                   key={pm}
                   dataKey={pm}
-                  fill={colors[pm]}
+                  fill={(pm === "vlt" && resolvedTheme === "dark") ? "white" : colors[pm]}
                   name={pm}
                   hide={!selectedPackageManagers.has(pm)}
                 />
@@ -215,12 +288,12 @@ export const VariationChart = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {Object.entries(chartDataByFixture).map(([fixture, data]) => {
-          const chartData = data as Record<string, number>;
+          const fixtureData = data as Record<string, number>;
           const barChartData = packageManagers
-            .filter((pm) => chartData[pm] !== undefined)
+            .filter((pm) => fixtureData[pm] !== undefined)
             .map((pm) => ({
-              name: pm,
-              value: chartData[pm],
+              name: formatPackageManagerLabel(pm, chartData.versions),
+              value: fixtureData[pm],
               fill: (pm === "vlt" && resolvedTheme === "dark") ? "white" : colors[pm],
             }));
 
@@ -232,20 +305,28 @@ export const VariationChart = ({
               <h4 className="text-md font-medium capitalize mb-4">{fixture}</h4>
               <div className="w-full">
                 <ChartContainer
-                  config={chartConfig}
+                  config={individualChartConfig}
                   className={`h-[${CHART_DEFAULTS.HEIGHT}px] w-full`}
                 >
                   <BarChart data={barChartData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                                                                                                                                            <XAxis
+                      dataKey="name"
+                      tick={<CustomXAxisTick />}
+                      height={70}
+                      interval={0}
+                    />
                     <YAxis
                       label={{
                         value: yAxisLabel,
                         angle: -90,
-                        position: "insideLeft",
+                        position: "outside",
+                        style: { textAnchor: "middle" },
+                        offset: -10,
                       }}
                       tickCount={CHART_DEFAULTS.TICK_COUNT}
                       tick={{ fontFamily: "var(--font-mono)", fontSize: 12 }}
+                      width={80}
                     />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar dataKey="value">

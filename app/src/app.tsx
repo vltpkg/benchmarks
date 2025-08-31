@@ -7,6 +7,7 @@ import { Loading } from "@/components/loading";
 import { ErrorDisplay } from "@/components/error";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { useChartData } from "@/hooks/use-chart-data";
+import { sortVariations } from "@/lib/utils";
 
 const App = () => {
   const { chartData, loading, error } = useChartData();
@@ -15,7 +16,8 @@ const App = () => {
 
   useEffect(() => {
     if (chartData && location.pathname === "/") {
-      const firstVariation = chartData.chartData.variations[0];
+      const sortedVariations = sortVariations([...chartData.chartData.variations]);
+      const firstVariation = sortedVariations[0];
       navigate(`/${firstVariation}`, { replace: true });
     }
   }, [chartData, location.pathname, navigate]);

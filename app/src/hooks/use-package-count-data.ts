@@ -5,6 +5,7 @@ import type {
   PackageCountData,
   PackageCountTableRow,
 } from "@/types/chart-data";
+import { sortFixtures } from "@/lib/utils";
 
 interface UsePackageCountDataReturn {
   packageCountData: PackageCountTableRow[];
@@ -22,7 +23,7 @@ export const usePackageCountData = (
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fixtures: Fixture[] = ["next", "astro", "svelte", "vue", "run"];
+  const fixtures: Fixture[] = sortFixtures(["next", "astro", "svelte", "vue", "run"]);
 
   const fetchPackageCountData = async () => {
     try {

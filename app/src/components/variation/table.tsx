@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { getPackageManagerVersion } from "@/lib/utils";
 import type {
   BenchmarkChartData,
   FixtureResult,
@@ -40,6 +41,7 @@ export const VariationTable = ({
   description,
   variationData,
   packageManagers,
+  chartData,
   isPerPackage,
 }: VariationTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -54,7 +56,17 @@ export const VariationTable = ({
       }),
       ...packageManagers.map((pm) =>
         columnHelper.accessor(pm as keyof FixtureResult, {
-          header: pm,
+          header: () => {
+            const version = getPackageManagerVersion(pm, chartData.versions);
+            return version ? (
+              <div className="text-center">
+                <div className="font-bold">{pm}</div>
+                <div className="text-xs text-muted-foreground">{version}</div>
+              </div>
+            ) : (
+              <span className="font-bold">{pm}</span>
+            );
+          },
           cell: (info) => {
             const value = info.getValue();
             if (typeof value === "number") {
@@ -83,7 +95,7 @@ export const VariationTable = ({
         }),
       ),
     ],
-    [packageManagers],
+    [packageManagers, chartData.versions, isPerPackage],
   );
 
   const table = useReactTable({
@@ -129,7 +141,12 @@ export const VariationTable = ({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className={`${
+                      header.column.id === 'fixture' ? 'w-28' : 'w-18'
+                    }`}
+                  >
                     {header.column.getCanSort() ? (
                       <Button
                         variant="ghost"
@@ -174,7 +191,12 @@ export const VariationTable = ({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="font-medium pl-6">
+                    <TableCell
+                      key={cell.id}
+                      className={`font-medium text-center ${
+                        cell.column.id === 'fixture' ? 'pl-6 text-left' : 'px-3'
+                      }`}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

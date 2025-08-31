@@ -25,6 +25,19 @@ export type Variation =
 
 export type ColorMap = Record<PackageManager, string>;
 
+export interface PackageManagerVersions {
+  npm?: string;
+  yarn?: string;
+  pnpm?: string;
+  berry?: string;
+  deno?: string;
+  bun?: string;
+  vlt?: string;
+  nx?: string;
+  turbo?: string;
+  node?: string;
+}
+
 export interface BaseFixtureResult {
   fixture: Fixture;
 }
@@ -87,6 +100,7 @@ export interface ChartDataSet {
 export interface BenchmarkChartData {
   chartData: ChartDataSet;
   perPackageCountChartData: ChartDataSet;
+  versions?: PackageManagerVersions;
 }
 
 export interface PackageCountEntry {
