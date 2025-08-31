@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
+import { VariationSubnav } from "@/components/variation-subnav";
 import { Footer } from "@/components/footer";
 import { Loading } from "@/components/loading";
 import { ErrorDisplay } from "@/components/error";
@@ -27,6 +28,9 @@ const App = () => {
       <ThemeProvider>
         <div className="min-h-screen gradient-bg">
           <Header chartData={chartData} />
+          <div className="hidden md:block">
+            <VariationSubnav chartData={chartData} />
+          </div>
 
           <main className="max-w-7xl mx-auto px-6 py-12">
             {loading && <Loading />}

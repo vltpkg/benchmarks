@@ -56,7 +56,7 @@ export const Header = ({ chartData }: HeaderProps) => {
           </div>
 
           {chartData && (
-            <nav role="navigation" aria-label="Benchmark variations">
+            <nav role="navigation" aria-label="Benchmark variations" className="md:hidden">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-muted-foreground">
                   Fixture:

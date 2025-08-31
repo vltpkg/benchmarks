@@ -2,6 +2,49 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import type { Variation, Fixture, PackageManager, PackageManagerVersions } from "@/types/chart-data"
 
+interface VariationCategory {
+  title: string;
+  description: string;
+  variations: Variation[];
+}
+
+export const getVariationCategories = (variations: Variation[]): VariationCategory[] => {
+  const packageManagementVariations: Variation[] = [
+    "clean",
+    "node_modules",
+    "cache",
+    "cache+node_modules",
+    "cache+lockfile",
+    "cache+lockfile+node_modules",
+    "lockfile",
+    "lockfile+node_modules"
+  ].filter(v => variations.includes(v as Variation));
+
+  const taskExecutionVariations: Variation[] = [
+    "run"
+  ].filter(v => variations.includes(v as Variation));
+
+  const categories: VariationCategory[] = [];
+
+  if (packageManagementVariations.length > 0) {
+    categories.push({
+      title: "Package Management",
+      description: "Installation scenarios with different cache and lockfile states",
+      variations: sortVariations(packageManagementVariations)
+    });
+  }
+
+  if (taskExecutionVariations.length > 0) {
+    categories.push({
+      title: "Task Execution",
+      description: "Script and command execution performance",
+      variations: sortVariations(taskExecutionVariations)
+    });
+  }
+
+  return categories;
+};
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
