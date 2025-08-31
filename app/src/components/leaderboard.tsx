@@ -78,8 +78,8 @@ export const Leaderboard = ({ chartData }: LeaderboardProps) => {
         </div>
       </div>
 
-      {/* Horizontal grid for tools */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-3">
+      {/* Flexible grid layout for tools */}
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3">
         {leaderboard.map((item, index) => {
           const rank = index + 1;
 
