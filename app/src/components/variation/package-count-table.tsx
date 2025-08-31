@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { getPackageManagerVersion } from "@/lib/utils";
+import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import type {
   PackageCountTableRow,
   PackageManager,
@@ -60,8 +61,15 @@ export const PackageCountTable = ({
   packageManagers,
   versions,
 }: PackageCountTableProps) => {
+  const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
+
+  // Filter package managers based on global filter
+  const filteredPackageManagers = useMemo(() =>
+    packageManagers.filter(pm => enabledPackageManagers.has(pm)),
+    [packageManagers, enabledPackageManagers]
+  );
 
   const columns = useMemo(
     () => [
@@ -70,7 +78,7 @@ export const PackageCountTable = ({
         cell: (info) => info.getValue(),
         enableSorting: true,
       }),
-      ...packageManagers.map((pm) =>
+      ...filteredPackageManagers.map((pm) =>
         columnHelper.accessor(
           (row) => row.packageCounts[pm],
           {
@@ -122,7 +130,7 @@ export const PackageCountTable = ({
         )
       ),
     ],
-    [packageManagers, versions]
+    [filteredPackageManagers, versions]
   );
 
   const table = useReactTable({

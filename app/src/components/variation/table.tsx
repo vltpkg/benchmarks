@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { getPackageManagerVersion } from "@/lib/utils";
+import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import type {
   BenchmarkChartData,
   FixtureResult,
@@ -80,8 +81,15 @@ export const VariationTable = ({
   chartData,
   isPerPackage,
 }: VariationTableProps) => {
+  const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
+
+  // Filter package managers based on global filter
+  const filteredPackageManagers = useMemo(() =>
+    packageManagers.filter(pm => enabledPackageManagers.has(pm)),
+    [packageManagers, enabledPackageManagers]
+  );
 
   const columns = useMemo(
     () => [
@@ -90,7 +98,7 @@ export const VariationTable = ({
         cell: (info) => info.getValue(),
         enableSorting: true,
       }),
-      ...packageManagers.map((pm) =>
+      ...filteredPackageManagers.map((pm) =>
         columnHelper.accessor(pm as keyof FixtureResult, {
           header: () => {
             const version = getPackageManagerVersion(pm, chartData.versions);
@@ -131,7 +139,7 @@ export const VariationTable = ({
         }),
       ),
     ],
-    [packageManagers, chartData.versions, isPerPackage],
+    [filteredPackageManagers, chartData.versions, isPerPackage],
   );
 
   const table = useReactTable({

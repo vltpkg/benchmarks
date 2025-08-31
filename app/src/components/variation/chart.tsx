@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell } from "recharts";
 import {
   ChartContainer,
@@ -9,6 +9,7 @@ import {
 import type { ChartConfig } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
+import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { CHART_DEFAULTS } from "@/constants";
 import { getPackageManagerVersion, formatPackageManagerLabel, getFixtureLogo } from "@/lib/utils";
 import type {
@@ -89,6 +90,13 @@ export const VariationChart = ({
   isPerPackage,
 }: VariationChartProps) => {
   const { theme } = useTheme();
+  const { enabledPackageManagers } = usePackageManagerFilter();
+
+  // Filter package managers based on global filter
+  const filteredPackageManagers = useMemo(() =>
+    packageManagers.filter(pm => enabledPackageManagers.has(pm)),
+    [packageManagers, enabledPackageManagers]
+  );
 
   // Resolve the actual theme (dark/light) when user selects "system"
   const resolvedTheme = theme === "system"
@@ -97,22 +105,27 @@ export const VariationChart = ({
 
   const [selectedPackageManagers, setSelectedPackageManagers] = useState<
     Set<string>
-  >(new Set(packageManagers));
+  >(new Set(filteredPackageManagers));
+
+  // Update selected package managers when global filter changes
+  useEffect(() => {
+    setSelectedPackageManagers(new Set(filteredPackageManagers));
+  }, [filteredPackageManagers]);
 
   const chartConfig = useMemo(() => {
     const config: ChartConfig = {};
-    packageManagers.forEach((pm) => {
+    filteredPackageManagers.forEach((pm) => {
       config[pm] = {
         label: pm,
         color: colors[pm],
       };
     });
     return config;
-  }, [packageManagers, colors]);
+  }, [filteredPackageManagers, colors]);
 
   const individualChartConfig = useMemo(() => {
     const config: ChartConfig = {};
-    packageManagers.forEach((pm) => {
+    filteredPackageManagers.forEach((pm) => {
       const labelWithVersion = formatPackageManagerLabel(pm, chartData.versions);
       config[labelWithVersion] = {
         label: labelWithVersion,
@@ -120,7 +133,7 @@ export const VariationChart = ({
       };
     });
     return config;
-  }, [packageManagers, colors, chartData.versions]);
+  }, [filteredPackageManagers, colors, chartData.versions]);
 
   const yAxisLabel = isPerPackage ? "Time (ms per package)" : "Time (seconds)";
 
@@ -137,16 +150,16 @@ export const VariationChart = ({
   };
 
   const handleReset = () => {
-    setSelectedPackageManagers(new Set(packageManagers));
+    setSelectedPackageManagers(new Set(filteredPackageManagers));
   };
 
-  const isAllSelected = selectedPackageManagers.size === packageManagers.length;
+  const isAllSelected = selectedPackageManagers.size === filteredPackageManagers.length;
 
   // Always compute both data structures to avoid conditional hook calls
   const consolidatedData = useMemo(() => {
     return variationData.map((item): ConsolidatedChartItem => {
       const chartItem: ConsolidatedChartItem = { fixture: item.fixture };
-      packageManagers.forEach((pm) => {
+      filteredPackageManagers.forEach((pm) => {
         const value = item[pm as keyof FixtureResult];
         if (value !== undefined) {
           chartItem[pm] = value;
@@ -154,14 +167,14 @@ export const VariationChart = ({
       });
       return chartItem;
     });
-  }, [variationData, packageManagers]);
+  }, [variationData, filteredPackageManagers]);
 
   const chartDataByFixture = useMemo(() => {
     const fixtureMap: Record<string, Record<string, number>> = {};
 
     variationData.forEach((item) => {
       const chartItem: Record<string, number> = {};
-      packageManagers.forEach((pm) => {
+      filteredPackageManagers.forEach((pm) => {
         const value = item[pm as keyof FixtureResult];
         if (value !== undefined && typeof value === 'number') {
           chartItem[pm] = value;
@@ -171,7 +184,7 @@ export const VariationChart = ({
     });
 
     return fixtureMap;
-  }, [variationData, packageManagers]);
+  }, [variationData, filteredPackageManagers]);
 
   const CustomXAxisTick = (props: any) => {
     const { x, y, payload } = props;
@@ -302,7 +315,7 @@ export const VariationChart = ({
                 verticalAlign="bottom"
                 height={60}
               />
-              {packageManagers.map((pm) => (
+              {filteredPackageManagers.map((pm) => (
                 <Bar
                   key={pm}
                   dataKey={pm}
@@ -331,7 +344,7 @@ export const VariationChart = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {Object.entries(chartDataByFixture).map(([fixture, data]) => {
           const fixtureData = data as Record<string, number>;
-          const barChartData = packageManagers
+          const barChartData = filteredPackageManagers
             .filter((pm) => fixtureData[pm] !== undefined)
             .map((pm) => ({
               name: formatPackageManagerLabel(pm, chartData.versions),

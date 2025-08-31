@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { cn, sortVariations } from "@/lib/utils";
+import { PackageManagerFilter } from "@/components/package-manager-filter";
 import type { BenchmarkChartData, Variation } from "@/types/chart-data";
 
 const BarChartIcon = () => (
@@ -56,6 +57,10 @@ export const Header = ({ chartData }: HeaderProps) => {
           </div>
 
           {chartData && (
+            <div className="flex items-center gap-4">
+              <PackageManagerFilter packageManagers={chartData.chartData.packageManagers} />
+
+              {/* Mobile variation dropdown */}
             <nav role="navigation" aria-label="Benchmark variations" className="md:hidden">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-muted-foreground">
@@ -93,6 +98,7 @@ export const Header = ({ chartData }: HeaderProps) => {
                 </DropdownMenu>
               </div>
             </nav>
+            </div>
           )}
         </div>
       </div>
