@@ -8,10 +8,13 @@ import {
 } from "@/components/ui/chart";
 import type { ChartConfig } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
+import { ShareButton } from "@/components/share-button";
+import { createSectionId } from "@/lib/utils";
 import { useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
+
 import { CHART_DEFAULTS } from "@/constants";
-import { getPackageManagerVersion, formatPackageManagerLabel, getFixtureLogo } from "@/lib/utils";
+import { getPackageManagerVersion, formatPackageManagerLabel, getFixtureLogo, getFixtureId } from "@/lib/utils";
 import type {
   BenchmarkChartData,
   FixtureResult,
@@ -79,6 +82,7 @@ interface VariationChartProps {
   colors: ColorMap;
   chartData: BenchmarkChartData;
   isPerPackage: boolean;
+  currentVariation: string;
 }
 
 export const VariationChart = ({
@@ -88,6 +92,7 @@ export const VariationChart = ({
   colors,
   chartData,
   isPerPackage,
+  currentVariation,
 }: VariationChartProps) => {
   const { theme } = useTheme();
   const { enabledPackageManagers } = usePackageManagerFilter();
@@ -155,9 +160,12 @@ export const VariationChart = ({
 
   const isAllSelected = selectedPackageManagers.size === filteredPackageManagers.length;
 
+  // Use all variation data (no fixture filtering)
+  const filteredVariationData = variationData;
+
   // Always compute both data structures to avoid conditional hook calls
   const consolidatedData = useMemo(() => {
-    return variationData.map((item): ConsolidatedChartItem => {
+    return filteredVariationData.map((item): ConsolidatedChartItem => {
       const chartItem: ConsolidatedChartItem = { fixture: item.fixture };
       filteredPackageManagers.forEach((pm) => {
         const value = item[pm as keyof FixtureResult];
@@ -167,12 +175,12 @@ export const VariationChart = ({
       });
       return chartItem;
     });
-  }, [variationData, filteredPackageManagers]);
+  }, [filteredVariationData, filteredPackageManagers]);
 
   const chartDataByFixture = useMemo(() => {
     const fixtureMap: Record<string, Record<string, number>> = {};
 
-    variationData.forEach((item) => {
+    filteredVariationData.forEach((item) => {
       const chartItem: Record<string, number> = {};
       filteredPackageManagers.forEach((pm) => {
         const value = item[pm as keyof FixtureResult];
@@ -184,7 +192,7 @@ export const VariationChart = ({
     });
 
     return fixtureMap;
-  }, [variationData, filteredPackageManagers]);
+  }, [filteredVariationData, filteredPackageManagers]);
 
   const CustomXAxisTick = (props: any) => {
     const { x, y, payload } = props;
@@ -274,9 +282,16 @@ export const VariationChart = ({
     return (
       <div className="space-y-8">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold tracking-tight flex items-center gap-2">
+          <h3 className="text-xl font-semibold tracking-tight flex items-center gap-2 group">
             <ClockIcon />
             {title}
+            <ShareButton
+              variation={currentVariation}
+              section={createSectionId(title)}
+              size="sm"
+              variant="ghost"
+              label=""
+            />
           </h3>
           <Button
             onClick={handleReset}
@@ -335,9 +350,16 @@ export const VariationChart = ({
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-xl font-semibold tracking-tight flex items-center gap-2">
+        <h3 className="text-xl font-semibold tracking-tight flex items-center gap-2 group">
           <StopwatchIcon />
           {title}
+          <ShareButton
+            variation={currentVariation}
+            section={createSectionId(title)}
+            size="sm"
+            variant="ghost"
+            label=""
+          />
         </h3>
       </div>
 
@@ -357,17 +379,28 @@ export const VariationChart = ({
           return (
             <div
               key={fixture}
+              id={getFixtureId(fixture)}
               className="bg-card rounded-xl p-6 border-[1px] border-border"
             >
-              <div className="flex items-center gap-3 mb-4">
-                {logoSrc && (
-                  <img
-                    src={logoSrc}
-                    alt={`${fixture} logo`}
-                    className="w-6 h-6"
-                  />
-                )}
-                <h4 className="text-md font-medium capitalize">{fixture} Project</h4>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  {logoSrc && (
+                    <img
+                      src={logoSrc}
+                      alt={`${fixture} logo`}
+                      className="w-6 h-6"
+                    />
+                  )}
+                  <h4 className="text-md font-medium capitalize">{fixture} Project</h4>
+                </div>
+                <ShareButton
+                  variation={currentVariation}
+                  section={isPerPackage ? "per-package-install-time-by-fixture" : "total-install-time-by-fixture"}
+                  fixture={fixture}
+                  label="Share"
+                  size="sm"
+                  variant="ghost"
+                />
               </div>
               <div className="w-full">
                 <ChartContainer

@@ -9,6 +9,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { cn, sortVariations } from "@/lib/utils";
 import { PackageManagerFilter } from "@/components/package-manager-filter";
+
 import type { BenchmarkChartData, Variation } from "@/types/chart-data";
 
 const BarChartIcon = () => (

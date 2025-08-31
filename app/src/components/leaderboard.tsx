@@ -97,7 +97,7 @@ export const Leaderboard = ({ chartData }: LeaderboardProps) => {
                      <div className="flex-1">
                        <div className="text-sm font-medium">{item.packageManager}</div>
                        <div className="text-xs text-muted-foreground">
-                         {item.averageTime.toFixed(1)}ms/pkg avg
+                         {item.averageTime.toFixed(1)}ms/pkg
                        </div>
                      </div>
 

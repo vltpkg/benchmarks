@@ -12,6 +12,14 @@ export const routes: RouteObject[] = [
         path: ":variation",
         element: <VariationPage />,
       },
+      {
+        path: ":variation/:section",
+        element: <VariationPage />,
+      },
+      {
+        path: ":variation/:section/:fixture",
+        element: <VariationPage />,
+      },
     ],
   },
 ];

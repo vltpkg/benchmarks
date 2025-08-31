@@ -42,7 +42,7 @@ export const PackageManagerFilter = ({ packageManagers }: PackageManagerFilterPr
           )}
         >
           {hasFilters ? <FilterX className="h-4 w-4" /> : <Filter className="h-4 w-4" />}
-          Filter
+          Tools
           <span className="text-xs text-muted-foreground">
             ({enabledCount}/{totalCount})
           </span>

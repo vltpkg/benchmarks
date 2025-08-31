@@ -3,12 +3,11 @@ import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
-  getFilteredRowModel,
   flexRender,
   createColumnHelper,
   type SortingState,
 } from "@tanstack/react-table";
-import { ArrowUp, ArrowDown, ArrowUpDown, Search } from "lucide-react";
+import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -18,8 +17,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { getPackageManagerVersion } from "@/lib/utils";
+import { getPackageManagerVersion, createSectionId } from "@/lib/utils";
+import { ShareButton } from "@/components/share-button";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
+
 import type {
   PackageCountTableRow,
   PackageManager,
@@ -50,6 +51,7 @@ interface PackageCountTableProps {
   packageCountData: PackageCountTableRow[];
   packageManagers: PackageManager[];
   versions?: PackageManagerVersions;
+  currentVariation: string;
 }
 
 const columnHelper = createColumnHelper<PackageCountTableRow>();
@@ -60,10 +62,10 @@ export const PackageCountTable = ({
   packageCountData,
   packageManagers,
   versions,
+  currentVariation,
 }: PackageCountTableProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState<string>("");
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(() =>
@@ -102,7 +104,7 @@ export const PackageCountTable = ({
                 // For vlt, show range if min/max are available
                 if (pm === "vlt" && minCount !== undefined && maxCount !== undefined && minCount !== maxCount) {
                   return (
-                    <div className="font-mono">
+                    <div className="text-center font-mono">
                       <div>{count}</div>
                       <div className="text-xs text-muted-foreground">
                         ({minCount}-{maxCount})
@@ -111,9 +113,9 @@ export const PackageCountTable = ({
                   );
                 }
 
-                return <span className="font-mono">{count}</span>;
+                return <div className="text-center"><span className="font-mono">{count}</span></div>;
               }
-              return <span className="text-muted-foreground">-</span>;
+              return <div className="text-center"><span className="text-muted-foreground">-</span></div>;
             },
             enableSorting: true,
             sortingFn: (rowA, rowB, columnId) => {
@@ -138,39 +140,30 @@ export const PackageCountTable = ({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     enableSortingRemoval: false,
     state: {
       sorting,
-      globalFilter,
     },
     onSortingChange: setSorting,
-    onGlobalFilterChange: setGlobalFilter,
   });
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-lg font-semibold tracking-tight mb-2 flex items-center gap-2">
-            <PackageIcon />
-            {title}
-          </h3>
-          {description && (
-            <p className="text-muted-foreground">{description}</p>
-          )}
-        </div>
-        <div className="flex-shrink-0">
-          <div className="relative">
-            <Search className="size-4 text-muted-foreground absolute inset-0 my-auto ml-2" />
-            <input
-              placeholder="Filter data..."
-              value={globalFilter ?? ""}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              className="pl-8 pr-4 py-2 bg-input border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-            />
-          </div>
-        </div>
+            <div>
+        <h3 className="text-lg font-semibold tracking-tight mb-2 flex items-center gap-2 group">
+          <PackageIcon />
+          {title}
+          <ShareButton
+            variation={currentVariation}
+            section={createSectionId(title)}
+            size="sm"
+            variant="ghost"
+            label=""
+          />
+        </h3>
+        {description && (
+          <p className="text-muted-foreground">{description}</p>
+        )}
       </div>
 
       <div className="bg-card rounded-xl border border-border overflow-hidden">
@@ -182,14 +175,14 @@ export const PackageCountTable = ({
                   <TableHead
                     key={header.id}
                     className={`${
-                      header.column.id === 'fixture' ? 'w-28' : 'w-18'
+                      header.column.id === 'fixture' ? 'w-28' : 'w-18 text-center'
                     }`}
                   >
                     {header.column.getCanSort() ? (
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="dark:hover:bg-neutral-800 dark:hover:text-foreground hover:text-foreground hover:bg-neutral-200 text-muted-foreground h-8 px-2 ml-2 font-medium"
+                        className="dark:hover:bg-neutral-800 dark:hover:text-foreground hover:text-foreground hover:bg-neutral-200 text-muted-foreground h-8 px-3 font-medium"
                         onClick={header.column.getToggleSortingHandler()}
                       >
                         {header.isPlaceholder
@@ -232,7 +225,7 @@ export const PackageCountTable = ({
                     <TableCell
                       key={cell.id}
                       className={`font-medium text-center ${
-                        cell.column.id === 'fixture' ? 'pl-6 text-left' : 'px-3'
+                        cell.column.id === 'fixture' ? 'pl-6 text-left' : 'pl-3 pr-7'
                       }`}
                     >
                       {flexRender(
@@ -255,26 +248,6 @@ export const PackageCountTable = ({
             )}
           </TableBody>
         </Table>
-      </div>
-
-      <div className="flex border-border border-[1px] justify-between items-center text-sm text-muted-foreground bg-white dark:bg-muted/30 px-6 py-3 rounded-lg">
-        <span>
-          Showing{" "}
-          <span className="font-mono">
-            {table.getFilteredRowModel().rows.length}
-          </span>{" "}
-          of{" "}
-          <span className="font-mono">
-            {table.getCoreRowModel().rows.length}
-          </span>{" "}
-          results
-        </span>
-        <span className="font-medium">
-          <span className="font-mono">
-            {table.getFilteredRowModel().rows.length}
-          </span>{" "}
-          fixtures
-        </span>
       </div>
     </div>
   );

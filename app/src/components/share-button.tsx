@@ -1,0 +1,83 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { createDeepLink } from "@/lib/utils";
+
+interface ShareButtonProps {
+  variation: string;
+  section?: string;
+  fixture?: string;
+  label?: string;
+  size?: "sm" | "default" | "lg";
+  variant?: "default" | "outline" | "ghost";
+}
+
+const ShareIcon = () => (
+  <svg
+    data-testid="geist-icon"
+    height="16"
+    strokeLinejoin="round"
+    style={{ color: "currentColor" }}
+    viewBox="0 0 16 16"
+    width="16"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8.46968 1.46968C10.1433 -0.203925 12.8567 -0.203923 14.5303 1.46968C16.2039 3.14329 16.2039 5.85674 14.5303 7.53034L12.0303 10.0303L10.9697 8.96968L13.4697 6.46968C14.5575 5.38186 14.5575 3.61816 13.4697 2.53034C12.3819 1.44252 10.6182 1.44252 9.53034 2.53034L7.03034 5.03034L5.96968 3.96968L8.46968 1.46968ZM11.5303 5.53034L5.53034 11.5303L4.46968 10.4697L10.4697 4.46968L11.5303 5.53034ZM1.46968 14.5303C3.14329 16.2039 5.85673 16.204 7.53034 14.5303L10.0303 12.0303L8.96968 10.9697L6.46968 13.4697C5.38186 14.5575 3.61816 14.5575 2.53034 13.4697C1.44252 12.3819 1.44252 10.6182 2.53034 9.53034L5.03034 7.03034L3.96968 5.96968L1.46968 8.46968C-0.203923 10.1433 -0.203925 12.8567 1.46968 14.5303Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+export const ShareButton = ({
+  variation,
+  section,
+  fixture,
+  label = "Share",
+  size = "sm",
+  variant = "outline"
+}: ShareButtonProps) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    const deepLink = createDeepLink(variation, section, fixture);
+    const url = `${window.location.origin}${window.location.pathname}#${deepLink}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy to clipboard:', err);
+      // Fallback: create a temporary input element
+      const tempInput = document.createElement('input');
+      tempInput.value = url;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  return (
+    <Button
+      onClick={handleShare}
+      size={size}
+      variant={variant}
+      className="transition-all duration-200"
+    >
+      {copied ? (
+        <>
+          ✓ {label === "Share" ? "Copied!" : label}
+        </>
+      ) : (
+        <>
+          <ShareIcon />
+          {label !== "Share" && <span className="ml-1">{label}</span>}
+        </>
+      )}
+    </Button>
+  );
+};
