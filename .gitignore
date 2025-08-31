@@ -13,3 +13,6 @@ dist
 chart
 charts
 results
+
+# ignore latest in app for testing
+app/latest

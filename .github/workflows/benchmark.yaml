@@ -64,6 +64,12 @@ jobs:
           name: results-${{ matrix.fixture }}-${{ matrix.variation }}
           path: ./results/${{ matrix.fixture }}/${{ matrix.variation }}/
           retention-days: 7
+      - name: Upload Versions Info
+        uses: actions/upload-artifact@v4
+        with:
+          name: versions-${{ matrix.fixture }}-${{ matrix.variation }}
+          path: ./results/versions.json
+          retention-days: 7
   process:
     name: 'Process Results'
     runs-on: ubuntu-latest
@@ -80,6 +86,11 @@ jobs:
         with:
           path: results
           pattern: results-*
+      - name: Download Versions
+        uses: actions/download-artifact@v4
+        with:
+          path: versions-temp
+          pattern: versions-*
       - name: Clean benchmarks result
         uses: actions/github-script@v7
         with:
@@ -190,6 +201,10 @@ jobs:
             }
 
             console.log('Benchmark cleaning completed');
+      - name: Copy Versions File
+        run: |
+          # Find any versions.json file from the downloaded versions artifacts and copy it to results
+          find versions-temp -name "versions.json" -type f | head -1 | xargs -I {} cp {} ./results/versions.json || echo "No versions.json found"
       - name: Process Results
         run: |
           bash ./scripts/process-results.sh
