@@ -48,9 +48,8 @@ export const getVariationCategories = (variations: Variation[]): VariationCatego
 interface RankingData {
   packageManager: PackageManager;
   wins: number;
-  totalScore: number;
-  averageRank: number;
-  totalRanks: number;
+  averageTime: number;
+  totalTests: number;
 }
 
 export const calculateLeaderboard = (chartData: any): RankingData[] => {
@@ -60,70 +59,63 @@ export const calculateLeaderboard = (chartData: any): RankingData[] => {
     packageManagers.includes(pm)
   ) as PackageManager[];
 
-    const packageManagerCounts: Record<PackageManager, { wins: number; totalRanks: number; rankSum: number }> = {} as any;
+  const packageManagerStats: Record<PackageManager, { wins: number; totalTime: number; testCount: number }> = {} as any;
 
-  // Initialize counts for package managers only
+  // Initialize stats for package managers only
   availablePackageManagers.forEach(pm => {
-    packageManagerCounts[pm] = { wins: 0, totalRanks: 0, rankSum: 0 };
+    packageManagerStats[pm] = { wins: 0, totalTime: 0, testCount: 0 };
   });
 
   // Get package management variations (excluding "run")
   const packageManagementVariations = getVariationCategories(chartData.chartData.variations)
     .find(cat => cat.title === "Package Management")?.variations || [];
 
-  // Calculate rankings for each fixture and variation
+    // Calculate actual performance for each fixture and variation using per-package data
   packageManagementVariations.forEach(variation => {
-    const variationData = chartData.chartData.data[variation];
+    const variationData = chartData.perPackageCountChartData.data[variation];
     if (!variationData) return;
 
     variationData.forEach((fixtureResult: any) => {
-      // Get all package manager times for this fixture
+      // Get all package manager times for this fixture (per-package timing)
       const times: Array<{ pm: PackageManager; time: number }> = [];
 
       availablePackageManagers.forEach(pm => {
         const time = fixtureResult[pm];
         if (typeof time === 'number' && time > 0) {
           times.push({ pm, time });
+          // Add to total time and count
+          packageManagerStats[pm].totalTime += time;
+          packageManagerStats[pm].testCount++;
         }
       });
 
-      // Sort by time (ascending - faster is better)
+      // Sort by time to find winner (1st place)
       times.sort((a, b) => a.time - b.time);
 
-            // Award points based on ranking - account for ALL positions
-      times.forEach((item, index) => {
-        const rank = index + 1;
-        const counts = packageManagerCounts[item.pm];
-
-        // Only count wins (1st place)
-        if (rank === 1) counts.wins++;
-
-        counts.totalRanks++;
-        counts.rankSum += rank;
-      });
+      // Award win to fastest
+      if (times.length > 0) {
+        packageManagerStats[times[0].pm].wins++;
+      }
     });
   });
 
-    // Calculate final rankings with improved scoring
+  // Calculate final rankings based on average performance
   const leaderboard: RankingData[] = availablePackageManagers.map(pm => {
-    const counts = packageManagerCounts[pm];
-    // Simple scoring based on wins, but rank by average rank for all positions
-    const totalScore = counts.wins;
-    const averageRank = counts.totalRanks > 0 ? counts.rankSum / counts.totalRanks : Number.MAX_SAFE_INTEGER;
+    const stats = packageManagerStats[pm];
+    const averageTime = stats.testCount > 0 ? stats.totalTime / stats.testCount : Number.MAX_SAFE_INTEGER;
 
     return {
       packageManager: pm,
-      wins: counts.wins,
-      totalScore,
-      averageRank,
-      totalRanks: counts.totalRanks
+      wins: stats.wins,
+      averageTime,
+      totalTests: stats.testCount
     };
   });
 
-  // Sort primarily by average rank (lower is better), then by wins as tiebreaker
+  // Sort by average time (lower is better), then by wins as tiebreaker
   return leaderboard.sort((a, b) => {
-    // Primary sort: average rank (ascending - lower is better)
-    if (a.averageRank !== b.averageRank) return a.averageRank - b.averageRank;
+    // Primary sort: average time (ascending - faster is better)
+    if (a.averageTime !== b.averageTime) return a.averageTime - b.averageTime;
     // Tiebreaker: wins (descending - more wins is better)
     return b.wins - a.wins;
   });

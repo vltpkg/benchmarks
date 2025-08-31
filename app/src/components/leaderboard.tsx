@@ -58,9 +58,9 @@ export const Leaderboard = ({ chartData }: LeaderboardProps) => {
   if (leaderboard.length === 0) return null;
 
   // Calculate total scenarios for context
-  const totalScenarios = leaderboard.length > 0 ? leaderboard[0].totalRanks : 0;
+    const totalScenarios = leaderboard.length > 0 ? leaderboard[0].totalTests : 0;
 
-        return (
+  return (
     <div className="bg-card/50 border border-border/50 rounded-lg p-3 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export const Leaderboard = ({ chartData }: LeaderboardProps) => {
           <div>
             <h4 className="text-sm font-semibold">Package Manager Rankings</h4>
             <p className="text-xs text-muted-foreground">
-              Average position across {totalScenarios} scenarios
+              Average per-package performance across {totalScenarios} tests
             </p>
           </div>
         </div>
@@ -93,13 +93,13 @@ export const Leaderboard = ({ chartData }: LeaderboardProps) => {
                 {rank}
               </div>
 
-              {/* Tool name and average - left aligned */}
-              <div className="flex-1">
-                <div className="text-sm font-medium">{item.packageManager}</div>
-                <div className="text-xs text-muted-foreground">
-                  {item.averageRank.toFixed(1)} avg
-                </div>
-              </div>
+                                   {/* Tool name and average - left aligned */}
+                     <div className="flex-1">
+                       <div className="text-sm font-medium">{item.packageManager}</div>
+                       <div className="text-xs text-muted-foreground">
+                         {item.averageTime.toFixed(1)}ms/pkg avg
+                       </div>
+                     </div>
 
               {/* Package manager logo - right aligned for balance */}
               {getPackageManagerLogo(item.packageManager) && (
