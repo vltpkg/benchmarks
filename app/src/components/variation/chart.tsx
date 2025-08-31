@@ -386,13 +386,43 @@ export const VariationChart = ({
                 wrapperStyle={{
                   color: theme === 'dark' ? 'white' : 'currentColor'
                 }}
+                content={(props) => {
+                  if (!props.payload) return null;
+                  return (
+                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                      {props.payload.map((entry, index) => {
+                        const packageManager = entry.dataKey as PackageManager;
+                        const isSelected = selectedPackageManagers.has(packageManager);
+                        const formattedLabel = formatPackageManagerLabel(packageManager, chartData.versions);
+
+                        return (
+                          <button
+                            key={String(entry.dataKey) || index}
+                            onClick={() => handleLegendClick(packageManager)}
+                            className={`flex items-center gap-2 px-3 py-1 rounded-md transition-all hover:bg-muted ${
+                              isSelected ? "opacity-100" : "opacity-40"
+                            }`}
+                          >
+                            <div
+                              className="w-3 h-3 rounded-sm"
+                              style={{ backgroundColor: entry.color }}
+                            />
+                            <span className="text-sm font-medium">
+                              {formattedLabel}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  );
+                }}
               />
               {filteredPackageManagers.map((pm) => (
                 <Bar
                   key={pm}
                   dataKey={pm}
                   fill={(pm === "vlt" && theme === "dark") ? "white" : colors[pm]}
-                  name={pm}
+                  name={formatPackageManagerLabel(pm, chartData.versions)}
                   hide={!selectedPackageManagers.has(pm)}
                 />
               ))}
