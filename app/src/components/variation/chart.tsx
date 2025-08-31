@@ -9,7 +9,7 @@ import {
 import type { ChartConfig } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/share-button";
-import { createSectionId } from "@/lib/utils";
+import { createSectionId, isTaskExecutionVariation } from "@/lib/utils";
 import { useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 
@@ -140,7 +140,11 @@ export const VariationChart = ({
     return config;
   }, [filteredPackageManagers, colors, chartData.versions]);
 
-  const yAxisLabel = isPerPackage ? "Time (ms per package)" : "Time (seconds)";
+  const yAxisLabel = isTaskExecutionVariation(currentVariation)
+    ? "Time (seconds)"
+    : isPerPackage
+      ? "Time (ms per package)"
+      : "Time (seconds)";
 
   const handleLegendClick = (dataKey: string) => {
     setSelectedPackageManagers((prev) => {

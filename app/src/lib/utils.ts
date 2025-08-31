@@ -8,6 +8,11 @@ interface VariationCategory {
   variations: Variation[];
 }
 
+export const isTaskExecutionVariation = (variation: string): boolean => {
+  const taskExecutionVariations = ["run"];
+  return taskExecutionVariations.includes(variation);
+};
+
 export const getVariationCategories = (variations: Variation[]): VariationCategory[] => {
   const packageManagementVariations: Variation[] = [
     "clean",

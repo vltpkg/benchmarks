@@ -8,7 +8,7 @@ import { PackageCountTable } from "@/components/variation/package-count-table";
 import { SectionNavigation } from "@/components/section-navigation";
 import { usePackageCountData } from "@/hooks/use-package-count-data";
 import type { BenchmarkChartData, Variation, FixtureResult } from "@/types/chart-data";
-import { sortFixtures, createSectionId, scrollToSection, getFixtureId, getAvailablePackageManagers, getAvailablePackageManagersFromPackageCount } from "@/lib/utils";
+import { sortFixtures, createSectionId, scrollToSection, getFixtureId, getAvailablePackageManagers, getAvailablePackageManagersFromPackageCount, isTaskExecutionVariation } from "@/lib/utils";
 
 interface OutletContext {
   chartData: BenchmarkChartData;
@@ -76,6 +76,9 @@ export const VariationPage = () => {
   const sortedTotalVariationData = sortFixtureData(totalVariationData);
   const sortedPerPackageVariationData = sortFixtureData(perPackageVariationData);
 
+  // Check if this is a task execution variation
+  const isTaskExecution = isTaskExecutionVariation(variation as string);
+
   // Handle deep linking to sections and fixtures
   useEffect(() => {
     if (section && fixture) {
@@ -95,42 +98,61 @@ export const VariationPage = () => {
     }
   }, [section, fixture]);
 
+  // Dynamic titles and section IDs based on variation type
+  const titles = isTaskExecution ? {
+    totalChart: "Task Execution Time by Fixture",
+    totalTable: "Task Execution Time Data",
+    perPackageChart: "Task Execution Time by Fixture", // Not used for task execution
+    perPackageTable: "Task Execution Time Data", // Not used for task execution
+    packageCountTable: "Package Count Data",
+  } : {
+    totalChart: "Total Install Time by Fixture",
+    totalTable: "Total Install Time Data",
+    perPackageChart: "Per Package Install Time by Fixture",
+    perPackageTable: "Per Package Install Time Data",
+    packageCountTable: "Package Count Data",
+  };
+
   // Section IDs for deep linking
   const sectionIds = {
-    perPackageChart: createSectionId("Per Package Install Time by Fixture"),
-    totalChart: createSectionId("Total Install Time by Fixture"),
-    totalTable: createSectionId("Total Install Time Data"),
-    perPackageTable: createSectionId("Per Package Install Time Data"),
-    packageCountTable: createSectionId("Package Count Data"),
+    perPackageChart: createSectionId(titles.perPackageChart),
+    totalChart: createSectionId(titles.totalChart),
+    totalTable: createSectionId(titles.totalTable),
+    perPackageTable: createSectionId(titles.perPackageTable),
+    packageCountTable: createSectionId(titles.packageCountTable),
   };
 
     return (
     <div className="space-y-12">
-      {/* 1. Per-package fixture charts */}
-      <div id={sectionIds.perPackageChart}>
-        <VariationChart
-          title="Per Package Install Time by Fixture"
-          variationData={sortedPerPackageVariationData}
-          packageManagers={packageManagers}
-          colors={colors}
-          chartData={chartData}
-          isPerPackage={true}
-          currentVariation={variation as string}
-        />
-      </div>
-
-      <div className="space-y-8">
-        {/* 2. Per-package fixture data table */}
-        <div id={sectionIds.perPackageTable}>
-          <VariationTable
-            title="Per Package Install Time Data"
+      {/* 1. Per-package fixture charts - only show for package management tests */}
+      {!isTaskExecution && (
+        <div id={sectionIds.perPackageChart}>
+          <VariationChart
+            title={titles.perPackageChart}
             variationData={sortedPerPackageVariationData}
             packageManagers={packageManagers}
+            colors={colors}
             chartData={chartData}
             isPerPackage={true}
             currentVariation={variation as string}
           />
         </div>
+      )}
+
+      <div className="space-y-8">
+        {/* 2. Per-package fixture data table - only show for package management tests */}
+        {!isTaskExecution && (
+          <div id={sectionIds.perPackageTable}>
+            <VariationTable
+              title={titles.perPackageTable}
+              variationData={sortedPerPackageVariationData}
+              packageManagers={packageManagers}
+              chartData={chartData}
+              isPerPackage={true}
+              currentVariation={variation as string}
+            />
+          </div>
+        )}
 
         {/* 3. Package count data table */}
         {packageCountLoading ? (
@@ -155,10 +177,10 @@ export const VariationPage = () => {
         ) : null}
       </div>
 
-      {/* 4. Total install time chart */}
+      {/* 4. Total time chart */}
       <div id={sectionIds.totalChart}>
         <VariationChart
-          title="Total Install Time by Fixture"
+          title={titles.totalChart}
           variationData={sortedTotalVariationData}
           packageManagers={packageManagers}
           colors={colors}
@@ -169,10 +191,10 @@ export const VariationPage = () => {
       </div>
 
       <div className="space-y-8">
-        {/* 5. Total install time data table */}
+        {/* 5. Total time data table */}
         <div id={sectionIds.totalTable}>
           <VariationTable
-            title="Total Install Time Data"
+            title={titles.totalTable}
             variationData={sortedTotalVariationData}
             packageManagers={packageManagers}
             chartData={chartData}
