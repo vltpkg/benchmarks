@@ -162,7 +162,7 @@ export const PackageCountTable = ({
           />
         </h3>
         {description && (
-          <p className="text-muted-foreground">{description}</p>
+          <p className="text-neutral-600 dark:text-white">{description}</p>
         )}
       </div>
 

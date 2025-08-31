@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { calculateLeaderboard, getPackageManagerLogo } from "@/lib/utils";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
+import { useTheme } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import type { BenchmarkChartData } from "@/types/chart-data";
 
@@ -48,6 +49,7 @@ const MedalIcon = ({ count, type }: { count: number; type: 'first' | 'second' | 
 
 export const Leaderboard = ({ chartData }: LeaderboardProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
+  const { theme } = useTheme();
 
   const leaderboard = useMemo(() => {
     const fullLeaderboard = calculateLeaderboard(chartData);
@@ -102,12 +104,15 @@ export const Leaderboard = ({ chartData }: LeaderboardProps) => {
                      </div>
 
               {/* Package manager logo - right aligned for balance */}
-              {getPackageManagerLogo(item.packageManager) && (
+              {getPackageManagerLogo(item.packageManager, theme) && (
                 <div className="flex-shrink-0">
                   <img
-                    src={getPackageManagerLogo(item.packageManager)}
+                    src={getPackageManagerLogo(item.packageManager, theme)}
                     alt={`${item.packageManager} logo`}
-                    className="w-6 h-6"
+                    className={cn(
+                      "w-6 h-6",
+                      item.packageManager === 'vlt' && theme === 'dark' && "brightness-0 invert"
+                    )}
                   />
                 </div>
               )}

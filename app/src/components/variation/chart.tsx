@@ -15,6 +15,44 @@ import { usePackageManagerFilter } from "@/contexts/package-manager-filter-conte
 
 import { CHART_DEFAULTS } from "@/constants";
 import { getPackageManagerVersion, formatPackageManagerLabel, getFixtureLogo, getFixtureId } from "@/lib/utils";
+
+// Custom X-axis tick component for stacked name/version display
+const CustomXAxisTick = (props: any) => {
+  const { x, y, payload } = props;
+  const { theme } = useTheme();
+
+  if (!payload?.value) return <g></g>;
+
+  const parts = payload.value.split(' ');
+  const name = parts[0];
+  const version = parts.slice(1).join(' ');
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="middle"
+        fill={theme === 'dark' ? 'white' : 'currentColor'}
+        fontSize="12"
+        fontWeight="600"
+      >
+        {name}
+      </text>
+      <text
+        x={0}
+        y={0}
+        dy={32}
+        textAnchor="middle"
+        fill={theme === 'dark' ? 'white' : 'currentColor'}
+        fontSize="10"
+      >
+        {version}
+      </text>
+    </g>
+  );
+};
 import type {
   BenchmarkChartData,
   FixtureResult,
@@ -312,17 +350,30 @@ export const VariationChart = ({
           <ChartContainer config={chartConfig} className="h-[450px] w-full">
             <BarChart data={consolidatedData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="fixture" />
+              <XAxis
+                dataKey="fixture"
+                tick={{
+                  fontSize: 12,
+                  fill: theme === 'dark' ? 'white' : 'currentColor'
+                }}
+              />
               <YAxis
                 label={{
                   value: yAxisLabel,
                   angle: -90,
                   position: "outside",
-                  style: { textAnchor: "middle" },
+                  style: {
+                    textAnchor: "middle",
+                    fill: theme === 'dark' ? 'white' : 'currentColor'
+                  },
                   offset: -10,
                 }}
                 tickCount={CHART_DEFAULTS.TICK_COUNT}
-                tick={{ fontFamily: "var(--font-mono)", fontSize: 12 }}
+                tick={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 12,
+                  fill: theme === 'dark' ? 'white' : 'currentColor'
+                }}
                 width={80}
               />
               <ChartTooltip
@@ -330,15 +381,17 @@ export const VariationChart = ({
                 cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
               />
               <ChartLegend
-                content={<CustomLegendContent />}
                 verticalAlign="bottom"
                 height={60}
+                wrapperStyle={{
+                  color: theme === 'dark' ? 'white' : 'currentColor'
+                }}
               />
               {filteredPackageManagers.map((pm) => (
                 <Bar
                   key={pm}
                   dataKey={pm}
-                  fill={(pm === "vlt" && resolvedTheme === "dark") ? "white" : colors[pm]}
+                  fill={(pm === "vlt" && theme === "dark") ? "white" : colors[pm]}
                   name={pm}
                   hide={!selectedPackageManagers.has(pm)}
                 />
@@ -413,7 +466,7 @@ export const VariationChart = ({
                 >
                   <BarChart data={barChartData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                                                                                                                                            <XAxis
+                                                                                                                                                                <XAxis
                       dataKey="name"
                       tick={<CustomXAxisTick />}
                       height={70}
@@ -424,11 +477,18 @@ export const VariationChart = ({
                         value: yAxisLabel,
                         angle: -90,
                         position: "outside",
-                        style: { textAnchor: "middle" },
+                        style: {
+                          textAnchor: "middle",
+                          fill: theme === 'dark' ? 'white' : 'currentColor'
+                        },
                         offset: -10,
                       }}
                       tickCount={CHART_DEFAULTS.TICK_COUNT}
-                      tick={{ fontFamily: "var(--font-mono)", fontSize: 12 }}
+                      tick={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: 12,
+                        fill: theme === 'dark' ? 'white' : 'currentColor'
+                      }}
                       width={80}
                     />
                     <ChartTooltip content={<ChartTooltipContent />} />
