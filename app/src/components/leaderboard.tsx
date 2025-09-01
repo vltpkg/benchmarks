@@ -69,10 +69,10 @@ export const Leaderboard = ({ chartData }: LeaderboardProps) => {
                      </div>
 
               {/* Package manager logo - right aligned for balance */}
-              {getPackageManagerLogo(item.packageManager, theme) && (
+              {getPackageManagerLogo(item.packageManager, theme === 'system' ? 'light' : theme) && (
                 <div className="flex-shrink-0">
                   <img
-                    src={getPackageManagerLogo(item.packageManager, theme)}
+                    src={getPackageManagerLogo(item.packageManager, theme === 'system' ? 'light' : theme)}
                     alt={`${item.packageManager} logo`}
                     className={cn(
                       "w-6 h-6",

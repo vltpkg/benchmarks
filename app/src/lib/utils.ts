@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import type { Variation, Fixture, PackageManager, PackageManagerVersions, BenchmarkChartData, FixtureResult } from "@/types/chart-data"
+import type { Variation, Fixture, PackageManager, PackageManagerVersions, BenchmarkChartData, FixtureResult, PackageCountData } from "@/types/chart-data"
 
 interface VariationCategory {
   title: string;
@@ -14,7 +14,7 @@ export const isTaskExecutionVariation = (variation: string): boolean => {
 };
 
 export const getVariationCategories = (variations: Variation[]): VariationCategory[] => {
-  const packageManagementVariations: Variation[] = [
+  const packageManagementVariations = [
     "clean",
     "node_modules",
     "cache",
@@ -23,11 +23,11 @@ export const getVariationCategories = (variations: Variation[]): VariationCatego
     "cache+lockfile+node_modules",
     "lockfile",
     "lockfile+node_modules"
-  ].filter(v => variations.includes(v as Variation));
+  ].filter(v => variations.includes(v as Variation)) as Variation[];
 
-  const taskExecutionVariations: Variation[] = [
+  const taskExecutionVariations = [
     "run"
-  ].filter(v => variations.includes(v as Variation));
+  ].filter(v => variations.includes(v as Variation)) as Variation[];
 
   const categories: VariationCategory[] = [];
 
@@ -89,8 +89,11 @@ export const calculateLeaderboard = (chartData: BenchmarkChartData): RankingData
         if (typeof time === 'number' && time > 0) {
           times.push({ pm, time });
           // Add to total time and count
-          packageManagerStats[pm].totalTime += time;
-          packageManagerStats[pm].testCount++;
+          const stats = packageManagerStats[pm];
+          if (stats) {
+            stats.totalTime += time;
+            stats.testCount++;
+          }
         }
       });
 
@@ -99,7 +102,10 @@ export const calculateLeaderboard = (chartData: BenchmarkChartData): RankingData
 
       // Award win to fastest
       if (times.length > 0) {
-        packageManagerStats[times[0].pm].wins++;
+        const winnerStats = packageManagerStats[times[0].pm];
+        if (winnerStats) {
+          winnerStats.wins++;
+        }
       }
     });
   });
@@ -107,6 +113,14 @@ export const calculateLeaderboard = (chartData: BenchmarkChartData): RankingData
   // Calculate final rankings based on average performance
   const leaderboard: RankingData[] = availablePackageManagers.map(pm => {
     const stats = packageManagerStats[pm];
+    if (!stats) {
+      return {
+        packageManager: pm,
+        wins: 0,
+        averageTime: Number.MAX_SAFE_INTEGER,
+        totalTests: 0
+      };
+    }
     const averageTime = stats.testCount > 0 ? stats.totalTime / stats.testCount : Number.MAX_SAFE_INTEGER;
 
     return {
@@ -354,7 +368,7 @@ export const getAvailablePackageManagers = (
 };
 
 export const getAvailablePackageManagersFromPackageCount = (
-  packageCountData: Array<{ packageCounts?: Record<string, { count: number }> }>,
+  packageCountData: Array<{ packageCounts?: PackageCountData }>,
   allPackageManagers: PackageManager[]
 ): PackageManager[] => {
   const availablePackageManagers = new Set<PackageManager>();
@@ -362,7 +376,7 @@ export const getAvailablePackageManagersFromPackageCount = (
   packageCountData.forEach(item => {
     if (item.packageCounts) {
       allPackageManagers.forEach(pm => {
-        const entry = item.packageCounts[pm];
+        const entry = item.packageCounts?.[pm as keyof PackageCountData];
         // Check if the package manager has valid data (entry exists and has count > 0)
         if (entry && typeof entry === 'object' && entry.count && entry.count > 0) {
           availablePackageManagers.add(pm);

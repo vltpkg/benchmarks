@@ -423,7 +423,7 @@ export const VariationChart = ({
                     <CartesianGrid strokeDasharray="3 3" />
                                                                                                                                                                 <XAxis
                       dataKey="name"
-                      tick={<CustomXAxisTick />}
+                      tick={<CustomXAxisTick x={0} y={0} payload={{ value: "" }} />}
                       height={70}
                       interval={0}
                     />
