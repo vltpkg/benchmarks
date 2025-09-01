@@ -11,22 +11,7 @@ interface LeaderboardProps {
 
 
 
-const MedalIcon = ({ count, type }: { count: number; type: 'first' | 'second' | 'third' }) => {
-  const colors = {
-    first: 'text-yellow-500',
-    second: 'text-gray-400',
-    third: 'text-orange-600'
-  };
 
-  if (count === 0) return null;
-
-  return (
-    <div className={cn("flex items-center gap-1 text-xs", colors[type])}>
-      <div className="w-3 h-3 rounded-full bg-current" />
-      <span className="font-medium">{count}</span>
-    </div>
-  );
-};
 
 export const Leaderboard = ({ chartData }: LeaderboardProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();

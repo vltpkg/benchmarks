@@ -14,45 +14,9 @@ import { useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 
 import { CHART_DEFAULTS } from "@/constants";
-import { getPackageManagerVersion, formatPackageManagerLabel, getFixtureLogo, getFixtureId } from "@/lib/utils";
+import { formatPackageManagerLabel, getFixtureLogo, getFixtureId } from "@/lib/utils";
 
-// Custom X-axis tick component for stacked name/version display
-const CustomXAxisTick = (props: any) => {
-  const { x, y, payload } = props;
-  const { theme } = useTheme();
 
-  if (!payload?.value) return <g></g>;
-
-  const parts = payload.value.split(' ');
-  const name = parts[0];
-  const version = parts.slice(1).join(' ');
-
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        x={0}
-        y={0}
-        dy={16}
-        textAnchor="middle"
-        fill={theme === 'dark' ? 'white' : 'currentColor'}
-        fontSize="12"
-        fontWeight="600"
-      >
-        {name}
-      </text>
-      <text
-        x={0}
-        y={0}
-        dy={32}
-        textAnchor="middle"
-        fill={theme === 'dark' ? 'white' : 'currentColor'}
-        fontSize="10"
-      >
-        {version}
-      </text>
-    </g>
-  );
-};
 import type {
   BenchmarkChartData,
   FixtureResult,
@@ -102,16 +66,9 @@ interface ConsolidatedChartItem {
   [packageManager: string]: string | number;
 }
 
-interface LegendPayloadEntry {
-  dataKey: string;
-  value: string;
-  color: string;
-  type?: string;
-}
 
-interface CustomLegendProps {
-  payload?: LegendPayloadEntry[];
-}
+
+
 
 interface VariationChartProps {
   title: string;
@@ -236,7 +193,7 @@ export const VariationChart = ({
     return fixtureMap;
   }, [filteredVariationData, filteredPackageManagers]);
 
-  const CustomXAxisTick = (props: any) => {
+  const CustomXAxisTick = (props: { x: number; y: number; payload: { value: string } }) => {
     const { x, y, payload } = props;
 
     if (!payload || !payload.value) {
@@ -284,40 +241,8 @@ export const VariationChart = ({
     );
   };
 
-  const CustomLegendContent = ({ payload }: CustomLegendProps) => {
-    if (!payload || !payload.length) return null;
 
-    return (
-      <div className="flex flex-wrap justify-center gap-4 mt-4">
-        {payload.map((entry: LegendPayloadEntry) => {
-          const isSelected = selectedPackageManagers.has(entry.dataKey);
-          const packageManager = entry.dataKey as PackageManager;
-          const version = getPackageManagerVersion(packageManager, chartData.versions);
 
-          return (
-            <button
-              key={entry.dataKey}
-              onClick={() => handleLegendClick(entry.dataKey)}
-              className={`flex items-center gap-2 px-3 py-1 rounded-md transition-all hover:bg-muted ${
-                isSelected ? "opacity-100" : "opacity-40"
-              }`}
-            >
-              <div
-                className="w-3 h-3 rounded-sm"
-                style={{ backgroundColor: entry.color }}
-              />
-              <div className="text-center">
-                <div className="text-sm font-medium">{packageManager}</div>
-                {version && (
-                  <div className="text-xs text-muted-foreground">{version}</div>
-                )}
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    );
-  };
 
   if (!isPerPackage) {
     // Consolidated chart for Total Install Time
@@ -461,7 +386,7 @@ export const VariationChart = ({
               fill: (pm === "vlt" && resolvedTheme === "dark") ? "white" : colors[pm],
             }));
 
-          const logoSrc = getFixtureLogo(fixture as any);
+          const logoSrc = getFixtureLogo(fixture as "next" | "vue" | "svelte" | "astro" | "run");
 
           return (
             <div

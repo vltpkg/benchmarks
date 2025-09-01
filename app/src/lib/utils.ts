@@ -354,7 +354,7 @@ export const getAvailablePackageManagers = (
 };
 
 export const getAvailablePackageManagersFromPackageCount = (
-  packageCountData: any[],
+  packageCountData: Array<{ packageCounts?: Record<string, { count: number }> }>,
   allPackageManagers: PackageManager[]
 ): PackageManager[] => {
   const availablePackageManagers = new Set<PackageManager>();

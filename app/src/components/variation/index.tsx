@@ -5,7 +5,7 @@ import { ERROR_MESSAGES } from "@/constants";
 import { VariationChart } from "@/components/variation/chart";
 import { VariationTable } from "@/components/variation/table";
 import { PackageCountTable } from "@/components/variation/package-count-table";
-import { SectionNavigation } from "@/components/section-navigation";
+
 import { usePackageCountData } from "@/hooks/use-package-count-data";
 import type { BenchmarkChartData, Variation, FixtureResult } from "@/types/chart-data";
 import { sortFixtures, createSectionId, scrollToSection, getFixtureId, getAvailablePackageManagers, getAvailablePackageManagersFromPackageCount, isTaskExecutionVariation } from "@/lib/utils";
@@ -28,6 +28,25 @@ export const VariationPage = () => {
     loading: packageCountLoading,
     error: packageCountError,
   } = usePackageCountData(variation as Variation);
+
+  // Handle deep linking to sections and fixtures
+  useEffect(() => {
+    if (section && fixture) {
+      // Navigate to specific fixture within a section
+      const fixtureId = getFixtureId(fixture);
+      const timer = setTimeout(() => {
+        scrollToSection(fixtureId);
+      }, 100);
+      return () => clearTimeout(timer);
+    } else if (section) {
+      // Navigate to section
+      const sectionId = createSectionId(section);
+      const timer = setTimeout(() => {
+        scrollToSection(sectionId);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [section, fixture]);
 
   if (!variation || !isValidVariation(variation)) {
     return (
@@ -78,25 +97,6 @@ export const VariationPage = () => {
 
   // Check if this is a task execution variation
   const isTaskExecution = isTaskExecutionVariation(variation as string);
-
-  // Handle deep linking to sections and fixtures
-  useEffect(() => {
-    if (section && fixture) {
-      // Navigate to specific fixture within a section
-      const fixtureId = getFixtureId(fixture);
-      const timer = setTimeout(() => {
-        scrollToSection(fixtureId);
-      }, 100);
-      return () => clearTimeout(timer);
-    } else if (section) {
-      // Navigate to section
-      const sectionId = createSectionId(section);
-      const timer = setTimeout(() => {
-        scrollToSection(sectionId);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [section, fixture]);
 
   // Dynamic titles and section IDs based on variation type
   const titles = isTaskExecution ? {
