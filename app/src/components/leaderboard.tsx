@@ -9,10 +9,6 @@ interface LeaderboardProps {
   chartData: BenchmarkChartData;
 }
 
-
-
-
-
 export const Leaderboard = ({ chartData }: LeaderboardProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
   const { theme } = useTheme();
@@ -38,10 +34,6 @@ export const Leaderboard = ({ chartData }: LeaderboardProps) => {
               Average per-package performance across {totalScenarios} tests
             </p>
           </div>
-        </div>
-        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-          <div className="w-2 h-2 rounded-full bg-yellow-500" />
-          <span>wins</span>
         </div>
       </div>
 
@@ -79,13 +71,6 @@ export const Leaderboard = ({ chartData }: LeaderboardProps) => {
                       item.packageManager === 'vlt' && theme === 'dark' && "brightness-0 invert"
                     )}
                   />
-                </div>
-              )}
-
-              {/* Superscript-style win indicator */}
-              {item.wins > 0 && (
-                <div className="absolute -top-1 -right-1 bg-yellow-500 text-white rounded-full px-1.5 py-0.5 text-[10px] font-medium">
-                  {item.wins}
                 </div>
               )}
             </div>
