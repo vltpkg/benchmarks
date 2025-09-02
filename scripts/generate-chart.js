@@ -151,9 +151,31 @@ function generateChartData(option = {}) {
   };
 }
 
+// Load package manager version data
+function loadPackageManagersVersionData() {
+  const versionsFile = path.resolve(RESULTS_DIR, "versions.json");
+  
+  try {
+    if (!fs.existsSync(versionsFile)) {
+      console.warn(`Warning: Versions file ${versionsFile} does not exist`);
+      return {};
+    }
+    
+    const data = JSON.parse(fs.readFileSync(versionsFile, "utf8"));
+    return data || {};
+  } catch (error) {
+    console.warn(
+      `Warning: Could not read versions from ${versionsFile}:`,
+      error.message,
+    );
+    return {};
+  }
+}
+
 const dumpChartData = () => {
   const chartData = generateChartData();
   const perPackageCountChartData = generateChartData({ perPackageCount: true });
+  const versions = loadPackageManagersVersionData()
 
   const results = {
     chartData: {
@@ -168,6 +190,7 @@ const dumpChartData = () => {
       packageManagers: perPackageCountChartData.packageManagers,
       colors: perPackageCountChartData.colors,
     },
+    versions,
   };
 
   fs.writeFileSync(
