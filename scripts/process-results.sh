@@ -8,6 +8,9 @@ DATE=$(date +%Y-%m-%d)
 mkdir -p "results/$DATE"
 mkdir -p "results/latest"
 
+# Find any versions.json file from the downloaded versions artifacts and copy it to results
+find versions-temp -name "versions.json" -type f | head -1 | xargs -I {} cp {} ./results/$DATE/versions.json || echo "No versions.json found"
+
 # Function to print summary of results
 print_summary() {
     local file=$1
