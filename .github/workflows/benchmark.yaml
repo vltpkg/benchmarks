@@ -201,10 +201,6 @@ jobs:
             }
 
             console.log('Benchmark cleaning completed');
-      - name: Copy Versions File
-        run: |
-          # Find any versions.json file from the downloaded versions artifacts and copy it to results
-          find versions-temp -name "versions.json" -type f | head -1 | xargs -I {} cp {} ./results/versions.json || echo "No versions.json found"
       - name: Process Results
         run: |
           bash ./scripts/process-results.sh
