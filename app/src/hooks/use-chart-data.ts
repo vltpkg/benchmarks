@@ -37,15 +37,10 @@ export const useChartData = (): UseChartDataReturn => {
 
       // Fetch versions data (optional)
       let versions: PackageManagerVersions | undefined;
-      try {
-        const versionsResponse = await fetch(`/latest/versions.json`);
-        if (versionsResponse.ok) {
-          versions = await versionsResponse.json() as PackageManagerVersions;
-        } else {
-          console.warn("Versions data not available");
-        }
-      } catch (versionsError) {
-        console.warn("Failed to fetch versions data:", versionsError);
+      if (chartData.versions) {
+        versions = chartData.versions;
+      } else {
+        console.warn("Versions data not available");
       }
 
       // Combine chart data with versions
