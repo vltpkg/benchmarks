@@ -9,23 +9,25 @@ interface PackageManagerFilterContextType {
   hasFilters: boolean;
 }
 
-const PackageManagerFilterContext = createContext<PackageManagerFilterContextType | undefined>(undefined);
+const PackageManagerFilterContext = createContext<
+  PackageManagerFilterContextType | undefined
+>(undefined);
 
 interface PackageManagerFilterProviderProps {
   children: ReactNode;
-  initialPackageManagers: PackageManager[];
+  initialPackageManagers: PackageManager[] | [];
 }
 
 export const PackageManagerFilterProvider = ({
   children,
-  initialPackageManagers
+  initialPackageManagers,
 }: PackageManagerFilterProviderProps) => {
-  const [enabledPackageManagers, setEnabledPackageManagers] = useState<Set<PackageManager>>(
-    new Set(initialPackageManagers)
-  );
+  const [enabledPackageManagers, setEnabledPackageManagers] = useState<
+    Set<PackageManager>
+  >(new Set(initialPackageManagers));
 
   const togglePackageManager = (pm: PackageManager) => {
-    setEnabledPackageManagers(prev => {
+    setEnabledPackageManagers((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(pm)) {
         newSet.delete(pm);
@@ -44,16 +46,19 @@ export const PackageManagerFilterProvider = ({
     setEnabledPackageManagers(new Set(allPackageManagers));
   };
 
-  const hasFilters = enabledPackageManagers.size !== initialPackageManagers.length;
+  const hasFilters =
+    enabledPackageManagers.size !== initialPackageManagers.length;
 
   return (
-    <PackageManagerFilterContext.Provider value={{
-      enabledPackageManagers,
-      togglePackageManager,
-      isPackageManagerEnabled,
-      resetFilters,
-      hasFilters
-    }}>
+    <PackageManagerFilterContext.Provider
+      value={{
+        enabledPackageManagers,
+        togglePackageManager,
+        isPackageManagerEnabled,
+        resetFilters,
+        hasFilters,
+      }}
+    >
       {children}
     </PackageManagerFilterContext.Provider>
   );
@@ -62,7 +67,9 @@ export const PackageManagerFilterProvider = ({
 export const usePackageManagerFilter = () => {
   const context = useContext(PackageManagerFilterContext);
   if (context === undefined) {
-    throw new Error('usePackageManagerFilter must be used within a PackageManagerFilterProvider');
+    throw new Error(
+      "usePackageManagerFilter must be used within a PackageManagerFilterProvider",
+    );
   }
   return context;
 };

@@ -6,69 +6,29 @@ import {
   ChartTooltipContent,
   ChartLegend,
 } from "@/components/ui/chart";
-import type { ChartConfig } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/share-button";
 import { createSectionId, isTaskExecutionVariation } from "@/lib/utils";
-import { useTheme } from "@/components/theme-provider";
+import { resolveTheme, useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
-
+import { Clock, StopWatch } from "@/components/icons";
 import { CHART_DEFAULTS } from "@/constants";
-import { formatPackageManagerLabel, getFixtureLogo, getFixtureId } from "@/lib/utils";
+import { formatPackageManagerLabel, getFixtureId } from "@/lib/utils";
+import { getFrameworkIcon } from "@/lib/get-icons";
 
-
+import type { ChartConfig } from "@/components/ui/chart";
 import type {
   BenchmarkChartData,
   FixtureResult,
   PackageManager,
   ColorMap,
+  Fixture,
 } from "@/types/chart-data";
 
-const ClockIcon = () => (
-  <svg
-    data-testid="geist-icon"
-    height="18"
-    strokeLinejoin="round"
-    viewBox="0 0 16 16"
-    width="18"
-    style={{ color: "currentcolor" }}
-  >
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M14.5 8C14.5 11.5899 11.5899 14.5 8 14.5C4.41015 14.5 1.5 11.5899 1.5 8C1.5 4.41015 4.41015 1.5 8 1.5C11.5899 1.5 14.5 4.41015 14.5 8ZM16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM8.75 4.75V4H7.25V4.75V7.875C7.25 8.18976 7.39819 8.48615 7.65 8.675L9.55 10.1L10.15 10.55L11.05 9.35L10.45 8.9L8.75 7.625V4.75Z"
-      fill="currentColor"
-    />
-  </svg>
-);
-
-const StopwatchIcon = () => (
-  <svg
-    data-testid="geist-icon"
-    height="18"
-    strokeLinejoin="round"
-    viewBox="0 0 16 16"
-    width="18"
-    style={{ color: "currentcolor" }}
-  >
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M5.35066 2.06247C5.96369 1.78847 6.62701 1.60666 7.32351 1.53473L7.16943 0.0426636C6.31208 0.1312 5.49436 0.355227 4.73858 0.693033L5.35066 2.06247ZM8.67651 1.53473C11.9481 1.87258 14.5 4.63876 14.5 8.00001C14.5 11.5899 11.5899 14.5 8.00001 14.5C4.63901 14.5 1.87298 11.9485 1.5348 8.67722L0.0427551 8.83147C0.459163 12.8594 3.86234 16 8.00001 16C12.4183 16 16 12.4183 16 8.00001C16 3.86204 12.8589 0.458666 8.83059 0.0426636L8.67651 1.53473ZM2.73972 4.18084C3.14144 3.62861 3.62803 3.14195 4.18021 2.74018L3.29768 1.52727C2.61875 2.02128 2.02064 2.61945 1.52671 3.29845L2.73972 4.18084ZM1.5348 7.32279C1.60678 6.62656 1.78856 5.96348 2.06247 5.35066L0.693033 4.73858C0.355343 5.4941 0.131354 6.31152 0.0427551 7.16854L1.5348 7.32279ZM8.75001 4.75V4H7.25001V4.75V7.875C7.25001 8.18976 7.3982 8.48615 7.65001 8.675L9.55001 10.1L10.15 10.55L11.05 9.35L10.45 8.9L8.75001 7.625V4.75Z"
-      fill="currentColor"
-    />
-  </svg>
-);
-
-// Type definitions for chart data structures
 interface ConsolidatedChartItem {
   fixture: string;
   [packageManager: string]: string | number;
 }
-
-
-
-
 
 interface VariationChartProps {
   title: string;
@@ -93,15 +53,12 @@ export const VariationChart = ({
   const { enabledPackageManagers } = usePackageManagerFilter();
 
   // Filter package managers based on global filter
-  const filteredPackageManagers = useMemo(() =>
-    packageManagers.filter(pm => enabledPackageManagers.has(pm)),
-    [packageManagers, enabledPackageManagers]
+  const filteredPackageManagers = useMemo(
+    () => packageManagers.filter((pm) => enabledPackageManagers.has(pm)),
+    [packageManagers, enabledPackageManagers],
   );
 
-  // Resolve the actual theme (dark/light) when user selects "system"
-  const resolvedTheme = theme === "system"
-    ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-    : theme;
+  const resolvedTheme = resolveTheme(theme);
 
   const [selectedPackageManagers, setSelectedPackageManagers] = useState<
     Set<string>
@@ -126,7 +83,10 @@ export const VariationChart = ({
   const individualChartConfig = useMemo(() => {
     const config: ChartConfig = {};
     filteredPackageManagers.forEach((pm) => {
-      const labelWithVersion = formatPackageManagerLabel(pm, chartData.versions);
+      const labelWithVersion = formatPackageManagerLabel(
+        pm,
+        chartData.versions,
+      );
       config[labelWithVersion] = {
         label: labelWithVersion,
         color: colors[pm],
@@ -157,7 +117,8 @@ export const VariationChart = ({
     setSelectedPackageManagers(new Set(filteredPackageManagers));
   };
 
-  const isAllSelected = selectedPackageManagers.size === filteredPackageManagers.length;
+  const isAllSelected =
+    selectedPackageManagers.size === filteredPackageManagers.length;
 
   // Use all variation data (no fixture filtering)
   const filteredVariationData = variationData;
@@ -183,7 +144,7 @@ export const VariationChart = ({
       const chartItem: Record<string, number> = {};
       filteredPackageManagers.forEach((pm) => {
         const value = item[pm as keyof FixtureResult];
-        if (value !== undefined && typeof value === 'number') {
+        if (value !== undefined && typeof value === "number") {
           chartItem[pm] = value;
         }
       });
@@ -193,7 +154,11 @@ export const VariationChart = ({
     return fixtureMap;
   }, [filteredVariationData, filteredPackageManagers]);
 
-  const CustomXAxisTick = (props: { x: number; y: number; payload: { value: string } }) => {
+  const CustomXAxisTick = (props: {
+    x: number;
+    y: number;
+    payload: { value: string };
+  }) => {
     const { x, y, payload } = props;
 
     if (!payload || !payload.value) {
@@ -203,9 +168,9 @@ export const VariationChart = ({
     const text = payload.value;
 
     // Split the text into package manager and version
-    const parts = text.split(' v');
-    const packageManager = parts[0];
-    const version = parts[1] ? `v${parts[1]}` : '';
+    const parts = text.split(" v");
+    const packageManager = parts[0] as PackageManager | undefined;
+    const version = parts[1] ? `v${parts[1]}` : "";
 
     return (
       <g transform={`translate(${x},${y})`}>
@@ -241,23 +206,20 @@ export const VariationChart = ({
     );
   };
 
-
-
-
   if (!isPerPackage) {
     // Consolidated chart for Total Install Time
     return (
       <div className="space-y-8">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold tracking-tight flex items-center gap-2 group">
-            <ClockIcon />
-            {title}
+        <div className="flex md:flex-row flex-col items-start md:items-center justify-between">
+          <h3 className="text-lg w-full font-medium tracking-tighter flex md:items-center gap-2 group">
+            <Clock className="text-muted-foreground" />
+            <span className="-mt-1 md:mt-0">{title}</span>
             <ShareButton
               variation={currentVariation}
               section={createSectionId(title)}
               size="sm"
               variant="ghost"
-              label=""
+              className="ml-auto"
             />
           </h3>
           <Button
@@ -272,14 +234,14 @@ export const VariationChart = ({
         </div>
 
         <div className="bg-card rounded-xl p-6 border-border border-[1px]">
-          <ChartContainer config={chartConfig} className="h-[450px] w-full">
+          <ChartContainer config={chartConfig} className="min-h-[450px] w-full">
             <BarChart data={consolidatedData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="fixture"
                 tick={{
                   fontSize: 12,
-                  fill: theme === 'dark' ? 'white' : 'currentColor'
+                  fill: theme === "dark" ? "white" : "currentColor",
                 }}
               />
               <YAxis
@@ -289,7 +251,7 @@ export const VariationChart = ({
                   position: "outside",
                   style: {
                     textAnchor: "middle",
-                    fill: theme === 'dark' ? 'white' : 'currentColor'
+                    fill: theme === "dark" ? "white" : "currentColor",
                   },
                   offset: -10,
                 }}
@@ -297,7 +259,7 @@ export const VariationChart = ({
                 tick={{
                   fontFamily: "var(--font-mono)",
                   fontSize: 12,
-                  fill: theme === 'dark' ? 'white' : 'currentColor'
+                  fill: theme === "dark" ? "white" : "currentColor",
                 }}
                 width={80}
               />
@@ -307,18 +269,22 @@ export const VariationChart = ({
               />
               <ChartLegend
                 verticalAlign="bottom"
-                height={60}
+                height={100}
                 wrapperStyle={{
-                  color: theme === 'dark' ? 'white' : 'currentColor'
+                  color: theme === "dark" ? "white" : "currentColor",
                 }}
                 content={(props) => {
                   if (!props.payload) return null;
                   return (
-                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                    <div className="flex flex-wrap md:justify-center gap-4 mt-4">
                       {props.payload.map((entry, index) => {
                         const packageManager = entry.dataKey as PackageManager;
-                        const isSelected = selectedPackageManagers.has(packageManager);
-                        const formattedLabel = formatPackageManagerLabel(packageManager, chartData.versions);
+                        const isSelected =
+                          selectedPackageManagers.has(packageManager);
+                        const formattedLabel = formatPackageManagerLabel(
+                          packageManager,
+                          chartData.versions,
+                        );
 
                         return (
                           <button
@@ -346,7 +312,7 @@ export const VariationChart = ({
                 <Bar
                   key={pm}
                   dataKey={pm}
-                  fill={(pm === "vlt" && theme === "dark") ? "white" : colors[pm]}
+                  fill={pm === "vlt" && theme === "dark" ? "white" : colors[pm]}
                   name={formatPackageManagerLabel(pm, chartData.versions)}
                   hide={!selectedPackageManagers.has(pm)}
                 />
@@ -362,15 +328,15 @@ export const VariationChart = ({
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-xl font-semibold tracking-tight flex items-center gap-2 group">
-          <StopwatchIcon />
-          {title}
+        <h3 className="text-lg font-medium tracking-tighter flex items-center gap-2 group">
+          <StopWatch className="text-muted-foreground" />
+          <span>{title}</span>
           <ShareButton
             variation={currentVariation}
             section={createSectionId(title)}
             size="sm"
             variant="ghost"
-            label=""
+            className="ml-auto"
           />
         </h3>
       </div>
@@ -383,10 +349,11 @@ export const VariationChart = ({
             .map((pm) => ({
               name: formatPackageManagerLabel(pm, chartData.versions),
               value: fixtureData[pm],
-              fill: (pm === "vlt" && resolvedTheme === "dark") ? "white" : colors[pm],
+              fill:
+                pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm],
             }));
 
-          const logoSrc = getFixtureLogo(fixture as "next" | "vue" | "svelte" | "astro" | "run");
+          const Icon = getFrameworkIcon(fixture as Fixture);
 
           return (
             <div
@@ -396,22 +363,23 @@ export const VariationChart = ({
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  {logoSrc && (
-                    <img
-                      src={logoSrc}
-                      alt={`${fixture} logo`}
-                      className="w-6 h-6"
-                    />
-                  )}
-                  <h4 className="text-md font-medium capitalize">{fixture} Project</h4>
+                  {Icon && <Icon />}
+                  <h4 className="text-md font-medium capitalize">
+                    {fixture} Project
+                  </h4>
                 </div>
                 <ShareButton
                   variation={currentVariation}
-                  section={isPerPackage ? "per-package-install-time-by-fixture" : "total-install-time-by-fixture"}
+                  section={
+                    isPerPackage
+                      ? "per-package-install-time-by-fixture"
+                      : "total-install-time-by-fixture"
+                  }
                   fixture={fixture}
                   label="Share"
                   size="sm"
                   variant="ghost"
+                  className="ml-auto"
                 />
               </div>
               <div className="w-full">
@@ -421,9 +389,11 @@ export const VariationChart = ({
                 >
                   <BarChart data={barChartData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                                                                                                                                                                <XAxis
+                    <XAxis
                       dataKey="name"
-                      tick={<CustomXAxisTick x={0} y={0} payload={{ value: "" }} />}
+                      tick={
+                        <CustomXAxisTick x={0} y={0} payload={{ value: "" }} />
+                      }
                       height={70}
                       interval={0}
                     />
@@ -434,7 +404,7 @@ export const VariationChart = ({
                         position: "outside",
                         style: {
                           textAnchor: "middle",
-                          fill: theme === 'dark' ? 'white' : 'currentColor'
+                          fill: theme === "dark" ? "white" : "currentColor",
                         },
                         offset: -10,
                       }}
@@ -442,7 +412,7 @@ export const VariationChart = ({
                       tick={{
                         fontFamily: "var(--font-mono)",
                         fontSize: 12,
-                        fill: theme === 'dark' ? 'white' : 'currentColor'
+                        fill: theme === "dark" ? "white" : "currentColor",
                       }}
                       width={80}
                     />

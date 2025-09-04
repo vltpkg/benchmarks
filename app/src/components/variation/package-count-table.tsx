@@ -5,7 +5,6 @@ import {
   getSortedRowModel,
   flexRender,
   createColumnHelper,
-  type SortingState,
 } from "@tanstack/react-table";
 import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import {
@@ -20,30 +19,14 @@ import { Button } from "@/components/ui/button";
 import { getPackageManagerVersion, createSectionId } from "@/lib/utils";
 import { ShareButton } from "@/components/share-button";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
+import { Package } from "@/components/icons";
 
 import type {
   PackageCountTableRow,
   PackageManager,
   PackageManagerVersions,
 } from "@/types/chart-data";
-
-const PackageIcon = () => (
-  <svg
-    data-testid="geist-icon"
-    height="18"
-    strokeLinejoin="round"
-    viewBox="0 0 16 16"
-    width="18"
-    style={{ color: "currentcolor" }}
-  >
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M8 0.154663L8.34601 0.334591L14.596 3.58459L15 3.79466V4.25V11.75V12.2053L14.596 12.4154L8.34601 15.6654L8 15.8453L7.65399 15.6654L1.40399 12.4154L1 12.2053V11.75V4.25V3.79466L1.40399 3.58459L7.65399 0.334591L8 0.154663ZM2.5 11.2947V5.44058L7.25 7.81559V13.7647L2.5 11.2947ZM8.75 13.7647L13.5 11.2947V5.44056L8.75 7.81556V13.7647ZM8 1.84534L12.5766 4.22519L7.99998 6.51352L3.42335 4.2252L8 1.84534Z"
-      fill="currentColor"
-    />
-  </svg>
-);
+import type { SortingState } from "@tanstack/react-table";
 
 interface PackageCountTableProps {
   title: string;
@@ -68,9 +51,9 @@ export const PackageCountTable = ({
   const [sorting, setSorting] = useState<SortingState>([]);
 
   // Filter package managers based on global filter
-  const filteredPackageManagers = useMemo(() =>
-    packageManagers.filter(pm => enabledPackageManagers.has(pm)),
-    [packageManagers, enabledPackageManagers]
+  const filteredPackageManagers = useMemo(
+    () => packageManagers.filter((pm) => enabledPackageManagers.has(pm)),
+    [packageManagers, enabledPackageManagers],
   );
 
   const columns = useMemo(
@@ -81,58 +64,72 @@ export const PackageCountTable = ({
         enableSorting: true,
       }),
       ...filteredPackageManagers.map((pm) =>
-        columnHelper.accessor(
-          (row) => row.packageCounts[pm],
-          {
-            id: pm,
-            header: () => {
-              const version = getPackageManagerVersion(pm, versions);
-              return version ? (
-                <div className="text-center">
-                  <div className="font-bold">{pm}</div>
-                  <div className="text-xs text-muted-foreground">{version}</div>
-                </div>
-              ) : (
-                <span className="font-bold">{pm}</span>
-              );
-            },
-            cell: (info) => {
-              const entry = info.getValue();
-              if (entry && typeof entry.count === "number") {
-                const { count, minCount, maxCount } = entry;
+        columnHelper.accessor((row) => row.packageCounts[pm], {
+          id: pm,
+          header: () => {
+            const version = getPackageManagerVersion(pm, versions);
+            return version ? (
+              <div className="text-center">
+                <div className="font-bold">{pm}</div>
+                <div className="text-xs text-muted-foreground">{version}</div>
+              </div>
+            ) : (
+              <span className="font-bold">{pm}</span>
+            );
+          },
+          cell: (info) => {
+            const entry = info.getValue();
+            if (entry && typeof entry.count === "number") {
+              const { count, minCount, maxCount } = entry;
 
-                // For vlt, show range if min/max are available
-                if (pm === "vlt" && minCount !== undefined && maxCount !== undefined && minCount !== maxCount) {
-                  return (
-                    <div className="text-center font-mono">
-                      <div>{count}</div>
-                      <div className="text-xs text-muted-foreground">
-                        ({minCount}-{maxCount})
-                      </div>
+              // For vlt, show range if min/max are available
+              if (
+                pm === "vlt" &&
+                minCount !== undefined &&
+                maxCount !== undefined &&
+                minCount !== maxCount
+              ) {
+                return (
+                  <div className="text-center font-mono">
+                    <div>{count}</div>
+                    <div className="text-xs text-muted-foreground">
+                      ({minCount}-{maxCount})
                     </div>
-                  );
-                }
-
-                return <div className="text-center"><span className="font-mono">{count}</span></div>;
+                  </div>
+                );
               }
-              return <div className="text-center"><span className="text-muted-foreground">-</span></div>;
-            },
-            enableSorting: true,
-            sortingFn: (rowA, rowB, columnId) => {
-              const entryA = rowA.getValue(columnId) as { count: number } | undefined;
-              const entryB = rowB.getValue(columnId) as { count: number } | undefined;
 
-              if (!entryA && !entryB) return 0;
-              if (!entryA) return 1;
-              if (!entryB) return -1;
+              return (
+                <div className="text-center">
+                  <span className="font-mono">{count}</span>
+                </div>
+              );
+            }
+            return (
+              <div className="text-center">
+                <span className="text-muted-foreground">-</span>
+              </div>
+            );
+          },
+          enableSorting: true,
+          sortingFn: (rowA, rowB, columnId) => {
+            const entryA = rowA.getValue(columnId) as
+              | { count: number }
+              | undefined;
+            const entryB = rowB.getValue(columnId) as
+              | { count: number }
+              | undefined;
 
-              return entryA.count - entryB.count;
-            },
-          }
-        )
+            if (!entryA && !entryB) return 0;
+            if (!entryA) return 1;
+            if (!entryB) return -1;
+
+            return entryA.count - entryB.count;
+          },
+        }),
       ),
     ],
-    [filteredPackageManagers, versions]
+    [filteredPackageManagers, versions],
   );
 
   const table = useReactTable({
@@ -149,20 +146,20 @@ export const PackageCountTable = ({
 
   return (
     <div className="space-y-6">
-            <div>
-        <h3 className="text-lg font-semibold tracking-tight mb-2 flex items-center gap-2 group">
-          <PackageIcon />
-          {title}
+      <div>
+        <h3 className="text-lg font-medium tracking-tighter mb-2 flex items-center gap-2 group">
+          <Package className="text-muted-foreground" />
+          <span>{title}</span>
           <ShareButton
             variation={currentVariation}
             section={createSectionId(title)}
             size="sm"
             variant="ghost"
-            label=""
+            className="ml-auto"
           />
         </h3>
         {description && (
-          <p className="text-neutral-600 dark:text-white">{description}</p>
+          <p className="text-sm font-medium text-neutral-500">{description}</p>
         )}
       </div>
 
@@ -175,7 +172,9 @@ export const PackageCountTable = ({
                   <TableHead
                     key={header.id}
                     className={`${
-                      header.column.id === 'fixture' ? 'w-28' : 'w-18 text-center'
+                      header.column.id === "fixture"
+                        ? "w-28"
+                        : "w-18 text-center"
                     }`}
                   >
                     {header.column.getCanSort() ? (
@@ -225,7 +224,9 @@ export const PackageCountTable = ({
                     <TableCell
                       key={cell.id}
                       className={`font-medium text-center ${
-                        cell.column.id === 'fixture' ? 'pl-6 text-left' : 'pl-3 pr-7'
+                        cell.column.id === "fixture"
+                          ? "pl-6 text-left"
+                          : "pl-3 pr-7"
                       }`}
                     >
                       {flexRender(

@@ -33,12 +33,12 @@ type TooltipFormatterFunction = (
   name: string | number,
   item: TooltipPayloadItem,
   index: number,
-  payload: Record<string, unknown>
+  payload: Record<string, unknown>,
 ) => React.ReactNode;
 
 type LabelFormatterFunction = (
   value: TooltipLabelValue,
-  payload: TooltipPayloadItem[]
+  payload: TooltipPayloadItem[],
 ) => React.ReactNode;
 
 export type ChartConfig = {
@@ -222,7 +222,8 @@ function ChartTooltipContent({
         {payload.map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
-          const indicatorColor = color || (item.payload?.fill as string) || item.color;
+          const indicatorColor =
+            color || (item.payload?.fill as string) || item.color;
 
           return (
             <div
@@ -233,7 +234,13 @@ function ChartTooltipContent({
               )}
             >
               {formatter && item?.value !== undefined && item.name ? (
-                formatter(item.value, item.name, item, index, item.payload || {})
+                formatter(
+                  item.value,
+                  item.name,
+                  item,
+                  index,
+                  item.payload || {},
+                )
               ) : (
                 <>
                   {itemConfig?.icon ? (

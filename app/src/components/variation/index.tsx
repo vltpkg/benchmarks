@@ -5,10 +5,22 @@ import { ERROR_MESSAGES } from "@/constants";
 import { VariationChart } from "@/components/variation/chart";
 import { VariationTable } from "@/components/variation/table";
 import { PackageCountTable } from "@/components/variation/package-count-table";
-
 import { usePackageCountData } from "@/hooks/use-package-count-data";
-import type { BenchmarkChartData, Variation, FixtureResult } from "@/types/chart-data";
-import { sortFixtures, createSectionId, scrollToSection, getFixtureId, getAvailablePackageManagers, getAvailablePackageManagersFromPackageCount, isTaskExecutionVariation } from "@/lib/utils";
+import {
+  sortFixtures,
+  createSectionId,
+  scrollToSection,
+  getFixtureId,
+  getAvailablePackageManagers,
+  getAvailablePackageManagersFromPackageCount,
+  isTaskExecutionVariation,
+} from "@/lib/utils";
+
+import type {
+  BenchmarkChartData,
+  Variation,
+  FixtureResult,
+} from "@/types/chart-data";
 
 interface OutletContext {
   chartData: BenchmarkChartData;
@@ -66,25 +78,24 @@ export const VariationPage = () => {
   const allPackageManagers = chartData.chartData.packageManagers;
   const colors = chartData.chartData.colors;
 
-    // Filter package managers to only show those with data for this variation
+  // Filter package managers to only show those with data for this variation
   const packageManagers = getAvailablePackageManagers(
     totalVariationData || [],
-    allPackageManagers
+    allPackageManagers,
   );
 
   // Filter package managers for package count data to only show those with actual data
-  const packageCountPackageManagers = getAvailablePackageManagersFromPackageCount(
-    packageCountData,
-    allPackageManagers
-  );
-
-
+  const packageCountPackageManagers =
+    getAvailablePackageManagersFromPackageCount(
+      packageCountData,
+      allPackageManagers,
+    );
 
   // Sort fixture data based on preferred order
   const sortFixtureData = (data: FixtureResult[]) => {
     if (!data) return data;
 
-    const fixtureOrder = sortFixtures(data.map(item => item.fixture));
+    const fixtureOrder = sortFixtures(data.map((item) => item.fixture));
     return data.sort((a, b) => {
       const indexA = fixtureOrder.indexOf(a.fixture);
       const indexB = fixtureOrder.indexOf(b.fixture);
@@ -93,25 +104,29 @@ export const VariationPage = () => {
   };
 
   const sortedTotalVariationData = sortFixtureData(totalVariationData);
-  const sortedPerPackageVariationData = sortFixtureData(perPackageVariationData);
+  const sortedPerPackageVariationData = sortFixtureData(
+    perPackageVariationData,
+  );
 
   // Check if this is a task execution variation
   const isTaskExecution = isTaskExecutionVariation(variation as string);
 
   // Dynamic titles and section IDs based on variation type
-  const titles = isTaskExecution ? {
-    totalChart: "Task Execution Time by Fixture",
-    totalTable: "Task Execution Time Data",
-    perPackageChart: "Task Execution Time by Fixture", // Not used for task execution
-    perPackageTable: "Task Execution Time Data", // Not used for task execution
-    packageCountTable: "Package Count Data",
-  } : {
-    totalChart: "Total Install Time by Fixture",
-    totalTable: "Total Install Time Data",
-    perPackageChart: "Per Package Install Time by Fixture",
-    perPackageTable: "Per Package Install Time Data",
-    packageCountTable: "Package Count Data",
-  };
+  const titles = isTaskExecution
+    ? {
+        totalChart: "Task Execution Time by Fixture",
+        totalTable: "Task Execution Time Data",
+        perPackageChart: "Task Execution Time by Fixture", // Not used for task execution
+        perPackageTable: "Task Execution Time Data", // Not used for task execution
+        packageCountTable: "Package Count Data",
+      }
+    : {
+        totalChart: "Total Install Time by Fixture",
+        totalTable: "Total Install Time Data",
+        perPackageChart: "Per Package Install Time by Fixture",
+        perPackageTable: "Per Package Install Time Data",
+        packageCountTable: "Package Count Data",
+      };
 
   // Section IDs for deep linking
   const sectionIds = {
@@ -122,8 +137,21 @@ export const VariationPage = () => {
     packageCountTable: createSectionId(titles.packageCountTable),
   };
 
-    return (
+  return (
     <div className="space-y-12">
+      {/* 4. Total time chart */}
+      <div id={sectionIds.totalChart}>
+        <VariationChart
+          title={titles.totalChart}
+          variationData={sortedTotalVariationData}
+          packageManagers={packageManagers}
+          colors={colors}
+          chartData={chartData}
+          isPerPackage={false}
+          currentVariation={variation}
+        />
+      </div>
+
       {/* 1. Per-package fixture charts - only show for package management tests */}
       {!isTaskExecution && (
         <div id={sectionIds.perPackageChart}>
@@ -177,19 +205,6 @@ export const VariationPage = () => {
         ) : null}
       </div>
 
-      {/* 4. Total time chart */}
-      <div id={sectionIds.totalChart}>
-        <VariationChart
-          title={titles.totalChart}
-          variationData={sortedTotalVariationData}
-          packageManagers={packageManagers}
-          colors={colors}
-          chartData={chartData}
-          isPerPackage={false}
-          currentVariation={variation as string}
-        />
-      </div>
-
       <div className="space-y-8">
         {/* 5. Total time data table */}
         <div id={sectionIds.totalTable}>
@@ -199,7 +214,7 @@ export const VariationPage = () => {
             packageManagers={packageManagers}
             chartData={chartData}
             isPerPackage={false}
-            currentVariation={variation as string}
+            currentVariation={variation}
           />
         </div>
       </div>
