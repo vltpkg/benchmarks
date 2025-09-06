@@ -47,6 +47,12 @@ case "$2" in
     run)
         bash ../../scripts/variations/run.sh "../../scripts" "../../results" "run" "run"
         ;;
+    registry-local-cache)
+        bash ../../scripts/variations/registry-local-cache.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
+    registry-proxied)
+        bash ../../scripts/variations/registry-proxied.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
     *)
         echo "Error: Unknown install variation '$2'"
         exit 1
