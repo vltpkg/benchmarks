@@ -1,0 +1,7 @@
+{
+  "registry": {
+    "upstream": "https://registry.npmjs.org/",
+    "cache": "./cache",
+    "port": 1337
+  }
+}

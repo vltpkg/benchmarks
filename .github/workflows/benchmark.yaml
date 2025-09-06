@@ -8,7 +8,7 @@ on:
         default: '["next", "astro", "vue", "svelte"]'
       variations:
         description: 'The benchmark variations to run'
-        default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules",  "lockfile", "lockfile+node_modules"]'
+        default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules",  "lockfile", "lockfile+node_modules", "registry-local-cache", "registry-proxied"]'
       binaries:
         description: 'The binaries to run the benchmarks on'
         default: '"npm,yarn,berry,pnpm,vlt,bun,deno,nx,turbo,node"'
@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         fixture: ${{ fromJson(inputs.fixtures || '["next", "astro", "vue", "svelte"]') }}
-        variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules",  "lockfile", "lockfile+node_modules"]') }}
+        variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules",  "lockfile", "lockfile+node_modules", "registry-local-cache", "registry-proxied"]') }}
         include:
           - variation: "run"
             fixture: "run"
@@ -115,7 +115,9 @@ jobs:
               "lockfile",
               "lockfile+node_modules",
               "node_modules",
-              "run"
+              "run",
+              "registry-local-cache",
+              "registry-proxied"
             ];
 
             // Helper functions for statistical calculations
