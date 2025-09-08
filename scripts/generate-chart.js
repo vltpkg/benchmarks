@@ -154,13 +154,13 @@ function generateChartData(option = {}) {
 // Load package manager version data
 function loadPackageManagersVersionData() {
   const versionsFile = path.resolve(RESULTS_DIR, "versions.json");
-  
+
   try {
     if (!fs.existsSync(versionsFile)) {
       console.warn(`Warning: Versions file ${versionsFile} does not exist`);
       return {};
     }
-    
+
     const data = JSON.parse(fs.readFileSync(versionsFile, "utf8"));
     return data || {};
   } catch (error) {
@@ -175,9 +175,10 @@ function loadPackageManagersVersionData() {
 const dumpChartData = () => {
   const chartData = generateChartData();
   const perPackageCountChartData = generateChartData({ perPackageCount: true });
-  const versions = loadPackageManagersVersionData()
+  const versions = loadPackageManagersVersionData();
 
   const results = {
+    date: DATE,
     chartData: {
       variations: chartData.variations,
       data: chartData.data,

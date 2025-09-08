@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { isBenchmarkChartData } from "@/types/chart-data";
 import { CHART_DATA_URL, ERROR_MESSAGES } from "@/constants";
-import type { BenchmarkChartData, PackageManagerVersions } from "@/types/chart-data";
+import type {
+  BenchmarkChartData,
+  PackageManagerVersions,
+} from "@/types/chart-data";
 
 interface UseChartDataReturn {
   chartData: BenchmarkChartData | null;
@@ -71,4 +74,3 @@ export const useChartData = (): UseChartDataReturn => {
     refetch: fetchChartData,
   };
 };
-

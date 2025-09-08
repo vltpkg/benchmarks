@@ -16,4 +16,4 @@ export const ErrorDisplay = ({ message }: ErrorDisplayProps) => {
       </div>
     </div>
   );
-}; 
+};
