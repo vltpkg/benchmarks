@@ -4,6 +4,7 @@ import type {
   Variation,
   Fixture,
   PackageManager,
+  PackageManagerData,
   PackageManagerVersions,
   BenchmarkChartData,
   FixtureResult,
@@ -27,8 +28,14 @@ export const isAverageVariation = (variation: string): boolean => {
 
 export const calculateAverageVariationData = (
   chartData: BenchmarkChartData,
-  isPerPackage: boolean = false
+  isPerPackage: boolean = false,
 ): FixtureResult[] => {
+  type FillKey = Extract<keyof PackageManagerData, `${PackageManager}_fill`>;
+  type StddevKey = Extract<
+    keyof PackageManagerData,
+    `${PackageManager}_stddev`
+  >;
+  type CountKey = Extract<keyof PackageManagerData, `${PackageManager}_count`>;
   const dataSource = isPerPackage
     ? chartData.perPackageCountChartData.data
     : chartData.chartData.data;
@@ -43,16 +50,16 @@ export const calculateAverageVariationData = (
     "cache+lockfile+node_modules",
     "lockfile",
     "lockfile+node_modules",
-  ].filter(v => dataSource[v as Variation]);
+  ].filter((v) => dataSource[v as Variation]);
 
   // Group data by fixture
   const fixtureGroups: Record<string, FixtureResult[]> = {};
 
-  packageManagementVariations.forEach(variation => {
+  packageManagementVariations.forEach((variation) => {
     const variationData = dataSource[variation as Variation];
     if (!variationData) return;
 
-    variationData.forEach(fixtureResult => {
+    variationData.forEach((fixtureResult) => {
       const fixture = fixtureResult.fixture;
       if (!fixtureGroups[fixture]) {
         fixtureGroups[fixture] = [];
@@ -68,41 +75,47 @@ export const calculateAverageVariationData = (
     const packageManagers = chartData.chartData.packageManagers;
     const averagedResult: FixtureResult = { fixture: fixture as Fixture };
 
-    packageManagers.forEach(pm => {
+    packageManagers.forEach((pm: PackageManager) => {
       const values = results
-        .map(r => r[pm])
+        .map((r) => r[pm])
         .filter((val): val is number => typeof val === "number" && val > 0);
 
       if (values.length > 0) {
-        const average = values.reduce((sum, val) => sum + val, 0) / values.length;
+        const average =
+          values.reduce((sum, val) => sum + val, 0) / values.length;
         averagedResult[pm] = average;
 
         // Copy fill color from first result
-        const fillKey = `${pm}_fill` as keyof FixtureResult;
-        if (results[0][fillKey]) {
-          averagedResult[fillKey] = results[0][fillKey];
+        const fillKey: FillKey = `${pm}_fill`;
+        const firstFill = results[0][fillKey];
+        if (firstFill !== undefined) {
+          averagedResult[fillKey] = firstFill;
         }
 
         // Calculate average standard deviation if available
-        const stddevKey = `${pm}_stddev` as keyof FixtureResult;
+        const stddevKey: StddevKey = `${pm}_stddev`;
         const stddevValues = results
-          .map(r => r[stddevKey])
+          .map((r) => r[stddevKey])
           .filter((val): val is number => typeof val === "number" && val > 0);
 
         if (stddevValues.length > 0) {
-          const avgStddev = stddevValues.reduce((sum, val) => sum + val, 0) / stddevValues.length;
+          const avgStddev =
+            stddevValues.reduce((sum, val) => sum + val, 0) /
+            stddevValues.length;
           averagedResult[stddevKey] = avgStddev;
         }
 
         // For per-package data, also average the count if available
         if (isPerPackage) {
-          const countKey = `${pm}_count` as keyof FixtureResult;
+          const countKey: CountKey = `${pm}_count`;
           const countValues = results
-            .map(r => r[countKey])
+            .map((r) => r[countKey])
             .filter((val): val is number => typeof val === "number" && val > 0);
 
           if (countValues.length > 0) {
-            const avgCount = countValues.reduce((sum, val) => sum + val, 0) / countValues.length;
+            const avgCount =
+              countValues.reduce((sum, val) => sum + val, 0) /
+              countValues.length;
             averagedResult[countKey] = Math.round(avgCount);
           }
         }
@@ -165,7 +178,7 @@ interface RankingData {
 
 export const calculateLeaderboard = (
   chartData: BenchmarkChartData,
-  specificVariation?: string,
+  specificVariation?: Variation,
 ): RankingData[] => {
   // Define package managers only (exclude tools like node, nx, turbo)
   const packageManagers = [
@@ -194,21 +207,23 @@ export const calculateLeaderboard = (
   });
 
   // Get package management variations (excluding "run")
-  let variationsToUse: string[];
+  let variationsToUse: Variation[];
 
   if (specificVariation && specificVariation !== "average") {
     // Use only the specific variation
     variationsToUse = [specificVariation];
   } else if (specificVariation === "average") {
     // For average, use all package management variations
-    variationsToUse = getVariationCategories(chartData.chartData.variations).find(
-      (cat) => cat.title === "Package Management",
-    )?.variations.filter(v => v !== "average") || [];
+    variationsToUse =
+      getVariationCategories(chartData.chartData.variations)
+        .find((cat) => cat.title === "Package Management")
+        ?.variations.filter((v) => v !== "average") || [];
   } else {
     // Default behavior - use all package management variations
-    variationsToUse = getVariationCategories(chartData.chartData.variations).find(
-      (cat) => cat.title === "Package Management",
-    )?.variations.filter(v => v !== "average") || [];
+    variationsToUse =
+      getVariationCategories(chartData.chartData.variations)
+        .find((cat) => cat.title === "Package Management")
+        ?.variations.filter((v) => v !== "average") || [];
   }
 
   // Calculate actual performance for each fixture and variation using per-package data

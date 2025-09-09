@@ -110,7 +110,7 @@ export const VariationChart = ({
     filteredPackageManagers,
     chartData,
     isPerPackage,
-    currentVariation
+    currentVariation,
   );
 
   // Create Y-axis props conditionally

@@ -1,6 +1,13 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState } from "react";
 import { isTaskExecutionVariation } from "@/lib/utils";
-import type { BenchmarkChartData, FixtureResult, PackageManager } from "@/types/chart-data";
+
+import type { ReactNode } from "react";
+import type {
+  BenchmarkChartData,
+  FixtureResult,
+  PackageManager,
+  Variation,
+} from "@/types/chart-data";
 
 interface YAxisContextValue {
   isConsistentYAxis: boolean;
@@ -10,7 +17,7 @@ interface YAxisContextValue {
     packageManagers: PackageManager[],
     chartData: BenchmarkChartData,
     isPerPackage: boolean,
-    currentVariation: string
+    currentVariation: string,
   ) => [number, number] | undefined;
 }
 
@@ -24,11 +31,11 @@ export const YAxisProvider = ({ children }: YAxisProviderProps) => {
   const [isConsistentYAxis, setIsConsistentYAxis] = useState(false);
 
   const getYAxisDomain = (
-    currentData: FixtureResult[],
+    _currentData: FixtureResult[],
     packageManagers: PackageManager[],
     chartData: BenchmarkChartData,
     isPerPackage: boolean,
-    currentVariation: string
+    currentVariation: string,
   ): [number, number] | undefined => {
     if (!isConsistentYAxis || isPerPackage) {
       // Return undefined to let Recharts auto-scale
@@ -47,20 +54,19 @@ export const YAxisProvider = ({ children }: YAxisProviderProps) => {
     const allVariations = Object.keys(dataSource);
 
     // Filter variations to same category
-    const relevantVariations = allVariations.filter(variation => {
+    const relevantVariations = allVariations.filter((variation) => {
       const isVariationTaskExecution = isTaskExecutionVariation(variation);
       return isVariationTaskExecution === isCurrentTaskExecution;
-    });
-
+    }) as Variation[];
 
     // Find global maximum across all relevant variations
-    relevantVariations.forEach(variation => {
+    relevantVariations.forEach((variation) => {
       const variationData = dataSource[variation];
       if (!variationData) return;
 
       variationData.forEach((fixtureResult: FixtureResult) => {
         // Only consider the package managers that are currently filtered/enabled
-        packageManagers.forEach(pm => {
+        packageManagers.forEach((pm) => {
           const value = fixtureResult[pm];
           if (typeof value === "number" && value > 0) {
             globalMax = Math.max(globalMax, value);
@@ -68,7 +74,6 @@ export const YAxisProvider = ({ children }: YAxisProviderProps) => {
         });
       });
     });
-
 
     // If no valid data found, return undefined to use auto-scaling
     if (globalMax === 0) {

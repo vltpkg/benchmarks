@@ -13,7 +13,8 @@ export const YAxisToggle = () => {
       onClick={() => setIsConsistentYAxis(!isConsistentYAxis)}
       className={cn(
         "gap-2 text-xs",
-        isConsistentYAxis && "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+        isConsistentYAxis &&
+          "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground",
       )}
       title={
         isConsistentYAxis

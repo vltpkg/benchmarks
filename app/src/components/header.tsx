@@ -233,16 +233,20 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
 
     // Only show leaderboard on package-managers routes, not task-runners routes
     const baseRoute = location.pathname.split("/")[1];
-    if (baseRoute !== "package-managers") return null;
 
     const leaderboard = useMemo(() => {
-      if (chartData) {
-        const fullLeaderboard = calculateLeaderboard(chartData, currentVariation);
+      if (chartData && currentVariation) {
+        const fullLeaderboard = calculateLeaderboard(
+          chartData,
+          currentVariation,
+        );
         return fullLeaderboard.filter((item) =>
           enabledPackageManagers.has(item.packageManager),
         );
       }
     }, [chartData, enabledPackageManagers, currentVariation]);
+
+    if (baseRoute !== "package-managers") return null;
 
     if (leaderboard && leaderboard.length === 0) return null;
 

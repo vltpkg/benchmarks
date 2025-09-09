@@ -5,6 +5,7 @@ import { calculateAverageVariationData } from "@/lib/utils";
 import type {
   BenchmarkChartData,
   PackageManagerVersions,
+  Variation,
 } from "@/types/chart-data";
 
 interface UseChartDataReturn {
@@ -49,12 +50,18 @@ export const useChartData = (): UseChartDataReturn => {
 
       // Calculate average data for both total and per-package
       const averageTotalData = calculateAverageVariationData(chartData, false);
-      const averagePerPackageData = calculateAverageVariationData(chartData, true);
+      const averagePerPackageData = calculateAverageVariationData(
+        chartData,
+        true,
+      );
 
-      // Add "average" to variations list if not already present
-      const variations = chartData.chartData.variations.includes("average" as any)
+      // Add "average" to variations list if not already present (typesafe)
+      const averageVariation: Variation = "average";
+      const variations: Variation[] = chartData.chartData.variations.includes(
+        averageVariation,
+      )
         ? chartData.chartData.variations
-        : ["average" as any, ...chartData.chartData.variations];
+        : [averageVariation, ...chartData.chartData.variations];
 
       // Combine chart data with versions and average data
       const combinedData: BenchmarkChartData = {
@@ -64,16 +71,16 @@ export const useChartData = (): UseChartDataReturn => {
           ...chartData.chartData,
           variations,
           data: {
-            average: averageTotalData,
             ...chartData.chartData.data,
+            average: averageTotalData,
           },
         },
         perPackageCountChartData: {
           ...chartData.perPackageCountChartData,
           variations,
           data: {
-            average: averagePerPackageData,
             ...chartData.perPackageCountChartData.data,
+            average: averagePerPackageData,
           },
         },
       };
