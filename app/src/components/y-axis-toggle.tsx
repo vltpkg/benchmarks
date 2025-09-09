@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useYAxis } from "@/contexts/y-axis-context";
-import { BarChart3 } from "lucide-react";
+import { RulerDimensionLine } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const YAxisToggle = () => {
@@ -12,9 +12,9 @@ export const YAxisToggle = () => {
       size="sm"
       onClick={() => setIsConsistentYAxis(!isConsistentYAxis)}
       className={cn(
-        "gap-2 text-xs",
+        "cursor-default text-sm rounded-lg shadow-none bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-700 dark:bg-transparent hover:border-neutral-300 dark:hover:border-neutral-500 border-neutral-200 dark:border-neutral-600 text-black dark:text-white w-fit max-w-full",
         isConsistentYAxis &&
-          "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground",
+          "dark:bg-neutral-600 border-neutral-300 dark:border-neutral-500 bg-neutral-200",
       )}
       title={
         isConsistentYAxis
@@ -22,7 +22,7 @@ export const YAxisToggle = () => {
           : "Enable consistent Y-axis scaling across variations"
       }
     >
-      <BarChart3 size={14} />
+      <RulerDimensionLine size={14} />
       {isConsistentYAxis ? "Consistent Scale" : "Auto Scale"}
     </Button>
   );
