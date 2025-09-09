@@ -128,7 +128,7 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
               packageManagers={chartData.chartData.packageManagers}
             />
             <VariationDropdown
-              currentVariation={currentVariation ?? "clean"}
+              currentVariation={currentVariation ?? "average"}
               sortedVariations={sortedVariations}
             />
           </div>
@@ -229,16 +229,20 @@ const LeaderBoardItem = ({
 const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
   ({ className, ...props }, ref) => {
     const { enabledPackageManagers } = usePackageManagerFilter();
-    const { chartData } = useHeaderContext();
+    const { chartData, location, currentVariation } = useHeaderContext();
+
+    // Only show leaderboard on package-managers routes, not task-runners routes
+    const baseRoute = location.pathname.split("/")[1];
+    if (baseRoute !== "package-managers") return null;
 
     const leaderboard = useMemo(() => {
       if (chartData) {
-        const fullLeaderboard = calculateLeaderboard(chartData);
+        const fullLeaderboard = calculateLeaderboard(chartData, currentVariation);
         return fullLeaderboard.filter((item) =>
           enabledPackageManagers.has(item.packageManager),
         );
       }
-    }, [chartData, enabledPackageManagers]);
+    }, [chartData, enabledPackageManagers, currentVariation]);
 
     if (leaderboard && leaderboard.length === 0) return null;
 

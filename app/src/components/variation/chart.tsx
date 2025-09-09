@@ -11,7 +11,9 @@ import { ShareButton } from "@/components/share-button";
 import { createSectionId, isTaskExecutionVariation } from "@/lib/utils";
 import { resolveTheme, useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
+import { useYAxis } from "@/contexts/y-axis-context";
 import { Clock, StopWatch } from "@/components/icons";
+import { YAxisToggle } from "@/components/y-axis-toggle";
 import { CHART_DEFAULTS } from "@/constants";
 import { formatPackageManagerLabel, getFixtureId } from "@/lib/utils";
 import { getFrameworkIcon } from "@/lib/get-icons";
@@ -51,6 +53,7 @@ export const VariationChart = ({
 }: VariationChartProps) => {
   const { theme } = useTheme();
   const { enabledPackageManagers } = usePackageManagerFilter();
+  const { getYAxisDomain } = useYAxis();
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -100,6 +103,20 @@ export const VariationChart = ({
     : isPerPackage
       ? "Time (ms per package)"
       : "Time (seconds)";
+
+  // Calculate Y-axis domain for consistent scaling
+  const yAxisDomain = getYAxisDomain(
+    variationData,
+    filteredPackageManagers,
+    chartData,
+    isPerPackage,
+    currentVariation
+  );
+
+  // Create Y-axis props conditionally
+  const yAxisProps = yAxisDomain
+    ? { domain: yAxisDomain, allowDataOverflow: false }
+    : {};
 
   const handleLegendClick = (dataKey: string) => {
     setSelectedPackageManagers((prev) => {
@@ -222,15 +239,18 @@ export const VariationChart = ({
               className="ml-auto"
             />
           </h3>
-          <Button
-            onClick={handleReset}
-            disabled={isAllSelected}
-            variant="outline"
-            size="sm"
-            className="text-xs dark:bg-neutral-800 bg-white shadow-none"
-          >
-            Reset Selection
-          </Button>
+          <div className="flex gap-2">
+            <YAxisToggle />
+            <Button
+              onClick={handleReset}
+              disabled={isAllSelected}
+              variant="outline"
+              size="sm"
+              className="text-xs dark:bg-neutral-800 bg-white shadow-none"
+            >
+              Reset Selection
+            </Button>
+          </div>
         </div>
 
         <div className="bg-card rounded-xl p-6 border-border border-[1px]">
@@ -262,6 +282,7 @@ export const VariationChart = ({
                   fill: theme === "dark" ? "white" : "currentColor",
                 }}
                 width={80}
+                {...yAxisProps}
               />
               <ChartTooltip
                 content={<ChartTooltipContent />}
@@ -415,6 +436,7 @@ export const VariationChart = ({
                         fill: theme === "dark" ? "white" : "currentColor",
                       }}
                       width={80}
+                      {...yAxisProps}
                     />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar dataKey="value">

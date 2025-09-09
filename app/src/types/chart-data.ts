@@ -13,6 +13,7 @@ export type PackageManager =
 export type Fixture = "next" | "astro" | "svelte" | "vue" | "run";
 
 export type Variation =
+  | "average"
   | "cache"
   | "cache+lockfile"
   | "cache+lockfile+node_modules"
@@ -146,6 +147,7 @@ export function isBenchmarkChartData(
 
 export function isValidVariation(variation: string): variation is Variation {
   const validVariations: Variation[] = [
+    "average",
     "cache",
     "cache+lockfile",
     "cache+lockfile+node_modules",

@@ -7,6 +7,7 @@ import { Loading } from "@/components/loading";
 import { ErrorDisplay } from "@/components/error";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { PackageManagerFilterProvider } from "@/contexts/package-manager-filter-context";
+import { YAxisProvider } from "@/contexts/y-axis-context";
 import { Toaster } from "@/components/ui/sonner";
 import { useChartData } from "@/hooks/use-chart-data";
 import { sortVariations } from "@/lib/utils";
@@ -33,16 +34,18 @@ const App = () => {
           <PackageManagerFilterProvider
             initialPackageManagers={chartData.chartData.packageManagers}
           >
-            <div className="min-h-screen gradient-bg">
-              <Header chartData={chartData} />
+            <YAxisProvider>
+              <div className="min-h-screen gradient-bg">
+                <Header chartData={chartData} />
 
-              <main className="max-w-7xl mx-auto px-6 py-12">
-                {loading && <Loading />}
-                {error && <ErrorDisplay message={error} />}
-                <Outlet context={{ chartData }} />
-              </main>
-              <Footer lastUpdated={chartData.chartData.date} />
-            </div>
+                <main className="max-w-7xl mx-auto px-6 py-12">
+                  {loading && <Loading />}
+                  {error && <ErrorDisplay message={error} />}
+                  <Outlet context={{ chartData }} />
+                </main>
+                <Footer lastUpdated={chartData.chartData.date} />
+              </div>
+            </YAxisProvider>
           </PackageManagerFilterProvider>
         ) : (
           <div className="min-h-screen gradient-bg">

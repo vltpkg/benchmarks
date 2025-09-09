@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { isBenchmarkChartData } from "@/types/chart-data";
 import { CHART_DATA_URL, ERROR_MESSAGES } from "@/constants";
+import { calculateAverageVariationData } from "@/lib/utils";
 import type {
   BenchmarkChartData,
   PackageManagerVersions,
@@ -46,10 +47,35 @@ export const useChartData = (): UseChartDataReturn => {
         console.warn("Versions data not available");
       }
 
-      // Combine chart data with versions
+      // Calculate average data for both total and per-package
+      const averageTotalData = calculateAverageVariationData(chartData, false);
+      const averagePerPackageData = calculateAverageVariationData(chartData, true);
+
+      // Add "average" to variations list if not already present
+      const variations = chartData.chartData.variations.includes("average" as any)
+        ? chartData.chartData.variations
+        : ["average" as any, ...chartData.chartData.variations];
+
+      // Combine chart data with versions and average data
       const combinedData: BenchmarkChartData = {
         ...chartData,
         versions,
+        chartData: {
+          ...chartData.chartData,
+          variations,
+          data: {
+            average: averageTotalData,
+            ...chartData.chartData.data,
+          },
+        },
+        perPackageCountChartData: {
+          ...chartData.perPackageCountChartData,
+          variations,
+          data: {
+            average: averagePerPackageData,
+            ...chartData.perPackageCountChartData.data,
+          },
+        },
       };
 
       setChartData(combinedData);
