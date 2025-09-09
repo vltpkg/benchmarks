@@ -92,7 +92,6 @@ export interface PackageManagerData {
 export type FixtureResult = BaseFixtureResult & PackageManagerData;
 
 export interface ChartDataSet {
-  date: string;
   variations: Variation[];
   data: Record<Variation, FixtureResult[]>;
   packageManagers: PackageManager[];
@@ -100,6 +99,7 @@ export interface ChartDataSet {
 }
 
 export interface BenchmarkChartData {
+  date: string;
   chartData: ChartDataSet;
   perPackageCountChartData: ChartDataSet;
   versions?: PackageManagerVersions;

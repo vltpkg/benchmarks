@@ -43,7 +43,7 @@ const App = () => {
                   {error && <ErrorDisplay message={error} />}
                   <Outlet context={{ chartData }} />
                 </main>
-                <Footer lastUpdated={chartData.chartData.date} />
+                <Footer lastUpdated={chartData.date} />
               </div>
             </YAxisProvider>
           </PackageManagerFilterProvider>
