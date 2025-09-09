@@ -13,6 +13,7 @@ export type PackageManager =
 export type Fixture = "next" | "astro" | "svelte" | "vue" | "run";
 
 export type Variation =
+  | "average"
   | "cache"
   | "cache+lockfile"
   | "cache+lockfile+node_modules"
@@ -91,7 +92,6 @@ export interface PackageManagerData {
 export type FixtureResult = BaseFixtureResult & PackageManagerData;
 
 export interface ChartDataSet {
-  date: string;
   variations: Variation[];
   data: Record<Variation, FixtureResult[]>;
   packageManagers: PackageManager[];
@@ -99,6 +99,7 @@ export interface ChartDataSet {
 }
 
 export interface BenchmarkChartData {
+  date: string;
   chartData: ChartDataSet;
   perPackageCountChartData: ChartDataSet;
   versions?: PackageManagerVersions;
@@ -146,6 +147,7 @@ export function isBenchmarkChartData(
 
 export function isValidVariation(variation: string): variation is Variation {
   const validVariations: Variation[] = [
+    "average",
     "cache",
     "cache+lockfile",
     "cache+lockfile+node_modules",

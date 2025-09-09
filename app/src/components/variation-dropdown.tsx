@@ -47,7 +47,8 @@ export const VariationDropdown = ({
           <DropdownMenuItem
             key={variation}
             onClick={() => {
-              const base = location.pathname.split("/")[1] || "package-managers";
+              const base =
+                location.pathname.split("/")[1] || "package-managers";
               navigate(`/${base}/${variation}`);
             }}
           >
