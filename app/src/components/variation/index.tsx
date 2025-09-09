@@ -124,35 +124,31 @@ export const VariationPage = () => {
 
     return (
     <div className="space-y-12">
-      {/* 1. Per-package fixture charts - only show for package management tests */}
-      {!isTaskExecution && (
-        <div id={sectionIds.perPackageChart}>
-          <VariationChart
-            title={titles.perPackageChart}
-            variationData={sortedPerPackageVariationData}
+      {/* 1. Total time chart */}
+      <div id={sectionIds.totalChart}>
+        <VariationChart
+          title={titles.totalChart}
+          variationData={sortedTotalVariationData}
+          packageManagers={packageManagers}
+          colors={colors}
+          chartData={chartData}
+          isPerPackage={false}
+          currentVariation={variation as string}
+        />
+      </div>
+
+      <div className="space-y-8">
+        {/* 2. Total time data table */}
+        <div id={sectionIds.totalTable}>
+          <VariationTable
+            title={titles.totalTable}
+            variationData={sortedTotalVariationData}
             packageManagers={packageManagers}
-            colors={colors}
             chartData={chartData}
-            isPerPackage={true}
+            isPerPackage={false}
             currentVariation={variation as string}
           />
         </div>
-      )}
-
-      <div className="space-y-8">
-        {/* 2. Per-package fixture data table - only show for package management tests */}
-        {!isTaskExecution && (
-          <div id={sectionIds.perPackageTable}>
-            <VariationTable
-              title={titles.perPackageTable}
-              variationData={sortedPerPackageVariationData}
-              packageManagers={packageManagers}
-              chartData={chartData}
-              isPerPackage={true}
-              currentVariation={variation as string}
-            />
-          </div>
-        )}
 
         {/* 3. Package count data table */}
         {packageCountLoading ? (
@@ -177,32 +173,36 @@ export const VariationPage = () => {
         ) : null}
       </div>
 
-      {/* 4. Total time chart */}
-      <div id={sectionIds.totalChart}>
-        <VariationChart
-          title={titles.totalChart}
-          variationData={sortedTotalVariationData}
-          packageManagers={packageManagers}
-          colors={colors}
-          chartData={chartData}
-          isPerPackage={false}
-          currentVariation={variation as string}
-        />
-      </div>
-
-      <div className="space-y-8">
-        {/* 5. Total time data table */}
-        <div id={sectionIds.totalTable}>
-          <VariationTable
-            title={titles.totalTable}
-            variationData={sortedTotalVariationData}
+      {/* 4. Per-package fixture charts - only show for package management tests */}
+      {!isTaskExecution && (
+        <div id={sectionIds.perPackageChart}>
+          <VariationChart
+            title={titles.perPackageChart}
+            variationData={sortedPerPackageVariationData}
             packageManagers={packageManagers}
+            colors={colors}
             chartData={chartData}
-            isPerPackage={false}
+            isPerPackage={true}
             currentVariation={variation as string}
           />
         </div>
-      </div>
+      )}
+
+      {!isTaskExecution && (
+        <div className="space-y-8">
+          {/* 5. Per-package fixture data table - only show for package management tests */}
+          <div id={sectionIds.perPackageTable}>
+            <VariationTable
+              title={titles.perPackageTable}
+              variationData={sortedPerPackageVariationData}
+              packageManagers={packageManagers}
+              chartData={chartData}
+              isPerPackage={true}
+              currentVariation={variation as string}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
