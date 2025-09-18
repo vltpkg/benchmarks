@@ -1,9 +1,9 @@
 [94m➤[39m YN0000: · Yarn 4.9.4
 [94m➤[39m [90mYN0000[39m: ┌ Resolution step
 ::group::Resolution step
-[94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;173mastro[39m[38;5;111m@[39m[38;5;111mnpm:5.13.7[39m, [38;5;166m@astrojs/[39m[38;5;173mcompiler[39m[38;5;111m@[39m[38;5;111mnpm:2.13.0[39m, [38;5;166m@astrojs/[39m[38;5;173minternal-helpers[39m[38;5;111m@[39m[38;5;111mnpm:0.7.2[39m, [38;5;166m@astrojs/[39m[38;5;173mmarkdown-remark[39m[38;5;111m@[39m[38;5;111mnpm:6.3.6[39m, [38;5;166m@astrojs/[39m[38;5;173mprism[39m[38;5;111m@[39m[38;5;111mnpm:3.3.0[39m, and [38;5;220m418[39m more.
+[94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;173mastro[39m[38;5;111m@[39m[38;5;111mnpm:5.13.8[39m, [38;5;166m@astrojs/[39m[38;5;173mcompiler[39m[38;5;111m@[39m[38;5;111mnpm:2.13.0[39m, [38;5;166m@astrojs/[39m[38;5;173minternal-helpers[39m[38;5;111m@[39m[38;5;111mnpm:0.7.2[39m, [38;5;166m@astrojs/[39m[38;5;173mmarkdown-remark[39m[38;5;111m@[39m[38;5;111mnpm:6.3.6[39m, [38;5;166m@astrojs/[39m[38;5;173mprism[39m[38;5;111m@[39m[38;5;111mnpm:3.3.0[39m, and [38;5;220m415[39m more.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 760ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 114ms
 [94m➤[39m [90mYN0000[39m: ┌ Post-resolution validation
 ::group::Post-resolution validation
 [93m➤[39m YN0086: │ Some peer dependencies are incorrectly met by dependencies; run [38;5;111myarn explain peer-requirements[39m for details.
@@ -11,13 +11,13 @@
 [94m➤[39m [90mYN0000[39m: └ Completed
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
-[94m➤[39m YN0013: │ [38;5;220m357[39m packages were added to the project ([38;5;160m+ 100.99 MiB[39m).
+[94m➤[39m YN0013: │ [38;5;220m354[39m packages were added to the project ([38;5;160m+ 101.06 MiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 597ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 672ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
-[94m➤[39m YN0007: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.25.9[39m must be built because it never has been before or the last one failed
-[94m➤[39m YN0007: │ [38;5;173msharp[39m[38;5;111m@[39m[38;5;111mnpm:0.34.3[39m must be built because it never has been before or the last one failed
+[94m➤[39m YN0007: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.25.10[39m must be built because it never has been before or the last one failed
+[94m➤[39m YN0007: │ [38;5;173msharp[39m[38;5;111m@[39m[38;5;111mnpm:0.34.4[39m must be built because it never has been before or the last one failed
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 321ms
-[93m➤[39m YN0000: · Done with warnings in 3s 755ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 273ms
+[93m➤[39m YN0000: · Done with warnings in 4s 113ms
