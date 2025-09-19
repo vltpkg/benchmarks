@@ -1,4 +1,4 @@
-[94m➤[39m YN0000: · Yarn 4.9.4
+[94m➤[39m YN0000: · Yarn 4.10.2
 [94m➤[39m [90mYN0000[39m: ┌ Resolution step
 ::group::Resolution step
 ::endgroup::
@@ -13,12 +13,12 @@
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 338ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 343ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [94m➤[39m YN0007: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.21.5[39m must be built because it never has been before or the last one failed
 [94m➤[39m YN0007: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.25.10[39m must be built because it never has been before or the last one failed
 [94m➤[39m YN0007: │ [38;5;173mvue-demi[39m[38;5;111m@[39m[38;5;111mnpm:0.14.10 [74003][39m must be built because it never has been before or the last one failed
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 969ms
-[93m➤[39m YN0000: · Done with warnings in 2s 504ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 2s 2ms
+[93m➤[39m YN0000: · Done with warnings in 2s 541ms

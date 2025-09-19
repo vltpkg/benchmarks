@@ -1,13 +1,3 @@
-(node:11546) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:11563) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-error Error: https://registry.yarnpkg.com/@vue/eslint-config-typescript/-/eslint-config-typescript-14.6.0.tgz: Request failed "502 Bad Gateway"
-    at ResponseError.ExtendableBuiltin (/home/runner/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:696:66)
-    at new ResponseError (/home/runner/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:802:124)
-    at Request.<anonymous> (/home/runner/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:66750:16)
-    at Request.emit (node:events:508:28)
-    at module.exports.Request.onRequestResponse (/home/runner/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:142287:10)
-    at ClientRequest.emit (node:events:508:28)
-    at HTTPParser.parserOnIncomingClient (node:_http_client:772:27)
-    at HTTPParser.parserOnHeadersComplete (node:_http_common:121:17)
-    at TLSSocket.socketOnData (node:_http_client:614:22)
-    at TLSSocket.emit (node:events:508:28)
+warning " > @vitest/eslint-plugin@1.1.10" has unmet peer dependency "@typescript-eslint/utils@>= 8.0".
