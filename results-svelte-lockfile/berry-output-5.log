@@ -1,16 +1,16 @@
-[94m➤[39m YN0000: · Yarn 4.10.2
+[94m➤[39m YN0000: · Yarn 4.10.3
 [94m➤[39m [90mYN0000[39m: ┌ Resolution step
 ::group::Resolution step
 ::endgroup::
 [94m➤[39m [90mYN0000[39m: └ Completed
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
-[94m➤[39m YN0013: │ [38;5;220m141[39m packages were added to the project ([38;5;160m+ 83.65 MiB[39m).
+[94m➤[39m YN0013: │ [38;5;220m141[39m packages were added to the project ([38;5;160m+ 83.86 MiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 732ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 591ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [94m➤[39m YN0007: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.25.10[39m must be built because it never has been before or the last one failed
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 427ms
-[94m➤[39m YN0000: · Done in 2s 276ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 413ms
+[94m➤[39m YN0000: · Done in 2s 133ms
