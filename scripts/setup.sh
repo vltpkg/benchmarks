@@ -32,7 +32,7 @@ echo "hyperfine: $HYPERFINE_VERSION"
 
 # Install Node.js package managers and tools
 echo "Installing package managers and tools..."
-npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
+npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest @vltpkg/vsr@latest verdaccio@latest
 
 # Configure Package Managers
 echo "Configuring package managers..."
@@ -83,4 +83,49 @@ echo "{
   \"node\": \"$NODE_VERSION\"
 }" > ./results/versions.json
 
+# Create registry configuration directories
+echo "Creating registry configuration directories..."
+mkdir -p ./registry-configs/vsr
+mkdir -p ./registry-configs/verdaccio
+
+# Create Verdaccio configuration
+cat > ./registry-configs/verdaccio/config.yaml << 'EOF'
+storage: ./storage
+auth:
+  htpasswd:
+    file: ./htpasswd
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+packages:
+  '@*/*':
+    access: $all
+    publish: $authenticated
+    proxy: npmjs
+  '**':
+    access: $all
+    publish: $authenticated
+    proxy: npmjs
+server:
+  keepAliveTimeout: 60
+  bodyParser:
+    limit: 100mb
+logs:
+  - type: stdout
+    format: pretty
+    level: warn
+EOF
+
+# Create VSR configuration
+cat > ./registry-configs/vsr/vlt.json << 'EOF'
+{
+  "registry": {
+    "upstream": "https://registry.npmjs.org/",
+    "cache": "./cache",
+    "port": 1337
+  }
+}
+EOF
+
+echo "Registry configurations created successfully!"
 echo "Setup completed successfully!"
