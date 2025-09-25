@@ -51,7 +51,7 @@ function readResults(file) {
 
 // Generate chart data for Recharts
 function generateChartData(option = {}) {
-  const fixtures = ["next", "astro", "svelte", "vue", "run"];
+  const fixtures = ["next", "astro", "svelte", "vue", "large", "run"];
   const variations = [
     "cache",
     "cache+lockfile",

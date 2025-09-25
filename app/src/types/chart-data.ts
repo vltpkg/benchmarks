@@ -10,7 +10,7 @@ export type PackageManager =
   | "turbo"
   | "node";
 
-export type Fixture = "next" | "astro" | "svelte" | "vue" | "run";
+export type Fixture = "next" | "astro" | "svelte" | "vue" | "large" | "run";
 
 export type Variation =
   | "average"

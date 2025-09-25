@@ -6,6 +6,7 @@ import {
   Deno,
   Next,
   Npm,
+  Package,
   Pnpm,
   Svelte,
   Vue,
@@ -30,6 +31,7 @@ const frameworkMap: Partial<Record<Fixture, LucideIcon>> = {
   next: Next,
   svelte: Svelte,
   vue: Vue,
+  large: Package,
 };
 
 export const getPackageManagerIcon = (
