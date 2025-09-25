@@ -27,6 +27,7 @@ The benchmarks measure:
 - Astro
 - Svelte
 - Vue
+- Large
 
 ### Package Managers
 - npm

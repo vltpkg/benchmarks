@@ -28,6 +28,7 @@ export const usePackageCountData = (
     "astro",
     "svelte",
     "vue",
+    "large",
     "run",
   ]);
 
