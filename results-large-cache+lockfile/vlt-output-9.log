@@ -1,0 +1,53 @@
+Resolve Error: Could not resolve
+  To satisfy: @vltpkg/spec.Spec {
+    type: 'registry',
+    spec: 'mobx-react-lite@^4.1.1',
+    name: 'mobx-react-lite',
+    bareSpec: '^4.1.1',
+    registry: 'https://registry.npmjs.org/',
+    registrySpec: '^4.1.1',
+    semver: '^4.1.1',
+    range: Range {
+      raw: '^4.1.1',
+      isAny: false,
+      isSingle: false,
+      set: [
+        Comparator {
+          includePrerelease: false,
+          raw: '^4.1.1',
+          tokens: [ '^4.1.1' ],
+          tuples: [
+            [
+              '>=',
+              _Version {
+                raw: '4.1.1',
+                major: 4,
+                minor: 1,
+                patch: 1,
+                prerelease: undefined,
+                build: undefined
+              }
+            ],
+            [
+              '<',
+              _Version {
+                raw: '4.1.1',
+                major: 5,
+                minor: 0,
+                patch: 0,
+                prerelease: [ 0 ],
+                build: undefined
+              }
+            ]
+          ],
+          isNone: false,
+          isAny: false
+        }
+      ],
+      includePrerelease: false
+    },
+    overridden: false
+  }
+  From: /home/runner/work/benchmarks/benchmarks/fixtures/large/node_modules/.vlt/··mobx-react@9.2.1/node_modules/mobx-react
+
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-6578.log
