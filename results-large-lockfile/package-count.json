@@ -1,20 +1,20 @@
 {
   "yarn": {
-    "count": 1325
+    "count": 1327
   },
   "berry": {
-    "count": 1359
+    "count": 1361
   },
   "pnpm": {
-    "count": 1286
+    "count": 1288
   },
   "vlt": {
-    "count": 1297
+    "count": 1299
   },
   "bun": {
-    "count": 1540
+    "count": 1552
   },
   "deno": {
-    "count": 1282
+    "count": 1284
   }
 }
