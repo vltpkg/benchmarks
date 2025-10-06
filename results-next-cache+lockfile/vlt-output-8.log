@@ -1,0 +1,72 @@
+Resolve Error: failed to fetch manifest
+  While fetching: https://registry.npmjs.org/stable-hash/%5E0.0.5
+  To satisfy: @vltpkg/spec.Spec {
+    type: 'registry',
+    spec: 'stable-hash@^0.0.5',
+    name: 'stable-hash',
+    bareSpec: '^0.0.5',
+    registry: 'https://registry.npmjs.org/',
+    registrySpec: '^0.0.5',
+    conventionalRegistryTarball: 'https://registry.npmjs.org/stable-hash/-/stable-hash-0.0.5.tgz',
+    semver: '^0.0.5',
+    range: Range {
+      raw: '^0.0.5',
+      isAny: false,
+      isSingle: true,
+      set: [
+        Comparator {
+          includePrerelease: false,
+          raw: '^0.0.5',
+          tokens: [ '^0.0.5' ],
+          tuples: [
+            [
+              '',
+              _Version {
+                raw: '0.0.5',
+                major: 0,
+                minor: 0,
+                patch: 5,
+                prerelease: undefined,
+                build: undefined
+              }
+            ]
+          ],
+          isNone: false,
+          isAny: false
+        }
+      ],
+      includePrerelease: false
+    },
+    overridden: false
+  }
+  From: /home/runner/work/benchmarks/benchmarks/fixtures/next/node_modules/.vlt/··eslint-import-resolver-typescript@3.10.1/node_modules/eslint-import-resolver-typescript
+  Response: @vltpkg/registry-client.CacheEntry {
+    statusCode: 404,
+    headers: [
+      [ 'date', 'Mon, 06 Oct 2025 11:30:45 GMT' ],
+      [ 'content-type', 'application/json' ],
+      [ 'content-length', '27' ],
+      [ 'connection', 'keep-alive' ],
+      [ 'server', 'cloudflare' ],
+      [ 'cf-ray', '98a4d4197ac6d705-IAD' ],
+      [ 'access-control-allow-origin', '*' ],
+      [ 'vary', 'Accept-Encoding' ],
+      [
+        'set-cookie',
+        '_cfuvid=5LzFWjjQYCnhIoQj.I1VP6HtGls3x2Koql5tBwx0Ywc-1759750245491-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None'
+      ],
+      [ 'content-encoding', 'identity' ]
+    ],
+    contentType: 'application/json',
+    date: 2025-10-06T11:30:45.000Z,
+    expires: 2025-10-06T11:35:45.000Z,
+    cacheControl: {},
+    valid: true,
+    staleWhileRevalidate: true,
+    age: 0,
+    maxAge: 300,
+    isGzip: false,
+    isJSON: true
+  }
+
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-8043.log

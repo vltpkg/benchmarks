@@ -1,0 +1,72 @@
+Resolve Error: failed to fetch manifest
+  While fetching: https://registry.npmjs.org/ast-types-flow/%5E0.0.8
+  To satisfy: @vltpkg/spec.Spec {
+    type: 'registry',
+    spec: 'ast-types-flow@^0.0.8',
+    name: 'ast-types-flow',
+    bareSpec: '^0.0.8',
+    registry: 'https://registry.npmjs.org/',
+    registrySpec: '^0.0.8',
+    conventionalRegistryTarball: 'https://registry.npmjs.org/ast-types-flow/-/ast-types-flow-0.0.8.tgz',
+    semver: '^0.0.8',
+    range: Range {
+      raw: '^0.0.8',
+      isAny: false,
+      isSingle: true,
+      set: [
+        Comparator {
+          includePrerelease: false,
+          raw: '^0.0.8',
+          tokens: [ '^0.0.8' ],
+          tuples: [
+            [
+              '',
+              _Version {
+                raw: '0.0.8',
+                major: 0,
+                minor: 0,
+                patch: 8,
+                prerelease: undefined,
+                build: undefined
+              }
+            ]
+          ],
+          isNone: false,
+          isAny: false
+        }
+      ],
+      includePrerelease: false
+    },
+    overridden: false
+  }
+  From: /home/runner/work/benchmarks/benchmarks/fixtures/next/node_modules/.vlt/··eslint-plugin-jsx-a11y@6.10.2/node_modules/eslint-plugin-jsx-a11y
+  Response: @vltpkg/registry-client.CacheEntry {
+    statusCode: 404,
+    headers: [
+      [ 'date', 'Mon, 06 Oct 2025 11:30:27 GMT' ],
+      [ 'content-type', 'application/json' ],
+      [ 'content-length', '27' ],
+      [ 'connection', 'keep-alive' ],
+      [ 'server', 'cloudflare' ],
+      [ 'cf-ray', '98a4d3a79caab4a5-IAD' ],
+      [ 'access-control-allow-origin', '*' ],
+      [ 'vary', 'Accept-Encoding' ],
+      [
+        'set-cookie',
+        '_cfuvid=XuwHAY0HaLqS3LmFSfBcr5d773VNjvHkLPx8_x5zSxs-1759750227258-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None'
+      ],
+      [ 'content-encoding', 'identity' ]
+    ],
+    contentType: 'application/json',
+    date: 2025-10-06T11:30:27.000Z,
+    expires: 2025-10-06T11:35:27.000Z,
+    cacheControl: {},
+    valid: true,
+    staleWhileRevalidate: true,
+    age: 0,
+    maxAge: 300,
+    isGzip: false,
+    isJSON: true
+  }
+
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-7811.log
