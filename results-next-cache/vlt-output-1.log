@@ -43,30 +43,30 @@ Resolve Error: failed to fetch manifest
   Response: @vltpkg/registry-client.CacheEntry {
     statusCode: 404,
     headers: [
-      [ 'date', 'Mon, 06 Oct 2025 11:31:14 GMT' ],
+      [ 'date', 'Mon, 06 Oct 2025 21:51:41 GMT' ],
       [ 'content-type', 'application/json' ],
       [ 'content-length', '27' ],
       [ 'connection', 'keep-alive' ],
       [ 'server', 'cloudflare' ],
-      [ 'cf-ray', '98a4d4cfe9e8c957-IAD' ],
+      [ 'cf-ray', '98a861ae6c523023-SJC' ],
       [ 'access-control-allow-origin', '*' ],
       [ 'vary', 'Accept-Encoding' ],
       [
         'set-cookie',
-        '_cfuvid=1AIsX_fAGtf4KCwYsKWj67IWcyptif4ujZn7E4m52sM-1759750274689-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None'
+        '_cfuvid=VCs4WMgCEg1HpvaGxW.y07mKro8rTIH2p7G7wrvX_Lo-1759787501887-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None'
       ],
       [ 'content-encoding', 'identity' ]
     ],
     contentType: 'application/json',
-    date: 2025-10-06T11:31:14.000Z,
-    expires: 2025-10-06T11:36:14.000Z,
+    date: 2025-10-06T21:51:41.000Z,
+    expires: 2025-10-06T21:56:41.000Z,
     cacheControl: {},
     valid: true,
     staleWhileRevalidate: true,
-    age: 0,
+    age: 1,
     maxAge: 300,
     isGzip: false,
     isJSON: true
   }
 
-Full details written to: /home/runner/.local/share/vlt/error-logs/error-7820.log
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-7888.log

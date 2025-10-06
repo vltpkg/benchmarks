@@ -43,23 +43,23 @@ Resolve Error: failed to fetch manifest
   Response: @vltpkg/registry-client.CacheEntry {
     statusCode: 404,
     headers: [
-      [ 'date', 'Mon, 06 Oct 2025 11:29:13 GMT' ],
+      [ 'date', 'Mon, 06 Oct 2025 21:49:08 GMT' ],
       [ 'content-type', 'application/json' ],
       [ 'content-length', '27' ],
       [ 'connection', 'keep-alive' ],
       [ 'server', 'cloudflare' ],
-      [ 'cf-ray', '98a4d1db4dd9aa6d-ORD' ],
+      [ 'cf-ray', '98a85dec39371783-IAD' ],
       [ 'access-control-allow-origin', '*' ],
       [ 'vary', 'Accept-Encoding' ],
       [
         'set-cookie',
-        '_cfuvid=HAUZGOC8IC3DLODX7oTkd_NV50tstwgLdBwR55VYHa0-1759750153613-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None'
+        '_cfuvid=M37MoZ_6bWFr5i4f0SdF0ELpUKhSUKmbIc2sb6TaSjA-1759787348009-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None'
       ],
       [ 'content-encoding', 'identity' ]
     ],
     contentType: 'application/json',
-    date: 2025-10-06T11:29:13.000Z,
-    expires: 2025-10-06T11:34:13.000Z,
+    date: 2025-10-06T21:49:08.000Z,
+    expires: 2025-10-06T21:54:08.000Z,
     cacheControl: {},
     valid: true,
     staleWhileRevalidate: true,
@@ -69,4 +69,4 @@ Resolve Error: failed to fetch manifest
     isJSON: true
   }
 
-Full details written to: /home/runner/.local/share/vlt/error-logs/error-7680.log
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-7776.log

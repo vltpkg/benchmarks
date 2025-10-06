@@ -1,17 +1,17 @@
 {
   "yarn": {
-    "count": 1326
+    "count": 1327
   },
   "berry": {
-    "count": 1361
+    "count": 1362
   },
   "pnpm": {
-    "count": 1287
+    "count": 1288
   },
   "bun": {
-    "count": 1541
+    "count": 1543
   },
   "deno": {
-    "count": 1283
+    "count": 1284
   }
 }
