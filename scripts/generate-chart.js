@@ -1,3 +1,9 @@
+// test it locally like this: `node scripts/generate-chart.js 2025-10-06`
+// make sure you have a results/2025-10-06 directory with valid benchmark
+// result JSON files (e.g: results/2025-10-06/next-lockfile.json)
+// after a succesful run, test the web app rendering the chart data locally
+// by copying the result `results/2025-10-06/chart-data.json` file to the
+// web app folder in a `latest/` folder, e.g: app/latest/chart-data.json
 import fs from "fs";
 import path from "path";
 
