@@ -166,6 +166,30 @@ Each run creates a new dated html file with its results, making it easy to track
 4. Push to the branch
 5. Create a Pull Request
 
+## Local debugging
+
+You can debug the result process scripts and the web app locally by using data
+from previous [GitHub Action runs of the Package Manager Benchmarks workflow](https://github.com/vltpkg/benchmarks/actions/workflows/benchmark.yaml).
+
+Those can be individually downloaded and their `benchmarks.json` files renamed
+to a `results/<date>/<fixture>-<variation>.json` file, where `<date>` needs to
+match a folder name in the `results` folder in a `YYYY-MM-DD` pattern and
+`<fixture>` is one of the known project type fixtures and `<variation>` is one
+of the known variations (e.g. `clean`, `cache`, `lockfile`, etc).
+
+You may test the chart data generation script locally by running: 
+
+```sh
+node scripts/generate-chart.js <date>
+```
+
+Make sure you have a `results/<date>` directory with valid benchmark
+result JSON files in it.
+
+After a succesful run, test the web app rendering the chart data locally
+by copying the result `results/<date>/chart-data.json` file to the
+web app folder in a `latest/` folder, e.g: `app/latest/chart-data.json`
+
 ## License
 
 This project is licensed under the BSD-2-Clause-Patent License - see the LICENSE file for details.

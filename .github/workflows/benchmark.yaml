@@ -184,6 +184,16 @@ jobs:
                           console.log(`Cleaned ${fixture}-${variation} (result ${i}): ${times.length - cleanTimes.length} failed runs removed, ${cleanTimes.length} valid runs remaining`);
                         } else {
                           console.warn(`All runs failed for ${fixture}-${variation} (result ${i})`);
+                          // reset all values to 0
+                          result.times = [0];
+                          result.exit_codes = [1];
+                          result.mean = 0;
+                          result.stddev = 0;
+                          result.median = 0;
+                          result.min = 0;
+                          result.max = 0;
+                          result.user = 0;
+                          result.system = 0;
                         }
                       } else {
                         console.warn(`Invalid times/exit_codes arrays for ${fixture}-${variation} (result ${i})`);
