@@ -1,31 +1,31 @@
 Resolve Error: failed to fetch manifest
-  While fetching: https://registry.npmjs.org/ast-types-flow/%5E0.0.8
+  While fetching: https://registry.npmjs.org/stable-hash/%5E0.0.5
   To satisfy: @vltpkg/spec.Spec {
     type: 'registry',
-    spec: 'ast-types-flow@^0.0.8',
-    name: 'ast-types-flow',
-    bareSpec: '^0.0.8',
+    spec: 'stable-hash@^0.0.5',
+    name: 'stable-hash',
+    bareSpec: '^0.0.5',
     registry: 'https://registry.npmjs.org/',
-    registrySpec: '^0.0.8',
-    conventionalRegistryTarball: 'https://registry.npmjs.org/ast-types-flow/-/ast-types-flow-0.0.8.tgz',
-    semver: '^0.0.8',
+    registrySpec: '^0.0.5',
+    conventionalRegistryTarball: 'https://registry.npmjs.org/stable-hash/-/stable-hash-0.0.5.tgz',
+    semver: '^0.0.5',
     range: Range {
-      raw: '^0.0.8',
+      raw: '^0.0.5',
       isAny: false,
       isSingle: true,
       set: [
         Comparator {
           includePrerelease: false,
-          raw: '^0.0.8',
-          tokens: [ '^0.0.8' ],
+          raw: '^0.0.5',
+          tokens: [ '^0.0.5' ],
           tuples: [
             [
               '',
               _Version {
-                raw: '0.0.8',
+                raw: '0.0.5',
                 major: 0,
                 minor: 0,
-                patch: 8,
+                patch: 5,
                 prerelease: undefined,
                 build: undefined
               }
@@ -39,34 +39,34 @@ Resolve Error: failed to fetch manifest
     },
     overridden: false
   }
-  From: /home/runner/work/benchmarks/benchmarks/fixtures/next/node_modules/.vlt/··eslint-plugin-jsx-a11y@6.10.2/node_modules/eslint-plugin-jsx-a11y
+  From: /home/runner/work/benchmarks/benchmarks/fixtures/next/node_modules/.vlt/··eslint-import-resolver-typescript@3.10.1/node_modules/eslint-import-resolver-typescript
   Response: @vltpkg/registry-client.CacheEntry {
     statusCode: 404,
     headers: [
-      [ 'date', 'Mon, 06 Oct 2025 21:58:17 GMT' ],
+      [ 'date', 'Tue, 07 Oct 2025 00:31:57 GMT' ],
       [ 'content-type', 'application/json' ],
       [ 'content-length', '27' ],
       [ 'connection', 'keep-alive' ],
       [ 'server', 'cloudflare' ],
-      [ 'cf-ray', '98a86b543dfa5702-IAD' ],
+      [ 'cf-ray', '98a94c721f008275-IAD' ],
       [ 'access-control-allow-origin', '*' ],
       [ 'vary', 'Accept-Encoding' ],
       [
         'set-cookie',
-        '_cfuvid=fVWjfqxOeHretK1j3sL0KXRUxOrm5cUL8ZRUTCGw9mQ-1759787897165-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None'
+        '_cfuvid=l7lXb2iOgAEwSfl3gNBK9pHI0vfjQDmEDtYoENrcCMQ-1759797117923-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None'
       ],
       [ 'content-encoding', 'identity' ]
     ],
     contentType: 'application/json',
-    date: 2025-10-06T21:58:17.000Z,
-    expires: 2025-10-06T22:03:17.000Z,
+    date: 2025-10-07T00:31:57.000Z,
+    expires: 2025-10-07T00:36:57.000Z,
     cacheControl: {},
     valid: true,
     staleWhileRevalidate: true,
-    age: 0,
+    age: 1,
     maxAge: 300,
     isGzip: false,
     isJSON: true
   }
 
-Full details written to: /home/runner/.local/share/vlt/error-logs/error-24755.log
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-24726.log

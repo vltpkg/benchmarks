@@ -1,3 +1,4 @@
-(node:9319) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:9166) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
+error https://registry.yarnpkg.com/@rollup/rollup-linux-arm64-musl/-/rollup-linux-arm64-musl-4.52.4.tgz: Request failed "500 Internal Server Error"
 warning " > @vitest/eslint-plugin@1.1.10" has unmet peer dependency "@typescript-eslint/utils@>= 8.0".

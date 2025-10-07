@@ -10,7 +10,7 @@ Error: failed to fetch manifest
     code: 'ERESOLVE',
     spec: Spec2 {
       type: 'registry',
-      spec: 'stable-hash@^0.0.5',
+      spec: 'ast-types-flow@^0.0.8',
       options: {
         catalog: undefined,
         catalogs: undefined,
@@ -86,10 +86,10 @@ Error: failed to fetch manifest
         },
         Symbol(nodejs.util.inspect.custom): [Function: [nodejs.util.inspect.custom]]
       },
-      name: 'stable-hash',
+      name: 'ast-types-flow',
       scope: undefined,
       scopeRegistry: undefined,
-      bareSpec: '^0.0.5',
+      bareSpec: '^0.0.8',
       gitRemote: undefined,
       gitSelector: undefined,
       gitSelectorParsed: undefined,
@@ -101,17 +101,17 @@ Error: failed to fetch manifest
       namedRegistry: undefined,
       namedJsrRegistry: undefined,
       registry: 'https://registry.npmjs.org/',
-      registrySpec: '^0.0.5',
-      conventionalRegistryTarball: 'https://registry.npmjs.org/stable-hash/-/stable-hash-0.0.5.tgz',
-      semver: '^0.0.5',
+      registrySpec: '^0.0.8',
+      conventionalRegistryTarball: 'https://registry.npmjs.org/ast-types-flow/-/ast-types-flow-0.0.8.tgz',
+      semver: '^0.0.8',
       range: Range {
-        raw: '^0.0.5',
+        raw: '^0.0.8',
         isAny: false,
         isSingle: true,
         set: [
           Comparator {
             includePrerelease: false,
-            raw: '^0.0.5',
+            raw: '^0.0.8',
             tokens: [Array],
             tuples: [Array],
             isNone: false,
@@ -127,8 +127,8 @@ Error: failed to fetch manifest
       subspec: undefined,
       overridden: false
     },
-    from: '/home/runner/work/benchmarks/benchmarks/fixtures/next/node_modules/.vlt/··eslint-import-resolver-typescript@3.10.1/node_modules/eslint-import-resolver-typescript',
-    url: https://registry.npmjs.org/stable-hash/%5E0.0.5,
+    from: '/home/runner/work/benchmarks/benchmarks/fixtures/next/node_modules/.vlt/··eslint-plugin-jsx-a11y@6.10.2/node_modules/eslint-plugin-jsx-a11y',
+    url: https://registry.npmjs.org/ast-types-flow/%5E0.0.8,
     response: _CacheEntry {}
   }
 }
