@@ -13,6 +13,11 @@
   "pnpm": {
     "count": 349
   },
+  "vlt": {
+    "count": 349,
+    "minCount": 349,
+    "maxCount": 354
+  },
   "bun": {
     "count": 365
   },
