@@ -1,23 +1,23 @@
 {
   "npm": {
-    "count": 281
+    "count": 275
   },
   "yarn": {
-    "count": 283
+    "count": 277
   },
   "berry": {
-    "count": 280
+    "count": 274
   },
   "pnpm": {
-    "count": 284
+    "count": 278
   },
   "vlt": {
-    "count": 285
+    "count": 279
   },
   "bun": {
-    "count": 284
+    "count": 278
   },
   "deno": {
-    "count": 284
+    "count": 278
   }
 }
