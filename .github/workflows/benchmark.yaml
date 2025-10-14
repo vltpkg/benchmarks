@@ -222,6 +222,7 @@ jobs:
         run: |
           pushd app
           vlt install || true
+          vlt build || true
           vlt run build
           popd
       - name: Upload Processed Results
