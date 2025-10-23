@@ -1,0 +1,9 @@
+{
+  "config": {
+    "command": {
+      "install": {
+        "allow-scripts": "#esbuild"
+      }
+    }
+  }
+}
