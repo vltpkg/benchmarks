@@ -1,6 +1,6 @@
 {
   "yarn": {
-    "count": 1324
+    "count": 1325
   },
   "berry": {
     "count": 1362
@@ -12,11 +12,11 @@
     "count": 1299
   },
   "bun": {
-    "count": 1550,
-    "minCount": 1542,
-    "maxCount": 1554
+    "count": 1551,
+    "minCount": 1544,
+    "maxCount": 1556
   },
   "deno": {
-    "count": 1284
+    "count": 1285
   }
 }
