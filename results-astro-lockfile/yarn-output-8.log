@@ -1,7 +1,9 @@
 warning package.json: No license field
 warning my-astro-project@0.0.1: No license field
-(node:12474) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:12484) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-warning astro@5.15.1: The engine "pnpm" appears to be invalid.
+error https://registry.yarnpkg.com/@rollup/rollup-linux-riscv64-gnu/-/rollup-linux-riscv64-gnu-4.52.5.tgz: Request failed "502 Bad Gateway"
+warning astro@5.15.2: The engine "pnpm" appears to be invalid.
 warning "astro > zod-to-ts@1.2.0" has unmet peer dependency "typescript@^4.9.4 || ^5.0.2".
 warning Workspaces can only be enabled in private projects.
+error Error: ENOENT: no such file or directory, open '/home/runner/.cache/yarn/v6/npm-@rollup-rollup-linux-riscv64-gnu-4.52.5-87ab033eebd1a9a1dd7b60509f6333ec1f82d994-integrity/node_modules/@rollup/rollup-linux-riscv64-gnu/.yarn-metadata.json'
