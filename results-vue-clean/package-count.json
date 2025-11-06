@@ -6,7 +6,9 @@
     "count": 459
   },
   "berry": {
-    "count": 455
+    "count": 456,
+    "minCount": 455,
+    "maxCount": 466
   },
   "pnpm": {
     "count": 437
