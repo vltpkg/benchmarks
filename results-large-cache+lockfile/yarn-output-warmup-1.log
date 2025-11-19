@@ -1,6 +1,6 @@
 warning package.json: No license field
 warning alotta-modules@0.0.1: No license field
-(node:3731) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:3733) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning " > autoprefixer@10.4.22" has unmet peer dependency "postcss@^8.1.0".
 warning " > babel-loader@9.2.1" has unmet peer dependency "@babel/core@^7.12.0".
