@@ -1,14 +1,14 @@
 {
   "npm": {
-    "count": 338,
-    "minCount": 334,
-    "maxCount": 338
+    "count": 336,
+    "minCount": 332,
+    "maxCount": 336
   },
   "yarn": {
     "count": 333
   },
   "berry": {
-    "count": 330
+    "count": 331
   },
   "pnpm": {
     "count": 329
