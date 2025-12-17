@@ -3,7 +3,7 @@
 ::group::Resolution step
 [94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;173manimate.less[39m[38;5;111m@[39m[38;5;111mnpm:2.2.0[39m, [38;5;173mautoprefixer[39m[38;5;111m@[39m[38;5;111mnpm:10.4.23[39m, [38;5;173mbabel-core[39m[38;5;111m@[39m[38;5;111mnpm:6.26.3[39m, [38;5;173mbabel-eslint[39m[38;5;111m@[39m[38;5;111mnpm:10.1.0[39m, [38;5;173mbabel-loader[39m[38;5;111m@[39m[38;5;111mnpm:9.2.1[39m, and [38;5;220m1337[39m more.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 825ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 853ms
 [94m➤[39m [90mYN0000[39m: ┌ Post-resolution validation
 ::group::Post-resolution validation
 [93m➤[39m YN0060: │ [38;5;173mmoment-range[39m is listed by your project with version [38;5;111m4.0.2[39m ([38;5;111mp1d51d2[39m), which doesn't satisfy what [38;5;173mreact-input-calendar[39m requests ([38;5;37m^2.1.0[39m).
@@ -26,7 +26,7 @@
 ::group::Fetch step
 [94m➤[39m YN0013: │ [38;5;220m1341[39m packages were added to the project ([38;5;160m+ 288.16 MiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 4s 567ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 4s 508ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [94m➤[39m YN0007: │ [38;5;173mless[39m[38;5;111m@[39m[38;5;111mnpm:4.5.1[39m must be built because it never has been before or the last one failed
@@ -34,5 +34,5 @@
 [94m➤[39m YN0007: │ [38;5;173mcore-js[39m[38;5;111m@[39m[38;5;111mnpm:3.47.0[39m must be built because it never has been before or the last one failed
 [94m➤[39m YN0007: │ [38;5;173mes5-ext[39m[38;5;111m@[39m[38;5;111mnpm:0.10.64[39m must be built because it never has been before or the last one failed
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 4s 967ms
-[93m➤[39m YN0000: · Done with warnings in 11s 537ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 5s 101ms
+[93m➤[39m YN0000: · Done with warnings in 11s 609ms
