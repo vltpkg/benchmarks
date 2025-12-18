@@ -1,0 +1,25 @@
+{
+  "npm": {
+    "count": 462
+  },
+  "yarn": {
+    "count": 458
+  },
+  "berry": {
+    "count": 454
+  },
+  "pnpm": {
+    "count": 436
+  },
+  "vlt": {
+    "count": 443,
+    "minCount": 442,
+    "maxCount": 444
+  },
+  "bun": {
+    "count": 460
+  },
+  "deno": {
+    "count": 436
+  }
+}
