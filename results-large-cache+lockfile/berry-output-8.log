@@ -24,7 +24,7 @@
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 641ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 649ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [94m➤[39m YN0007: │ [38;5;173mless[39m[38;5;111m@[39m[38;5;111mnpm:4.5.1[39m must be built because it never has been before or the last one failed
@@ -32,5 +32,5 @@
 [94m➤[39m YN0007: │ [38;5;173mcore-js[39m[38;5;111m@[39m[38;5;111mnpm:3.47.0[39m must be built because it never has been before or the last one failed
 [94m➤[39m YN0007: │ [38;5;173mes5-ext[39m[38;5;111m@[39m[38;5;111mnpm:0.10.64[39m must be built because it never has been before or the last one failed
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 4s 993ms
-[93m➤[39m YN0000: · Done with warnings in 5s 921ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 4s 959ms
+[93m➤[39m YN0000: · Done with warnings in 5s 896ms
