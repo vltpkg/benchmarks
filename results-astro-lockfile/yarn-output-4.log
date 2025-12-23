@@ -1,9 +1,7 @@
 warning package.json: No license field
 warning my-astro-project@0.0.1: No license field
-(node:10424) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:10439) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-error https://registry.yarnpkg.com/@esbuild/freebsd-arm64/-/freebsd-arm64-0.25.12.tgz: Request failed "500 Internal Server Error"
 warning astro@5.16.6: The engine "pnpm" appears to be invalid.
 warning "astro > zod-to-ts@1.2.0" has unmet peer dependency "typescript@^4.9.4 || ^5.0.2".
 warning Workspaces can only be enabled in private projects.
-error Error: ENOENT: no such file or directory, open '/home/runner/.cache/yarn/v6/npm-@esbuild-freebsd-arm64-0.25.12-1c5f9ba7206e158fd2b24c59fa2d2c8bb47ca0fe-integrity/node_modules/@esbuild/freebsd-arm64/.yarn-metadata.json'
