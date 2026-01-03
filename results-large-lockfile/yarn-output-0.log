@@ -1,6 +1,6 @@
 warning package.json: No license field
 warning alotta-modules@0.0.1: No license field
-(node:8450) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:8447) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning " > autoprefixer@10.4.23" has unmet peer dependency "postcss@^8.1.0".
 warning " > babel-loader@9.2.1" has unmet peer dependency "@babel/core@^7.12.0".
@@ -10,7 +10,7 @@ warning "babel-preset-react-hmre > redbox-react@1.6.0" has incorrect peer depend
 warning " > clean-webpack-plugin@4.0.0" has unmet peer dependency "webpack@>=4.0.0 <6.0.0".
 warning " > cssnano@6.1.2" has unmet peer dependency "postcss@^8.4.31".
 warning "cssnano > cssnano-preset-default@6.1.2" has unmet peer dependency "postcss@^8.4.31".
-warning "cssnano > cssnano-preset-default > css-declaration-sorter@7.3.0" has unmet peer dependency "postcss@^8.0.9".
+warning "cssnano > cssnano-preset-default > css-declaration-sorter@7.3.1" has unmet peer dependency "postcss@^8.0.9".
 warning "cssnano > cssnano-preset-default > cssnano-utils@4.0.2" has unmet peer dependency "postcss@^8.4.31".
 warning "cssnano > cssnano-preset-default > postcss-calc@9.0.1" has unmet peer dependency "postcss@^8.2.2".
 warning "cssnano > cssnano-preset-default > postcss-colormin@6.1.0" has unmet peer dependency "postcss@^8.4.31".
