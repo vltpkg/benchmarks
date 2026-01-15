@@ -8,7 +8,7 @@ on:
 
 jobs:
   add_to_project:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: Add to GitHub Project
         uses: actions/add-to-project@v1.0.2
