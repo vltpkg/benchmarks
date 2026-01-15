@@ -2,11 +2,11 @@
 • Running test
 • Remote caching disabled
 ::group::test
-cache bypass, force executing ac92f932fa53407e
+cache bypass, force executing 7ea9c46dff168d16
 benchmarking script execution...
 ::endgroup::
 
  Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    113ms 
+  Time:    53ms 
 
