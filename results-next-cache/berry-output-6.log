@@ -3,15 +3,15 @@
 ::group::Resolution step
 [94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;166m@types/[39m[38;5;173mnode[39m[38;5;111m@[39m[38;5;111mnpm:20.19.30[39m, [38;5;166m@types/[39m[38;5;173mreact-dom[39m[38;5;111m@[39m[38;5;111mnpm:18.3.7[39m, [38;5;166m@types/[39m[38;5;173mreact[39m[38;5;111m@[39m[38;5;111mnpm:18.3.27[39m, [38;5;173meslint-config-next[39m[38;5;111m@[39m[38;5;111mnpm:15.0.3[39m, [38;5;173meslint[39m[38;5;111m@[39m[38;5;111mnpm:8.57.1[39m, [38;5;173mnext[39m[38;5;111m@[39m[38;5;111mnpm:15.0.3[39m, and [38;5;220m450[39m more.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 670ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 891ms
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 252ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 323ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [94m➤[39m YN0007: │ [38;5;173msharp[39m[38;5;111m@[39m[38;5;111mnpm:0.33.5[39m must be built because it never has been before or the last one failed
 [94m➤[39m YN0007: │ [38;5;173munrs-resolver[39m[38;5;111m@[39m[38;5;111mnpm:1.11.1[39m must be built because it never has been before or the last one failed
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 306ms
-[94m➤[39m YN0000: · Done in 2s 261ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 2s 53ms
+[94m➤[39m YN0000: · Done in 3s 318ms
