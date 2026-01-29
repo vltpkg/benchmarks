@@ -4,6 +4,7 @@
       "install": {
         "allow-scripts": "#esbuild"
       }
-    }
+    },
+    "allow-scripts": "#esbuild, #fsevents"
   }
 }

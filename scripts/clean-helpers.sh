@@ -28,6 +28,12 @@ clean_berry_cache() {
   fi
 }
 
+clean_zpm_cache() {
+  if command -v yarn &> /dev/null; then
+    yarn cache clean >/dev/null || true
+  fi
+}
+
 # Function to safely clean pnpm cache
 clean_pnpm_cache() {
   if command -v corepack &> /dev/null; then
@@ -108,6 +114,7 @@ clean_all_cache() {
   clean_npm_cache
   clean_yarn_cache
   clean_berry_cache
+  clean_zpm_cache
   clean_pnpm_cache
   clean_vlt_cache
   clean_bun_cache
@@ -147,6 +154,7 @@ show_help() {
   echo "  clean_npm_cache"
   echo "  clean_yarn_cache"
   echo "  clean_berry_cache"
+  echo "  clean_zpm_cache"
   echo "  clean_pnpm_cache"
   echo "  clean_vlt_cache"
   echo "  clean_bun_cache"
@@ -188,6 +196,9 @@ else
         ;;
       clean_bun_cache)
         clean_bun_cache
+        ;;
+      clean_zpm_cache)
+        clean_zpm_cache
         ;;
       clean_nx_cache)
         clean_nx_cache

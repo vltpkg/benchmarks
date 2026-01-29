@@ -23,6 +23,7 @@ const countFiles = [
   { filename: 'npm-count.txt', pmName: 'npm' },
   { filename: 'yarn-count.txt', pmName: 'yarn' },
   { filename: 'berry-count.txt', pmName: 'berry' },
+  { filename: 'zpm-count.txt', pmName: 'zpm' },
   { filename: 'pnpm-count.txt', pmName: 'pnpm' },
   { filename: 'vlt-count.txt', pmName: 'vlt' },
   { filename: 'bun-count.txt', pmName: 'bun' },
@@ -88,4 +89,4 @@ if (!pmName || !countData) {
 // Save the updated result back to the JSON file
 fs.writeFileSync(packageCountPath, JSON.stringify(result, null, 2));
 
-console.log(`Successfully collected package count data`); 
+console.log(`Successfully collected package count data`);

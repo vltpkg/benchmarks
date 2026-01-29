@@ -11,6 +11,7 @@ import {
   Svelte,
   Vue,
   Yarn,
+  Zpm,
 } from "@/components/icons/index";
 
 import type { LucideIcon } from "lucide-react";
@@ -23,6 +24,7 @@ const packageManagerMap: Partial<Record<PackageManager, LucideIcon>> = {
   pnpm: Pnpm,
   yarn: Yarn,
   berry: Berry,
+  zpm: Zpm,
   vlt: Vlt,
 };
 
