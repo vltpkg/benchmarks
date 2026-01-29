@@ -18,7 +18,14 @@ infer_package_manager() {
   elif [[ -f "pnpm-lock.yaml" ]]; then
     echo "pnpm"
   elif [[ -f "yarn.lock" ]]; then
-    if [[ -d ".yarn" ]]; then
+    if [[ -f ".yarnrc.yml" ]] && command -v yarn >/dev/null 2>&1; then
+      yarn_version=$(yarn -v 2>/dev/null || echo "")
+      if [[ "$yarn_version" =~ ^6\. ]]; then
+        echo "zpm"
+      else
+        echo "berry"
+      fi
+    elif [[ -d ".yarn" ]] || [[ -f ".yarnrc.yml" ]]; then
       echo "berry"
     else
       echo "yarn"

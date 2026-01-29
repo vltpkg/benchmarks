@@ -3,6 +3,7 @@ export type PackageManager =
   | "yarn"
   | "pnpm"
   | "berry"
+  | "zpm"
   | "deno"
   | "bun"
   | "vlt"
@@ -31,6 +32,7 @@ export interface PackageManagerVersions {
   yarn?: string;
   pnpm?: string;
   berry?: string;
+  zpm?: string;
   deno?: string;
   bun?: string;
   vlt?: string;
@@ -48,6 +50,7 @@ export interface PackageManagerData {
   yarn?: number;
   pnpm?: number;
   berry?: number;
+  zpm?: number;
   deno?: number;
   bun?: number;
   vlt?: number;
@@ -59,6 +62,7 @@ export interface PackageManagerData {
   yarn_stddev?: number;
   pnpm_stddev?: number;
   berry_stddev?: number;
+  zpm_stddev?: number;
   deno_stddev?: number;
   bun_stddev?: number;
   vlt_stddev?: number;
@@ -70,6 +74,7 @@ export interface PackageManagerData {
   yarn_fill?: string;
   pnpm_fill?: string;
   berry_fill?: string;
+  zpm_fill?: string;
   deno_fill?: string;
   bun_fill?: string;
   vlt_fill?: string;
@@ -81,6 +86,7 @@ export interface PackageManagerData {
   yarn_count?: number;
   pnpm_count?: number;
   berry_count?: number;
+  zpm_count?: number;
   deno_count?: number;
   bun_count?: number;
   vlt_count?: number;
@@ -116,6 +122,7 @@ export interface PackageCountData {
   yarn?: PackageCountEntry;
   pnpm?: PackageCountEntry;
   berry?: PackageCountEntry;
+  zpm?: PackageCountEntry;
   deno?: PackageCountEntry;
   bun?: PackageCountEntry;
   vlt?: PackageCountEntry;

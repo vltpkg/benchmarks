@@ -20,3 +20,4 @@ export * from "./pnpm.tsx";
 export * from "./svelte.tsx";
 export * from "./vue.tsx";
 export * from "./yarn.tsx";
+export * from "./zpm.tsx";
