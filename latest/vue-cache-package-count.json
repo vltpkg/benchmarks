@@ -9,17 +9,15 @@
     "count": 454
   },
   "pnpm": {
-    "count": 436
+    "count": 435
   },
   "vlt": {
-    "count": 436,
-    "minCount": 435,
-    "maxCount": 436
+    "count": 438
   },
   "bun": {
     "count": 460
   },
   "deno": {
-    "count": 436
+    "count": 438
   }
 }
