@@ -1,0 +1,192 @@
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:29 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:29 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:29 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:30 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:30 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:30 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:30 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:30 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:31 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:31 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:31 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/astro
+package.json:
+-rw-r--r-- 1 runner runner 247 Jan 30 08:31 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.13
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.13:
+packageManager (after):
+"yarn@6.0.0-rc.13"
