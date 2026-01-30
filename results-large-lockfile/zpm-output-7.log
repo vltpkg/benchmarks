@@ -1,0 +1,81 @@
+warning package.json: No license field
+warning alotta-modules@0.0.1: No license field
+(node:23945) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+warning " > autoprefixer@10.4.23" has unmet peer dependency "postcss@^8.1.0".
+warning " > babel-loader@9.2.1" has unmet peer dependency "@babel/core@^7.12.0".
+warning " > babel-loader@9.2.1" has unmet peer dependency "webpack@>=5".
+warning "babel-preset-react-hmre > redbox-react@1.6.0" has incorrect peer dependency "react@^0.14.0 || ^15.0.0 || ^16.0.0-beta || ^16.0.0".
+warning "babel-preset-react-hmre > redbox-react@1.6.0" has incorrect peer dependency "react-dom@^0.14.0 || ^15.0.0 || ^16.0.0-beta || ^16.0.0".
+warning " > clean-webpack-plugin@4.0.0" has unmet peer dependency "webpack@>=4.0.0 <6.0.0".
+warning " > cssnano@6.1.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default@6.1.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > css-declaration-sorter@7.3.1" has unmet peer dependency "postcss@^8.0.9".
+warning "cssnano > cssnano-preset-default > cssnano-utils@4.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-calc@9.0.1" has unmet peer dependency "postcss@^8.2.2".
+warning "cssnano > cssnano-preset-default > postcss-colormin@6.1.0" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-convert-values@6.1.0" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-discard-comments@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-discard-duplicates@6.0.3" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-discard-empty@6.0.3" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-discard-overridden@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-merge-longhand@6.0.5" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-merge-rules@6.1.1" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-minify-font-values@6.1.0" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-minify-gradients@6.0.3" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-minify-params@6.1.0" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-minify-selectors@6.0.4" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-normalize-charset@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-normalize-display-values@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-normalize-positions@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-normalize-repeat-style@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-normalize-string@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-normalize-timing-functions@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-normalize-unicode@6.1.0" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-normalize-url@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-normalize-whitespace@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-ordered-values@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-reduce-initial@6.1.0" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-reduce-transforms@6.0.2" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-svgo@6.0.3" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-unique-selectors@6.0.4" has unmet peer dependency "postcss@^8.4.31".
+warning "cssnano > cssnano-preset-default > postcss-merge-longhand > stylehacks@6.1.1" has unmet peer dependency "postcss@^8.4.31".
+warning " > eslint-config-airbnb@19.0.4" has unmet peer dependency "eslint-plugin-react-hooks@^4.3.0".
+warning " > eslint-import-resolver-webpack@0.13.10" has unmet peer dependency "webpack@>=1.11.0".
+warning " > gulp-postcss@9.1.0" has unmet peer dependency "postcss@^8.0.0".
+warning " > imports-loader@5.0.0" has unmet peer dependency "webpack@^5.0.0".
+warning " > medium-draft@0.5.18" has unmet peer dependency "draft-convert@^2.0.0".
+warning " > medium-draft@0.5.18" has unmet peer dependency "prop-types@^15.6.2".
+warning " > medium-draft@0.5.18" has incorrect peer dependency "react@^15.0.0 || ^16.0.0".
+warning " > medium-draft@0.5.18" has incorrect peer dependency "react-dom@^15.0.0 || ^16.0.0".
+warning "medium-draft > draft-js@0.10.5" has incorrect peer dependency "react@^0.14.0 || ^15.0.0-rc || ^16.0.0-rc || ^16.0.0".
+warning "medium-draft > draft-js@0.10.5" has incorrect peer dependency "react-dom@^0.14.0 || ^15.0.0-rc || ^16.0.0-rc || ^16.0.0".
+warning " > postcss-reporter@7.1.0" has unmet peer dependency "postcss@^8.1.0".
+warning " > raw-loader@4.0.2" has unmet peer dependency "webpack@^4.0.0 || ^5.0.0".
+warning " > react-addons-css-transition-group@15.6.2" has incorrect peer dependency "react@^15.4.2".
+warning "react-addons-css-transition-group > react-transition-group@1.2.1" has incorrect peer dependency "react@^15.0.0 || ^16.0.0".
+warning "react-addons-css-transition-group > react-transition-group@1.2.1" has incorrect peer dependency "react-dom@^15.0.0 || ^16.0.0".
+warning " > react-draft-wysiwyg@1.15.0" has unmet peer dependency "immutable@3.x.x || 4.x.x".
+warning "react-draft-wysiwyg > draftjs-utils@0.10.2" has unmet peer dependency "immutable@3.x.x || 4.x.x".
+warning "react-draft-wysiwyg > html-to-draftjs@1.5.0" has unmet peer dependency "immutable@3.x.x || 4.x.x".
+warning " > react-highcharts@16.1.0" has incorrect peer dependency "react@~0.14 || ^15.0.0 || ^16.0.0".
+warning " > react-highcharts@16.1.0" has incorrect peer dependency "react-dom@~0.14 || ^15.0.0 || ^16.0.0".
+warning " > react-hot-loader@4.13.1" has incorrect peer dependency "react@^15.0.0 || ^16.0.0 || ^17.0.0".
+warning " > react-hot-loader@4.13.1" has incorrect peer dependency "react-dom@^15.0.0 || ^16.0.0 || ^17.0.0".
+warning " > react-input-calendar@0.5.4" has incorrect peer dependency "moment-range@^2.1.0".
+warning " > react-input-calendar@0.5.4" has unmet peer dependency "prop-types@^15.5.10".
+warning " > react-input-calendar@0.5.4" has incorrect peer dependency "react@^0.14.7 || ^15.0.0 || ^16.0.0".
+warning " > react-responsive-tabs@4.4.3" has incorrect peer dependency "react@^15.1.0 || ^16.0.0 || ^17.0.0".
+warning " > react-responsive-tabs@4.4.3" has incorrect peer dependency "react-dom@^15.1.0 || ^16.0.0 || ^17.0.0".
+warning "react-responsive-tabs > react-resize-detector@6.7.8" has incorrect peer dependency "react@^16.0.0 || ^17.0.0".
+warning "react-responsive-tabs > react-resize-detector@6.7.8" has incorrect peer dependency "react-dom@^16.0.0 || ^17.0.0".
+warning " > react-select-plus@1.0.0-rc.3.patch12" has incorrect peer dependency "react@^0.14 || ^15.0.0-rc || ^15.0".
+warning " > react-select-plus@1.0.0-rc.3.patch12" has incorrect peer dependency "react-dom@^0.14 || ^15.0.0-rc || ^15.0".
+warning "react-select-plus > react-input-autosize@1.1.0" has incorrect peer dependency "react@^0.14 || ^15.0.0-rc || ^15.0".
+warning " > react-skylight@0.5.1" has incorrect peer dependency "react@^0.14.0 || ^15.0.1 || ^16.3.0".
+warning " > react-sortablejs@6.1.4" has unmet peer dependency "@types/sortablejs@1".
+warning " > react-tappable@1.0.4" has unmet peer dependency "create-react-class@^15.5.2".
+warning " > react-tappable@1.0.4" has unmet peer dependency "prop-types@^15.5.8".
+warning " > react-tappable@1.0.4" has incorrect peer dependency "react@^0.14 || ^15.0.0-rc || ^15.0.0 || ^16.0.0".
+warning " > react-tappable@1.0.4" has incorrect peer dependency "react-dom@^0.14 || ^15.0.0-rc || ^15.0.0 || ^16.0.0".
+warning " > style-loader@3.3.4" has unmet peer dependency "webpack@^5.0.0".
