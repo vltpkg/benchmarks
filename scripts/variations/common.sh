@@ -52,16 +52,27 @@ for pm in npm yarn berry zpm pnpm vlt bun deno nx turbo node; do
   fi
 done
 BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
-BENCH_COMMAND_NPM="npm install --no-audit --no-fund --silent >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_YARN="corepack yarn@1 install --silent > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_YARN_MODERN_CONFIG=$(cat <<EOF
 enableImmutableInstalls: false
 enableMirror: false
 nodeLinker: node-modules
 EOF
 )
-BENCH_COMMAND_BERRY="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; corepack yarn@latest install > $BENCH_OUTPUT_FOLDER/berry-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_ZPM="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; yarn install --silent > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_SETUP_NPM=""
+BENCH_SETUP_YARN=""
+BENCH_SETUP_BERRY="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml"
+BENCH_SETUP_ZPM="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; npm pkg set packageManager=yarn@6; { echo '[zpm prepare]'; echo 'yarn path:'; command -v yarn || echo 'missing'; echo 'yarn version:'; yarn -v || echo 'missing'; echo 'packageManager:'; npm pkg get packageManager || echo 'missing'; } >> $BENCH_OUTPUT_FOLDER/zpm-prepare.log 2>&1"
+BENCH_SETUP_PNPM=""
+BENCH_SETUP_VLT=""
+BENCH_SETUP_BUN=""
+BENCH_SETUP_DENO=""
+BENCH_SETUP_NX=""
+BENCH_SETUP_TURBO=""
+BENCH_SETUP_NODE=""
+BENCH_COMMAND_NPM="npm install --no-audit --no-fund --silent >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_YARN="corepack yarn@1 install --silent > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BERRY="corepack yarn@latest install > $BENCH_OUTPUT_FOLDER/berry-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_ZPM="yarn install --silent > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_PNPM="corepack pnpm@latest install --silent > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT="vlt install --view=silent > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BUN="bun install --silent > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
@@ -70,6 +81,28 @@ BENCH_COMMAND_DENO="deno install --allow-scripts --quiet > $BENCH_OUTPUT_FOLDER/
 # Clean up & create the results directory
 rm -rf "$BENCH_OUTPUT_FOLDER"
 mkdir -p "$BENCH_OUTPUT_FOLDER"
+
+append_setup() {
+  local base="$1"
+  local setup="$2"
+
+  if [ -n "$setup" ]; then
+    echo "$base; $setup"
+  else
+    echo "$base"
+  fi
+}
+
+prepend_setup() {
+  local base="$1"
+  local setup="$2"
+
+  if [ -n "$setup" ]; then
+    echo "$setup; $base"
+  else
+    echo "$base"
+  fi
+}
 
 # Function to collect package count into a package-count.json file
 collect_package_count() {

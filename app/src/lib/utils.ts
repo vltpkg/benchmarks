@@ -185,6 +185,7 @@ export const calculateLeaderboard = (
     "npm",
     "pnpm",
     "yarn",
+    "zpm",
     "berry",
     "bun",
     "deno",
@@ -351,19 +352,28 @@ export function sortFixtures(fixtures: Fixture[]): Fixture[] {
   });
 }
 
+export function getPackageManagerDisplayName(
+  packageManager: PackageManager,
+): string {
+  if (packageManager === "berry") return "yarn (berry)";
+  if (packageManager === "zpm") return "yarn (zpm)";
+  return packageManager;
+}
+
 export function formatPackageManagerLabel(
   packageManager: PackageManager,
   versions?: PackageManagerVersions,
 ): string {
+  const displayName = getPackageManagerDisplayName(packageManager);
   if (!versions || !versions[packageManager]) {
-    return packageManager;
+    return displayName;
   }
 
   const version = versions[packageManager];
   // Remove 'v' prefix if it exists (like node's "v24.0.0"), then add it back consistently
   const cleanVersion = version?.startsWith("v") ? version.slice(1) : version;
 
-  return `${packageManager} v${cleanVersion}`;
+  return `${displayName} v${cleanVersion}`;
 }
 
 export function getPackageManagerVersion(

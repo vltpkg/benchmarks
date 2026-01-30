@@ -16,7 +16,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { getPackageManagerVersion, createSectionId } from "@/lib/utils";
+import {
+  getPackageManagerDisplayName,
+  getPackageManagerVersion,
+  createSectionId,
+} from "@/lib/utils";
 import { ShareButton } from "@/components/share-button";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { Package } from "@/components/icons";
@@ -68,13 +72,14 @@ export const PackageCountTable = ({
           id: pm,
           header: () => {
             const version = getPackageManagerVersion(pm, versions);
+            const displayName = getPackageManagerDisplayName(pm);
             return version ? (
               <div className="text-center">
-                <div className="font-bold">{pm}</div>
+                <div className="font-bold">{displayName}</div>
                 <div className="text-xs text-muted-foreground">{version}</div>
               </div>
             ) : (
-              <span className="font-bold">{pm}</span>
+              <span className="font-bold">{displayName}</span>
             );
           },
           cell: (info) => {
