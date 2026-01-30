@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ListFilter, Check, ChevronRight } from "lucide-react";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
+import { getPackageManagerDisplayName } from "@/lib/utils";
 
 import type { PackageManager } from "@/types/chart-data";
 
@@ -58,6 +59,7 @@ export const PackageManagerFilter = ({
       >
         {packageManagers.map((pm) => {
           const isEnabled = isPackageManagerEnabled(pm);
+          const displayName = getPackageManagerDisplayName(pm);
 
           return (
             <DropdownMenuItem
@@ -71,7 +73,7 @@ export const PackageManagerFilter = ({
                   <Check className="text-foreground dark:text-foreground" />
                 )}
               </div>
-              <span>{pm}</span>
+              <span>{displayName}</span>
             </DropdownMenuItem>
           );
         })}

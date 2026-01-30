@@ -8,6 +8,7 @@ import {
   cn,
   calculateLeaderboard,
   getVariationCategories,
+  getPackageManagerDisplayName,
   sortVariations,
 } from "@/lib/utils";
 import { getPackageManagerIcon } from "@/lib/get-icons";
@@ -199,25 +200,26 @@ const LeaderBoardItem = ({
 }: LeaderBoardItemProps) => {
   const Icon = getPackageManagerIcon(packageManager);
   const rank = idx + 1;
+  const displayName = getPackageManagerDisplayName(packageManager);
 
   return (
-    <div className="relative flex bg-card items-center gap-1 p-2 pr-5 rounded-lg border border-border/50">
-      <div className="text-xl text-muted-foreground font-mono font-medium flex-shrink-0 px-2">
+    <div className="relative flex bg-card items-center gap-2 px-2 py-1.5 rounded-lg border border-border/50">
+      <div className="text-lg text-muted-foreground font-mono font-medium flex-shrink-0 px-1">
         {rank}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <div className="items-center justify-center flex">
           {Icon && (
             <Icon
-              size={32}
+              size={28}
               className={cn(packageManager === "vlt" && "dark:text-white")}
             />
           )}
         </div>
         <div className="flex flex-col">
-          <p className="text-sm font-medium">{packageManager}</p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs font-medium">{displayName}</p>
+          <p className="text-[10px] text-muted-foreground">
             {averageTime.toFixed(1)}ms/pkg
           </p>
         </div>
