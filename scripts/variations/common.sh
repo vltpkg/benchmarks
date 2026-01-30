@@ -58,10 +58,14 @@ enableMirror: false
 nodeLinker: node-modules
 EOF
 )
+BENCH_ZPM_VERSION="${BENCH_ZPM_VERSION:-$(curl -fsSL "https://repo.yarnpkg.com/channels/default/canary" | tr -d '[:space:]' || true)}"
+if [ -z "$BENCH_ZPM_VERSION" ]; then
+  BENCH_ZPM_VERSION="6.0.0-rc.13"
+fi
 BENCH_SETUP_NPM=""
 BENCH_SETUP_YARN=""
 BENCH_SETUP_BERRY="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml"
-BENCH_SETUP_ZPM="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; npm pkg set packageManager=yarn@6; { echo '[zpm prepare]'; echo 'yarn path:'; command -v yarn || echo 'missing'; echo 'yarn version:'; yarn -v || echo 'missing'; echo 'packageManager:'; npm pkg get packageManager || echo 'missing'; } >> $BENCH_OUTPUT_FOLDER/zpm-prepare.log 2>&1"
+BENCH_SETUP_ZPM="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; { echo '[zpm prepare]'; echo 'cwd:'; pwd; echo 'package.json:'; ls -la package.json || true; echo 'yarn path:'; command -v yarn || true; echo 'yarn version:'; yarn -v || true; echo 'canary version:'; echo \"$BENCH_ZPM_VERSION\"; echo 'packageManager (before):'; npm pkg get packageManager || true; echo 'set packageManager=yarn@'"$BENCH_ZPM_VERSION"':' ; npm pkg set packageManager=\"yarn@$BENCH_ZPM_VERSION\" || true; echo 'packageManager (after):'; npm pkg get packageManager || true; } >> $BENCH_OUTPUT_FOLDER/zpm-prepare.log 2>&1"
 BENCH_SETUP_PNPM=""
 BENCH_SETUP_VLT=""
 BENCH_SETUP_BUN=""
