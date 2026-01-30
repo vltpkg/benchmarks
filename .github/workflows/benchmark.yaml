@@ -11,7 +11,7 @@ on:
         default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules",  "lockfile", "lockfile+node_modules"]'
       binaries:
         description: 'The binaries to run the benchmarks on'
-        default: '"npm,yarn,berry,pnpm,vlt,bun,deno,nx,turbo,node"'
+        default: '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node"'
       warmup:
         description: 'The number of warmup runs on each benchmark'
         default: '2'
@@ -39,7 +39,7 @@ jobs:
           - variation: "run"
             fixture: "run"
     env:
-      BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,pnpm,vlt,bun,deno,nx,turbo,node"') }}
+      BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node"') }}
       BENCH_WARMUP: ${{ inputs.warmup || '2' }}
       BENCH_RUNS: ${{ inputs.runs || '10' }}
     steps:

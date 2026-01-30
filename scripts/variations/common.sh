@@ -31,10 +31,10 @@ else
 fi
 
 # Defines configurable values for the benchmark
-BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,pnpm,vlt,bun,deno,nx,turbo,node}"
+BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node}"
 BENCH_WARMUP="${BENCH_WARMUP:=2}"
 BENCH_RUNS="${BENCH_RUNS:=10}"
-for pm in npm yarn berry pnpm vlt bun deno nx turbo node; do
+for pm in npm yarn berry zpm pnpm vlt bun deno nx turbo node; do
   CHOICE=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
   if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
     # Only allow nx, turbo, node if BENCH_VARIATION is "run"
@@ -76,7 +76,7 @@ collect_package_count() {
   ls -la "$BENCH_OUTPUT_FOLDER"
 
   # Prints the output of each install
-  for pm in npm yarn berry pnpm vlt bun deno nx turbo node; do
+  for pm in npm yarn berry zpm pnpm vlt bun deno nx turbo node; do
     if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
       for i in {0..9}; do
         echo "-- Reading output of $pm install $i ---"
