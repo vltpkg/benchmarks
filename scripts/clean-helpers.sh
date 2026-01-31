@@ -52,6 +52,7 @@ clean_vlt_cache() {
 # Function to safely clean bun cache
 clean_bun_cache() {
   if command -v bun &> /dev/null; then
+    bun pm cache rm -g || true
     bun pm cache rm || true
     # also clear global cache dir
     safe_remove "~/.bun/install/cache"
