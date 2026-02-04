@@ -1,0 +1,20 @@
+{
+    "extends": ["../../../tsconfig.build.json", "./tsconfig.viewer.json"],
+
+    "compilerOptions": {
+        "outDir": "./dist/tsbuild",
+        "rootDir": "./src",
+        "composite": true
+    },
+
+    "references": [
+        {
+            "path": "../../dev/core/tsconfig.build.json"
+        },
+        {
+            "path": "../../dev/loaders/tsconfig.build.json"
+        }
+    ],
+
+    "include": ["./src/**/*"]
+}

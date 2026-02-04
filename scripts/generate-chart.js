@@ -79,7 +79,7 @@ function readResults(file) {
 
 // Generate chart data for Recharts
 function generateChartData(option = {}) {
-  const fixtures = ["next", "astro", "svelte", "vue", "large", "uploadthing", "run"];
+  const fixtures = ["next", "astro", "svelte", "vue", "large", "babylon", "run"];
   const variations = [
     "cache",
     "cache+lockfile",

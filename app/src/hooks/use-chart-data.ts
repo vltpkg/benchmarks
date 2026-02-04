@@ -76,10 +76,10 @@ export const useChartData = (): UseChartDataReturn => {
           }
 
           if (typeof value !== "number" || isDnf) {
-            updated[dnfKey] = true;
-            updated[pm] = slowest;
-            if (updated[fillKey] === undefined) {
-              updated[fillKey] = dataSet.colors[pm];
+            (updated as any)[dnfKey] = true;
+            (updated as any)[pm] = slowest;
+            if ((updated as any)[fillKey] === undefined) {
+              (updated as any)[fillKey] = dataSet.colors[pm];
             }
           }
         });

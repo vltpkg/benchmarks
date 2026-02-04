@@ -1,0 +1,228 @@
+[
+    {
+        "label": "Scene : Show the Inspector",
+        "key": "Debug Layer",
+        "documentation": "https://doc.babylonjs.com/toolsAndResources/inspector",
+        "insertText": "scene.debugLayer.show();"
+    },
+    {
+        "label": "Scene : Setup a shadow generator",
+        "key": "Shadows",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/lights/shadows",
+        "insertText": "var shadowGenerator = new BABYLON.ShadowGenerator(${1:1024}, ${2:light});\nshadowGenerator.useExponentialShadowMap = true;"
+    },
+    {
+        "label": "Scene : Setup a Skybox",
+        "key": "Skybox",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/environment/skybox",
+        "insertText": "var skybox = BABYLON.MeshBuilder.CreateBox(\"skyBox\", {size:1000.0}, scene);\nvar skyboxMaterial = new BABYLON.StandardMaterial(\"skyBox\", scene);\nskyboxMaterial.backFaceCulling = false;\nskyboxMaterial.reflectionTexture = new BABYLON.CubeTexture(\"textures/skybox\", scene);\nskyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;\nskyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);\nskyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0); skybox.material = skyboxMaterial;"
+    },
+    {
+        "label": "Scene : Setup a lens flare system",
+        "key": "Lens Flare",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/environment/lenseFlare",
+        "insertText": "var lensFlareSystem = new BABYLON.LensFlareSystem(\"lensFlareSystem\", scene.getMeshByName(\"Cylinder_004\"), scene);\nvar flare00 = new BABYLON.LensFlare(0.1, 0, new BABYLON.Color3(1, 1, 1), \"textures/flare.png\", lensFlareSystem);\nvar flare01 = new BABYLON.LensFlare(0.075, 0.5, new BABYLON.Color3(0.8, 0.56, 0.72), \"textures/flare3.png\", lensFlareSystem);\nvar flare02 = new BABYLON.LensFlare(0.1, -0.15, new BABYLON.Color3(0.71, 0.8, 0.95), \"textures/Flare2.png\", lensFlareSystem);\nvar flare03 = new BABYLON.LensFlare(0.15, 0.25, new BABYLON.Color3(0.95, 0.89, 0.71), \"textures/flare.png\", lensFlareSystem);"
+    },
+    {
+        "label": "Scene : Setup audio in the scene",
+        "key": "Audio",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/audio/playingSoundsMusic#how-to-play-sounds-and-music",
+        "insertText": "var music = new BABYLON.Sound(\"Violons\", \"sounds/violons11.wav\", scene, null, {loop: true, autoplay: true});"
+    },
+    {
+        "label": "Scene : Setup a Sprite System",
+        "key": "Sprites",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/sprites/sprite_map",
+        "insertText": "// Load the spritesheet (with appropriate settings) associated with the JSON Atlas.\nlet spriteSheet = new BABYLON.Texture(\"textures/spriteMap/none_trimmed/Legends_Level_A.png\", scene,\n    false, //NoMipMaps\n    false, //InvertY usually false if exported from TexturePacker\n    BABYLON.Texture.NEAREST_NEAREST, //Sampling Mode\n    null, //Onload, you could spin up the sprite map in a function nested here\n    null, //OnError\n    null, //CustomBuffer\n    false, //DeleteBuffer\n    BABYLON.Engine.TEXTURETYPE_RGBA //ImageFormageType RGBA\n);\n// Create an assets manager to load the JSON file\nconst assetsManager = new BABYLON.AssetsManager(scene);\nconst textTask = assetsManager.addTextFileTask(\"text task\", \"textures/spriteMap/none_trimmed/Legends_Level_A.json\");\n// Create the sprite map on succeful loading\ntextTask.onSuccess = (task) => {\n    let background = new BABYLON.SpriteMap(\"background\", JSON.parse(task.text), spriteSheet, {\n            stageSize: new BABYLON.Vector2(2, 2),\n            flipU: true //Sometimes you need to flip, depending on the sprite format.\n        }, scene);\n    // Set 4 sprites one per tile.\n    for (let i = 0; i < 4; i++) {\n        background.changeTiles(0, new BABYLON.Vector2(i % 2, Math.floor(i / 2)), 9 * i + 9);\n    }\n};\n//load the assets manager\nassetsManager.load();"
+    },
+
+    {
+        "label": "Frame Graph: simple frame graph",
+        "key": "Simple ",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/frameGraph/frameGraphBasicConcepts/frameGraphReplaceRenderLoop/",
+        "insertText": "const frameGraph = new BABYLON.FrameGraph(scene, true);\n\nscene.cameraToUseForPointers = camera;\nscene.frameGraph = frameGraph;\n\nconst samples = 4;\n\nconst colorTexture = frameGraph.textureManager.createRenderTargetTexture(\"color\", {\n    size: { width: 100, height: 100 },\n    options: {\n        createMipMaps: false,\n        types: [BABYLON.Constants.TEXTURETYPE_UNSIGNED_BYTE],\n        formats: [BABYLON.Constants.TEXTUREFORMAT_RGBA],\n        samples,\n        useSRGBBuffers: [false],\n        labels: [\"color\"],\n    },\n    sizeIsPercentage: true,\n});\n\nconst depthTexture = frameGraph.textureManager.createRenderTargetTexture(\"depth\", {\n    size: { width: 100, height: 100 },\n    options: {\n        createMipMaps: false,\n        types: [BABYLON.Constants.TEXTURETYPE_UNSIGNED_BYTE],\n        formats: [BABYLON.Constants.TEXTUREFORMAT_DEPTH32_FLOAT],\n        samples,\n        useSRGBBuffers: [false],\n        labels: [\"depth\"],\n    },\n    sizeIsPercentage: true,\n});\n\nconst clearTask = new BABYLON.FrameGraphClearTextureTask(\"clear\", frameGraph);\n\nclearTask.clearColor = true;\nclearTask.clearDepth = true;\nclearTask.targetTexture = colorTexture;\nclearTask.depthTexture = depthTexture;\n\nframeGraph.addTask(clearTask);\n\nconst rlist = {\n    meshes: scene.meshes,\n    particleSystems: scene.particleSystems,\n}\n\nconst renderTask = new BABYLON.FrameGraphObjectRendererTask(\"renderObjects\", frameGraph, scene);\n\nrenderTask.targetTexture = clearTask.outputTexture;\nrenderTask.depthTexture = clearTask.outputDepthTexture;\nrenderTask.objectList = rlist;\nrenderTask.camera = camera;\n\nframeGraph.addTask(renderTask);\n\nconst copyToBackbufferTask = new BABYLON.FrameGraphCopyToBackbufferColorTask(\"copytobackbuffer\", frameGraph);\n\ncopyToBackbufferTask.sourceTexture = renderTask.outputTexture;\n\nframeGraph.addTask(copyToBackbufferTask);\n\nengine.onResizeObservable.add(async () => {\n    await frameGraph.buildAsync();\n});\n\nawait frameGraph.buildAsync();"
+    },
+    {
+        "label": "Frame Graph: simple node render graph",
+        "key": "Simple (NRG)",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/frameGraph/frameGraphBasicConcepts/frameGraphReplaceRenderLoop/#using-a-node-render-graph",
+        "insertText": "const nrg = await BABYLON.NodeRenderGraph.ParseFromSnippetAsync(\"2LR76I\", scene);\n\nscene.frameGraph = nrg.frameGraph;\n\nawait nrg.buildAsync();"
+    },
+    {
+        "label": "Frame Graph: simple node render graph (no autofill parameters)",
+        "key": "Simple (NRG no autofill JS)",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/frameGraph/frameGraphBasicConcepts/frameGraphReplaceRenderLoop/#using-a-node-render-graph",
+        "language": "javascript",
+        "insertText": "scene.cameraToUseForPointers = camera;\n\nconst nrg = await BABYLON.NodeRenderGraph.ParseFromSnippetAsync(\"2LR76I\", scene, { autoFillExternalInputs: false });\n\nnrg.onBeforeBuildObservable.add(() => {\n    const cameraBlock = nrg.getBlockByName(\"Camera\");\n    cameraBlock.value = camera;\n    \n    const objectListBlock = nrg.getBlockByName(\"Object List\");\n    objectListBlock.value = { meshes: null, particleSystems: null };\n});\n\nscene.frameGraph = nrg.frameGraph;\n\nawait nrg.buildAsync();"
+    },
+    {
+        "label": "Frame Graph: simple node render graph (no autofill parameters)",
+        "key": "Simple (NRG no autofill TS)",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/frameGraph/frameGraphBasicConcepts/frameGraphReplaceRenderLoop/#using-a-node-render-graph",
+        "language": "typescript",
+        "insertText": "scene.cameraToUseForPointers = camera;\n\nconst nrg = await BABYLON.NodeRenderGraph.ParseFromSnippetAsync(\"2LR76I\", scene, { autoFillExternalInputs: false });\n\nnrg.onBeforeBuildObservable.add(() => {\n    const cameraBlock = nrg.getBlockByName<BABYLON.NodeRenderGraphInputBlock>(\"Camera\");\n    cameraBlock.value = camera;\n    \n    const objectListBlock = nrg.getBlockByName<BABYLON.NodeRenderGraphInputBlock>(\"Object List\");\n    objectListBlock.value = { meshes: null, particleSystems: null };\n});\n\nscene.frameGraph = nrg.frameGraph;\n\nawait nrg.buildAsync();"
+    },
+
+    {
+        "label": "Add Camera : Arc Rotate Camera w/Radians",
+        "key": "Arc Rotate (Rad)",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/cameras/camera_introduction",
+        "insertText": "var camera = new BABYLON.ArcRotateCamera(\"${1:camera}\", ${2:0}, ${3:1}, ${4:10}, ${5:BABYLON.Vector3.Zero()}, scene);\ncamera.attachControl(canvas, true);"
+    },
+    {
+        "label": "Add Camera : Arc Rotate Camera w/Degrees",
+        "key": "Arc Rotate (Deg)",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/cameras/camera_introduction",
+        "insertText": "var camera = new BABYLON.ArcRotateCamera(\"${1:camera}\", BABYLON.Tools.ToRadians(${2:0}), BABYLON.Tools.ToRadians(${3:57.3}), ${4:10}, ${5:BABYLON.Vector3.Zero()}, scene);\ncamera.attachControl(canvas, true);"
+    },
+    {
+        "label": "Add Camera : Free Camera",
+        "key": "Free",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/cameras/camera_introduction",
+        "insertText": "var camera = new BABYLON.FreeCamera(\"${1:camera}\", ${2:new BABYLON.Vector3(8, 3, 0)}, scene);\ncamera.setTarget(BABYLON.Vector3.Zero());\ncamera.attachControl(canvas, true);"
+    },
+    {
+        "label": "Add Camera : WebXR Camera",
+        "key": "WebXR",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/webXR/introToWebXR",
+        "insertText": "var camera = new BABYLON.FreeCamera(\"${1:camera}\", new BABYLON.Vector3(8, 3, 0), scene);\ncamera.setTarget(BABYLON.Vector3.Zero());\ncamera.attachControl(canvas, true);\n/*scene.createDefaultXRExperienceAsync({}).then((defaultXRExperience) => {\n    // Make sure hardware is OK for XR context${2}\n})*/;"
+    },
+
+    {
+        "label": "Add Light : Hemispheric light",
+        "key": "Hemispheric",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/lights/lights_introduction#the-hemispheric-light",
+        "insertText": "var light = new BABYLON.HemisphericLight(\"${1:hemiLight}\", new BABYLON.Vector3(${2:0}, ${3:1}, ${4:0}), scene);"
+    },
+    {
+        "label": "Add Light : Directional light",
+        "key": "Directional",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/lights/lights_introduction#the-directional-light",
+        "insertText": "var light = new BABYLON.DirectionalLight(\"${1:dirLight}\", new BABYLON.Vector3(${2:-1},${3:-2},${4:-1}), scene);\nlight.position = new BABYLON.Vector3(${5:4},${6:8},${7:4});"
+    },
+    {
+        "label": "Add Light : Point light",
+        "key": "Point",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/lights/lights_introduction#the-point-light",
+        "insertText": "var light = new BABYLON.PointLight(\"${1:pointLight}\", new BABYLON.Vector3(${2:2},${3:4},${4:2}), scene);\nlight.position = new BABYLON.Vector3(${5:4},${6:8},${7:4});"
+    },
+    {
+        "label": "Add Light : Spot light",
+        "key": "Spot",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/lights/lights_introduction#the-spot-light",
+        "insertText": "var light = new BABYLON.SpotLight(\"spotLight\", new BABYLON.Vector3(-Math.cos(Math.PI/6), 4 , -Math.sin(Math.PI/6)), new BABYLON.Vector3(0, -1, 0), Math.PI / 4, 1.5, scene);"
+    },
+    {
+        "label": "Add Light : Spot lights (3 colors)",
+        "key": "3 Spots",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/lights/lights_introduction#the-spot-light",
+        "insertText": "//red spot\nvar light = new BABYLON.SpotLight(\"spotLight\", new BABYLON.Vector3(-Math.cos(Math.PI/6), 4 , -Math.sin(Math.PI/6)), new BABYLON.Vector3(0, -1, 0), Math.PI / 4, 1.5, scene);\nlight.diffuse = new BABYLON.Color3(1, 0, 0);\n\n//green spot\nvar light1 = new BABYLON.SpotLight(\"spotLight1\", new BABYLON.Vector3(0, 4, 1 - Math.sin(Math.PI / 6)), new BABYLON.Vector3(0, -1, 0), Math.PI / 4, 1.5, scene);\nlight1.diffuse = new BABYLON.Color3(0, 1, 0);\n\n//blue spot\nvar light2 = new BABYLON.SpotLight(\"spotLight2\", new BABYLON.Vector3(Math.cos(Math.PI/6), 4, -Math.sin(Math.PI/6)), new BABYLON.Vector3(0, -1, 0), Math.PI / 4, 1.5, scene);\nlight2.diffuse = new BABYLON.Color3(0, 0, 1);"
+    },
+
+    {
+        "label": "Build a ground plane",
+        "key": "Ground",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set",
+        "insertText": "var ground = BABYLON.MeshBuilder.CreateGround(\"${1:ground}\", {width: ${2:6}, height: ${3:6}}, scene);"
+    },
+    {
+        "label": "Build a sphere",
+        "key": "Sphere",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set",
+        "insertText": "var sphere = BABYLON.MeshBuilder.CreateSphere(\"${1:sphere}\", {diameter: ${2:2}}, scene);\nsphere.position.y = 1;"
+    },
+    {
+        "label": "Build a box",
+        "key": "Box",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set",
+        "insertText": "var box = BABYLON.MeshBuilder.CreateBox(\"${1:box}\", {size: ${2:2}}, scene);\nbox.position.y = 1;"
+    },
+    {
+        "label": "Build a cylinder",
+        "key": "Cylinder",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set",
+        "insertText": "var cylinder = BABYLON.MeshBuilder.CreateCylinder(\"${1:cylinder}\", {height: ${2:2}, diameter: ${3:1}}, scene);\ncylinder.position.y = 1;"
+    },
+
+    {
+        "label": "Import a Mesh Async",
+        "key": "Import Mesh",
+        "documentation": "https://doc.babylonjs.com/toolsAndResources/thePlayground/externalPGAssets",
+        "insertText": "BABYLON.ImportMeshAsync(\"${1:url/to/parent/directory}/${2:fileName.fileExtension}\", scene, { meshNames: \"${3:}\" }).then((result)=> {\n\n});"
+    },
+    {
+        "label": "Export scene to GLB",
+        "key": "Export GLB",
+        "documentation": "https://doc.babylonjs.com/extensions/gltfexporter#exporting-a-scene-to-gltf",
+        "insertText": "BABYLON.GLTF2Export.GLBAsync(scene, \"${1:fileName}\").then((glb) => {\n     glb.downloadFiles();\n});"
+    },
+    {
+        "label": "Export scene to GLTF",
+        "key": "Export GLTF",
+        "documentation": "https://doc.babylonjs.com/extensions/gltfexporter#exporting-a-scene-to-gltf",
+        "insertText": "BABYLON.GLTF2Export.GLTFAsync(scene, \"${1:fileName}\").then((gltf) => {\n     gltf.downloadFiles();\n});"
+    },
+
+    {
+        "label": "Import animated character : Dude",
+        "key": "Dude",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/animation/animatedCharacter",
+        "insertText": "BABYLON.ImportMeshAsync(\"scenes/Dude/dude.babylon\", scene).then(({meshes, particleSystems, skeletons}) => {\n    var hero = meshes[0];\n    hero.scaling.scaleInPlace(0.03);\n    scene.beginAnimation(skeletons[0], 0, 100, true, 1.0);\n    hero.position.x = 2;\n});"
+    },
+    {
+        "label": "Import animated character : Dummy",
+        "key": "Dummy",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/animation/animatedCharacter",
+        "insertText": "BABYLON.ImportMeshAsync(\"./scenes/dummy3.babylon\", scene).then(({meshes, particleSystems, skeletons}) => {\n    var hero = meshes[0];\n    var skeleton = skeletons[0];\n    var walkRange = skeleton.getAnimationRange(\"YBot_Walk\");\n    scene.beginAnimation(skeleton, walkRange.from, walkRange.to, true);\n    hero.position.x = 2;\n});"
+    },
+    {
+        "label": "Import animated character : Samba Girl",
+        "key": "Samba Girl",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/animation/animatedCharacter",
+        "insertText": "BABYLON.ImportMeshAsync(\"https://assets.babylonjs.com/meshes/HVGirl.glb\", scene).then( ({meshes, particleSystems, skeletons}) => {\n    var hero = meshes[0];\n    hero.scaling.scaleInPlace(0.08);\n    const sambaAnim = scene.getAnimationGroupByName(\"Samba\");\n    sambaAnim.start(true, 1.0, sambaAnim.from, sambaAnim.to, false);\n    hero.position.x = 2;\n});"
+    },
+
+    {
+        "label": "Create a particle system (simple)",
+        "key": "Simple",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/particle_system_intro",
+        "insertText": "// Create a particle system\nconst particleSystem = new BABYLON.ParticleSystem(\"particles\", 2000, scene);\n// Texture of each particle\nparticleSystem.particleTexture = new BABYLON.Texture(\"textures/flare.png\");\n// Start the particle system\nparticleSystem.start();"
+    },
+    {
+        "label": "Create a particle system (color gradient)",
+        "key": "Color Gradient",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/particle_system_intro",
+        "insertText": "// Create a particle system\nconst particleSystem = new BABYLON.ParticleSystem(\"particles\", 2000, scene);\n// Texture of each particle\nparticleSystem.particleTexture = new BABYLON.Texture(\"textures/flare.png\");\n// Color Gradient over lifetime\nparticleSystem.addColorGradient(0, new BABYLON.Color4(1, 0, 0, 1), new BABYLON.Color4(1, 0, 1, 1));\nparticleSystem.addColorGradient(1, new BABYLON.Color4(0, 1, 0, 1), new BABYLON.Color4(1, 1, 0, 1));\n// Start the particle system\nparticleSystem.start();"
+    },
+    {
+        "label": "Create a particle system (complex)",
+        "key": "Complex",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/shape_emitters",
+        "insertText": "// Create a particle system\nvar particleSystem = new BABYLON.ParticleSystem(\"particles\", 2000, scene);\n// Texture of each particle\nparticleSystem.particleTexture = new BABYLON.Texture(\"/textures/flare.png\", scene);\n// Where the particles come from\nparticleSystem.emitter = BABYLON.Vector3.Zero(); // the starting location\n// Colors of particles over time\nparticleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);\nparticleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);\nparticleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);\n// Size of each particle (random between...)\nparticleSystem.minSize = 0.1;\nparticleSystem.maxSize = 0.5;\n// Life time of each particle (random between...)\nparticleSystem.minLifeTime = 0.3;\nparticleSystem.maxLifeTime = 1.5;\n// Emission rate\nparticleSystem.emitRate = 1000;\n// Emission space\nparticleSystem.createPointEmitter(new BABYLON.Vector3(-7, 8, 3), new BABYLON.Vector3(7, 8, -3));\n// Speed\nparticleSystem.minEmitPower = 1;\nparticleSystem.maxEmitPower = 3;\nparticleSystem.updateSpeed = 0.005;\n// Start the particle system\nparticleSystem.start();"
+    },
+
+    {
+        "label": "Load from Snippet : Particle System",
+        "key": "Particles",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/particle_snippets",
+        "insertText": "BABYLON.ParticleHelper.ParseFromSnippetAsync(\"${1:T54JV7}\", scene, false).then(system => {\n\n});"
+    },
+    {
+        "label": "Load from Snippet : Node Material",
+        "key": "Node Material",
+        "documentation": "https://doc.babylonjs.com/how_to/node_material#loading-from-a-file-saved-from-the-node-material-editor",
+        "insertText": "BABYLON.NodeMaterial.ParseFromSnippetAsync(\"${1:2F999G}\", scene).then(nodeMaterial => {\n     ${2:mesh_to_apply_node_material_to}.material = nodeMaterial;\n});"
+    },
+    {
+        "label": "Load from Snippet : GUI",
+        "key": "GUI",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/gui/gui#loading-from-snippet-server",
+        "insertText": "let advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(\"${1:name}\", true, scene);\nlet loadedGUI = advancedTexture.parseFromSnippetAsync(\"${2:I59XFB#11}\");"
+    },
+    {
+        "label": "Load from Snippet : GUI on Mesh",
+        "key": "GUI on Mesh",
+        "documentation": "https://doc.babylonjs.com/features/featuresDeepDive/gui/gui#loading-from-snippet-server",
+        "insertText": "var groundGUI = BABYLON.MeshBuilder.CreateGround(\"groundGUI\", {width: 6, height: 6}, scene);\ngroundGUI.position.y +=1\nlet guiTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(${1:groundGUI}, 1024, 1024);\nguiTexture.parseFromSnippetAsync(\"${2:I59XFB#11}\");"
+    }
+]

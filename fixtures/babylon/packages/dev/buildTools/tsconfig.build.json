@@ -1,0 +1,15 @@
+{
+    "extends": "../../../tsconfig.build.json",
+
+    "compilerOptions": {
+        "target": "es2021",
+        "lib": ["es2021"],
+        "module": "CommonJS",
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true
+    },
+
+    "include": ["./src/**/*"]
+}

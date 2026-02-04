@@ -52,7 +52,7 @@ print_package_count() {
 echo "Processing results..."
 
 # Process variations results
-for fixture in next astro svelte vue large uploadthing; do
+for fixture in next astro svelte vue large babylon; do
     for variation in cache cache+lockfile cache+lockfile+node_modules cache+node_modules clean lockfile lockfile+node_modules node_modules run; do
         if [ -f "results/results-$fixture-$variation/benchmarks.json" ]; then
             print_summary "results/results-$fixture-$variation/benchmarks.json" "$fixture" "$variation"

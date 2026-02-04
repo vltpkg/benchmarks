@@ -275,7 +275,7 @@ export const VariationChart = ({
           chartItem[fillKey] = fillValue;
         }
         if (isDnf) {
-          chartItem[dnfKey] = true;
+          (chartItem as any)[dnfKey] = true;
           if (typeof chartItem[fillKey] !== "string") {
             chartItem[fillKey] = colors[pm];
           }
@@ -301,11 +301,7 @@ export const VariationChart = ({
     return label;
   };
 
-  const CustomXAxisTick = (props: {
-    x: number;
-    y: number;
-    payload: { value: string };
-  }) => {
+  const CustomXAxisTick = (props: any) => {
     const { x, y, payload } = props;
 
     if (!payload || !payload.value) {
@@ -611,7 +607,7 @@ export const VariationChart = ({
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar dataKey="value">
                       {barChartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                        <Cell key={`cell-${index}`} fill={entry?.fill} />
                       ))}
                     </Bar>
                   </BarChart>

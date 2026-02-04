@@ -1,0 +1,57 @@
+[
+    {
+        "label": "Scene",
+        "tooltip": "Scene tools",
+        "subItems": ["Debug Layer", "Shadows", "Skybox", "Audio", "Lens Flare", "Sprites"],
+        "keepExpanded": true
+    },
+    {
+        "label": "Frame Graph",
+        "tooltip": "Frame Graph tools",
+        "subItems": ["Simple ", "Simple (NRG)", "Simple (NRG no autofill JS)"],
+        "subItemsTS": ["Simple ", "Simple (NRG)", "Simple (NRG no autofill TS)"],
+        "keepExpanded": true
+    },
+    {
+        "label": "Cameras",
+        "tooltip": "Select a camera type",
+        "subItems": ["Arc Rotate (Rad)", "Arc Rotate (Deg)", "Free", "WebXR"],
+        "keepExpanded": true
+    },
+    {
+        "label": "Lights",
+        "tooltip": "Select a light type",
+        "subItems": ["Hemispheric", "Directionnal", "Point", "Spot", "3 Spots"],
+        "keepExpanded": true
+    },
+    {
+        "label": "Mesh Builder",
+        "tooltip": "Build meshes using BABYLON.MeshBuilder",
+        "subItems": ["Ground", "Sphere", "Box", "Cylinder"],
+        "keepExpanded": true
+    },
+    {
+        "label": "Animations",
+        "tooltip": "Import animated characters",
+        "subItems": ["Dude", "Dummy", "Samba Girl"],
+        "keepExpanded": true
+    },
+    {
+        "label": "Particles",
+        "tooltip": "Add a simple particle system to the scene",
+        "subItems": ["Simple", "Color Gradient", "Complex"],
+        "keepExpanded": true
+    },
+    {
+        "label": "Load Snippet",
+        "tooltip": "Load asset from Snippet Server",
+        "subItems": ["Particles", "Node Material", "GUI", "GUI on Mesh"],
+        "keepExpanded": true
+    },
+    {
+        "label": "Import / Export",
+        "tooltip": "Import or Export assets",
+        "subItems": ["Import Mesh", "Export GLB", "Export GLTF"],
+        "keepExpanded": true
+    }
+]

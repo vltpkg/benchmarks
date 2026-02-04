@@ -28,7 +28,7 @@ The benchmarks measure:
 - Svelte
 - Vue
 - Large
-- UploadThing (Modern file upload library with complex dependencies)
+- Babylon.js (Massive 3D engine monorepo with 86+ packages)
 
 ### Package Managers
 - npm
