@@ -34,6 +34,7 @@ const frameworkMap: Partial<Record<Fixture, LucideIcon>> = {
   svelte: Svelte,
   vue: Vue,
   large: Package,
+  uploadthing: Package,
 };
 
 export const getPackageManagerIcon = (

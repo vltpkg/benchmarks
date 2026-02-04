@@ -29,6 +29,7 @@ export const usePackageCountData = (
     "svelte",
     "vue",
     "large",
+    "uploadthing",
     "run",
   ]);
 

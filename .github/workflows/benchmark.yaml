@@ -5,7 +5,7 @@ on:
     inputs:
       fixtures:
         description: 'The fixture to run the benchmarks on'
-        default: '["next", "astro", "vue", "svelte", "large"]'
+        default: '["next", "astro", "vue", "svelte", "large", "uploadthing"]'
       variations:
         description: 'The benchmark variations to run'
         default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules",  "lockfile", "lockfile+node_modules"]'
@@ -33,7 +33,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        fixture: ${{ fromJson(inputs.fixtures || '["next", "astro", "vue", "svelte", "large"]') }}
+        fixture: ${{ fromJson(inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "uploadthing"]') }}
         variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules",  "lockfile", "lockfile+node_modules"]') }}
         include:
           - variation: "run"
@@ -105,6 +105,7 @@ jobs:
               "vue",
               "svelte",
               "large",
+              "uploadthing",
               "run"
             ];
             const variations = [

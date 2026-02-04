@@ -1,0 +1,82 @@
+{
+  "name": "uploadthing-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@uploadthing/react": "^7.3.3",
+    "uploadthing": "^7.7.4",
+    "next": "^15.5.8",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "@tailwindcss/typography": "^0.5.15",
+    "class-variance-authority": "^0.7.1",
+    "cmdk": "^1.1.1",
+    "lucide-react": "^0.469.0",
+    "next-themes": "^0.4.6",
+    "radix-ui": "^1.3.4",
+    "sonner": "^2.0.3",
+    "tailwind-merge": "^2.2.1",
+    "use-debounce": "^10.0.4",
+    "@clerk/nextjs": "^6.9.6",
+    "@t3-oss/env-nextjs": "^0.11.1",
+    "zod": "^3.24.1",
+    "@effect/platform": "^0.90.3",
+    "@standard-schema/spec": "^1.0.0-beta.4",
+    "effect": "^3.17.7",
+    "file-selector": "^0.6.0",
+    "sqids": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.8.3",
+    "tailwindcss": "^3.4.16",
+    "tailwindcss-animate": "^1.0.7",
+    "postcss": "^8.4.47",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.25.1",
+    "eslint-config-next": "^15.5.8",
+    "prettier": "^3.5.3",
+    "@next/bundle-analyzer": "^15.1.3",
+    "@types/body-parser": "^1.19.5",
+    "@types/express": "^5.0.0",
+    "body-parser": "^1.20.2",
+    "express": "^5.0.1",
+    "fastify": "^5.2.0",
+    "h3": "^1.13.0",
+    "msw": "^2.7.5",
+    "valibot": "^1.0.0-beta.9",
+    "wait-on": "^8.0.1"
+  },
+  "peerDependencies": {
+    "express": "*",
+    "h3": "*",
+    "tailwindcss": "^3.0.0 || ^4.0.0-beta.0"
+  },
+  "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    },
+    "fastify": {
+      "optional": true
+    },
+    "h3": {
+      "optional": true
+    },
+    "tailwindcss": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=18.13.0"
+  }
+}

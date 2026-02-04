@@ -28,6 +28,7 @@ The benchmarks measure:
 - Svelte
 - Vue
 - Large
+- UploadThing (Modern file upload library with complex dependencies)
 
 ### Package Managers
 - npm

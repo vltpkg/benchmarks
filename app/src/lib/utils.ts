@@ -341,7 +341,7 @@ export function sortVariations(variations: Variation[]): Variation[] {
 }
 
 export function sortFixtures(fixtures: Fixture[]): Fixture[] {
-  const preferredOrder: Fixture[] = ["next", "vue", "svelte", "astro", "large", "run"];
+  const preferredOrder: Fixture[] = ["next", "vue", "svelte", "astro", "large", "uploadthing", "run"];
 
   return fixtures.sort((a, b) => {
     const indexA = preferredOrder.indexOf(a);
