@@ -1,0 +1,59 @@
+Invalid Option Flag
+Unknown option '--ignore-scripts'. To specify a positional argument starting with a '-', place it at the end of the command after '--', as in '-- --ignore-scripts'
+  Found: --ignore-scripts
+  Valid Options:
+    --access=<access>
+    --all
+    --allow-scripts=<query>
+    --arch=<arch>
+    --bail
+    --before=<date>
+    --cache=<path>
+    --color
+    --config=<all | user | project>
+    --dashboard-root=<path>
+    --dry-run
+    --editor=<program>
+    --expect-lockfile
+    --expect-results=<value>
+    --fallback-command=<command>
+    --fetch-retries=<n>
+    --fetch-retry-factor=<n>
+    --fetch-retry-maxtimeout=<n>
+    --fetch-retry-mintimeout=<n>
+    --frozen-lockfile
+    --git-host-archives=<name=template>
+    --git-hosts=<name=template>
+    --git-shallow
+    --help
+    --identity=<name>
+    --if-present
+    --jsr-registries=<name=url>
+    --libc=<libc>
+    --lockfile-only
+    --no-bail
+    --no-color
+    --node-version=<version>
+    --os=<os>
+    --otp=<otp>
+    --package=<p>
+    --publish-directory=<path>
+    --recursive
+    --registries=<name=url>
+    --registry=<url>
+    --save-dev
+    --save-optional
+    --save-peer
+    --save-prod
+    --scope=<query>
+    --scope-registries=<@scope=url>
+    --script-shell=<program>
+    --stale-while-revalidate-factor=<n>
+    --tag=<tag>
+    --target=<query>
+    --version
+    --view=<output>
+    --workspace=<ws>
+    --workspace-group=<workspace-group>
+    --yes
+  Run 'vlt help' for more information about available options.

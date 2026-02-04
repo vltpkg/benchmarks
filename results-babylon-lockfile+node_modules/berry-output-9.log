@@ -1,0 +1,3 @@
+[31m[1mUnknown Syntax Error[22m[39m: Unsupported option name ("--ignore-scripts").
+
+$ yarn install [--json] [--immutable] [--immutable-cache] [--refresh-lockfile] [--check-cache] [--check-resolutions] [--inline-builds] [--mode #0]

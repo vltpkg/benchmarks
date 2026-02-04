@@ -1,0 +1,7 @@
+[0m[1m[31merror[0m: unexpected argument '--ignore-scripts' found
+
+  tip: a similar argument exists: '--ignore-read'
+  tip: to pass '--ignore-scripts' as a value, use '-- --ignore-scripts'
+
+Usage: deno install --allow-scripts[=<PACKAGE>...] --quiet [cmd]... [-- [SCRIPT_ARG]...]
+

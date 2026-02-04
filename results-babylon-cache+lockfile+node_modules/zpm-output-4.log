@@ -1,0 +1,3 @@
+Error: The provided arguments don't match any known syntax; use `--help` to get a list of possible options
+
+› yarn install [--check-resolutions] [--immutable] [--immutable-cache] [--check-checksums] [--refresh-lockfile] [--mode <arg>] [--silent]

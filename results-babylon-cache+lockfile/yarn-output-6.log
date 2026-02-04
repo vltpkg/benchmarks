@@ -1,0 +1,53 @@
+(node:4612) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+warning typedoc@0.28.16: The engine "pnpm" appears to be invalid.
+warning bare-fs@4.5.3: The engine "bare" appears to be invalid.
+warning bare-os@3.6.2: The engine "bare" appears to be invalid.
+warning " > ts-node@10.9.2" has unmet peer dependency "@types/node@*".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "@fortawesome/fontawesome-svg-core@^6.1.0".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "@fortawesome/free-solid-svg-icons@^6.1.0".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "@fortawesome/react-fontawesome@^0.2.0".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "@fluentui/react-components@^9.70.0".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "@fluentui/react-icons@^2.0.310".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "@types/react@^18.0.0".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "@types/react-dom@^18.0.0".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "react@^18.2.0".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "react-dnd@15.0.1".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "react-dnd-touch-backend@15.0.1".
+warning " > @dev/shared-ui-components@1.0.0" has unmet peer dependency "react-dom@^18.2.0".
+warning " > @babylonjs/accessibility@8.49.6" has unmet peer dependency "@types/react@>=16.7.3".
+warning " > @babylonjs/accessibility@8.49.6" has unmet peer dependency "@types/react-dom@>=16.0.9".
+warning " > @babylonjs/gui-editor@8.49.6" has unmet peer dependency "@types/react@>=16.7.3".
+warning " > @babylonjs/gui-editor@8.49.6" has unmet peer dependency "@types/react-dom@>=16.0.9".
+warning " > @babylonjs/inspector@8.49.6" has unmet peer dependency "@fluentui-contrib/react-virtualizer@^0.5.3".
+warning " > @babylonjs/inspector@8.49.6" has unmet peer dependency "@fluentui/react-components@^9.70.0".
+warning " > @babylonjs/inspector@8.49.6" has unmet peer dependency "@fluentui/react-icons@^2.0.310".
+warning " > @babylonjs/inspector@8.49.6" has unmet peer dependency "react@>=16.14.0 <20.0.0".
+warning " > @babylonjs/inspector@8.49.6" has unmet peer dependency "react-dom@>=16.14.0 <20.0.0".
+warning " > @babylonjs/inspector@8.49.6" has unmet peer dependency "usehooks-ts@^3.1.1".
+warning " > @babylonjs/inspector-legacy@8.49.6" has unmet peer dependency "@types/react@>=16.7.3".
+warning " > @babylonjs/inspector-legacy@8.49.6" has unmet peer dependency "@types/react-dom@>=16.0.9".
+warning " > @babylonjs/node-editor@8.49.6" has unmet peer dependency "@types/react@>=16.7.3".
+warning " > @babylonjs/node-editor@8.49.6" has unmet peer dependency "@types/react-dom@>=16.0.9".
+warning " > @babylonjs/node-geometry-editor@8.49.6" has unmet peer dependency "@types/react@>=16.7.3".
+warning " > @babylonjs/node-geometry-editor@8.49.6" has unmet peer dependency "@types/react-dom@>=16.0.9".
+warning " > @babylonjs/node-render-graph-editor@8.49.6" has unmet peer dependency "@types/react@>=16.7.3".
+warning " > @babylonjs/node-render-graph-editor@8.49.6" has unmet peer dependency "@types/react-dom@>=16.0.9".
+warning " > @babylonjs/shared-ui-components@8.49.6" has unmet peer dependency "@types/dagre@^0.7.47".
+warning " > @babylonjs/shared-ui-components@8.49.6" has unmet peer dependency "dagre@^0.8.5".
+warning " > @babylonjs/shared-ui-components@8.49.6" has unmet peer dependency "react@^18.2.0".
+warning " > @babylonjs/shared-ui-components@8.49.6" has unmet peer dependency "react-dnd@15.0.1".
+warning " > @babylonjs/shared-ui-components@8.49.6" has unmet peer dependency "react-dnd-touch-backend@15.0.1".
+warning " > @babylonjs/shared-ui-components@8.49.6" has unmet peer dependency "react-dom@^18.2.0".
+warning " > @babylonjs/test-tools@8.49.6" has unmet peer dependency "puppeteer@>20.0.0".
+warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "@fortawesome/fontawesome-svg-core@^6.1.0".
+warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "@fortawesome/free-solid-svg-icons@^6.1.0".
+warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "@fortawesome/react-fontawesome@^0.2.0".
+warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "react@^18.2.0".
+warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "react-dom@^18.2.0".
+warning "workspace-aggregator-3a2b4a6f-e1be-4ad3-b8f4-8572338bc7d1 > @dev/inspector > @fluentui-contrib/react-virtualizer@0.5.4" has unmet peer dependency "@fluentui/react-shared-contexts@>=9.7.2 <10.0.0".
+warning "workspace-aggregator-3a2b4a6f-e1be-4ad3-b8f4-8572338bc7d1 > @tools/viewer-configurator > @dnd-kit/modifiers@9.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
+warning "workspace-aggregator-3a2b4a6f-e1be-4ad3-b8f4-8572338bc7d1 > @tools/viewer-configurator > @dnd-kit/sortable@10.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
+warning "workspace-aggregator-3a2b4a6f-e1be-4ad3-b8f4-8572338bc7d1 > @dev/inspector > @fluentui/react-components > @fluentui/react-accordion > @fluentui/react-context-selector@9.2.14" has unmet peer dependency "scheduler@>=0.19.0".
+warning Workspaces can only be enabled in private projects.
+warning Ignored scripts due to flag.
