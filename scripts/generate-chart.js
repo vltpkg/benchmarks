@@ -34,6 +34,17 @@ const COLORS = {
   node: "#84ba64",
 };
 
+const parseNumeric = (value) => {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : undefined;
+  }
+  if (typeof value === "string") {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+  return undefined;
+};
+
 // Read and process results
 function readResults(file) {
   try {
@@ -42,11 +53,21 @@ function readResults(file) {
       console.warn(`Warning: Invalid results format in ${file}`);
       return [];
     }
-    return data.results.map((r) => ({
-      command: r.command,
-      mean: parseFloat(r.mean) || 0,
-      stddev: parseFloat(r.stddev) || 0,
-    }));
+    return data.results.map((r) => {
+      const exitCodes = Array.isArray(r.exit_codes) ? r.exit_codes : [];
+      return {
+        command: r.command,
+        mean: parseNumeric(r.mean),
+        stddev: parseNumeric(r.stddev),
+        exitCodes,
+        failed:
+          exitCodes.some((code) => typeof code === "number" && code !== 0) ||
+          r.success === false ||
+          r.status === "failure" ||
+          r.result === "failure" ||
+          Boolean(r.error),
+      };
+    });
   } catch (error) {
     console.warn(
       `Warning: Could not read results from ${file}:`,
@@ -76,62 +97,116 @@ function generateChartData(option = {}) {
   variations.forEach((variation) => {
     const fixtureData = {};
     const seenFixtures = new Set();
+    const fixtureEntries = {};
+    let globalSlowest = 0;
 
-    // First pass: collect all data for each fixture
+    // First pass: collect raw data and determine slowest valid results
     fixtures.forEach((fixture) => {
-      const fixtureResults = {};
-      let hasData = false;
+      const file = path.resolve(RESULTS_DIR, `${fixture}-${variation}.json`);
+      if (!fs.existsSync(file)) {
+        return;
+      }
 
-      Object.keys(COLORS).forEach((pm) => {
-        const file = path.resolve(RESULTS_DIR, `${fixture}-${variation}.json`);
-        let count = undefined;
+      const results = readResults(file);
+      const packageCounts = {};
 
-        // If perPackageCount is enabled, try to load the package count for this fixture/variation
-        if (option.perPackageCount) {
-          const countFile = path.resolve(
-            RESULTS_DIR,
-            `${fixture}-${variation}-package-count.json`,
-          );
-          if (fs.existsSync(countFile)) {
-            try {
-              const countData = JSON.parse(fs.readFileSync(countFile, "utf8"));
+      // If perPackageCount is enabled, try to load the package count for this fixture/variation
+      if (option.perPackageCount) {
+        const countFile = path.resolve(
+          RESULTS_DIR,
+          `${fixture}-${variation}-package-count.json`,
+        );
+        if (fs.existsSync(countFile)) {
+          try {
+            const countData = JSON.parse(fs.readFileSync(countFile, "utf8"));
+            Object.keys(COLORS).forEach((pm) => {
               if (
                 countData &&
                 typeof countData === "object" &&
                 countData[pm] &&
                 typeof countData[pm].count === "number"
               ) {
-                count = countData[pm].count;
+                packageCounts[pm] = countData[pm].count;
               }
-            } catch (e) {
-              // Ignore parse errors, fallback to undefined count
-            }
+            });
+          } catch (e) {
+            // Ignore parse errors, fallback to undefined counts
           }
         }
+      }
 
-        if (fs.existsSync(file)) {
-          const results = readResults(file);
-          const pmResult = results.find((r) => r.command === pm);
-          if (pmResult?.mean) {
-            let value = pmResult.mean;
-            if (
-              option.perPackageCount &&
-              typeof count === "number" &&
-              count > 0
-            ) {
-              value = (value / count) * 1000;
-            }
+      const pmEntries = {};
+      const validValues = [];
 
-            fixtureResults[pm] = value;
-            fixtureResults[`${pm}_stddev`] = pmResult.stddev;
-            fixtureResults[`${pm}_fill`] = COLORS[pm];
+      Object.keys(COLORS).forEach((pm) => {
+        const pmResult = results.find((r) => r.command === pm);
+        if (!pmResult) return;
 
-            if (count !== undefined) {
-              fixtureResults[`${pm}_count`] = count;
-            }
+        const didFail = pmResult.failed || !Number.isFinite(pmResult.mean);
+        const count = packageCounts[pm];
+        let value =
+          typeof pmResult.mean === "number" ? pmResult.mean : undefined;
 
+        if (
+          !didFail &&
+          option.perPackageCount &&
+          typeof count === "number" &&
+          count > 0 &&
+          typeof value === "number"
+        ) {
+          value = (value / count) * 1000;
+        }
+
+        if (!didFail && typeof value === "number") {
+          validValues.push(value);
+        }
+
+        pmEntries[pm] = {
+          didFail,
+          value: didFail ? undefined : value,
+          stddev: didFail ? undefined : pmResult.stddev,
+          count,
+        };
+      });
+
+      if (Object.keys(pmEntries).length > 0) {
+        const slowestValid =
+          validValues.length > 0 ? Math.max(...validValues) : undefined;
+        if (typeof slowestValid === "number") {
+          globalSlowest = Math.max(globalSlowest, slowestValid);
+        }
+        fixtureEntries[fixture] = { pmEntries, slowestValid };
+      }
+    });
+
+    const fallbackGlobal = globalSlowest > 0 ? globalSlowest : undefined;
+
+    Object.entries(fixtureEntries).forEach(([fixture, entry]) => {
+      const fixtureResults = {};
+      let hasData = false;
+      const fallback = entry.slowestValid ?? fallbackGlobal;
+
+      Object.entries(entry.pmEntries).forEach(([pm, pmEntry]) => {
+        fixtureResults[`${pm}_fill`] = COLORS[pm];
+        if (pmEntry.count !== undefined) {
+          fixtureResults[`${pm}_count`] = pmEntry.count;
+        }
+
+        if (pmEntry.didFail) {
+          fixtureResults[`${pm}_dnf`] = true;
+          if (typeof fallback === "number") {
+            fixtureResults[pm] = fallback;
             hasData = true;
           }
+          return;
+        }
+
+        if (typeof pmEntry.value === "number") {
+          fixtureResults[pm] = pmEntry.value;
+          if (typeof pmEntry.stddev === "number") {
+            fixtureResults[`${pm}_stddev`] = pmEntry.stddev;
+          }
+          hasData = true;
         }
       });
 

@@ -93,6 +93,18 @@ export interface PackageManagerData {
   nx_count?: number;
   turbo_count?: number;
   node_count?: number;
+
+  npm_dnf?: boolean;
+  yarn_dnf?: boolean;
+  pnpm_dnf?: boolean;
+  berry_dnf?: boolean;
+  zpm_dnf?: boolean;
+  deno_dnf?: boolean;
+  bun_dnf?: boolean;
+  vlt_dnf?: boolean;
+  nx_dnf?: boolean;
+  turbo_dnf?: boolean;
+  node_dnf?: boolean;
 }
 
 export type FixtureResult = BaseFixtureResult & PackageManagerData;

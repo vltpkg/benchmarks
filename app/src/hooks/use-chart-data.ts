@@ -4,6 +4,9 @@ import { CHART_DATA_URL, ERROR_MESSAGES } from "@/constants";
 import { calculateAverageVariationData } from "@/lib/utils";
 import type {
   BenchmarkChartData,
+  ChartDataSet,
+  FixtureResult,
+  PackageManager,
   PackageManagerVersions,
   Variation,
 } from "@/types/chart-data";
@@ -19,6 +22,87 @@ export const useChartData = (): UseChartDataReturn => {
   const [chartData, setChartData] = useState<BenchmarkChartData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const applyDnfFallbacksToDataSet = (dataSet: ChartDataSet): ChartDataSet => {
+    const updatedData: Record<string, FixtureResult[]> = {};
+    const allPackageManagers = dataSet.packageManagers;
+
+    Object.entries(dataSet.data).forEach(([variation, fixtures]) => {
+      const variationPackageManagers = new Set<PackageManager>();
+
+      fixtures.forEach((fixture) => {
+        allPackageManagers.forEach((pm) => {
+          const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+          const value = fixture[pm];
+          if (fixture[dnfKey] === true) {
+            variationPackageManagers.add(pm);
+            return;
+          }
+          if (typeof value === "number" && value > 0) {
+            variationPackageManagers.add(pm);
+          }
+        });
+      });
+
+      const activePackageManagers = allPackageManagers.filter((pm) =>
+        variationPackageManagers.has(pm),
+      );
+
+      updatedData[variation] = fixtures.map((fixture) => {
+        const updated: FixtureResult = { ...fixture };
+        let slowest = 0;
+
+        activePackageManagers.forEach((pm) => {
+          const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+          const value = updated[pm];
+          if (updated[dnfKey] === true) return;
+          if (typeof value === "number" && value > 0) {
+            slowest = Math.max(slowest, value);
+          }
+        });
+
+        if (slowest <= 0) {
+          return updated;
+        }
+
+        activePackageManagers.forEach((pm) => {
+          const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+          const fillKey = `${pm}_fill` as keyof FixtureResult;
+          const value = updated[pm];
+          const isDnf = updated[dnfKey] === true;
+
+          if (isDnf && typeof value === "number") {
+            return;
+          }
+
+          if (typeof value !== "number" || isDnf) {
+            updated[dnfKey] = true;
+            updated[pm] = slowest;
+            if (updated[fillKey] === undefined) {
+              updated[fillKey] = dataSet.colors[pm];
+            }
+          }
+        });
+
+        return updated;
+      });
+    });
+
+    return {
+      ...dataSet,
+      data: updatedData,
+    };
+  };
+
+  const applyDnfFallbacks = (
+    data: BenchmarkChartData,
+  ): BenchmarkChartData => ({
+    ...data,
+    chartData: applyDnfFallbacksToDataSet(data.chartData),
+    perPackageCountChartData: applyDnfFallbacksToDataSet(
+      data.perPackageCountChartData,
+    ),
+  });
 
   const fetchChartData = async () => {
     try {
@@ -48,10 +132,15 @@ export const useChartData = (): UseChartDataReturn => {
         console.warn("Versions data not available");
       }
 
+      const normalizedChartData = applyDnfFallbacks(chartData);
+
       // Calculate average data for both total and per-package
-      const averageTotalData = calculateAverageVariationData(chartData, false);
+      const averageTotalData = calculateAverageVariationData(
+        normalizedChartData,
+        false,
+      );
       const averagePerPackageData = calculateAverageVariationData(
-        chartData,
+        normalizedChartData,
         true,
       );
 
@@ -65,21 +154,21 @@ export const useChartData = (): UseChartDataReturn => {
 
       // Combine chart data with versions and average data
       const combinedData: BenchmarkChartData = {
-        ...chartData,
+        ...normalizedChartData,
         versions,
         chartData: {
-          ...chartData.chartData,
+          ...normalizedChartData.chartData,
           variations,
           data: {
-            ...chartData.chartData.data,
+            ...normalizedChartData.chartData.data,
             average: averageTotalData,
           },
         },
         perPackageCountChartData: {
-          ...chartData.perPackageCountChartData,
+          ...normalizedChartData.perPackageCountChartData,
           variations,
           data: {
-            ...chartData.perPackageCountChartData.data,
+            ...normalizedChartData.perPackageCountChartData.data,
             average: averagePerPackageData,
           },
         },

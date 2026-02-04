@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useId } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell } from "recharts";
 import {
   ChartContainer,
@@ -27,9 +27,37 @@ import type {
   Fixture,
 } from "@/types/chart-data";
 
+const normalizeHexColor = (hex: string): string | null => {
+  const raw = hex.replace("#", "").trim();
+  if (raw.length === 3) {
+    return raw
+      .split("")
+      .map((char) => `${char}${char}`)
+      .join("");
+  }
+  if (raw.length === 6) {
+    return raw;
+  }
+  return null;
+};
+
+const lightenColor = (hex: string, amount = 0.45): string => {
+  const normalized = normalizeHexColor(hex);
+  if (!normalized) return hex;
+
+  const r = Number.parseInt(normalized.slice(0, 2), 16);
+  const g = Number.parseInt(normalized.slice(2, 4), 16);
+  const b = Number.parseInt(normalized.slice(4, 6), 16);
+  const mix = (channel: number) =>
+    Math.min(255, Math.round(channel + (255 - channel) * amount));
+  const toHex = (channel: number) => channel.toString(16).padStart(2, "0");
+
+  return `#${toHex(mix(r))}${toHex(mix(g))}${toHex(mix(b))}`;
+};
+
 interface ConsolidatedChartItem {
   fixture: string;
-  [packageManager: string]: string | number;
+  [packageManager: string]: string | number | boolean;
 }
 
 interface VariationChartProps {
@@ -62,6 +90,42 @@ export const VariationChart = ({
   );
 
   const resolvedTheme = resolveTheme(theme);
+  const patternIdPrefix = useId().replace(/:/g, "");
+
+  const getDnfPatternId = (scope: string, pm: PackageManager) =>
+    `dnf-${patternIdPrefix}-${scope}-${pm}`;
+
+  const getDnfPatternFill = (scope: string, pm: PackageManager) =>
+    `url(#${getDnfPatternId(scope, pm)})`;
+
+  const renderDnfPatterns = (scope: string) => (
+    <defs>
+      {filteredPackageManagers.map((pm) => {
+        const baseColor = colors[pm];
+        const lightColor = lightenColor(baseColor);
+        return (
+          <pattern
+            key={`${scope}-${pm}`}
+            id={getDnfPatternId(scope, pm)}
+            patternUnits="userSpaceOnUse"
+            width="8"
+            height="8"
+            patternTransform="rotate(45)"
+          >
+            <rect width="8" height="8" fill={lightColor} />
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="8"
+              stroke={baseColor}
+              strokeWidth="3"
+            />
+          </pattern>
+        );
+      })}
+    </defs>
+  );
 
   const [selectedPackageManagers, setSelectedPackageManagers] = useState<
     Set<string>
@@ -140,36 +204,102 @@ export const VariationChart = ({
   // Use all variation data (no fixture filtering)
   const filteredVariationData = variationData;
 
+  const variationActivePackageManagers = useMemo(() => {
+    const active = new Set<PackageManager>();
+
+    filteredVariationData.forEach((item) => {
+      filteredPackageManagers.forEach((pm) => {
+        const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+        const value = item[pm];
+        if (item[dnfKey] === true) {
+          active.add(pm);
+          return;
+        }
+        if (typeof value === "number" && value > 0) {
+          active.add(pm);
+        }
+      });
+    });
+
+    return active;
+  }, [filteredVariationData, filteredPackageManagers]);
+
+  const fixtureSlowestValues = useMemo(() => {
+    const slowestMap = new Map<string, number>();
+
+    filteredVariationData.forEach((item) => {
+      let slowest = 0;
+
+      variationActivePackageManagers.forEach((pm) => {
+        const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+        const value = item[pm];
+        if (item[dnfKey] === true) {
+          return;
+        }
+        if (typeof value === "number" && value > 0) {
+          slowest = Math.max(slowest, value);
+        }
+      });
+
+      if (slowest > 0) {
+        slowestMap.set(item.fixture, slowest);
+      }
+    });
+
+    return slowestMap;
+  }, [filteredVariationData, variationActivePackageManagers]);
+
   // Always compute both data structures to avoid conditional hook calls
   const consolidatedData = useMemo(() => {
     return filteredVariationData.map((item): ConsolidatedChartItem => {
       const chartItem: ConsolidatedChartItem = { fixture: item.fixture };
+      const slowest = fixtureSlowestValues.get(item.fixture);
+
       filteredPackageManagers.forEach((pm) => {
         const value = item[pm as keyof FixtureResult];
-        if (value !== undefined) {
-          chartItem[pm] = value;
+        const fillKey = `${pm}_fill` as keyof FixtureResult;
+        const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+        const fillValue = item[fillKey];
+        const isActive = variationActivePackageManagers.has(pm);
+        const hasNumber = typeof value === "number";
+        const shouldFallback =
+          isActive && !hasNumber && typeof slowest === "number";
+        const isDnf = item[dnfKey] === true || shouldFallback;
+
+        if (hasNumber) {
+          chartItem[pm] = value as number;
+        } else if (shouldFallback && typeof slowest === "number") {
+          chartItem[pm] = slowest;
+        }
+        if (typeof fillValue === "string") {
+          chartItem[fillKey] = fillValue;
+        }
+        if (isDnf) {
+          chartItem[dnfKey] = true;
+          if (typeof chartItem[fillKey] !== "string") {
+            chartItem[fillKey] = colors[pm];
+          }
         }
       });
       return chartItem;
     });
-  }, [filteredVariationData, filteredPackageManagers]);
+  }, [
+    filteredVariationData,
+    filteredPackageManagers,
+    fixtureSlowestValues,
+    variationActivePackageManagers,
+    colors,
+  ]);
 
-  const chartDataByFixture = useMemo(() => {
-    const fixtureMap: Record<string, Record<string, number>> = {};
-
-    filteredVariationData.forEach((item) => {
-      const chartItem: Record<string, number> = {};
-      filteredPackageManagers.forEach((pm) => {
-        const value = item[pm as keyof FixtureResult];
-        if (value !== undefined && typeof value === "number") {
-          chartItem[pm] = value;
-        }
-      });
-      fixtureMap[item.fixture] = chartItem;
-    });
-
-    return fixtureMap;
-  }, [filteredVariationData, filteredPackageManagers]);
+  const normalizeTickLabel = (label: string) => {
+    if (label.toLowerCase().startsWith("yarn (berry)")) {
+      return label.replace(/yarn \(berry\)/i, "berry");
+    }
+    if (label.toLowerCase().startsWith("yarn (zpm)")) {
+      return label.replace(/yarn \(zpm\)/i, "zpm");
+    }
+    return label;
+  };
 
   const CustomXAxisTick = (props: {
     x: number;
@@ -182,7 +312,7 @@ export const VariationChart = ({
       return <g></g>; // Return empty group instead of null
     }
 
-    const text = payload.value;
+    const text = normalizeTickLabel(payload.value);
 
     // Split the text into package manager and version
     const parts = text.split(" v");
@@ -256,6 +386,7 @@ export const VariationChart = ({
         <div className="bg-card rounded-xl p-6 border-border border-[1px]">
           <ChartContainer config={chartConfig} className="min-h-[450px] w-full">
             <BarChart data={consolidatedData}>
+              {renderDnfPatterns("total")}
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="fixture"
@@ -336,7 +467,24 @@ export const VariationChart = ({
                   fill={pm === "vlt" && theme === "dark" ? "white" : colors[pm]}
                   name={formatPackageManagerLabel(pm, chartData.versions)}
                   hide={!selectedPackageManagers.has(pm)}
-                />
+                >
+                  {consolidatedData.map((entry, index) => {
+                    const dnfKey = `${pm}_dnf`;
+                    const isDnf = entry[dnfKey] === true;
+                    const fillColor =
+                      pm === "vlt" && theme === "dark" ? "white" : colors[pm];
+                    return (
+                      <Cell
+                        key={`${pm}-${entry.fixture}-${index}`}
+                        fill={
+                          isDnf
+                            ? getDnfPatternFill("total", pm)
+                            : fillColor
+                        }
+                      />
+                    );
+                  })}
+                </Bar>
               ))}
             </BarChart>
           </ChartContainer>
@@ -363,23 +511,46 @@ export const VariationChart = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {Object.entries(chartDataByFixture).map(([fixture, data]) => {
-          const fixtureData = data as Record<string, number>;
+        {filteredVariationData.map((fixtureResult) => {
+          const fixture = fixtureResult.fixture;
+          const fixtureId = getFixtureId(fixture);
+          const slowest = fixtureSlowestValues.get(fixture);
           const barChartData = filteredPackageManagers
-            .filter((pm) => fixtureData[pm] !== undefined)
-            .map((pm) => ({
-              name: formatPackageManagerLabel(pm, chartData.versions),
-              value: fixtureData[pm],
-              fill:
-                pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm],
-            }));
+            .filter((pm) => variationActivePackageManagers.has(pm))
+            .map((pm) => {
+              const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+              const value = fixtureResult[pm];
+              const hasNumber = typeof value === "number";
+              const shouldFallback =
+                !hasNumber && typeof slowest === "number";
+              const isDnf = fixtureResult[dnfKey] === true || shouldFallback;
+              const resolvedValue = hasNumber ? value : slowest;
+
+              if (typeof resolvedValue !== "number") {
+                return null;
+              }
+
+              const fillColor =
+                pm === "vlt" && resolvedTheme === "dark"
+                  ? "white"
+                  : colors[pm];
+
+              return {
+                name: formatPackageManagerLabel(pm, chartData.versions),
+                value: resolvedValue,
+                fill: isDnf ? getDnfPatternFill(fixtureId, pm) : fillColor,
+                dnf: isDnf,
+                dnfColor: colors[pm],
+              };
+            })
+            .filter(Boolean);
 
           const Icon = getFrameworkIcon(fixture as Fixture);
 
           return (
             <div
               key={fixture}
-              id={getFixtureId(fixture)}
+              id={fixtureId}
               className="bg-card rounded-xl p-6 border-[1px] border-border"
             >
               <div className="flex items-center justify-between mb-4">
@@ -409,12 +580,11 @@ export const VariationChart = ({
                   className={`h-[${CHART_DEFAULTS.HEIGHT}px] w-full`}
                 >
                   <BarChart data={barChartData}>
+                    {renderDnfPatterns(fixtureId)}
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                       dataKey="name"
-                      tick={
-                        <CustomXAxisTick x={0} y={0} payload={{ value: "" }} />
-                      }
+                      tick={(props) => <CustomXAxisTick {...props} />}
                       height={70}
                       interval={0}
                     />

@@ -68,6 +68,10 @@ export const YAxisProvider = ({ children }: YAxisProviderProps) => {
         // Only consider the package managers that are currently filtered/enabled
         packageManagers.forEach((pm) => {
           const value = fixtureResult[pm];
+          const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+          if (fixtureResult[dnfKey] === true) {
+            return;
+          }
           if (typeof value === "number" && value > 0) {
             globalMax = Math.max(globalMax, value);
           }

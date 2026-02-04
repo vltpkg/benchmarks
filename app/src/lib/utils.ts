@@ -36,6 +36,7 @@ export const calculateAverageVariationData = (
     `${PackageManager}_stddev`
   >;
   type CountKey = Extract<keyof PackageManagerData, `${PackageManager}_count`>;
+  type DnfKey = Extract<keyof PackageManagerData, `${PackageManager}_dnf`>;
   const dataSource = isPerPackage
     ? chartData.perPackageCountChartData.data
     : chartData.chartData.data;
@@ -76,7 +77,9 @@ export const calculateAverageVariationData = (
     const averagedResult: FixtureResult = { fixture: fixture as Fixture };
 
     packageManagers.forEach((pm: PackageManager) => {
+      const dnfKey: DnfKey = `${pm}_dnf`;
       const values = results
+        .filter((r) => r[dnfKey] !== true)
         .map((r) => r[pm])
         .filter((val): val is number => typeof val === "number" && val > 0);
 
@@ -95,6 +98,7 @@ export const calculateAverageVariationData = (
         // Calculate average standard deviation if available
         const stddevKey: StddevKey = `${pm}_stddev`;
         const stddevValues = results
+          .filter((r) => r[dnfKey] !== true)
           .map((r) => r[stddevKey])
           .filter((val): val is number => typeof val === "number" && val > 0);
 
@@ -109,6 +113,7 @@ export const calculateAverageVariationData = (
         if (isPerPackage) {
           const countKey: CountKey = `${pm}_count`;
           const countValues = results
+            .filter((r) => r[dnfKey] !== true)
             .map((r) => r[countKey])
             .filter((val): val is number => typeof val === "number" && val > 0);
 
@@ -238,6 +243,10 @@ export const calculateLeaderboard = (
 
       availablePackageManagers.forEach((pm) => {
         const time = fixtureResult[pm];
+        const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+        if (fixtureResult[dnfKey] === true) {
+          return;
+        }
         if (typeof time === "number" && time > 0) {
           times.push({ pm, time });
           // Add to total time and count
@@ -455,6 +464,11 @@ export const getAvailablePackageManagers = (
   variationData.forEach((fixtureResult) => {
     allPackageManagers.forEach((pm) => {
       const value = fixtureResult[pm];
+      const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+      if (fixtureResult[dnfKey] === true) {
+        availablePackageManagers.add(pm);
+        return;
+      }
       // Check if the package manager has valid data (not undefined, null, or 0)
       if (
         value !== undefined &&

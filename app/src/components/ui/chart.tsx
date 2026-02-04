@@ -167,6 +167,34 @@ function ChartTooltipContent({
   labelKey?: string;
 }) {
   const { config } = useChart();
+  const isDnfPayload = (item: TooltipPayloadItem) => {
+    if (!item.payload) return false;
+    if (typeof item.payload.dnf === "boolean") {
+      return item.payload.dnf;
+    }
+    const key = item.dataKey ?? item.name;
+    if (typeof key === "string") {
+      const dnfKey = `${key}_dnf`;
+      return item.payload[dnfKey] === true;
+    }
+    return false;
+  };
+
+  const getDnfIndicatorColor = (item: TooltipPayloadItem) => {
+    if (!item.payload) return undefined;
+    if (typeof item.payload.dnfColor === "string") {
+      return item.payload.dnfColor;
+    }
+    const key = item.dataKey ?? item.name;
+    if (typeof key === "string") {
+      const fillKey = `${key}_fill`;
+      const fillValue = item.payload[fillKey];
+      if (typeof fillValue === "string") {
+        return fillValue;
+      }
+    }
+    return undefined;
+  };
 
   const tooltipLabel = React.useMemo(() => {
     if (hideLabel || !payload?.length) {
@@ -222,8 +250,13 @@ function ChartTooltipContent({
         {payload.map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
+          const isDnf = isDnfPayload(item);
+          const dnfIndicatorColor = isDnf ? getDnfIndicatorColor(item) : null;
           const indicatorColor =
-            color || (item.payload?.fill as string) || item.color;
+            dnfIndicatorColor ||
+            color ||
+            (item.payload?.fill as string) ||
+            item.color;
 
           return (
             <div
@@ -279,9 +312,13 @@ function ChartTooltipContent({
                         {itemConfig?.label || item.name}
                       </span>
                     </div>
-                    {item.value && (
+                    {(item.value !== undefined || isDnf) && (
                       <span className="text-foreground font-mono font-medium tabular-nums">
-                        {item.value.toLocaleString()}
+                        {isDnf
+                          ? "DNF"
+                          : typeof item.value === "number"
+                            ? item.value.toLocaleString()
+                            : String(item.value)}
                       </span>
                     )}
                   </div>

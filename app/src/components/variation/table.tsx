@@ -84,7 +84,16 @@ export const VariationTable = ({
             );
           },
           cell: (info) => {
+            const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+            const isDnf = info.row.original[dnfKey] === true;
             const value = info.getValue();
+            if (isDnf) {
+              return (
+                <div className="text-center">
+                  <span className="font-mono text-muted-foreground">DNF</span>
+                </div>
+              );
+            }
             if (typeof value === "number") {
               const unit = isPerPackage ? "ms" : "s";
               const decimals = isPerPackage ? 4 : 2;
@@ -105,9 +114,15 @@ export const VariationTable = ({
           },
           enableSorting: true,
           sortingFn: (rowA, rowB, columnId) => {
+            const dnfKey = `${pm}_dnf` as keyof FixtureResult;
             const valueA = rowA.getValue(columnId) as number | undefined;
             const valueB = rowB.getValue(columnId) as number | undefined;
+            const isDnfA = rowA.original[dnfKey] === true;
+            const isDnfB = rowB.original[dnfKey] === true;
 
+            if (isDnfA && isDnfB) return 0;
+            if (isDnfA) return 1;
+            if (isDnfB) return -1;
             if (valueA === undefined && valueB === undefined) return 0;
             if (valueA === undefined) return 1;
             if (valueB === undefined) return -1;
