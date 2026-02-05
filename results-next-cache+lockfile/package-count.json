@@ -4,11 +4,10 @@
     "minCount": 332,
     "maxCount": 336
   },
-  "yarn": {
-    "count": 333
-  },
   "berry": {
-    "count": 331
+    "count": 332,
+    "minCount": 331,
+    "maxCount": 333
   },
   "zpm": {
     "count": 339
