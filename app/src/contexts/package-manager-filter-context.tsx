@@ -43,7 +43,11 @@ export const PackageManagerFilterProvider = ({
   };
 
   const resetFilters = (allPackageManagers: PackageManager[]) => {
-    setEnabledPackageManagers(new Set(allPackageManagers));
+    setEnabledPackageManagers((prev) => {
+      const next = new Set(prev);
+      allPackageManagers.forEach((pm) => next.add(pm));
+      return next;
+    });
   };
 
   const hasFilters =

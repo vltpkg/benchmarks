@@ -6,6 +6,7 @@ import { VariationChart } from "@/components/variation/chart";
 import { VariationTable } from "@/components/variation/table";
 import { PackageCountTable } from "@/components/variation/package-count-table";
 import { usePackageCountData } from "@/hooks/use-package-count-data";
+import { useFixtureFilter } from "@/contexts/fixture-filter-context";
 import {
   sortFixtures,
   createSectionId,
@@ -40,6 +41,7 @@ export const VariationPage = () => {
     loading: packageCountLoading,
     error: packageCountError,
   } = usePackageCountData(variation as Variation);
+  const { enabledFixtures } = useFixtureFilter();
 
   // Handle deep linking to sections and fixtures
   useEffect(() => {
@@ -78,19 +80,6 @@ export const VariationPage = () => {
   const allPackageManagers = chartData.chartData.packageManagers;
   const colors = chartData.chartData.colors;
 
-  // Filter package managers to only show those with data for this variation
-  const packageManagers = getAvailablePackageManagers(
-    totalVariationData || [],
-    allPackageManagers,
-  );
-
-  // Filter package managers for package count data to only show those with actual data
-  const packageCountPackageManagers =
-    getAvailablePackageManagersFromPackageCount(
-      packageCountData,
-      allPackageManagers,
-    );
-
   // Sort fixture data based on preferred order
   const sortFixtureData = (data: FixtureResult[]) => {
     if (!data) return data;
@@ -103,10 +92,34 @@ export const VariationPage = () => {
     });
   };
 
-  const sortedTotalVariationData = sortFixtureData(totalVariationData);
+  const sortedTotalVariationData = sortFixtureData(totalVariationData || []);
   const sortedPerPackageVariationData = sortFixtureData(
-    perPackageVariationData,
+    perPackageVariationData || [],
   );
+
+  const filteredTotalVariationData = sortedTotalVariationData.filter((item) =>
+    enabledFixtures.has(item.fixture),
+  );
+  const filteredPerPackageVariationData =
+    sortedPerPackageVariationData.filter((item) =>
+      enabledFixtures.has(item.fixture),
+    );
+  const filteredPackageCountData = packageCountData.filter((item) =>
+    enabledFixtures.has(item.fixture),
+  );
+
+  // Filter package managers to only show those with data for this variation
+  const packageManagers = getAvailablePackageManagers(
+    filteredTotalVariationData,
+    allPackageManagers,
+  );
+
+  // Filter package managers for package count data to only show those with actual data
+  const packageCountPackageManagers =
+    getAvailablePackageManagersFromPackageCount(
+      filteredPackageCountData,
+      allPackageManagers,
+    );
 
   // Check if this is a task execution variation
   const isTaskExecution = isTaskExecutionVariation(variation as string);
@@ -143,7 +156,7 @@ export const VariationPage = () => {
       <div id={sectionIds.totalChart}>
         <VariationChart
           title={titles.totalChart}
-          variationData={sortedTotalVariationData}
+          variationData={filteredTotalVariationData}
           packageManagers={packageManagers}
           colors={colors}
           chartData={chartData}
@@ -157,7 +170,7 @@ export const VariationPage = () => {
         <div id={sectionIds.perPackageChart}>
           <VariationChart
             title={titles.perPackageChart}
-            variationData={sortedPerPackageVariationData}
+              variationData={filteredPerPackageVariationData}
             packageManagers={packageManagers}
             colors={colors}
             chartData={chartData}
@@ -173,7 +186,7 @@ export const VariationPage = () => {
           <div id={sectionIds.perPackageTable}>
             <VariationTable
               title={titles.perPackageTable}
-              variationData={sortedPerPackageVariationData}
+              variationData={filteredPerPackageVariationData}
               packageManagers={packageManagers}
               chartData={chartData}
               isPerPackage={true}
@@ -191,12 +204,12 @@ export const VariationPage = () => {
           <div className="text-center text-destructive">
             Error loading package count data: {packageCountError}
           </div>
-        ) : packageCountData.length > 0 ? (
+        ) : filteredPackageCountData.length > 0 ? (
           <div id={sectionIds.packageCountTable}>
             <PackageCountTable
               title="Package Count Data"
               description="Number of packages installed by each package manager for this variation"
-              packageCountData={packageCountData}
+              packageCountData={filteredPackageCountData}
               packageManagers={packageCountPackageManagers}
               versions={chartData.versions}
               currentVariation={variation as string}
@@ -210,7 +223,7 @@ export const VariationPage = () => {
         <div id={sectionIds.totalTable}>
           <VariationTable
             title={titles.totalTable}
-            variationData={sortedTotalVariationData}
+            variationData={filteredTotalVariationData}
             packageManagers={packageManagers}
             chartData={chartData}
             isPerPackage={false}

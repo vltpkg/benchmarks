@@ -1,12 +1,15 @@
 import { forwardRef, useContext, createContext, useMemo } from "react";
 import { useLocation, NavLink } from "react-router";
 import { PackageManagerFilter } from "@/components/package-manager-filter";
+import { FixtureFilter } from "@/components/fixture-filter";
 import { VariationDropdown } from "@/components/variation-dropdown";
 import { Benchmarks } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   cn,
   calculateLeaderboard,
+  getAvailableFixtures,
+  getAvailablePackageManagers,
   getVariationCategories,
   getPackageManagerDisplayName,
   sortVariations,
@@ -85,6 +88,23 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
   ({ className, ...props }, ref) => {
     const { chartData, location, currentVariation, sortedVariations } =
       useHeaderContext();
+    const variationData = chartData
+      ? chartData.chartData.data[currentVariation as Variation] || []
+      : [];
+    const fixtures = useMemo(
+      () => getAvailableFixtures(variationData),
+      [variationData],
+    );
+    const packageManagers = useMemo(
+      () =>
+        chartData
+          ? getAvailablePackageManagers(
+              variationData,
+              chartData.chartData.packageManagers,
+            )
+          : [],
+      [chartData, variationData],
+    );
 
     const navigationOptions: NavigationOption[] = [
       {
@@ -125,9 +145,8 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
 
         {chartData && (
           <div className="flex items-center md:justify-none md:w-fit w-full gap-2">
-            <PackageManagerFilter
-              packageManagers={chartData.chartData.packageManagers}
-            />
+            <PackageManagerFilter packageManagers={packageManagers} />
+            <FixtureFilter fixtures={fixtures} />
             <VariationDropdown
               currentVariation={currentVariation ?? "average"}
               sortedVariations={sortedVariations}

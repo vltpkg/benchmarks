@@ -361,6 +361,44 @@ export function sortFixtures(fixtures: Fixture[]): Fixture[] {
   });
 }
 
+export function getAvailableFixtures(variationData: FixtureResult[]): Fixture[] {
+  const fixtures = Array.from(new Set(variationData.map((item) => item.fixture)));
+  return sortFixtures(fixtures);
+}
+
+export function getAllFixtures(chartData: BenchmarkChartData): Fixture[] {
+  const fixtureSet = new Set<Fixture>();
+
+  Object.values(chartData.chartData.data).forEach((variationData) => {
+    variationData.forEach((item) => {
+      fixtureSet.add(item.fixture);
+    });
+  });
+
+  return sortFixtures(Array.from(fixtureSet));
+}
+
+export function getFixtureDisplayName(fixture: Fixture): string {
+  switch (fixture) {
+    case "next":
+      return "Next.js";
+    case "astro":
+      return "Astro";
+    case "svelte":
+      return "Svelte";
+    case "vue":
+      return "Vue";
+    case "large":
+      return "Large";
+    case "babylon":
+      return "Babylon.js";
+    case "run":
+      return "Run";
+    default:
+      return fixture;
+  }
+}
+
 export function getPackageManagerDisplayName(
   packageManager: PackageManager,
 ): string {

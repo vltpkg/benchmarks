@@ -201,7 +201,7 @@ export const VariationChart = ({
   const isAllSelected =
     selectedPackageManagers.size === filteredPackageManagers.length;
 
-  // Use all variation data (no fixture filtering)
+  // Variation data already respects fixture filters upstream
   const filteredVariationData = variationData;
 
   const variationActivePackageManagers = useMemo(() => {
