@@ -1,0 +1,10 @@
+{
+  "name": "benchmarks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": {
+    "name": "darcyclarke",
+    "email": "darcy@darcyclarke.me"
+  }
+}

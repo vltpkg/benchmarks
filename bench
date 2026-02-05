@@ -1,0 +1,582 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$ROOT"
+
+BENCH_SCRIPT="$ROOT/scripts/benchmark.sh"
+
+AVAILABLE_VARIATIONS=(
+  clean
+  cache
+  cache+lockfile
+  cache+node_modules
+  cache+lockfile+node_modules
+  lockfile
+  lockfile+node_modules
+  node_modules
+  run
+)
+
+AVAILABLE_PMS=(
+  npm
+  yarn
+  berry
+  zpm
+  pnpm
+  vlt
+  bun
+  deno
+  nx
+  turbo
+  node
+)
+
+DEFAULT_FIXTURES=(next)
+DEFAULT_VARIATION="clean"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  ./bench run [--fixtures=<list>] [--pms=<list>] [--variation=<name>] [--runs=<n>] [--warmup=<n>] [--chart] [--date=<yyyy-mm-dd>] [--no-clean]
+  ./bench chart [--fixtures=<list>] [--variation=<name>] [--date=<yyyy-mm-dd>] [--no-clean]
+  ./bench list
+
+Options:
+  --fixtures  Comma or space-separated fixture names (default: next)
+  --pms       Comma or space-separated package managers (default: all)
+  --variation Benchmark variation (default: clean)
+  --runs      Hyperfine runs (default: scripts/variations/common.sh default)
+  --warmup    Hyperfine warmup runs (default: scripts/variations/common.sh default)
+  --chart     Generate chart data and copy to app/latest
+  --date      Date folder for chart output (default: today)
+  --no-clean  Skip filtering failed runs
+  --dry-run   Print commands without running them
+
+Examples:
+  ./bench run --pms=vlt,pnpm --fixtures=next,astro --runs=3
+  ./bench run --fixtures=all --variation=clean
+  ./bench run --variation=run --pms=vlt
+  ./bench run --fixtures=next --chart --runs=3
+  ./bench chart --fixtures=next --variation=clean
+EOF
+}
+
+list_fixtures() {
+  local fixtures=()
+  local dir
+
+  for dir in "$ROOT/fixtures"/*; do
+    if [[ -d "$dir" && -f "$dir/package.json" ]]; then
+      fixtures+=("$(basename "$dir")")
+    fi
+  done
+
+  if [[ ${#fixtures[@]} -eq 0 ]]; then
+    return 0
+  fi
+
+  printf '%s\n' "${fixtures[@]}" | sort
+}
+
+is_in_array() {
+  local needle="$1"
+  shift
+  local item
+  for item in "$@"; do
+    if [[ "$item" == "$needle" ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+split_list() {
+  local input="${1//,/ }"
+  read -ra SPLIT_ITEMS <<< "$input"
+}
+
+normalize_list() {
+  local input="${1//,/ }"
+  read -ra items <<< "$input"
+  local output=""
+  local item
+  for item in "${items[@]}"; do
+    if [[ -n "$item" ]]; then
+      if [[ -z "$output" ]]; then
+        output="$item"
+      else
+        output="$output,$item"
+      fi
+    fi
+  done
+  echo "$output"
+}
+
+validate_number() {
+  local value="$1"
+  local name="$2"
+  if ! [[ "$value" =~ ^[0-9]+$ ]]; then
+    echo "Error: $name must be a number"
+    exit 1
+  fi
+}
+
+validate_fixture() {
+  local fixture="$1"
+  if [[ ! -d "$ROOT/fixtures/$fixture" || ! -f "$ROOT/fixtures/$fixture/package.json" ]]; then
+    echo "Error: Unknown fixture '$fixture'"
+    echo "Run './bench list' to see available fixtures."
+    exit 1
+  fi
+}
+
+validate_variation() {
+  local variation="$1"
+  if ! is_in_array "$variation" "${AVAILABLE_VARIATIONS[@]}"; then
+    echo "Error: Unknown variation '$variation'"
+    echo "Run './bench list' to see available variations."
+    exit 1
+  fi
+}
+
+validate_pm_list() {
+  local list="$1"
+  if [[ -z "$list" ]]; then
+    return 0
+  fi
+
+  split_list "$list"
+  local pm
+  for pm in "${SPLIT_ITEMS[@]}"; do
+    if [[ -z "$pm" ]]; then
+      continue
+    fi
+    if ! is_in_array "$pm" "${AVAILABLE_PMS[@]}"; then
+      echo "Error: Unknown package manager '$pm'"
+      echo "Known: ${AVAILABLE_PMS[*]}"
+      exit 1
+    fi
+  done
+}
+
+resolve_variation_and_fixtures() {
+  local fixtures_input="$1"
+  local variation_input="$2"
+
+  local variation="$variation_input"
+  if [[ -z "$variation" ]]; then
+    variation="$DEFAULT_VARIATION"
+  fi
+  validate_variation "$variation"
+
+  local fixtures=()
+  if [[ -z "$fixtures_input" ]]; then
+    fixtures=("${DEFAULT_FIXTURES[@]}")
+  elif [[ "$fixtures_input" == "all" ]]; then
+    mapfile -t fixtures < <(list_fixtures)
+    local filtered=()
+    local fixture
+    for fixture in "${fixtures[@]}"; do
+      if [[ "$fixture" != "run" ]]; then
+        filtered+=("$fixture")
+      fi
+    done
+    fixtures=("${filtered[@]}")
+  else
+    split_list "$fixtures_input"
+    fixtures=("${SPLIT_ITEMS[@]}")
+  fi
+
+  if [[ ${#fixtures[@]} -eq 0 ]]; then
+    echo "Error: No fixtures provided"
+    exit 1
+  fi
+
+  if [[ "$variation" == "run" ]]; then
+    if [[ -z "$fixtures_input" || "$fixtures_input" == "all" ]]; then
+      fixtures=(run)
+    else
+      local fixture
+      for fixture in "${fixtures[@]}"; do
+        if [[ "$fixture" != "run" ]]; then
+          echo "Error: The 'run' variation only supports fixture 'run'"
+          exit 1
+        fi
+      done
+    fi
+  else
+    local fixture
+    for fixture in "${fixtures[@]}"; do
+      if [[ "$fixture" == "run" ]]; then
+        echo "Error: Fixture 'run' is only valid with --variation=run"
+        exit 1
+      fi
+    done
+  fi
+
+  local fixture
+  for fixture in "${fixtures[@]}"; do
+    validate_fixture "$fixture"
+  done
+
+  RESOLVED_VARIATION="$variation"
+  RESOLVED_FIXTURES=("${fixtures[@]}")
+}
+
+clean_benchmarks_file() {
+  local file="$1"
+  if [[ -f "$file" ]]; then
+    node "$ROOT/scripts/clean-benchmarks.js" "$file"
+  else
+    echo "Warning: Missing benchmarks file: $file"
+  fi
+}
+
+generate_chart_data() {
+  local variation="$1"
+  local date="$2"
+  shift 2
+  local fixtures=("$@")
+
+  local results_dir="$ROOT/results/$date"
+  mkdir -p "$results_dir"
+
+  local copied=0
+  local fixture
+  for fixture in "${fixtures[@]}"; do
+    local src="$ROOT/results/$fixture/$variation/benchmarks.json"
+    if [[ -f "$src" ]]; then
+      cp "$src" "$results_dir/${fixture}-${variation}.json"
+      copied=1
+    else
+      echo "Warning: Missing results for $fixture/$variation"
+    fi
+
+    local count_src="$ROOT/results/$fixture/$variation/package-count.json"
+    if [[ -f "$count_src" ]]; then
+      cp "$count_src" "$results_dir/${fixture}-${variation}-package-count.json"
+    fi
+  done
+
+  if [[ -f "$ROOT/results/versions.json" ]]; then
+    cp "$ROOT/results/versions.json" "$results_dir/versions.json"
+  fi
+
+  if [[ "$copied" -eq 0 ]]; then
+    echo "Warning: No benchmark results copied. Skipping chart generation."
+    return
+  fi
+
+  node "$ROOT/scripts/generate-chart.js" "$date"
+  mkdir -p "$ROOT/app/latest"
+  cp "$results_dir/chart-data.json" "$ROOT/app/latest/chart-data.json"
+  echo "Chart data written to $results_dir/chart-data.json"
+  echo "UI data copied to app/latest/chart-data.json"
+}
+
+run_bench() {
+  local fixtures_input="$1"
+  local pms_input="$2"
+  local variation_input="$3"
+  local runs_input="$4"
+  local warmup_input="$5"
+  local dry_run="$6"
+  local clean_results="$7"
+  local chart_results="$8"
+  local chart_date="$9"
+
+  if [[ ! -f "$BENCH_SCRIPT" ]]; then
+    echo "Error: Missing benchmark script at $BENCH_SCRIPT"
+    exit 1
+  fi
+
+  resolve_variation_and_fixtures "$fixtures_input" "$variation_input"
+  local variation="$RESOLVED_VARIATION"
+  local fixtures=("${RESOLVED_FIXTURES[@]}")
+
+  validate_pm_list "$pms_input"
+
+  if [[ -n "$runs_input" ]]; then
+    validate_number "$runs_input" "--runs"
+  fi
+  if [[ -n "$warmup_input" ]]; then
+    validate_number "$warmup_input" "--warmup"
+  fi
+
+  local pms_env=""
+  if [[ -n "$pms_input" ]]; then
+    pms_env="$(normalize_list "$pms_input")"
+  fi
+
+  echo "Running benchmarks..."
+  echo "  fixtures: ${fixtures[*]}"
+  echo "  variation: $variation"
+  if [[ -n "$pms_env" ]]; then
+    echo "  pms: $pms_env"
+  else
+    echo "  pms: (default)"
+  fi
+  if [[ -n "$runs_input" ]]; then
+    echo "  runs: $runs_input"
+  else
+    echo "  runs: (default)"
+  fi
+  if [[ -n "$warmup_input" ]]; then
+    echo "  warmup: $warmup_input"
+  else
+    echo "  warmup: (default)"
+  fi
+  if [[ "$clean_results" -eq 1 ]]; then
+    echo "  clean: enabled"
+  else
+    echo "  clean: disabled"
+  fi
+  if [[ "$chart_results" -eq 1 ]]; then
+    if [[ -z "$chart_date" ]]; then
+      chart_date="$(date +%Y-%m-%d)"
+    fi
+    echo "  chart: enabled ($chart_date)"
+  else
+    echo "  chart: disabled"
+  fi
+
+  for fixture in "${fixtures[@]}"; do
+    echo
+    echo "==> ${fixture} (${variation})"
+
+    local env_args=()
+    if [[ -n "$pms_env" ]]; then
+      env_args+=("BENCH_INCLUDE=$pms_env")
+    fi
+    if [[ -n "$runs_input" ]]; then
+      env_args+=("BENCH_RUNS=$runs_input")
+    fi
+    if [[ -n "$warmup_input" ]]; then
+      env_args+=("BENCH_WARMUP=$warmup_input")
+    fi
+
+    local cmd=(bash "$BENCH_SCRIPT" "$fixture" "$variation")
+
+    if [[ "$dry_run" -eq 1 ]]; then
+      if [[ ${#env_args[@]} -gt 0 ]]; then
+        printf '%q ' "${env_args[@]}" "${cmd[@]}"
+      else
+        printf '%q ' "${cmd[@]}"
+      fi
+      echo
+      continue
+    fi
+
+    if [[ ${#env_args[@]} -gt 0 ]]; then
+      env "${env_args[@]}" "${cmd[@]}"
+    else
+      "${cmd[@]}"
+    fi
+
+    if [[ "$clean_results" -eq 1 ]]; then
+      clean_benchmarks_file "$ROOT/results/$fixture/$variation/benchmarks.json"
+    fi
+  done
+
+  if [[ "$dry_run" -eq 0 && "$chart_results" -eq 1 ]]; then
+    if [[ -z "$chart_date" ]]; then
+      chart_date="$(date +%Y-%m-%d)"
+    fi
+    generate_chart_data "$variation" "$chart_date" "${fixtures[@]}"
+  fi
+}
+
+if [[ $# -eq 0 ]]; then
+  usage
+  exit 1
+fi
+
+command="$1"
+shift
+
+case "$command" in
+  list)
+    echo "Fixtures:"
+    while IFS= read -r fixture; do
+      echo "  - $fixture"
+    done < <(list_fixtures)
+    echo
+    echo "Variations:"
+    for variation in "${AVAILABLE_VARIATIONS[@]}"; do
+      echo "  - $variation"
+    done
+    echo
+    echo "Package managers:"
+    for pm in "${AVAILABLE_PMS[@]}"; do
+      echo "  - $pm"
+    done
+    ;;
+  chart)
+    FIXTURES_INPUT=""
+    VARIATION_INPUT=""
+    CHART_DATE=""
+    CLEAN_RESULTS=1
+
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --fixtures)
+          FIXTURES_INPUT="${2:-}"
+          shift 2
+          ;;
+        --fixtures=*)
+          FIXTURES_INPUT="${1#*=}"
+          shift
+          ;;
+        --variation|--variations)
+          VARIATION_INPUT="${2:-}"
+          shift 2
+          ;;
+        --variation=*|--variations=*)
+          VARIATION_INPUT="${1#*=}"
+          shift
+          ;;
+        --date)
+          CHART_DATE="${2:-}"
+          shift 2
+          ;;
+        --date=*)
+          CHART_DATE="${1#*=}"
+          shift
+          ;;
+        --clean)
+          CLEAN_RESULTS=1
+          shift
+          ;;
+        --no-clean)
+          CLEAN_RESULTS=0
+          shift
+          ;;
+        --help|-h)
+          usage
+          exit 0
+          ;;
+        *)
+          echo "Error: Unknown option '$1'"
+          usage
+          exit 1
+          ;;
+      esac
+    done
+
+    resolve_variation_and_fixtures "$FIXTURES_INPUT" "$VARIATION_INPUT"
+    variation="$RESOLVED_VARIATION"
+    fixtures=("${RESOLVED_FIXTURES[@]}")
+
+    if [[ -z "$CHART_DATE" ]]; then
+      CHART_DATE="$(date +%Y-%m-%d)"
+    fi
+
+    if [[ "$CLEAN_RESULTS" -eq 1 ]]; then
+      for fixture in "${fixtures[@]}"; do
+        clean_benchmarks_file "$ROOT/results/$fixture/$variation/benchmarks.json"
+      done
+    fi
+
+    generate_chart_data "$variation" "$CHART_DATE" "${fixtures[@]}"
+    ;;
+  run)
+    FIXTURES_INPUT=""
+    PMS_INPUT=""
+    VARIATION_INPUT=""
+    RUNS_INPUT=""
+    WARMUP_INPUT=""
+    DRY_RUN=0
+    CLEAN_RESULTS=1
+    CHART_RESULTS=0
+    CHART_DATE=""
+
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --fixtures)
+          FIXTURES_INPUT="${2:-}"
+          shift 2
+          ;;
+        --fixtures=*)
+          FIXTURES_INPUT="${1#*=}"
+          shift
+          ;;
+        --pms|--pm|--package-managers)
+          PMS_INPUT="${2:-}"
+          shift 2
+          ;;
+        --pms=*|--pm=*|--package-managers=*)
+          PMS_INPUT="${1#*=}"
+          shift
+          ;;
+        --variation|--variations)
+          VARIATION_INPUT="${2:-}"
+          shift 2
+          ;;
+        --variation=*|--variations=*)
+          VARIATION_INPUT="${1#*=}"
+          shift
+          ;;
+        --runs)
+          RUNS_INPUT="${2:-}"
+          shift 2
+          ;;
+        --runs=*)
+          RUNS_INPUT="${1#*=}"
+          shift
+          ;;
+        --warmup)
+          WARMUP_INPUT="${2:-}"
+          shift 2
+          ;;
+        --warmup=*)
+          WARMUP_INPUT="${1#*=}"
+          shift
+          ;;
+        --chart)
+          CHART_RESULTS=1
+          shift
+          ;;
+        --date)
+          CHART_DATE="${2:-}"
+          shift 2
+          ;;
+        --date=*)
+          CHART_DATE="${1#*=}"
+          shift
+          ;;
+        --clean)
+          CLEAN_RESULTS=1
+          shift
+          ;;
+        --no-clean)
+          CLEAN_RESULTS=0
+          shift
+          ;;
+        --dry-run)
+          DRY_RUN=1
+          shift
+          ;;
+        --help|-h)
+          usage
+          exit 0
+          ;;
+        *)
+          echo "Error: Unknown option '$1'"
+          usage
+          exit 1
+          ;;
+      esac
+    done
+
+    run_bench "$FIXTURES_INPUT" "$PMS_INPUT" "$VARIATION_INPUT" "$RUNS_INPUT" "$WARMUP_INPUT" "$DRY_RUN" "$CLEAN_RESULTS" "$CHART_RESULTS" "$CHART_DATE"
+    ;;
+  help|-h|--help)
+    usage
+    ;;
+  *)
+    echo "Error: Unknown command '$command'"
+    usage
+    exit 1
+    ;;
+esac

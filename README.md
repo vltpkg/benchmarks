@@ -111,6 +111,33 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
   bash ./scripts/benchmark.sh next clean
   ```
 
+- 3. Local bench wrapper (optional):
+
+  ```bash
+  # One-time: make the wrapper executable
+  chmod +x bench
+
+  # Defaults: next + clean (uses script defaults for runs/warmup)
+  ./bench run
+
+  # Pick fixtures, package managers, and runs
+  ./bench run --fixtures=next,astro --pms=vlt,pnpm --runs=3
+
+  # Run all fixtures (except "run")
+  ./bench run --fixtures=all --variation=clean
+
+  # Script-execution benchmark
+  ./bench run --variation=run --pms=vlt
+
+  # Generate chart data (and copy to app/latest) after a run
+  ./bench run --fixtures=next --runs=3 --chart
+
+  # Process existing results into chart data
+  ./bench chart --fixtures=next --variation=clean
+  ```
+
+  The wrapper filters failed runs by default; pass `--no-clean` to keep raw results.
+
 ### GitHub Actions
 
 The benchmarks run automatically on:

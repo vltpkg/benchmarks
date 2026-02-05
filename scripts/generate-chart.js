@@ -4,8 +4,8 @@
 // after a succesful run, test the web app rendering the chart data locally
 // by copying the result `results/2025-10-06/chart-data.json` file to the
 // web app folder in a `latest/` folder, e.g: app/latest/chart-data.json
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
 
 const DATE = process.argv[2];
 if (!DATE) {
