@@ -1,13 +1,13 @@
 {
   "npm": {
-    "count": 1827,
-    "minCount": 1821,
-    "maxCount": 1827
+    "count": 1781,
+    "minCount": 1775,
+    "maxCount": 1781
   },
   "berry": {
-    "count": 1694
+    "count": 1695
   },
   "bun": {
-    "count": 1600
+    "count": 1601
   }
 }
