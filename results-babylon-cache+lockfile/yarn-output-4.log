@@ -45,9 +45,9 @@ warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency
 warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "@fortawesome/react-fontawesome@^0.2.0".
 warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "react@^18.2.0".
 warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "react-dom@^18.2.0".
-warning "workspace-aggregator-3852db9e-b44c-4daa-988c-7707bebe0d7e > @dev/inspector > @fluentui-contrib/react-virtualizer@0.5.4" has unmet peer dependency "@fluentui/react-shared-contexts@>=9.7.2 <10.0.0".
-warning "workspace-aggregator-3852db9e-b44c-4daa-988c-7707bebe0d7e > @tools/viewer-configurator > @dnd-kit/modifiers@9.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
-warning "workspace-aggregator-3852db9e-b44c-4daa-988c-7707bebe0d7e > @tools/viewer-configurator > @dnd-kit/sortable@10.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
-warning "workspace-aggregator-3852db9e-b44c-4daa-988c-7707bebe0d7e > @dev/inspector > @fluentui/react-components > @fluentui/react-accordion > @fluentui/react-context-selector@9.2.14" has unmet peer dependency "scheduler@>=0.19.0".
+warning "workspace-aggregator-a45cd847-ad6d-4c5d-9052-e35dc8086e3c > @dev/inspector > @fluentui-contrib/react-virtualizer@0.5.4" has unmet peer dependency "@fluentui/react-shared-contexts@>=9.7.2 <10.0.0".
+warning "workspace-aggregator-a45cd847-ad6d-4c5d-9052-e35dc8086e3c > @tools/viewer-configurator > @dnd-kit/modifiers@9.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
+warning "workspace-aggregator-a45cd847-ad6d-4c5d-9052-e35dc8086e3c > @tools/viewer-configurator > @dnd-kit/sortable@10.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
+warning "workspace-aggregator-a45cd847-ad6d-4c5d-9052-e35dc8086e3c > @dev/inspector > @fluentui/react-components > @fluentui/react-accordion > @fluentui/react-context-selector@9.2.14" has unmet peer dependency "scheduler@>=0.19.0".
 warning Workspaces can only be enabled in private projects.
 warning Ignored scripts due to flag.
