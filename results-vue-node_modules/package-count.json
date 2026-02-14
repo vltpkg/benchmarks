@@ -3,16 +3,18 @@
     "count": 462
   },
   "yarn": {
-    "count": 458
+    "count": 463
   },
   "berry": {
-    "count": 454
+    "count": 459
   },
   "zpm": {
-    "count": 461
+    "count": 464,
+    "minCount": 463,
+    "maxCount": 465
   },
   "pnpm": {
-    "count": 435
+    "count": 439
   },
   "vlt": {
     "count": 438
