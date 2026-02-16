@@ -1,25 +1,23 @@
 {
   "yarn": {
-    "count": 1324
+    "count": 1326
   },
   "berry": {
-    "count": 1367
+    "count": 1369
   },
   "zpm": {
-    "count": 1547,
-    "minCount": 1547,
-    "maxCount": 1548
+    "count": 1550,
+    "minCount": 1549,
+    "maxCount": 1550
   },
   "pnpm": {
-    "count": 1289
+    "count": 1290
   },
   "vlt": {
-    "count": 1293
+    "count": 1294
   },
   "bun": {
-    "count": 1550,
-    "minCount": 1541,
-    "maxCount": 1551
+    "count": 1553
   },
   "deno": {
     "count": 1281
