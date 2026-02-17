@@ -5,11 +5,9 @@
     "maxCount": 1774
   },
   "berry": {
-    "count": 1691
+    "count": 1692
   },
   "bun": {
-    "count": 1600,
-    "minCount": 1600,
-    "maxCount": 1601
+    "count": 1601
   }
 }
