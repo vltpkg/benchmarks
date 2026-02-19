@@ -1,9 +1,9 @@
 [94m➤[39m YN0000: · Yarn 4.12.0
 [94m➤[39m [90mYN0000[39m: ┌ Resolution step
 ::group::Resolution step
-[94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;166m@fontsource/[39m[38;5;173mfira-mono[39m[38;5;111m@[39m[38;5;111mnpm:5.2.7[39m, [38;5;166m@neoconfetti/[39m[38;5;173msvelte[39m[38;5;111m@[39m[38;5;111mnpm:2.2.2[39m, [38;5;166m@sveltejs/[39m[38;5;173madapter-auto[39m[38;5;111m@[39m[38;5;111mnpm:3.3.1[39m, [38;5;166m@sveltejs/[39m[38;5;173mkit[39m[38;5;111m@[39m[38;5;111mnpm:2.52.0[39m, and [38;5;220m162[39m more.
+[94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;166m@fontsource/[39m[38;5;173mfira-mono[39m[38;5;111m@[39m[38;5;111mnpm:5.2.7[39m, [38;5;166m@neoconfetti/[39m[38;5;173msvelte[39m[38;5;111m@[39m[38;5;111mnpm:2.2.2[39m, [38;5;166m@sveltejs/[39m[38;5;173madapter-auto[39m[38;5;111m@[39m[38;5;111mnpm:3.3.1[39m, [38;5;166m@sveltejs/[39m[38;5;173mkit[39m[38;5;111m@[39m[38;5;111mnpm:2.52.2[39m, and [38;5;220m160[39m more.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 683ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 667ms
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 ::endgroup::
@@ -12,5 +12,5 @@
 ::group::Link step
 [94m➤[39m YN0007: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.25.12[39m must be built because it never has been before or the last one failed
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 493ms
-[94m➤[39m YN0000: · Done in 1s 363ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 467ms
+[94m➤[39m YN0000: · Done in 1s 324ms
