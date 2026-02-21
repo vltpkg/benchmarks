@@ -1,0 +1,6 @@
+➤ · Yarn 6.0.0-rc.15.local
+➤ ┌ Installing packages
+➤ │ tinyspy@npm:3.0.2: Requests to registry.npmjs.org are taking suspiciously long...
+➤ │ @eslint-community/regexpp@npm:4.12.2: Network error: HTTP status client error (404 Not Found) for url (https://registry.npmjs.org/@eslint-community%2fregexpp/-/regexpp-4.12.2.tgz)
+➤ │ Fetched 503 packages (192.73 MiB)
+➤ └ Completed in 5s 562ms

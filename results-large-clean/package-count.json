@@ -6,7 +6,7 @@
     "count": 1369
   },
   "zpm": {
-    "count": 1548,
+    "count": 1547,
     "minCount": 1547,
     "maxCount": 1548
   },
@@ -17,8 +17,8 @@
     "count": 1295
   },
   "bun": {
-    "count": 1549,
-    "minCount": 1545,
+    "count": 1551,
+    "minCount": 1547,
     "maxCount": 1557
   },
   "deno": {
