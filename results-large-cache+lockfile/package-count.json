@@ -6,20 +6,20 @@
     "count": 1369
   },
   "zpm": {
-    "count": 1547,
-    "minCount": 1547,
-    "maxCount": 1548
+    "count": 1545,
+    "minCount": 1545,
+    "maxCount": 1546
   },
   "pnpm": {
-    "count": 1289
+    "count": 1288
   },
   "vlt": {
-    "count": 1295
+    "count": 1297
   },
   "bun": {
-    "count": 1557
+    "count": 1545
   },
   "deno": {
-    "count": 1282
+    "count": 1284
   }
 }
