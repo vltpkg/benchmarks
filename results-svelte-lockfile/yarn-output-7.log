@@ -1,5 +1,7 @@
 warning package.json: No license field
 warning demo@0.0.1: No license field
-(node:12334) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:12325) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
+error https://registry.yarnpkg.com/@esbuild/linux-ppc64/-/linux-ppc64-0.25.12.tgz: Request failed "502 Bad Gateway"
 warning Workspaces can only be enabled in private projects.
+error Error: ENOENT: no such file or directory, open '/home/runner/.cache/yarn/v6/npm-@esbuild-linux-ppc64-0.25.12-75b99c70a95fbd5f7739d7692befe60601591869-integrity/node_modules/@esbuild/linux-ppc64/.yarn-metadata.json'
