@@ -1,8 +1,6 @@
 {
   "npm": {
-    "count": 280,
-    "minCount": 277,
-    "maxCount": 280
+    "count": 277
   },
   "yarn": {
     "count": 279
@@ -11,7 +9,7 @@
     "count": 276
   },
   "zpm": {
-    "count": 278,
+    "count": 279,
     "minCount": 278,
     "maxCount": 279
   },

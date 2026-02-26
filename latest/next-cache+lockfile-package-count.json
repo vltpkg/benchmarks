@@ -1,8 +1,6 @@
 {
   "npm": {
-    "count": 339,
-    "minCount": 335,
-    "maxCount": 339
+    "count": 335
   },
   "berry": {
     "count": 335,
@@ -10,7 +8,7 @@
     "maxCount": 336
   },
   "zpm": {
-    "count": 340,
+    "count": 341,
     "minCount": 340,
     "maxCount": 341
   },

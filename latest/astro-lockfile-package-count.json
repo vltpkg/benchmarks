@@ -1,8 +1,6 @@
 {
   "npm": {
-    "count": 280,
-    "minCount": 277,
-    "maxCount": 280
+    "count": 277
   },
   "yarn": {
     "count": 279
