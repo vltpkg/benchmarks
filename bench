@@ -16,6 +16,8 @@ AVAILABLE_VARIATIONS=(
   lockfile+node_modules
   node_modules
   run
+  registry-clean
+  registry-lockfile
 )
 
 AVAILABLE_PMS=(

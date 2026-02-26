@@ -13,6 +13,7 @@ import {
   getVariationCategories,
   getPackageManagerDisplayName,
   sortVariations,
+  isRegistryVariation,
 } from "@/lib/utils";
 import { getPackageManagerIcon } from "@/lib/get-icons";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
@@ -115,6 +116,10 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
         label: "Task Runners",
         href: "task-runners",
       },
+      {
+        label: "Registry",
+        href: "registry",
+      },
     ];
 
     return (
@@ -149,7 +154,20 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
             <FixtureFilter fixtures={fixtures} />
             <VariationDropdown
               currentVariation={currentVariation ?? "average"}
-              sortedVariations={sortedVariations}
+              sortedVariations={(() => {
+                const baseRoute = location.pathname.split("/")[1];
+                const categories = getVariationCategories(chartData.chartData.variations);
+                if (baseRoute === "registry") {
+                  const registry = categories.find((cat) => cat.title === "Registry");
+                  return registry?.variations ?? [];
+                } else if (baseRoute === "task-runners") {
+                  const taskRunners = categories.find((cat) => cat.title === "Task Execution");
+                  return taskRunners?.variations ?? [];
+                } else {
+                  const pm = categories.find((cat) => cat.title === "Package Management");
+                  return pm?.variations ?? sortedVariations;
+                }
+              })()}
             />
           </div>
         )}
@@ -329,6 +347,7 @@ const HeaderVariationNavigation = forwardRef<
     (cat) => cat.title === "Package Management",
   );
   const taskRunners = categories.find((cat) => cat.title === "Task Execution");
+  const registry = categories.find((cat) => cat.title === "Registry");
 
   if (!packageManagement) return null;
 
@@ -358,6 +377,19 @@ const HeaderVariationNavigation = forwardRef<
                 variation={variation}
                 isActive={isActive}
                 baseRoute="task-runners"
+              />
+            );
+          })}
+        {baseRoute === "registry" &&
+          registry?.variations.map((variation) => {
+            const isActive = location.pathname.split("/")[2] === variation;
+
+            return (
+              <VariationButton
+                key={variation}
+                variation={variation}
+                isActive={isActive}
+                baseRoute="registry"
               />
             );
           })}

@@ -152,25 +152,54 @@ export const useChartData = (): UseChartDataReturn => {
         ? chartData.chartData.variations
         : [averageVariation, ...chartData.chartData.variations];
 
+      // Merge registry chart data into main chart data if present
+      const registryData = normalizedChartData.registryChartData;
+      const registryVariations: Variation[] = registryData?.variations ?? [];
+      const allVariations: Variation[] = [
+        ...variations,
+        ...registryVariations.filter((v) => !variations.includes(v)),
+      ];
+
+      // Merge registry data into chartData.data
+      const mergedData = { ...normalizedChartData.chartData.data, average: averageTotalData };
+      const mergedPerPackageData = { ...normalizedChartData.perPackageCountChartData.data, average: averagePerPackageData };
+      if (registryData) {
+        for (const [variation, data] of Object.entries(registryData.data)) {
+          mergedData[variation as Variation] = data;
+          mergedPerPackageData[variation as Variation] = data;
+        }
+      }
+
+      // Merge package managers and colors for registry variations
+      const allPackageManagers: PackageManager[] = [
+        ...normalizedChartData.chartData.packageManagers,
+        ...(registryData?.packageManagers ?? []).filter(
+          (pm: PackageManager) => !normalizedChartData.chartData.packageManagers.includes(pm),
+        ),
+      ];
+      const allColors = {
+        ...normalizedChartData.chartData.colors,
+        ...(registryData?.colors ?? {}),
+      };
+
       // Combine chart data with versions and average data
       const combinedData: BenchmarkChartData = {
         ...normalizedChartData,
         versions,
+        registryChartData: registryData,
         chartData: {
           ...normalizedChartData.chartData,
-          variations,
-          data: {
-            ...normalizedChartData.chartData.data,
-            average: averageTotalData,
-          },
+          variations: allVariations,
+          data: mergedData,
+          packageManagers: allPackageManagers,
+          colors: allColors,
         },
         perPackageCountChartData: {
           ...normalizedChartData.perPackageCountChartData,
-          variations,
-          data: {
-            ...normalizedChartData.perPackageCountChartData.data,
-            average: averagePerPackageData,
-          },
+          variations: allVariations,
+          data: mergedPerPackageData,
+          packageManagers: allPackageManagers,
+          colors: allColors,
         },
       };
 

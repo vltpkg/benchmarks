@@ -72,6 +72,19 @@ for fixture in next astro svelte vue large babylon; do
     done
 done
 
+# Process registry variation results
+for fixture in next astro svelte vue large babylon; do
+    for variation in registry-clean registry-lockfile; do
+        if [ -f "results/results-$fixture-$variation/benchmarks.json" ]; then
+            print_summary "results/results-$fixture-$variation/benchmarks.json" "$fixture" "$variation"
+            cp "results/results-$fixture-$variation/benchmarks.json" "results/$DATE/$fixture-$variation.json"
+            cp "results/results-$fixture-$variation/benchmarks.json" "results/latest/$fixture-$variation.json"
+        else
+            echo "Warning: No results found for $fixture & $variation"
+        fi
+    done
+done
+
 # Process run results
 if [ -f "results/results-run-run/benchmarks.json" ]; then
     print_summary "results/results-run-run/benchmarks.json" "run" "run"

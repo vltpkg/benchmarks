@@ -22,6 +22,11 @@ export const isTaskExecutionVariation = (variation: string): boolean => {
   return taskExecutionVariations.includes(variation);
 };
 
+export const isRegistryVariation = (variation: string): boolean => {
+  const registryVariations = ["registry-clean", "registry-lockfile"];
+  return registryVariations.includes(variation);
+};
+
 export const isAverageVariation = (variation: string): boolean => {
   return variation === "average";
 };
@@ -152,6 +157,11 @@ export const getVariationCategories = (
     variations.includes(v as Variation),
   ) as Variation[];
 
+  const registryVariations = [
+    "registry-clean",
+    "registry-lockfile",
+  ].filter((v) => variations.includes(v as Variation)) as Variation[];
+
   const categories: VariationCategory[] = [];
 
   if (packageManagementVariations.length > 0) {
@@ -168,6 +178,15 @@ export const getVariationCategories = (
       title: "Task Execution",
       description: "Script and command execution performance",
       variations: sortVariations(taskExecutionVariations),
+    });
+  }
+
+  if (registryVariations.length > 0) {
+    categories.push({
+      title: "Registry",
+      description:
+        "npm install times across different registries",
+      variations: sortVariations(registryVariations),
     });
   }
 
@@ -320,6 +339,8 @@ export function sortVariations(variations: Variation[]): Variation[] {
     "lockfile",
     "lockfile+node_modules",
     "run",
+    "registry-clean",
+    "registry-lockfile",
   ];
 
   return variations.sort((a, b) => {
@@ -404,6 +425,8 @@ export function getPackageManagerDisplayName(
 ): string {
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
+  if (packageManager === "vlt-auth") return "vlt (auth)";
+  if (packageManager === "codeartifact") return "CodeArtifact";
   return packageManager;
 }
 
