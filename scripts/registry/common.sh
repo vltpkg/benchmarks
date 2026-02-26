@@ -67,8 +67,23 @@ BENCH_COMMAND_VLT_REG="echo 'registry=$BENCH_REGISTRY_VLT_URL' > .npmrc && $BENC
 BENCH_COMMAND_VLT_AUTH="{ echo 'registry=$BENCH_REGISTRY_VLT_URL'; echo \"//registry.vlt.io/:_authToken=\$VLT_REGISTRY_AUTH_TOKEN\"; } > .npmrc && $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/vlt-auth-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_CODEARTIFACT="{ echo 'registry=$BENCH_REGISTRY_CODEARTIFACT_URL'; echo '//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:always-auth=true'; echo \"//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:_authToken=\$CODEARTIFACT_AUTH_TOKEN\"; } > .npmrc && $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/codeartifact-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
-# Registry include flags (all enabled by default)
-BENCH_INCLUDE_REGISTRY="${BENCH_INCLUDE_REGISTRY:=npm,vlt,vlt-auth,codeartifact}"
+# Registry include flags
+# If BENCH_INCLUDE_REGISTRY is explicitly set, use that list.
+# Otherwise, auto-detect: always include npm and vlt (no auth needed),
+# and include vlt-auth / codeartifact only when their tokens are available.
+if [ -z "${BENCH_INCLUDE_REGISTRY:-}" ]; then
+  BENCH_INCLUDE_REGISTRY="npm,vlt"
+  if [ -n "${VLT_REGISTRY_AUTH_TOKEN:-}" ]; then
+    BENCH_INCLUDE_REGISTRY="$BENCH_INCLUDE_REGISTRY,vlt-auth"
+  else
+    echo "Note: VLT_REGISTRY_AUTH_TOKEN not set, skipping vlt-auth registry"
+  fi
+  if [ -n "${CODEARTIFACT_AUTH_TOKEN:-}" ]; then
+    BENCH_INCLUDE_REGISTRY="$BENCH_INCLUDE_REGISTRY,codeartifact"
+  else
+    echo "Note: CODEARTIFACT_AUTH_TOKEN not set, skipping codeartifact registry"
+  fi
+fi
 
 BENCH_INCLUDE_REG_NPM=""
 BENCH_INCLUDE_REG_VLT=""
@@ -83,6 +98,8 @@ for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
     codeartifact) BENCH_INCLUDE_REG_CODEARTIFACT=1 ;;
   esac
 done
+
+echo "Registry benchmarks will run: $BENCH_INCLUDE_REGISTRY"
 
 # Clean up & create the results directory
 rm -rf "$BENCH_OUTPUT_FOLDER"
