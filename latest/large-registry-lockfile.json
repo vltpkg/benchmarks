@@ -1,0 +1,52 @@
+{
+  "results": [
+    {
+      "command": "npm",
+      "mean": 0,
+      "stddev": 0,
+      "median": 0,
+      "user": 0,
+      "system": 0,
+      "min": 0,
+      "max": 0,
+      "times": [
+        0
+      ],
+      "exit_codes": [
+        1
+      ]
+    },
+    {
+      "command": "vlt",
+      "mean": 0,
+      "stddev": 0,
+      "median": 0,
+      "user": 0,
+      "system": 0,
+      "min": 0,
+      "max": 0,
+      "times": [
+        0
+      ],
+      "exit_codes": [
+        1
+      ]
+    },
+    {
+      "command": "aws",
+      "mean": 0,
+      "stddev": 0,
+      "median": 0,
+      "user": 0,
+      "system": 0,
+      "min": 0,
+      "max": 0,
+      "times": [
+        0
+      ],
+      "exit_codes": [
+        1
+      ]
+    }
+  ]
+}
