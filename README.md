@@ -248,33 +248,39 @@ from previous [GitHub Action runs of the Package Manager Benchmarks workflow](ht
 
 Preferred workflow (matches CI):
 
-1. Download and extract run artifacts into this repo.
-2. Keep artifact-style directories such as `results/results-<fixture>-<variation>/`
-   and `versions-temp/` as-is.
-3. Run:
+1. Install and authenticate GitHub CLI (`gh auth login`).
+2. Download artifacts from the latest successful run on `main`:
+
+   ```sh
+   ./scripts/download-latest-artifacts.sh
+   ```
+
+   This keeps artifact-style directories such as
+   `results/results-<fixture>-<variation>/` and `versions-temp/`.
+
+3. Process downloaded artifacts:
 
    ```sh
    ./bench process
    ```
 
-This command cleans benchmark outputs, builds dated and latest result folders,
-and generates chart data (`results/<date>/chart-data.json` and `results/latest/chart-data.json`).
+   This cleans benchmark outputs, builds dated and latest result folders,
+   and generates chart data (`results/<date>/chart-data.json` and `results/latest/chart-data.json`).
 
-Manual chart generation (low-level fallback):
+4. Copy the latest chart data into the app:
 
-1. Create `results/<date>/` (with `<date>` in `YYYY-MM-DD` format).
-2. Place processed result files there using names like:
-   - `<fixture>-<variation>.json`
-   - `<fixture>-<variation>-package-count.json` (optional)
-   - `versions.json` (optional)
-3. Run:
+   ```sh
+   mkdir -p app/latest
+   cp results/latest/chart-data.json app/latest/chart-data.json
+   ```
 
-```sh
-node scripts/generate-chart.js <date>
-```
+5. Run the app:
 
-After a successful run, test the web app rendering by copying
-`results/<date>/chart-data.json` to `app/latest/chart-data.json`.
+   ```sh
+   cd app
+   vlt install || npm install
+   vlr dev
+   ```
 
 ## License
 
