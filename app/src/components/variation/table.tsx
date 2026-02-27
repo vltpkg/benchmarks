@@ -19,6 +19,8 @@ import { Button } from "@/components/ui/button";
 import {
   getPackageManagerDisplayName,
   getPackageManagerVersion,
+  getFixtureDisplayName,
+  sortFixtures,
   createSectionId,
   isRegistryVariation,
 } from "@/lib/utils";
@@ -28,6 +30,7 @@ import { Clock, StopWatch } from "@/components/icons";
 
 import type {
   BenchmarkChartData,
+  Fixture,
   FixtureResult,
   PackageManager,
 } from "@/types/chart-data";
@@ -43,7 +46,13 @@ interface VariationTableProps {
   currentVariation: string;
 }
 
-const columnHelper = createColumnHelper<FixtureResult>();
+interface TransposedVariationRow {
+  packageManager: PackageManager;
+  fixtureValues: Partial<Record<Fixture, number>>;
+  fixtureDnf: Partial<Record<Fixture, boolean>>;
+}
+
+const columnHelper = createColumnHelper<TransposedVariationRow>();
 
 export const VariationTable = ({
   title,
@@ -65,34 +74,81 @@ export const VariationTable = ({
     [packageManagers, enabledPackageManagers],
   );
 
+  const fixtures = useMemo(
+    () =>
+      sortFixtures(
+        Array.from(new Set(variationData.map((item) => item.fixture))) as Fixture[],
+      ),
+    [variationData],
+  );
+
+  const transposedData = useMemo(
+    () =>
+      filteredPackageManagers.map((packageManager) => {
+        const fixtureValues: Partial<Record<Fixture, number>> = {};
+        const fixtureDnf: Partial<Record<Fixture, boolean>> = {};
+
+        variationData.forEach((fixtureResult) => {
+          const fixture = fixtureResult.fixture;
+          const dnfKey = `${packageManager}_dnf` as keyof FixtureResult;
+          const value = fixtureResult[packageManager];
+          const isDnf = fixtureResult[dnfKey] === true;
+
+          if (isDnf) {
+            fixtureDnf[fixture] = true;
+          }
+          if (typeof value === "number") {
+            fixtureValues[fixture] = value;
+          }
+        });
+
+        return {
+          packageManager,
+          fixtureValues,
+          fixtureDnf,
+        };
+      }),
+    [filteredPackageManagers, variationData],
+  );
+
   const columns = useMemo(
     () => [
-      columnHelper.accessor("fixture", {
-        header: "Fixture",
-        cell: (info) => info.getValue(),
+      columnHelper.accessor("packageManager", {
+        header: isRegistry ? "Registry" : "Package Manager",
+        cell: (info) => {
+          const packageManager = info.getValue();
+          const version = showVersions
+            ? getPackageManagerVersion(packageManager, chartData.versions)
+            : undefined;
+          const displayName = getPackageManagerDisplayName(packageManager, {
+            isRegistryVariation: isRegistry,
+          });
+
+          return version ? (
+            <div className="text-left">
+              <div className="font-bold">{displayName}</div>
+              <div className="text-xs text-muted-foreground">{version}</div>
+            </div>
+          ) : (
+            <span className="font-bold">{displayName}</span>
+          );
+        },
         enableSorting: true,
-      }),
-      ...filteredPackageManagers.map((pm) =>
-        columnHelper.accessor(pm as keyof FixtureResult, {
-          header: () => {
-            const version = showVersions
-              ? getPackageManagerVersion(pm, chartData.versions)
-              : undefined;
-            const displayName = getPackageManagerDisplayName(pm, {
+        sortingFn: (rowA, rowB) =>
+          getPackageManagerDisplayName(rowA.original.packageManager, {
+            isRegistryVariation: isRegistry,
+          }).localeCompare(
+            getPackageManagerDisplayName(rowB.original.packageManager, {
               isRegistryVariation: isRegistry,
-            });
-            return version ? (
-              <div className="text-center">
-                <div className="font-bold">{displayName}</div>
-                <div className="text-xs text-muted-foreground">{version}</div>
-              </div>
-            ) : (
-              <span className="font-bold">{displayName}</span>
-            );
-          },
+            }),
+          ),
+      }),
+      ...fixtures.map((fixture) =>
+        columnHelper.accessor((row) => row.fixtureValues[fixture], {
+          id: fixture,
+          header: () => <span className="font-bold">{getFixtureDisplayName(fixture)}</span>,
           cell: (info) => {
-            const dnfKey = `${pm}_dnf` as keyof FixtureResult;
-            const isDnf = info.row.original[dnfKey] === true;
+            const isDnf = info.row.original.fixtureDnf[fixture] === true;
             const value = info.getValue();
             if (isDnf) {
               return (
@@ -121,11 +177,10 @@ export const VariationTable = ({
           },
           enableSorting: true,
           sortingFn: (rowA, rowB, columnId) => {
-            const dnfKey = `${pm}_dnf` as keyof FixtureResult;
             const valueA = rowA.getValue(columnId) as number | undefined;
             const valueB = rowB.getValue(columnId) as number | undefined;
-            const isDnfA = rowA.original[dnfKey] === true;
-            const isDnfB = rowB.original[dnfKey] === true;
+            const isDnfA = rowA.original.fixtureDnf[fixture] === true;
+            const isDnfB = rowB.original.fixtureDnf[fixture] === true;
 
             if (isDnfA && isDnfB) return 0;
             if (isDnfA) return 1;
@@ -140,7 +195,7 @@ export const VariationTable = ({
       ),
     ],
     [
-      filteredPackageManagers,
+      fixtures,
       chartData.versions,
       isPerPackage,
       showVersions,
@@ -149,7 +204,7 @@ export const VariationTable = ({
   );
 
   const table = useReactTable({
-    data: variationData,
+    data: transposedData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -190,8 +245,8 @@ export const VariationTable = ({
                   <TableHead
                     key={header.id}
                     className={`${
-                      header.column.id === "fixture"
-                        ? "w-28"
+                      header.column.id === "packageManager"
+                        ? "w-52"
                         : "w-18 text-center"
                     }`}
                   >
@@ -242,7 +297,7 @@ export const VariationTable = ({
                     <TableCell
                       key={cell.id}
                       className={`font-medium text-center ${
-                        cell.column.id === "fixture"
+                        cell.column.id === "packageManager"
                           ? "pl-6 text-left"
                           : "pl-3 pr-7"
                       }`}
