@@ -116,8 +116,8 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
         href: "task-runners",
       },
       {
-        label: "Registry",
-        href: "registry",
+        label: "Registries",
+        href: "registries",
       },
     ];
 
@@ -158,9 +158,9 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
                 const categories = getVariationCategories(
                   chartData.chartData.variations,
                 );
-                if (baseRoute === "registry") {
+                if (baseRoute === "registries") {
                   const registry = categories.find(
-                    (cat) => cat.title === "Registry",
+                    (cat) => cat.title === "Registries",
                   );
                   return registry?.variations ?? [];
                 } else if (baseRoute === "task-runners") {
@@ -354,7 +354,7 @@ const HeaderVariationNavigation = forwardRef<
     (cat) => cat.title === "Package Management",
   );
   const taskRunners = categories.find((cat) => cat.title === "Task Execution");
-  const registry = categories.find((cat) => cat.title === "Registry");
+  const registry = categories.find((cat) => cat.title === "Registries");
 
   if (!packageManagement) return null;
 
@@ -387,7 +387,7 @@ const HeaderVariationNavigation = forwardRef<
               />
             );
           })}
-        {baseRoute === "registry" &&
+        {baseRoute === "registries" &&
           registry?.variations.map((variation) => {
             const isActive = location.pathname.split("/")[2] === variation;
 
@@ -396,7 +396,7 @@ const HeaderVariationNavigation = forwardRef<
                 key={variation}
                 variation={variation}
                 isActive={isActive}
-                baseRoute="registry"
+                baseRoute="registries"
               />
             );
           })}

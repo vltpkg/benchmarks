@@ -182,7 +182,7 @@ export const getVariationCategories = (
 
   if (registryVariations.length > 0) {
     categories.push({
-      title: "Registry",
+      title: "Registries",
       description: "npm install times across different registries",
       variations: sortVariations(registryVariations),
     });

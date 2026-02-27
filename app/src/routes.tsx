@@ -25,7 +25,7 @@ const taskRunnerRoutes: RouteObject = {
 };
 
 const registryRoutes: RouteObject = {
-  path: "registry",
+  path: "registries",
   children: [
     {
       index: true,
