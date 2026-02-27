@@ -1,6 +1,6 @@
 {
   "npm": {
-    "count": 470
+    "count": 476
   },
   "yarn": {
     "count": 464
@@ -9,9 +9,9 @@
     "count": 462
   },
   "zpm": {
-    "count": 471,
-    "minCount": 470,
-    "maxCount": 472
+    "count": 468,
+    "minCount": 467,
+    "maxCount": 469
   },
   "pnpm": {
     "count": 442
@@ -20,9 +20,9 @@
     "count": 442
   },
   "bun": {
-    "count": 465,
-    "minCount": 465,
-    "maxCount": 469
+    "count": 462,
+    "minCount": 462,
+    "maxCount": 466
   },
   "deno": {
     "count": 440
