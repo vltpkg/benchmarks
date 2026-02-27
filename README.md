@@ -243,27 +243,38 @@ Each run creates a new dated html file with its results, making it easy to track
 
 ## Local debugging
 
-You can debug the result process scripts and the web app locally by using data
+You can debug the result processing scripts and the web app locally using data
 from previous [GitHub Action runs of the Package Manager Benchmarks workflow](https://github.com/vltpkg/benchmarks/actions/workflows/benchmark.yaml).
 
-Those can be individually downloaded and their `benchmarks.json` files renamed
-to a `results/<date>/<fixture>-<variation>.json` file, where `<date>` needs to
-match a folder name in the `results` folder in a `YYYY-MM-DD` pattern and
-`<fixture>` is one of the known project type fixtures and `<variation>` is one
-of the known variations (e.g. `clean`, `cache`, `lockfile`, etc).
+Preferred workflow (matches CI):
 
-You may test the chart data generation script locally by running:
+1. Download and extract run artifacts into this repo.
+2. Keep artifact-style directories such as `results/results-<fixture>-<variation>/`
+   and `versions-temp/` as-is.
+3. Run:
+
+   ```sh
+   ./bench process
+   ```
+
+This command cleans benchmark outputs, builds dated and latest result folders,
+and generates chart data (`results/<date>/chart-data.json` and `results/latest/chart-data.json`).
+
+Manual chart generation (low-level fallback):
+
+1. Create `results/<date>/` (with `<date>` in `YYYY-MM-DD` format).
+2. Place processed result files there using names like:
+   - `<fixture>-<variation>.json`
+   - `<fixture>-<variation>-package-count.json` (optional)
+   - `versions.json` (optional)
+3. Run:
 
 ```sh
 node scripts/generate-chart.js <date>
 ```
 
-Make sure you have a `results/<date>` directory with valid benchmark
-result JSON files in it.
-
-After a succesful run, test the web app rendering the chart data locally
-by copying the result `results/<date>/chart-data.json` file to the
-web app folder in a `latest/` folder, e.g: `app/latest/chart-data.json`
+After a successful run, test the web app rendering by copying
+`results/<date>/chart-data.json` to `app/latest/chart-data.json`.
 
 ## License
 
