@@ -97,6 +97,7 @@ export const VariationChart = ({
   const { theme } = useTheme();
   const { enabledPackageManagers } = usePackageManagerFilter();
   const { getYAxisDomain } = useYAxis();
+  const isRegistry = isRegistryVariation(currentVariation);
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -105,7 +106,7 @@ export const VariationChart = ({
   );
 
   const resolvedTheme = resolveTheme(theme);
-  const showVersions = !isRegistryVariation(currentVariation);
+  const showVersions = !isRegistry;
   const patternIdPrefix = useId().replace(/:/g, "");
 
   const getDnfPatternId = (scope: string, pm: PackageManager) =>
@@ -156,12 +157,16 @@ export const VariationChart = ({
     const config: ChartConfig = {};
     filteredPackageManagers.forEach((pm) => {
       config[pm] = {
-        label: pm,
+        label: formatPackageManagerLabel(
+          pm,
+          showVersions ? chartData.versions : undefined,
+          { isRegistryVariation: isRegistry },
+        ),
         color: colors[pm],
       };
     });
     return config;
-  }, [filteredPackageManagers, colors]);
+  }, [filteredPackageManagers, colors, chartData.versions, showVersions, isRegistry]);
 
   const individualChartConfig = useMemo(() => {
     const config: ChartConfig = {};
@@ -169,6 +174,7 @@ export const VariationChart = ({
       const labelWithVersion = formatPackageManagerLabel(
         pm,
         showVersions ? chartData.versions : undefined,
+        { isRegistryVariation: isRegistry },
       );
       config[labelWithVersion] = {
         label: labelWithVersion,
@@ -176,7 +182,7 @@ export const VariationChart = ({
       };
     });
     return config;
-  }, [filteredPackageManagers, colors, chartData.versions, showVersions]);
+  }, [filteredPackageManagers, colors, chartData.versions, showVersions, isRegistry]);
 
   const yAxisLabel = isTaskExecutionVariation(currentVariation)
     ? "Time (seconds)"
@@ -453,6 +459,7 @@ export const VariationChart = ({
                         const formattedLabel = formatPackageManagerLabel(
                           packageManager,
                           showVersions ? chartData.versions : undefined,
+                          { isRegistryVariation: isRegistry },
                         );
 
                         return (
@@ -485,6 +492,7 @@ export const VariationChart = ({
                   name={formatPackageManagerLabel(
                     pm,
                     showVersions ? chartData.versions : undefined,
+                    { isRegistryVariation: isRegistry },
                   )}
                   hide={!selectedPackageManagers.has(pm)}
                 >
@@ -554,6 +562,7 @@ export const VariationChart = ({
                 name: formatPackageManagerLabel(
                   pm,
                   showVersions ? chartData.versions : undefined,
+                  { isRegistryVariation: isRegistry },
                 ),
                 value: resolvedValue,
                 fill: isDnf ? getDnfPatternFill(fixtureId, pm) : fillColor,

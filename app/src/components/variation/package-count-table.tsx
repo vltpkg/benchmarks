@@ -54,7 +54,8 @@ export const PackageCountTable = ({
 }: PackageCountTableProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const showVersions = !isRegistryVariation(currentVariation);
+  const isRegistry = isRegistryVariation(currentVariation);
+  const showVersions = !isRegistry;
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -76,7 +77,9 @@ export const PackageCountTable = ({
             const version = showVersions
               ? getPackageManagerVersion(pm, versions)
               : undefined;
-            const displayName = getPackageManagerDisplayName(pm);
+            const displayName = getPackageManagerDisplayName(pm, {
+              isRegistryVariation: isRegistry,
+            });
             return version ? (
               <div className="text-center">
                 <div className="font-bold">{displayName}</div>
@@ -138,7 +141,7 @@ export const PackageCountTable = ({
         }),
       ),
     ],
-    [filteredPackageManagers, versions, showVersions],
+    [filteredPackageManagers, versions, showVersions, isRegistry],
   );
 
   const table = useReactTable({

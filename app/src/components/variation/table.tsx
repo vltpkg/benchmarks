@@ -56,7 +56,8 @@ export const VariationTable = ({
 }: VariationTableProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const showVersions = !isRegistryVariation(currentVariation);
+  const isRegistry = isRegistryVariation(currentVariation);
+  const showVersions = !isRegistry;
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -77,7 +78,9 @@ export const VariationTable = ({
             const version = showVersions
               ? getPackageManagerVersion(pm, chartData.versions)
               : undefined;
-            const displayName = getPackageManagerDisplayName(pm);
+            const displayName = getPackageManagerDisplayName(pm, {
+              isRegistryVariation: isRegistry,
+            });
             return version ? (
               <div className="text-center">
                 <div className="font-bold">{displayName}</div>
@@ -136,7 +139,13 @@ export const VariationTable = ({
         }),
       ),
     ],
-    [filteredPackageManagers, chartData.versions, isPerPackage, showVersions],
+    [
+      filteredPackageManagers,
+      chartData.versions,
+      isPerPackage,
+      showVersions,
+      isRegistry,
+    ],
   );
 
   const table = useReactTable({
