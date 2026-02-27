@@ -67,18 +67,24 @@ BENCH_NPM_INSTALL="npm install --prefer-online --no-audit --no-fund --no-update-
 BENCH_REGISTRY_NPM_URL="https://registry.npmjs.org/"
 BENCH_REGISTRY_VLT_URL="https://registry.vlt.io/npm/"
 BENCH_REGISTRY_AWS_URL="https://vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/"
+BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#https://}"
 
-# Registry verification helper: logs effective registry and a sample of lockfile
-# resolved URLs to the output log. Avoids printing .npmrc contents since it may
-# contain auth tokens.
+# Registry setup commands run in hyperfine --prepare (untimed, before each run).
+# Auth token is written as a literal placeholder so npm resolves it from env.
+BENCH_SETUP_REGISTRY_NPM="npm config set registry \"$BENCH_REGISTRY_NPM_URL\" --location=project"
+BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project"
+BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
+
+# Registry verification helper runs in hyperfine --conclude (untimed, after each run).
 BENCH_VERIFY_REGISTRY="echo '--- effective registry ---' && npm config get registry && echo '--- lockfile resolved sample ---' && (grep -m3 '\"resolved\"' package-lock.json 2>/dev/null || echo 'no lockfile yet') && echo '---'"
+BENCH_CONCLUDE_NPM="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_CONCLUDE_VLT_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_CONCLUDE_AWS="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/aws-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
-# Registry commands: write .npmrc, verify config, run npm install, log output
-# For registries that need auth tokens, we write multi-line .npmrc files.
-# Auth token env vars (\$VAR) are escaped so they expand at hyperfine runtime, not definition time.
-BENCH_COMMAND_NPM="echo 'registry=$BENCH_REGISTRY_NPM_URL' >> .npmrc && { $BENCH_VERIFY_REGISTRY; $BENCH_NPM_INSTALL; } >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_VLT_REG="echo 'registry=$BENCH_REGISTRY_VLT_URL' >> .npmrc && { $BENCH_VERIFY_REGISTRY; $BENCH_NPM_INSTALL; } >> $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_AWS="{ echo 'registry=$BENCH_REGISTRY_AWS_URL'; echo '//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:always-auth=true'; echo \"//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:_authToken=\$CODEARTIFACT_AUTH_TOKEN\"; } >> .npmrc && { $BENCH_VERIFY_REGISTRY; $BENCH_NPM_INSTALL; } >> $BENCH_OUTPUT_FOLDER/aws-output-\${HYPERFINE_ITERATION}.log 2>&1"
+# Registry commands are timed and should only run installs.
+BENCH_COMMAND_NPM="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT_REG="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_AWS="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/aws-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Registry include flags
 # If BENCH_INCLUDE_REGISTRY is not set, default to running all registries.

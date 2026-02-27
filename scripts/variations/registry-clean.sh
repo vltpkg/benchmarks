@@ -17,9 +17,12 @@ hyperfine --ignore-failure \
   --warmup="$BENCH_WARMUP" \
   --runs="$BENCH_RUNS" \
   --cleanup="bash $BENCH_SCRIPTS/clean-helpers.sh clean_all clean_npmrc" \
-  ${BENCH_INCLUDE_REG_NPM:+--prepare="$BENCH_PREPARE_BASE"} \
+  ${BENCH_INCLUDE_REG_NPM:+--prepare="$BENCH_PREPARE_BASE && $BENCH_SETUP_REGISTRY_NPM"} \
   ${BENCH_INCLUDE_REG_NPM:+--command-name="npm" "$BENCH_COMMAND_NPM"} \
-  ${BENCH_INCLUDE_REG_VLT:+--prepare="$BENCH_PREPARE_BASE"} \
+  ${BENCH_INCLUDE_REG_NPM:+--conclude="$BENCH_CONCLUDE_NPM"} \
+  ${BENCH_INCLUDE_REG_VLT:+--prepare="$BENCH_PREPARE_BASE && $BENCH_SETUP_REGISTRY_VLT"} \
   ${BENCH_INCLUDE_REG_VLT:+--command-name="vlt" "$BENCH_COMMAND_VLT_REG"} \
-  ${BENCH_INCLUDE_REG_AWS:+--prepare="$BENCH_PREPARE_BASE"} \
-  ${BENCH_INCLUDE_REG_AWS:+--command-name="aws" "$BENCH_COMMAND_AWS"}
+  ${BENCH_INCLUDE_REG_VLT:+--conclude="$BENCH_CONCLUDE_VLT_REG"} \
+  ${BENCH_INCLUDE_REG_AWS:+--prepare="$BENCH_PREPARE_BASE && $BENCH_SETUP_REGISTRY_AWS"} \
+  ${BENCH_INCLUDE_REG_AWS:+--command-name="aws" "$BENCH_COMMAND_AWS"} \
+  ${BENCH_INCLUDE_REG_AWS:+--conclude="$BENCH_CONCLUDE_AWS"}
