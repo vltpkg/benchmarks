@@ -4,22 +4,23 @@ on:
   workflow_dispatch:
     inputs:
       fixtures:
-        description: 'The fixture to run the benchmarks on'
+        description: "The fixture to run the benchmarks on"
         default: '["next", "astro", "vue", "svelte", "large", "babylon"]'
       variations:
-        description: 'The benchmark variations to run'
+        description: "The benchmark variations to run"
         default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]'
       binaries:
-        description: 'The binaries to run the benchmarks on'
+        description: "The binaries to run the benchmarks on"
         default: '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node"'
       warmup:
-        description: 'The number of warmup runs on each benchmark'
-        default: '2'
+        description: "The number of warmup runs on each benchmark"
+        default: "2"
       runs:
-        description: 'The number of runs on each benchmark'
-        default: '10'
+        description: "The number of runs on each benchmark"
+        default: "10"
   schedule:
-    - cron: '0 0 * * *'
+    # GitHub Actions cron uses UTC. 10:17 UTC ~= 2:17 AM Pacific (PST).
+    - cron: "17 10 * * *"
 
 # Prevent multiple runs from interfering with each other
 concurrency:
@@ -28,7 +29,7 @@ concurrency:
 
 jobs:
   benchmark:
-    name: 'Run Benchmarks'
+    name: "Run Benchmarks"
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
@@ -36,8 +37,8 @@ jobs:
         fixture: ${{ fromJson((github.event_name == 'push' && github.ref != 'refs/heads/main') && '["next", "astro", "vue", "svelte"]' || (inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "babylon"]')) }}
         variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]') }}
         include:
-          - variation: 'run'
-            fixture: 'run'
+          - variation: "run"
+            fixture: "run"
     permissions:
       contents: read
       id-token: write
@@ -50,7 +51,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: "24"
       - name: Install & Setup Tools
         run: |
           bash ./scripts/setup.sh
@@ -92,7 +93,7 @@ jobs:
           path: ./results/versions.json
           retention-days: 7
   process:
-    name: 'Process Results'
+    name: "Process Results"
     runs-on: ubuntu-latest
     needs: [benchmark]
     timeout-minutes: 5
@@ -101,7 +102,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: "24"
       - name: Download Results
         uses: actions/download-artifact@v4
         with:
@@ -131,7 +132,7 @@ jobs:
           path: results/
           retention-days: 7
   deploy:
-    name: 'Deploy Results'
+    name: "Deploy Results"
     runs-on: ubuntu-latest
     needs: [process]
     permissions:
