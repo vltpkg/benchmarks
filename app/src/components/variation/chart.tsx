@@ -489,9 +489,7 @@ export const VariationChart = ({
                       <Cell
                         key={`${pm}-${entry.fixture}-${index}`}
                         fill={
-                          isDnf
-                            ? getDnfPatternFill("total", pm)
-                            : fillColor
+                          isDnf ? getDnfPatternFill("total", pm) : fillColor
                         }
                       />
                     );
@@ -533,8 +531,7 @@ export const VariationChart = ({
               const dnfKey = `${pm}_dnf` as keyof FixtureResult;
               const value = fixtureResult[pm];
               const hasNumber = typeof value === "number";
-              const shouldFallback =
-                !hasNumber && typeof slowest === "number";
+              const shouldFallback = !hasNumber && typeof slowest === "number";
               const isDnf = fixtureResult[dnfKey] === true || shouldFallback;
               const resolvedValue = hasNumber ? value : slowest;
 
@@ -543,9 +540,7 @@ export const VariationChart = ({
               }
 
               const fillColor =
-                pm === "vlt" && resolvedTheme === "dark"
-                  ? "white"
-                  : colors[pm];
+                pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm];
 
               return {
                 name: formatPackageManagerLabel(pm, chartData.versions),

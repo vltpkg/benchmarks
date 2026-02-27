@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "format": "prettier --write . --log-level warn --ignore-path ./prettierignore --cache",
+    "format": "prettier --write . --log-level warn --ignore-path ./.prettierignore --cache",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

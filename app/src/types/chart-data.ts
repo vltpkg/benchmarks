@@ -11,9 +11,16 @@ export type PackageManager =
   | "turbo"
   | "node"
   | "vlt-auth"
-  | "codeartifact";
+  | "aws";
 
-export type Fixture = "next" | "astro" | "svelte" | "vue" | "large" | "babylon" | "run";
+export type Fixture =
+  | "next"
+  | "astro"
+  | "svelte"
+  | "vue"
+  | "large"
+  | "babylon"
+  | "run";
 
 export type Variation =
   | "average"
@@ -44,7 +51,7 @@ export interface PackageManagerVersions {
   turbo?: string;
   node?: string;
   "vlt-auth"?: string;
-  codeartifact?: string;
+  aws?: string;
 }
 
 export interface BaseFixtureResult {
@@ -64,7 +71,7 @@ export interface PackageManagerData {
   turbo?: number;
   node?: number;
   "vlt-auth"?: number;
-  codeartifact?: number;
+  aws?: number;
 
   npm_stddev?: number;
   yarn_stddev?: number;
@@ -78,7 +85,7 @@ export interface PackageManagerData {
   turbo_stddev?: number;
   node_stddev?: number;
   "vlt-auth_stddev"?: number;
-  codeartifact_stddev?: number;
+  aws_stddev?: number;
 
   npm_fill?: string;
   yarn_fill?: string;
@@ -92,7 +99,7 @@ export interface PackageManagerData {
   turbo_fill?: string;
   node_fill?: string;
   "vlt-auth_fill"?: string;
-  codeartifact_fill?: string;
+  aws_fill?: string;
 
   npm_count?: number;
   yarn_count?: number;
@@ -106,7 +113,7 @@ export interface PackageManagerData {
   turbo_count?: number;
   node_count?: number;
   "vlt-auth_count"?: number;
-  codeartifact_count?: number;
+  aws_count?: number;
 
   npm_dnf?: boolean;
   yarn_dnf?: boolean;
@@ -120,7 +127,7 @@ export interface PackageManagerData {
   turbo_dnf?: boolean;
   node_dnf?: boolean;
   "vlt-auth_dnf"?: boolean;
-  codeartifact_dnf?: boolean;
+  aws_dnf?: boolean;
 }
 
 export type FixtureResult = BaseFixtureResult & PackageManagerData;
@@ -159,7 +166,7 @@ export interface PackageCountData {
   turbo?: PackageCountEntry;
   node?: PackageCountEntry;
   "vlt-auth"?: PackageCountEntry;
-  codeartifact?: PackageCountEntry;
+  aws?: PackageCountEntry;
 }
 
 export interface PackageCountTableRow {

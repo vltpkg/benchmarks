@@ -1,8 +1,5 @@
 /node_modules
 /vlt-lock.json
 
-/tsconfig.json
-/tsconfig.app.json
-
 /src/components.json
 /src/*/.*/

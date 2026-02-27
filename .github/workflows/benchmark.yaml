@@ -62,7 +62,7 @@ jobs:
           aws-region: us-east-1
       - name: Get CodeArtifact Token
         if: startsWith(matrix.variation, 'registry-')
-        id: codeartifact
+        id: aws
         run: |
           CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token \
             --domain vlt \
@@ -75,7 +75,7 @@ jobs:
       - name: Run Benchmarks variations
         env:
           VLT_REGISTRY_AUTH_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
-          CODEARTIFACT_AUTH_TOKEN: ${{ steps.codeartifact.outputs.token }}
+          CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
         run: |
           if [ "${{ matrix.variation }}" = "run" ]; then
             bash ./scripts/benchmark.sh run run

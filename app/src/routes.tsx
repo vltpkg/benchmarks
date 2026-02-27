@@ -27,7 +27,10 @@ const taskRunnerRoutes: RouteObject = {
 const registryRoutes: RouteObject = {
   path: "registry",
   children: [
-    { index: true, element: <Navigate to="registry-lockfile" replace={true} /> },
+    {
+      index: true,
+      element: <Navigate to="registry-lockfile" replace={true} />,
+    },
     { path: ":variation", element: <VariationPage /> },
     { path: ":variation/:section", element: <VariationPage /> },
     { path: ":variation/:section/:fixture", element: <VariationPage /> },

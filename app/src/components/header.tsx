@@ -155,15 +155,23 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
               currentVariation={currentVariation ?? "average"}
               sortedVariations={(() => {
                 const baseRoute = location.pathname.split("/")[1];
-                const categories = getVariationCategories(chartData.chartData.variations);
+                const categories = getVariationCategories(
+                  chartData.chartData.variations,
+                );
                 if (baseRoute === "registry") {
-                  const registry = categories.find((cat) => cat.title === "Registry");
+                  const registry = categories.find(
+                    (cat) => cat.title === "Registry",
+                  );
                   return registry?.variations ?? [];
                 } else if (baseRoute === "task-runners") {
-                  const taskRunners = categories.find((cat) => cat.title === "Task Execution");
+                  const taskRunners = categories.find(
+                    (cat) => cat.title === "Task Execution",
+                  );
                   return taskRunners?.variations ?? [];
                 } else {
-                  const pm = categories.find((cat) => cat.title === "Package Management");
+                  const pm = categories.find(
+                    (cat) => cat.title === "Package Management",
+                  );
                   return pm?.variations ?? sortedVariations;
                 }
               })()}

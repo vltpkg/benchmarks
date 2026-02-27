@@ -96,9 +96,7 @@ export const useChartData = (): UseChartDataReturn => {
     };
   };
 
-  const applyDnfFallbacks = (
-    data: BenchmarkChartData,
-  ): BenchmarkChartData => ({
+  const applyDnfFallbacks = (data: BenchmarkChartData): BenchmarkChartData => ({
     ...data,
     chartData: applyDnfFallbacksToDataSet(data.chartData),
     perPackageCountChartData: applyDnfFallbacksToDataSet(
@@ -163,8 +161,14 @@ export const useChartData = (): UseChartDataReturn => {
       ];
 
       // Merge registry data into chartData.data
-      const mergedData = { ...normalizedChartData.chartData.data, average: averageTotalData };
-      const mergedPerPackageData = { ...normalizedChartData.perPackageCountChartData.data, average: averagePerPackageData };
+      const mergedData = {
+        ...normalizedChartData.chartData.data,
+        average: averageTotalData,
+      };
+      const mergedPerPackageData = {
+        ...normalizedChartData.perPackageCountChartData.data,
+        average: averagePerPackageData,
+      };
       if (registryData) {
         for (const [variation, data] of Object.entries(registryData.data)) {
           mergedData[variation as Variation] = data;
@@ -176,7 +180,8 @@ export const useChartData = (): UseChartDataReturn => {
       const allPackageManagers: PackageManager[] = [
         ...normalizedChartData.chartData.packageManagers,
         ...(registryData?.packageManagers ?? []).filter(
-          (pm: PackageManager) => !normalizedChartData.chartData.packageManagers.includes(pm),
+          (pm: PackageManager) =>
+            !normalizedChartData.chartData.packageManagers.includes(pm),
         ),
       ];
       const allColors = {

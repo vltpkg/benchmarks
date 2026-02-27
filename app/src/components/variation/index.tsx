@@ -101,10 +101,9 @@ export const VariationPage = () => {
   const filteredTotalVariationData = sortedTotalVariationData.filter((item) =>
     enabledFixtures.has(item.fixture),
   );
-  const filteredPerPackageVariationData =
-    sortedPerPackageVariationData.filter((item) =>
-      enabledFixtures.has(item.fixture),
-    );
+  const filteredPerPackageVariationData = sortedPerPackageVariationData.filter(
+    (item) => enabledFixtures.has(item.fixture),
+  );
   const filteredPackageCountData = packageCountData.filter((item) =>
     enabledFixtures.has(item.fixture),
   );
@@ -136,20 +135,20 @@ export const VariationPage = () => {
         packageCountTable: "Package Count Data",
       }
     : isRegistry
-    ? {
-        totalChart: "Registry Install Time by Fixture",
-        totalTable: "Registry Install Time Data",
-        perPackageChart: "Registry Install Time by Fixture",
-        perPackageTable: "Registry Install Time Data",
-        packageCountTable: "Package Count Data",
-      }
-    : {
-        totalChart: "Total Install Time by Fixture",
-        totalTable: "Total Install Time Data",
-        perPackageChart: "Per Package Install Time by Fixture",
-        perPackageTable: "Per Package Install Time Data",
-        packageCountTable: "Package Count Data",
-      };
+      ? {
+          totalChart: "Registry Install Time by Fixture",
+          totalTable: "Registry Install Time Data",
+          perPackageChart: "Registry Install Time by Fixture",
+          perPackageTable: "Registry Install Time Data",
+          packageCountTable: "Package Count Data",
+        }
+      : {
+          totalChart: "Total Install Time by Fixture",
+          totalTable: "Total Install Time Data",
+          perPackageChart: "Per Package Install Time by Fixture",
+          perPackageTable: "Per Package Install Time Data",
+          packageCountTable: "Package Count Data",
+        };
 
   // Section IDs for deep linking
   const sectionIds = {
@@ -180,7 +179,7 @@ export const VariationPage = () => {
         <div id={sectionIds.perPackageChart}>
           <VariationChart
             title={titles.perPackageChart}
-              variationData={filteredPerPackageVariationData}
+            variationData={filteredPerPackageVariationData}
             packageManagers={packageManagers}
             colors={colors}
             chartData={chartData}

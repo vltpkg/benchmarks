@@ -42,7 +42,7 @@ AVAILABLE_REGISTRIES=(
   vlt
   # disabled until we have a way to test it
   # vlt-auth
-  codeartifact
+  aws
 )
 
 usage() {
@@ -55,7 +55,7 @@ Usage:
 Options:
   --fixtures    Comma or space-separated fixture names (default: next)
   --pms         Comma or space-separated package managers (default: all)
-  --registries  Comma-separated registries for registry-* variations (default: npm,vlt,vlt-auth,codeartifact)
+  --registries  Comma-separated registries for registry-* variations (default: npm,vlt,aws)
   --variation   Benchmark variation (default: clean)
   --runs      Hyperfine runs (default: scripts/variations/common.sh default)
   --warmup    Hyperfine warmup runs (default: scripts/variations/common.sh default)
@@ -71,7 +71,7 @@ Examples:
   ./bench run --fixtures=next --chart --runs=3
   ./bench run --variation=registry-clean --fixtures=next
   ./bench run --variation=registry-lockfile --registries=npm,vlt
-  CODEARTIFACT_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next
+  CODEARTIFACT_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=aws
   ./bench chart --fixtures=next --variation=clean
 EOF
 }
@@ -357,7 +357,7 @@ run_bench() {
     if [[ -n "$registries_env" ]]; then
       echo "  registries: $registries_env"
     else
-      echo "  registries: npm,vlt,vlt-auth,codeartifact (default)"
+      echo "  registries: npm,vlt,aws (default)"
     fi
   elif [[ -n "$pms_env" ]]; then
     echo "  pms: $pms_env"

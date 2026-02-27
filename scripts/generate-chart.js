@@ -39,7 +39,7 @@ const REGISTRY_COLORS = {
   npm: "#cb0606",
   vlt: "#000000",
   "vlt-auth": "#6366f1",
-  codeartifact: "#ff9900",
+  aws: "#ff9900",
 };
 
 const parseNumeric = (value) => {

@@ -157,10 +157,9 @@ export const getVariationCategories = (
     variations.includes(v as Variation),
   ) as Variation[];
 
-  const registryVariations = [
-    "registry-clean",
-    "registry-lockfile",
-  ].filter((v) => variations.includes(v as Variation)) as Variation[];
+  const registryVariations = ["registry-clean", "registry-lockfile"].filter(
+    (v) => variations.includes(v as Variation),
+  ) as Variation[];
 
   const categories: VariationCategory[] = [];
 
@@ -184,8 +183,7 @@ export const getVariationCategories = (
   if (registryVariations.length > 0) {
     categories.push({
       title: "Registry",
-      description:
-        "npm install times across different registries",
+      description: "npm install times across different registries",
       variations: sortVariations(registryVariations),
     });
   }
@@ -362,7 +360,15 @@ export function sortVariations(variations: Variation[]): Variation[] {
 }
 
 export function sortFixtures(fixtures: Fixture[]): Fixture[] {
-  const preferredOrder: Fixture[] = ["next", "vue", "svelte", "astro", "large", "babylon", "run"];
+  const preferredOrder: Fixture[] = [
+    "next",
+    "vue",
+    "svelte",
+    "astro",
+    "large",
+    "babylon",
+    "run",
+  ];
 
   return fixtures.sort((a, b) => {
     const indexA = preferredOrder.indexOf(a);
@@ -382,8 +388,12 @@ export function sortFixtures(fixtures: Fixture[]): Fixture[] {
   });
 }
 
-export function getAvailableFixtures(variationData: FixtureResult[]): Fixture[] {
-  const fixtures = Array.from(new Set(variationData.map((item) => item.fixture)));
+export function getAvailableFixtures(
+  variationData: FixtureResult[],
+): Fixture[] {
+  const fixtures = Array.from(
+    new Set(variationData.map((item) => item.fixture)),
+  );
   return sortFixtures(fixtures);
 }
 
@@ -426,7 +436,7 @@ export function getPackageManagerDisplayName(
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
   if (packageManager === "vlt-auth") return "vlt (auth)";
-  if (packageManager === "codeartifact") return "CodeArtifact";
+  if (packageManager === "aws") return "AWS CodeArtifact";
   return packageManager;
 }
 

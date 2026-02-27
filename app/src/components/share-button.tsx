@@ -51,8 +51,7 @@ const createDeepLink = (
 };
 
 interface ShareButtonProps
-  extends ComponentProps<"button">,
-    VariantProps<typeof buttonVariants> {
+  extends ComponentProps<"button">, VariantProps<typeof buttonVariants> {
   variation: string;
   section?: string;
   fixture?: string;
