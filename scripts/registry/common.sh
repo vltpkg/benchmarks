@@ -70,7 +70,9 @@ BENCH_COMMAND_CODEARTIFACT="{ echo 'registry=$BENCH_REGISTRY_CODEARTIFACT_URL'; 
 # Registry include flags
 # If BENCH_INCLUDE_REGISTRY is not set, default to running all registries.
 if [ -z "${BENCH_INCLUDE_REGISTRY:-}" ]; then
-  BENCH_INCLUDE_REGISTRY="npm,vlt,vlt-auth,codeartifact"
+  # BENCH_INCLUDE_REGISTRY="npm,vlt,vlt-auth,codeartifact"
+  # disabled vlt-auth until we have a way to test it
+  BENCH_INCLUDE_REGISTRY="npm,vlt,codeartifact"
 fi
 
 BENCH_INCLUDE_REG_NPM=""
