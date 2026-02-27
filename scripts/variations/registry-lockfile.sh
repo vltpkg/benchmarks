@@ -22,7 +22,5 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_REG_NPM:+--command-name="npm" "$BENCH_COMMAND_NPM"} \
   ${BENCH_INCLUDE_REG_VLT:+--prepare="$BENCH_PREPARE_BASE"} \
   ${BENCH_INCLUDE_REG_VLT:+--command-name="vlt" "$BENCH_COMMAND_VLT_REG"} \
-  ${BENCH_INCLUDE_REG_VLT_AUTH:+--prepare="$BENCH_PREPARE_BASE"} \
-  ${BENCH_INCLUDE_REG_VLT_AUTH:+--command-name="vlt-auth" "$BENCH_COMMAND_VLT_AUTH"} \
   ${BENCH_INCLUDE_REG_AWS:+--prepare="$BENCH_PREPARE_BASE"} \
   ${BENCH_INCLUDE_REG_AWS:+--command-name="aws" "$BENCH_COMMAND_AWS"}

@@ -435,7 +435,6 @@ export function getPackageManagerDisplayName(
 ): string {
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
-  if (packageManager === "vlt-auth") return "vlt (auth)";
   if (packageManager === "aws") return "AWS CodeArtifact";
   return packageManager;
 }

@@ -20,6 +20,7 @@ import {
   getPackageManagerDisplayName,
   getPackageManagerVersion,
   createSectionId,
+  isRegistryVariation,
 } from "@/lib/utils";
 import { ShareButton } from "@/components/share-button";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
@@ -53,6 +54,7 @@ export const PackageCountTable = ({
 }: PackageCountTableProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
+  const showVersions = !isRegistryVariation(currentVariation);
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -71,7 +73,9 @@ export const PackageCountTable = ({
         columnHelper.accessor((row) => row.packageCounts[pm], {
           id: pm,
           header: () => {
-            const version = getPackageManagerVersion(pm, versions);
+            const version = showVersions
+              ? getPackageManagerVersion(pm, versions)
+              : undefined;
             const displayName = getPackageManagerDisplayName(pm);
             return version ? (
               <div className="text-center">
@@ -134,7 +138,7 @@ export const PackageCountTable = ({
         }),
       ),
     ],
-    [filteredPackageManagers, versions],
+    [filteredPackageManagers, versions, showVersions],
   );
 
   const table = useReactTable({

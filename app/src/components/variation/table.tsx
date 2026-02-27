@@ -20,6 +20,7 @@ import {
   getPackageManagerDisplayName,
   getPackageManagerVersion,
   createSectionId,
+  isRegistryVariation,
 } from "@/lib/utils";
 import { ShareButton } from "@/components/share-button";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
@@ -55,6 +56,7 @@ export const VariationTable = ({
 }: VariationTableProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
+  const showVersions = !isRegistryVariation(currentVariation);
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -72,7 +74,9 @@ export const VariationTable = ({
       ...filteredPackageManagers.map((pm) =>
         columnHelper.accessor(pm as keyof FixtureResult, {
           header: () => {
-            const version = getPackageManagerVersion(pm, chartData.versions);
+            const version = showVersions
+              ? getPackageManagerVersion(pm, chartData.versions)
+              : undefined;
             const displayName = getPackageManagerDisplayName(pm);
             return version ? (
               <div className="text-center">
@@ -132,7 +136,7 @@ export const VariationTable = ({
         }),
       ),
     ],
-    [filteredPackageManagers, chartData.versions, isPerPackage],
+    [filteredPackageManagers, chartData.versions, isPerPackage, showVersions],
   );
 
   const table = useReactTable({

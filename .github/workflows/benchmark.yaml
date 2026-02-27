@@ -33,7 +33,7 @@ jobs:
     timeout-minutes: 120
     strategy:
       matrix:
-        fixture: ${{ fromJson(inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "babylon"]') }}
+        fixture: ${{ fromJson((github.event_name == 'push' && github.ref != 'refs/heads/main') && '["next", "astro", "vue", "svelte"]' || (inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "babylon"]')) }}
         variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]') }}
         include:
           - variation: 'run'
@@ -43,8 +43,8 @@ jobs:
       id-token: write
     env:
       BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node"') }}
-      BENCH_WARMUP: ${{ inputs.warmup || '2' }}
-      BENCH_RUNS: ${{ inputs.runs || '10' }}
+      BENCH_WARMUP: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.warmup || '2') }}
+      BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '10') }}
     steps:
       - uses: actions/checkout@v4
       - name: Install Node
@@ -74,14 +74,11 @@ jobs:
           echo "token=$CODEARTIFACT_AUTH_TOKEN" >> "$GITHUB_OUTPUT"
       - name: Run Benchmarks variations
         env:
-          VLT_REGISTRY_AUTH_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
         run: |
-          if [ "${{ matrix.variation }}" = "run" ]; then
-            bash ./scripts/benchmark.sh run run
-          else
-            bash ./scripts/benchmark.sh ${{ matrix.fixture }} ${{ matrix.variation }}
-          fi
+          ./bench run \
+            --fixtures="${{ matrix.fixture }}" \
+            --variation="${{ matrix.variation }}"
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
@@ -115,114 +112,9 @@ jobs:
         with:
           path: versions-temp
           pattern: versions-*
-      - name: Clean benchmarks result
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-
-            // Helper functions for statistical calculations
-            function calculateMean(times) {
-              return times.reduce((sum, time) => sum + time, 0) / times.length;
-            }
-
-            function calculateStddev(times, mean) {
-              const variance = times.reduce((sum, time) => sum + Math.pow(time - mean, 2), 0) / times.length;
-              return Math.sqrt(variance);
-            }
-
-            function calculateMedian(times) {
-              const sorted = [...times].sort((a, b) => a - b);
-              const mid = Math.floor(sorted.length / 2);
-              return sorted.length % 2 === 0
-                ? (sorted[mid - 1] + sorted[mid]) / 2
-                : sorted[mid];
-            }
-
-            const resultsDir = 'results';
-            if (!fs.existsSync(resultsDir)) {
-              console.log('No results directory found, skipping clean step');
-              return;
-            }
-
-            const resultArtifactDirs = fs
-              .readdirSync(resultsDir, { withFileTypes: true })
-              .filter((entry) => entry.isDirectory() && entry.name.startsWith('results-'))
-              .map((entry) => entry.name);
-
-            if (resultArtifactDirs.length === 0) {
-              console.log('No benchmark artifacts found, skipping clean step');
-              return;
-            }
-
-            for (const dirName of resultArtifactDirs) {
-              const benchmarkPath = path.join(resultsDir, dirName, 'benchmarks.json');
-
-              if (!fs.existsSync(benchmarkPath)) {
-                console.warn(`No benchmarks.json in ${dirName}, skipping`);
-                continue;
-              }
-
-              try {
-                console.log(`Cleaning benchmark file: ${benchmarkPath}`);
-                const benchmarkData = JSON.parse(fs.readFileSync(benchmarkPath, 'utf8'));
-
-                if (benchmarkData.results && benchmarkData.results.length > 0) {
-                  for (let i = 0; i < benchmarkData.results.length; i++) {
-                    const result = benchmarkData.results[i];
-                    const { times, exit_codes } = result;
-
-                    if (times && exit_codes && times.length === exit_codes.length) {
-                      const cleanTimes = times.filter((time, index) => exit_codes[index] === 0);
-                      const cleanExitCodes = exit_codes.filter(code => code === 0);
-
-                      if (cleanTimes.length > 0) {
-                        const mean = calculateMean(cleanTimes);
-                        const stddev = calculateStddev(cleanTimes, mean);
-                        const median = calculateMedian(cleanTimes);
-                        const min = Math.min(...cleanTimes);
-                        const max = Math.max(...cleanTimes);
-
-                        result.times = cleanTimes;
-                        result.exit_codes = cleanExitCodes;
-                        result.mean = mean;
-                        result.stddev = stddev;
-                        result.median = median;
-                        result.min = min;
-                        result.max = max;
-
-                        console.log(`Cleaned ${dirName} (result ${i}): ${times.length - cleanTimes.length} failed runs removed, ${cleanTimes.length} valid runs remaining`);
-                      } else {
-                        console.warn(`All runs failed for ${dirName} (result ${i})`);
-                        result.times = [0];
-                        result.exit_codes = [1];
-                        result.mean = 0;
-                        result.stddev = 0;
-                        result.median = 0;
-                        result.min = 0;
-                        result.max = 0;
-                        result.user = 0;
-                        result.system = 0;
-                      }
-                    } else {
-                      console.warn(`Invalid times/exit_codes arrays for ${dirName} (result ${i})`);
-                    }
-                  }
-
-                  fs.writeFileSync(benchmarkPath, JSON.stringify(benchmarkData, null, 2));
-                } else {
-                  console.warn(`No results found in ${benchmarkPath}`);
-                }
-              } catch (error) {
-                console.error(`Failed to clean ${benchmarkPath}: ${error.message}`);
-              }
-            }
-
-            console.log('Benchmark cleaning completed');
       - name: Process Results
         run: |
-          bash ./scripts/process-results.sh
+          ./bench process
       - name: Install vlt
         run: |
           npm install -g vlt@latest

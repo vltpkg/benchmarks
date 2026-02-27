@@ -5,6 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 
 BENCH_SCRIPT="$ROOT/scripts/benchmark.sh"
+PROCESS_RESULTS_SCRIPT="$ROOT/scripts/process-results.sh"
 
 AVAILABLE_VARIATIONS=(
   clean
@@ -40,39 +41,43 @@ DEFAULT_VARIATION="clean"
 AVAILABLE_REGISTRIES=(
   npm
   vlt
-  # disabled until we have a way to test it
-  # vlt-auth
   aws
 )
 
 usage() {
   cat <<'EOF'
 Usage:
-  ./bench run [--fixtures=<list>] [--pms=<list>] [--variation=<name>] [--runs=<n>] [--warmup=<n>] [--chart] [--date=<yyyy-mm-dd>] [--no-clean]
-  ./bench chart [--fixtures=<list>] [--variation=<name>] [--date=<yyyy-mm-dd>] [--no-clean]
+  ./bench run [--fixtures=<list>] [--pms=<list>] [--variation=<list>] [--runs=<n>] [--warmup=<n>] [--chart] [--process] [--date=<yyyy-mm-dd>] [--clean]
+  ./bench chart [--fixtures=<list>] [--variation=<list>] [--date=<yyyy-mm-dd>] [--clean]
+  ./bench process [--dry-run]
   ./bench list
 
 Options:
   --fixtures    Comma or space-separated fixture names (default: next)
   --pms         Comma or space-separated package managers (default: all)
   --registries  Comma-separated registries for registry-* variations (default: npm,vlt,aws)
-  --variation   Benchmark variation (default: clean)
+  --variation   Comma or space-separated benchmark variations (default: clean)
   --runs      Hyperfine runs (default: scripts/variations/common.sh default)
   --warmup    Hyperfine warmup runs (default: scripts/variations/common.sh default)
   --chart     Generate chart data and copy to app/latest
+  --process   Process results after run (clean + dated/latest outputs + chart data)
   --date      Date folder for chart output (default: today)
-  --no-clean  Skip filtering failed runs
+  --clean     Filter failed runs during run/chart (default: disabled)
   --dry-run   Print commands without running them
 
 Examples:
   ./bench run --pms=vlt,pnpm --fixtures=next,astro --runs=3
   ./bench run --fixtures=all --variation=clean
+  ./bench run --fixtures=svelte --variation=lockfile,registry-lockfile,run --registries=npm,vlt
   ./bench run --variation=run --pms=vlt
+  ./bench run --fixtures=next --variation=clean --clean
   ./bench run --fixtures=next --chart --runs=3
+  ./bench run --fixtures=next --chart --process --runs=3
   ./bench run --variation=registry-clean --fixtures=next
   ./bench run --variation=registry-lockfile --registries=npm,vlt
   CODEARTIFACT_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=aws
   ./bench chart --fixtures=next --variation=clean
+  ./bench process
 EOF
 }
 
@@ -194,15 +199,43 @@ validate_registry_list() {
   done
 }
 
-resolve_variation_and_fixtures() {
-  local fixtures_input="$1"
-  local variation_input="$2"
+resolve_variations() {
+  local variation_input="$1"
+  local variations=()
 
-  local variation="$variation_input"
-  if [[ -z "$variation" ]]; then
-    variation="$DEFAULT_VARIATION"
+  if [[ -z "$variation_input" ]]; then
+    variations=("$DEFAULT_VARIATION")
+  else
+    split_list "$variation_input"
+    variations=("${SPLIT_ITEMS[@]}")
   fi
-  validate_variation "$variation"
+
+  if [[ ${#variations[@]} -eq 0 ]]; then
+    echo "Error: No variations provided"
+    exit 1
+  fi
+
+  local validated=()
+  local variation
+  for variation in "${variations[@]}"; do
+    if [[ -z "$variation" ]]; then
+      continue
+    fi
+    validate_variation "$variation"
+    validated+=("$variation")
+  done
+
+  if [[ ${#validated[@]} -eq 0 ]]; then
+    echo "Error: No variations provided"
+    exit 1
+  fi
+
+  RESOLVED_VARIATIONS=("${validated[@]}")
+}
+
+resolve_fixtures_for_variation() {
+  local fixtures_input="$1"
+  local variation="$2"
 
   local fixtures=()
   if [[ -z "$fixtures_input" ]]; then
@@ -228,25 +261,22 @@ resolve_variation_and_fixtures() {
   fi
 
   if [[ "$variation" == "run" ]]; then
-    if [[ -z "$fixtures_input" || "$fixtures_input" == "all" ]]; then
-      fixtures=(run)
-    else
-      local fixture
-      for fixture in "${fixtures[@]}"; do
-        if [[ "$fixture" != "run" ]]; then
-          echo "Error: The 'run' variation only supports fixture 'run'"
-          exit 1
-        fi
-      done
-    fi
+    # The run variation always targets the run fixture.
+    fixtures=(run)
   else
+    local filtered=()
     local fixture
     for fixture in "${fixtures[@]}"; do
-      if [[ "$fixture" == "run" ]]; then
-        echo "Error: Fixture 'run' is only valid with --variation=run"
-        exit 1
+      if [[ "$fixture" != "run" ]]; then
+        filtered+=("$fixture")
       fi
     done
+    fixtures=("${filtered[@]}")
+  fi
+
+  if [[ ${#fixtures[@]} -eq 0 ]]; then
+    echo "Error: No fixtures provided for variation '$variation'"
+    exit 1
   fi
 
   local fixture
@@ -254,7 +284,6 @@ resolve_variation_and_fixtures() {
     validate_fixture "$fixture"
   done
 
-  RESOLVED_VARIATION="$variation"
   RESOLVED_FIXTURES=("${fixtures[@]}")
 }
 
@@ -309,6 +338,25 @@ generate_chart_data() {
   echo "UI data copied to app/latest/chart-data.json"
 }
 
+run_process_results() {
+  local dry_run="${1:-0}"
+
+  if [[ ! -f "$PROCESS_RESULTS_SCRIPT" ]]; then
+    echo "Error: Missing process script at $PROCESS_RESULTS_SCRIPT"
+    exit 1
+  fi
+
+  local cmd=(bash "$PROCESS_RESULTS_SCRIPT")
+
+  if [[ "$dry_run" -eq 1 ]]; then
+    printf '%q ' "${cmd[@]}"
+    echo
+    return
+  fi
+
+  "${cmd[@]}"
+}
+
 run_bench() {
   local fixtures_input="$1"
   local pms_input="$2"
@@ -320,15 +368,15 @@ run_bench() {
   local chart_results="$8"
   local chart_date="$9"
   local registries_input="${10:-}"
+  local process_results="${11:-0}"
 
   if [[ ! -f "$BENCH_SCRIPT" ]]; then
     echo "Error: Missing benchmark script at $BENCH_SCRIPT"
     exit 1
   fi
 
-  resolve_variation_and_fixtures "$fixtures_input" "$variation_input"
-  local variation="$RESOLVED_VARIATION"
-  local fixtures=("${RESOLVED_FIXTURES[@]}")
+  resolve_variations "$variation_input"
+  local variations=("${RESOLVED_VARIATIONS[@]}")
 
   validate_pm_list "$pms_input"
   validate_registry_list "$registries_input"
@@ -351,15 +399,8 @@ run_bench() {
   fi
 
   echo "Running benchmarks..."
-  echo "  fixtures: ${fixtures[*]}"
-  echo "  variation: $variation"
-  if [[ "$variation" == registry-* ]]; then
-    if [[ -n "$registries_env" ]]; then
-      echo "  registries: $registries_env"
-    else
-      echo "  registries: npm,vlt,aws (default)"
-    fi
-  elif [[ -n "$pms_env" ]]; then
+  echo "  variations: ${variations[*]}"
+  if [[ -n "$pms_env" ]]; then
     echo "  pms: $pms_env"
   else
     echo "  pms: (default)"
@@ -387,8 +428,30 @@ run_bench() {
   else
     echo "  chart: disabled"
   fi
+  if [[ "$process_results" -eq 1 ]]; then
+    echo "  process: enabled"
+  else
+    echo "  process: disabled"
+  fi
 
-  for fixture in "${fixtures[@]}"; do
+  local variation
+  for variation in "${variations[@]}"; do
+    resolve_fixtures_for_variation "$fixtures_input" "$variation"
+    local fixtures=("${RESOLVED_FIXTURES[@]}")
+
+    echo
+    echo "Variation: $variation"
+    echo "  fixtures: ${fixtures[*]}"
+    if [[ "$variation" == registry-* ]]; then
+      if [[ -n "$registries_env" ]]; then
+        echo "  registries: $registries_env"
+      else
+        echo "  registries: npm,vlt,aws (default)"
+      fi
+    fi
+
+    local fixture
+    for fixture in "${fixtures[@]}"; do
     echo
     echo "==> ${fixture} (${variation})"
 
@@ -427,13 +490,23 @@ run_bench() {
     if [[ "$clean_results" -eq 1 ]]; then
       clean_benchmarks_file "$ROOT/results/$fixture/$variation/benchmarks.json"
     fi
+    done
   done
 
   if [[ "$dry_run" -eq 0 && "$chart_results" -eq 1 ]]; then
     if [[ -z "$chart_date" ]]; then
       chart_date="$(date +%Y-%m-%d)"
     fi
-    generate_chart_data "$variation" "$chart_date" "${fixtures[@]}"
+    local variation
+    for variation in "${variations[@]}"; do
+      resolve_fixtures_for_variation "$fixtures_input" "$variation"
+      local fixtures=("${RESOLVED_FIXTURES[@]}")
+      generate_chart_data "$variation" "$chart_date" "${fixtures[@]}"
+    done
+  fi
+
+  if [[ "$process_results" -eq 1 ]]; then
+    run_process_results "$dry_run"
   fi
 }
 
@@ -471,7 +544,7 @@ case "$command" in
     FIXTURES_INPUT=""
     VARIATION_INPUT=""
     CHART_DATE=""
-    CLEAN_RESULTS=1
+    CLEAN_RESULTS=0
 
     while [[ $# -gt 0 ]]; do
       case "$1" in
@@ -519,21 +592,25 @@ case "$command" in
       esac
     done
 
-    resolve_variation_and_fixtures "$FIXTURES_INPUT" "$VARIATION_INPUT"
-    variation="$RESOLVED_VARIATION"
-    fixtures=("${RESOLVED_FIXTURES[@]}")
+    resolve_variations "$VARIATION_INPUT"
+    variations=("${RESOLVED_VARIATIONS[@]}")
 
     if [[ -z "$CHART_DATE" ]]; then
       CHART_DATE="$(date +%Y-%m-%d)"
     fi
 
-    if [[ "$CLEAN_RESULTS" -eq 1 ]]; then
-      for fixture in "${fixtures[@]}"; do
-        clean_benchmarks_file "$ROOT/results/$fixture/$variation/benchmarks.json"
-      done
-    fi
+    for variation in "${variations[@]}"; do
+      resolve_fixtures_for_variation "$FIXTURES_INPUT" "$variation"
+      fixtures=("${RESOLVED_FIXTURES[@]}")
 
-    generate_chart_data "$variation" "$CHART_DATE" "${fixtures[@]}"
+      if [[ "$CLEAN_RESULTS" -eq 1 ]]; then
+        for fixture in "${fixtures[@]}"; do
+          clean_benchmarks_file "$ROOT/results/$fixture/$variation/benchmarks.json"
+        done
+      fi
+
+      generate_chart_data "$variation" "$CHART_DATE" "${fixtures[@]}"
+    done
     ;;
   run)
     FIXTURES_INPUT=""
@@ -543,8 +620,9 @@ case "$command" in
     RUNS_INPUT=""
     WARMUP_INPUT=""
     DRY_RUN=0
-    CLEAN_RESULTS=1
+    CLEAN_RESULTS=0
     CHART_RESULTS=0
+    PROCESS_RESULTS=0
     CHART_DATE=""
 
     while [[ $# -gt 0 ]]; do
@@ -601,6 +679,10 @@ case "$command" in
           CHART_RESULTS=1
           shift
           ;;
+        --process)
+          PROCESS_RESULTS=1
+          shift
+          ;;
         --date)
           CHART_DATE="${2:-}"
           shift 2
@@ -633,7 +715,30 @@ case "$command" in
       esac
     done
 
-    run_bench "$FIXTURES_INPUT" "$PMS_INPUT" "$VARIATION_INPUT" "$RUNS_INPUT" "$WARMUP_INPUT" "$DRY_RUN" "$CLEAN_RESULTS" "$CHART_RESULTS" "$CHART_DATE" "$REGISTRIES_INPUT"
+    run_bench "$FIXTURES_INPUT" "$PMS_INPUT" "$VARIATION_INPUT" "$RUNS_INPUT" "$WARMUP_INPUT" "$DRY_RUN" "$CLEAN_RESULTS" "$CHART_RESULTS" "$CHART_DATE" "$REGISTRIES_INPUT" "$PROCESS_RESULTS"
+    ;;
+  process)
+    DRY_RUN=0
+
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --dry-run)
+          DRY_RUN=1
+          shift
+          ;;
+        --help|-h)
+          usage
+          exit 0
+          ;;
+        *)
+          echo "Error: Unknown option '$1'"
+          usage
+          exit 1
+          ;;
+      esac
+    done
+
+    run_process_results "$DRY_RUN"
     ;;
   help|-h|--help)
     usage
