@@ -55,8 +55,8 @@ fi
 BENCH_NPM_INSTALL="npm install --no-audit --no-fund --no-update-notifier --silent $SCRIPTS_FLAG"
 
 # Registry definitions
-BENCH_REGISTRY_NPM_URL="https://registry.npmjs.org"
-BENCH_REGISTRY_VLT_URL="https://registry.vlt.io"
+BENCH_REGISTRY_NPM_URL="https://registry.npmjs.org/"
+BENCH_REGISTRY_VLT_URL="https://registry.vlt.io/npm/"
 BENCH_REGISTRY_CODEARTIFACT_URL="https://vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/"
 
 # Registry commands: write .npmrc, run npm install, log output
@@ -64,7 +64,7 @@ BENCH_REGISTRY_CODEARTIFACT_URL="https://vlt-451504312483.d.codeartifact.us-east
 # Auth token env vars (\$VAR) are escaped so they expand at hyperfine runtime, not definition time.
 BENCH_COMMAND_NPM="echo 'registry=$BENCH_REGISTRY_NPM_URL' > .npmrc && $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT_REG="echo 'registry=$BENCH_REGISTRY_VLT_URL' > .npmrc && $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_VLT_AUTH="{ echo 'registry=$BENCH_REGISTRY_VLT_URL'; echo \"//registry.vlt.io/:_authToken=\$VLT_REGISTRY_AUTH_TOKEN\"; } > .npmrc && $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/vlt-auth-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT_AUTH="{ echo 'registry=$BENCH_REGISTRY_VLT_URL'; echo \"//registry.vlt.io/npm/:_authToken=\$VLT_REGISTRY_AUTH_TOKEN\"; } > .npmrc && $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/vlt-auth-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_CODEARTIFACT="{ echo 'registry=$BENCH_REGISTRY_CODEARTIFACT_URL'; echo '//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:always-auth=true'; echo \"//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:_authToken=\$CODEARTIFACT_AUTH_TOKEN\"; } > .npmrc && $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/codeartifact-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Registry include flags
