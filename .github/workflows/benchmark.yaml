@@ -19,7 +19,7 @@ on:
         description: 'The number of runs on each benchmark'
         default: '10'
   schedule:
-    - cron: "0 0 * * *"
+    - cron: '0 0 * * *'
 
 # Prevent multiple runs from interfering with each other
 concurrency:
@@ -30,14 +30,14 @@ jobs:
   benchmark:
     name: 'Run Benchmarks'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     strategy:
       matrix:
         fixture: ${{ fromJson(inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "babylon"]') }}
         variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]') }}
         include:
-          - variation: "run"
-            fixture: "run"
+          - variation: 'run'
+            fixture: 'run'
     permissions:
       contents: read
       id-token: write
@@ -258,4 +258,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: results
           keep_files: true
-
