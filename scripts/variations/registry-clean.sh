@@ -5,7 +5,7 @@ set -Eeuxo pipefail
 source "$1/registry/common.sh"
 
 # Prepare command base for each run: clean everything and remove .npmrc
-BENCH_PREPARE_BASE="sleep 1; bash $BENCH_SCRIPTS/clean-helpers.sh clean_all; rm -f .npmrc"
+BENCH_PREPARE_BASE="sleep 1; bash $BENCH_SCRIPTS/clean-helpers.sh clean_all clean_npmrc"
 
 # Run the benchmark suite
 # When running a clean benchmark, we want to clean up all the things in
@@ -16,7 +16,7 @@ hyperfine --ignore-failure \
   --export-json="$BENCH_OUTPUT_FOLDER/benchmarks.json" \
   --warmup="$BENCH_WARMUP" \
   --runs="$BENCH_RUNS" \
-  --cleanup="bash $BENCH_SCRIPTS/clean-helpers.sh clean_all; rm -f .npmrc" \
+  --cleanup="bash $BENCH_SCRIPTS/clean-helpers.sh clean_all clean_npmrc" \
   ${BENCH_INCLUDE_REG_NPM:+--prepare="$BENCH_PREPARE_BASE"} \
   ${BENCH_INCLUDE_REG_NPM:+--command-name="npm" "$BENCH_COMMAND_NPM"} \
   ${BENCH_INCLUDE_REG_VLT:+--prepare="$BENCH_PREPARE_BASE"} \
