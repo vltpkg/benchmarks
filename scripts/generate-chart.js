@@ -34,6 +34,14 @@ const COLORS = {
   node: "#84ba64",
 };
 
+// Colors for registry benchmarks
+const REGISTRY_COLORS = {
+  npm: "#cb0606",
+  vlt: "#000000",
+  "vlt-auth": "#6366f1",
+  aws: "#ff9900",
+};
+
 const parseNumeric = (value) => {
   if (typeof value === "number") {
     return Number.isFinite(value) ? value : undefined;
@@ -233,6 +241,111 @@ function generateChartData(option = {}) {
   };
 }
 
+// Generate chart data for registry benchmarks
+function generateRegistryChartData() {
+  const fixtures = ["next", "astro", "svelte", "vue", "large", "babylon"];
+  const variations = ["registry-clean", "registry-lockfile"];
+  const registries = Object.keys(REGISTRY_COLORS);
+  const result = {};
+
+  variations.forEach((variation) => {
+    const fixtureData = {};
+    const seenFixtures = new Set();
+    const fixtureEntries = {};
+    let globalSlowest = 0;
+
+    fixtures.forEach((fixture) => {
+      const file = path.resolve(RESULTS_DIR, `${fixture}-${variation}.json`);
+      if (!fs.existsSync(file)) {
+        return;
+      }
+
+      const results = readResults(file);
+      const pmEntries = {};
+      const validValues = [];
+
+      registries.forEach((registry) => {
+        const registryResult = results.find((r) => r.command === registry);
+        if (!registryResult) return;
+
+        const didFail =
+          registryResult.failed || !Number.isFinite(registryResult.mean);
+        let value =
+          typeof registryResult.mean === "number"
+            ? registryResult.mean
+            : undefined;
+
+        if (!didFail && typeof value === "number") {
+          validValues.push(value);
+        }
+
+        pmEntries[registry] = {
+          didFail,
+          value: didFail ? undefined : value,
+          stddev: didFail ? undefined : registryResult.stddev,
+        };
+      });
+
+      if (Object.keys(pmEntries).length > 0) {
+        const slowestValid =
+          validValues.length > 0 ? Math.max(...validValues) : undefined;
+        if (typeof slowestValid === "number") {
+          globalSlowest = Math.max(globalSlowest, slowestValid);
+        }
+        fixtureEntries[fixture] = { pmEntries, slowestValid };
+      }
+    });
+
+    const fallbackGlobal = globalSlowest > 0 ? globalSlowest : undefined;
+
+    Object.entries(fixtureEntries).forEach(([fixture, entry]) => {
+      const fixtureResults = {};
+      let hasData = false;
+      const fallback = entry.slowestValid ?? fallbackGlobal;
+
+      Object.entries(entry.pmEntries).forEach(([registry, regEntry]) => {
+        fixtureResults[`${registry}_fill`] = REGISTRY_COLORS[registry];
+
+        if (regEntry.didFail) {
+          fixtureResults[`${registry}_dnf`] = true;
+          if (typeof fallback === "number") {
+            fixtureResults[registry] = fallback;
+            hasData = true;
+          }
+          return;
+        }
+
+        if (typeof regEntry.value === "number") {
+          fixtureResults[registry] = regEntry.value;
+          if (typeof regEntry.stddev === "number") {
+            fixtureResults[`${registry}_stddev`] = regEntry.stddev;
+          }
+          hasData = true;
+        }
+      });
+
+      if (hasData) {
+        fixtureResults.fixture = fixture;
+        fixtureData[fixture] = fixtureResults;
+        seenFixtures.add(fixture);
+      }
+    });
+
+    if (Object.keys(fixtureData).length > 0) {
+      result[variation] = Array.from(seenFixtures).map(
+        (fixture) => fixtureData[fixture],
+      );
+    }
+  });
+
+  return {
+    variations: Object.keys(result),
+    data: result,
+    packageManagers: registries,
+    colors: REGISTRY_COLORS,
+  };
+}
+
 // Load package manager version data
 function loadPackageManagersVersionData() {
   const versionsFile = path.resolve(RESULTS_DIR, "versions.json");
@@ -257,6 +370,7 @@ function loadPackageManagersVersionData() {
 const dumpChartData = () => {
   const chartData = generateChartData();
   const perPackageCountChartData = generateChartData({ perPackageCount: true });
+  const registryChartData = generateRegistryChartData();
   const versions = loadPackageManagersVersionData();
 
   const results = {
@@ -273,6 +387,12 @@ const dumpChartData = () => {
       packageManagers: perPackageCountChartData.packageManagers,
       colors: perPackageCountChartData.colors,
     },
+    registryChartData: {
+      variations: registryChartData.variations,
+      data: registryChartData.data,
+      packageManagers: registryChartData.packageManagers,
+      colors: registryChartData.colors,
+    },
     versions,
   };
 
@@ -281,7 +401,10 @@ const dumpChartData = () => {
     JSON.stringify(results, null, 2),
   );
 
-  if (Object.keys(chartData.data).length === 0) {
+  const hasData =
+    Object.keys(chartData.data).length > 0 ||
+    Object.keys(registryChartData.data).length > 0;
+  if (!hasData) {
     console.error("Error: No valid benchmark data found to generate chart");
     process.exit(1);
   }

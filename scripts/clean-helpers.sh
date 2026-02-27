@@ -109,6 +109,19 @@ clean_package_manager_files() {
   safe_remove ".pnp*"
 }
 
+# Function to remove benchmark-added registry lines from .npmrc
+clean_npmrc() {
+  echo "Cleaning .npmrc registry lines..."
+  if [ -f ".npmrc" ]; then
+    awk '!/^[[:space:]]*(registry=|\/\/)/ { print }' ".npmrc" > ".npmrc.tmp"
+    if [ -s ".npmrc.tmp" ]; then
+      mv ".npmrc.tmp" ".npmrc"
+    else
+      rm -f ".npmrc" ".npmrc.tmp"
+    fi
+  fi
+}
+
 # Function to clean caches for all package managers
 clean_all_cache() {
   echo "Cleaning package manager caches..."
@@ -164,6 +177,7 @@ show_help() {
   echo "  clean_lockfiles"
   echo "  clean_package_manager_field"
   echo "  clean_package_manager_files"
+  echo "  clean_npmrc"
   echo "  clean_node_modules"
   echo "  clean_all_cache"
   echo "  clean_build_files"
@@ -215,6 +229,9 @@ else
         ;;
       clean_package_manager_files)
         clean_package_manager_files
+        ;;
+      clean_npmrc)
+        clean_npmrc
         ;;
       clean_node_modules)
         clean_node_modules

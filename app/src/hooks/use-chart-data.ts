@@ -22,6 +22,8 @@ export const useChartData = (): UseChartDataReturn => {
   const [chartData, setChartData] = useState<BenchmarkChartData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  type DnfKey = Extract<keyof FixtureResult, `${PackageManager}_dnf`>;
+  type FillKey = Extract<keyof FixtureResult, `${PackageManager}_fill`>;
 
   const applyDnfFallbacksToDataSet = (dataSet: ChartDataSet): ChartDataSet => {
     const updatedData: Record<string, FixtureResult[]> = {};
@@ -66,8 +68,8 @@ export const useChartData = (): UseChartDataReturn => {
         }
 
         activePackageManagers.forEach((pm) => {
-          const dnfKey = `${pm}_dnf` as keyof FixtureResult;
-          const fillKey = `${pm}_fill` as keyof FixtureResult;
+          const dnfKey = `${pm}_dnf` as DnfKey;
+          const fillKey = `${pm}_fill` as FillKey;
           const value = updated[pm];
           const isDnf = updated[dnfKey] === true;
 
@@ -76,10 +78,10 @@ export const useChartData = (): UseChartDataReturn => {
           }
 
           if (typeof value !== "number" || isDnf) {
-            (updated as any)[dnfKey] = true;
-            (updated as any)[pm] = slowest;
-            if ((updated as any)[fillKey] === undefined) {
-              (updated as any)[fillKey] = dataSet.colors[pm];
+            updated[dnfKey] = true;
+            updated[pm] = slowest;
+            if (updated[fillKey] === undefined) {
+              updated[fillKey] = dataSet.colors[pm];
             }
           }
         });
@@ -94,9 +96,7 @@ export const useChartData = (): UseChartDataReturn => {
     };
   };
 
-  const applyDnfFallbacks = (
-    data: BenchmarkChartData,
-  ): BenchmarkChartData => ({
+  const applyDnfFallbacks = (data: BenchmarkChartData): BenchmarkChartData => ({
     ...data,
     chartData: applyDnfFallbacksToDataSet(data.chartData),
     perPackageCountChartData: applyDnfFallbacksToDataSet(
@@ -152,25 +152,61 @@ export const useChartData = (): UseChartDataReturn => {
         ? chartData.chartData.variations
         : [averageVariation, ...chartData.chartData.variations];
 
+      // Merge registry chart data into main chart data if present
+      const registryData = normalizedChartData.registryChartData;
+      const registryVariations: Variation[] = registryData?.variations ?? [];
+      const allVariations: Variation[] = [
+        ...variations,
+        ...registryVariations.filter((v) => !variations.includes(v)),
+      ];
+
+      // Merge registry data into chartData.data
+      const mergedData = {
+        ...normalizedChartData.chartData.data,
+        average: averageTotalData,
+      };
+      const mergedPerPackageData = {
+        ...normalizedChartData.perPackageCountChartData.data,
+        average: averagePerPackageData,
+      };
+      if (registryData) {
+        for (const [variation, data] of Object.entries(registryData.data)) {
+          mergedData[variation as Variation] = data;
+          mergedPerPackageData[variation as Variation] = data;
+        }
+      }
+
+      // Merge package managers and colors for registry variations
+      const allPackageManagers: PackageManager[] = [
+        ...normalizedChartData.chartData.packageManagers,
+        ...(registryData?.packageManagers ?? []).filter(
+          (pm: PackageManager) =>
+            !normalizedChartData.chartData.packageManagers.includes(pm),
+        ),
+      ];
+      const allColors = {
+        ...normalizedChartData.chartData.colors,
+        ...(registryData?.colors ?? {}),
+      };
+
       // Combine chart data with versions and average data
       const combinedData: BenchmarkChartData = {
         ...normalizedChartData,
         versions,
+        registryChartData: registryData,
         chartData: {
           ...normalizedChartData.chartData,
-          variations,
-          data: {
-            ...normalizedChartData.chartData.data,
-            average: averageTotalData,
-          },
+          variations: allVariations,
+          data: mergedData,
+          packageManagers: allPackageManagers,
+          colors: allColors,
         },
         perPackageCountChartData: {
           ...normalizedChartData.perPackageCountChartData,
-          variations,
-          data: {
-            ...normalizedChartData.perPackageCountChartData.data,
-            average: averagePerPackageData,
-          },
+          variations: allVariations,
+          data: mergedPerPackageData,
+          packageManagers: allPackageManagers,
+          colors: allColors,
         },
       };
 

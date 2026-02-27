@@ -15,6 +15,7 @@ import {
   getAvailablePackageManagers,
   getAvailablePackageManagersFromPackageCount,
   isTaskExecutionVariation,
+  isRegistryVariation,
 } from "@/lib/utils";
 
 import type {
@@ -100,10 +101,9 @@ export const VariationPage = () => {
   const filteredTotalVariationData = sortedTotalVariationData.filter((item) =>
     enabledFixtures.has(item.fixture),
   );
-  const filteredPerPackageVariationData =
-    sortedPerPackageVariationData.filter((item) =>
-      enabledFixtures.has(item.fixture),
-    );
+  const filteredPerPackageVariationData = sortedPerPackageVariationData.filter(
+    (item) => enabledFixtures.has(item.fixture),
+  );
   const filteredPackageCountData = packageCountData.filter((item) =>
     enabledFixtures.has(item.fixture),
   );
@@ -121,25 +121,34 @@ export const VariationPage = () => {
       allPackageManagers,
     );
 
-  // Check if this is a task execution variation
+  // Check if this is a task execution variation or registry variation
   const isTaskExecution = isTaskExecutionVariation(variation as string);
+  const isRegistry = isRegistryVariation(variation as string);
 
   // Dynamic titles and section IDs based on variation type
   const titles = isTaskExecution
     ? {
         totalChart: "Task Execution Time by Fixture",
         totalTable: "Task Execution Time Data",
-        perPackageChart: "Task Execution Time by Fixture", // Not used for task execution
-        perPackageTable: "Task Execution Time Data", // Not used for task execution
+        perPackageChart: "Task Execution Time by Fixture",
+        perPackageTable: "Task Execution Time Data",
         packageCountTable: "Package Count Data",
       }
-    : {
-        totalChart: "Total Install Time by Fixture",
-        totalTable: "Total Install Time Data",
-        perPackageChart: "Per Package Install Time by Fixture",
-        perPackageTable: "Per Package Install Time Data",
-        packageCountTable: "Package Count Data",
-      };
+    : isRegistry
+      ? {
+          totalChart: "Registry Install Time by Fixture",
+          totalTable: "Registry Install Time Data",
+          perPackageChart: "Registry Install Time by Fixture",
+          perPackageTable: "Registry Install Time Data",
+          packageCountTable: "Package Count Data",
+        }
+      : {
+          totalChart: "Total Install Time by Fixture",
+          totalTable: "Total Install Time Data",
+          perPackageChart: "Per Package Install Time by Fixture",
+          perPackageTable: "Per Package Install Time Data",
+          packageCountTable: "Package Count Data",
+        };
 
   // Section IDs for deep linking
   const sectionIds = {
@@ -166,11 +175,11 @@ export const VariationPage = () => {
       </div>
 
       {/* 1. Per-package fixture charts - only show for package management tests */}
-      {!isTaskExecution && (
+      {!isTaskExecution && !isRegistry && (
         <div id={sectionIds.perPackageChart}>
           <VariationChart
             title={titles.perPackageChart}
-              variationData={filteredPerPackageVariationData}
+            variationData={filteredPerPackageVariationData}
             packageManagers={packageManagers}
             colors={colors}
             chartData={chartData}
@@ -182,7 +191,7 @@ export const VariationPage = () => {
 
       <div className="space-y-8">
         {/* 2. Per-package fixture data table - only show for package management tests */}
-        {!isTaskExecution && (
+        {!isTaskExecution && !isRegistry && (
           <div id={sectionIds.perPackageTable}>
             <VariationTable
               title={titles.perPackageTable}

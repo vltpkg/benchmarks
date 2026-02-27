@@ -16,6 +16,8 @@ AVAILABLE_VARIATIONS=(
   lockfile+node_modules
   node_modules
   run
+  registry-clean
+  registry-lockfile
 )
 
 AVAILABLE_PMS=(
@@ -35,6 +37,14 @@ AVAILABLE_PMS=(
 DEFAULT_FIXTURES=(next)
 DEFAULT_VARIATION="clean"
 
+AVAILABLE_REGISTRIES=(
+  npm
+  vlt
+  # disabled until we have a way to test it
+  # vlt-auth
+  aws
+)
+
 usage() {
   cat <<'EOF'
 Usage:
@@ -43,9 +53,10 @@ Usage:
   ./bench list
 
 Options:
-  --fixtures  Comma or space-separated fixture names (default: next)
-  --pms       Comma or space-separated package managers (default: all)
-  --variation Benchmark variation (default: clean)
+  --fixtures    Comma or space-separated fixture names (default: next)
+  --pms         Comma or space-separated package managers (default: all)
+  --registries  Comma-separated registries for registry-* variations (default: npm,vlt,aws)
+  --variation   Benchmark variation (default: clean)
   --runs      Hyperfine runs (default: scripts/variations/common.sh default)
   --warmup    Hyperfine warmup runs (default: scripts/variations/common.sh default)
   --chart     Generate chart data and copy to app/latest
@@ -58,6 +69,9 @@ Examples:
   ./bench run --fixtures=all --variation=clean
   ./bench run --variation=run --pms=vlt
   ./bench run --fixtures=next --chart --runs=3
+  ./bench run --variation=registry-clean --fixtures=next
+  ./bench run --variation=registry-lockfile --registries=npm,vlt
+  CODEARTIFACT_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=aws
   ./bench chart --fixtures=next --variation=clean
 EOF
 }
@@ -155,6 +169,26 @@ validate_pm_list() {
     if ! is_in_array "$pm" "${AVAILABLE_PMS[@]}"; then
       echo "Error: Unknown package manager '$pm'"
       echo "Known: ${AVAILABLE_PMS[*]}"
+      exit 1
+    fi
+  done
+}
+
+validate_registry_list() {
+  local list="$1"
+  if [[ -z "$list" ]]; then
+    return 0
+  fi
+
+  split_list "$list"
+  local reg
+  for reg in "${SPLIT_ITEMS[@]}"; do
+    if [[ -z "$reg" ]]; then
+      continue
+    fi
+    if ! is_in_array "$reg" "${AVAILABLE_REGISTRIES[@]}"; then
+      echo "Error: Unknown registry '$reg'"
+      echo "Known: ${AVAILABLE_REGISTRIES[*]}"
       exit 1
     fi
   done
@@ -285,6 +319,7 @@ run_bench() {
   local clean_results="$7"
   local chart_results="$8"
   local chart_date="$9"
+  local registries_input="${10:-}"
 
   if [[ ! -f "$BENCH_SCRIPT" ]]; then
     echo "Error: Missing benchmark script at $BENCH_SCRIPT"
@@ -296,6 +331,7 @@ run_bench() {
   local fixtures=("${RESOLVED_FIXTURES[@]}")
 
   validate_pm_list "$pms_input"
+  validate_registry_list "$registries_input"
 
   if [[ -n "$runs_input" ]]; then
     validate_number "$runs_input" "--runs"
@@ -309,10 +345,21 @@ run_bench() {
     pms_env="$(normalize_list "$pms_input")"
   fi
 
+  local registries_env=""
+  if [[ -n "$registries_input" ]]; then
+    registries_env="$(normalize_list "$registries_input")"
+  fi
+
   echo "Running benchmarks..."
   echo "  fixtures: ${fixtures[*]}"
   echo "  variation: $variation"
-  if [[ -n "$pms_env" ]]; then
+  if [[ "$variation" == registry-* ]]; then
+    if [[ -n "$registries_env" ]]; then
+      echo "  registries: $registries_env"
+    else
+      echo "  registries: npm,vlt,aws (default)"
+    fi
+  elif [[ -n "$pms_env" ]]; then
     echo "  pms: $pms_env"
   else
     echo "  pms: (default)"
@@ -348,6 +395,9 @@ run_bench() {
     local env_args=()
     if [[ -n "$pms_env" ]]; then
       env_args+=("BENCH_INCLUDE=$pms_env")
+    fi
+    if [[ -n "$registries_env" ]]; then
+      env_args+=("BENCH_INCLUDE_REGISTRY=$registries_env")
     fi
     if [[ -n "$runs_input" ]]; then
       env_args+=("BENCH_RUNS=$runs_input")
@@ -410,6 +460,11 @@ case "$command" in
     echo "Package managers:"
     for pm in "${AVAILABLE_PMS[@]}"; do
       echo "  - $pm"
+    done
+    echo
+    echo "Registries (for registry-* variations):"
+    for reg in "${AVAILABLE_REGISTRIES[@]}"; do
+      echo "  - $reg"
     done
     ;;
   chart)
@@ -483,6 +538,7 @@ case "$command" in
   run)
     FIXTURES_INPUT=""
     PMS_INPUT=""
+    REGISTRIES_INPUT=""
     VARIATION_INPUT=""
     RUNS_INPUT=""
     WARMUP_INPUT=""
@@ -507,6 +563,14 @@ case "$command" in
           ;;
         --pms=*|--pm=*|--package-managers=*)
           PMS_INPUT="${1#*=}"
+          shift
+          ;;
+        --registries|--registry)
+          REGISTRIES_INPUT="${2:-}"
+          shift 2
+          ;;
+        --registries=*|--registry=*)
+          REGISTRIES_INPUT="${1#*=}"
           shift
           ;;
         --variation|--variations)
@@ -569,7 +633,7 @@ case "$command" in
       esac
     done
 
-    run_bench "$FIXTURES_INPUT" "$PMS_INPUT" "$VARIATION_INPUT" "$RUNS_INPUT" "$WARMUP_INPUT" "$DRY_RUN" "$CLEAN_RESULTS" "$CHART_RESULTS" "$CHART_DATE"
+    run_bench "$FIXTURES_INPUT" "$PMS_INPUT" "$VARIATION_INPUT" "$RUNS_INPUT" "$WARMUP_INPUT" "$DRY_RUN" "$CLEAN_RESULTS" "$CHART_RESULTS" "$CHART_DATE" "$REGISTRIES_INPUT"
     ;;
   help|-h|--help)
     usage

@@ -20,12 +20,8 @@ interface FixtureFilterProps {
 }
 
 export const FixtureFilter = ({ fixtures }: FixtureFilterProps) => {
-  const {
-    enabledFixtures,
-    toggleFixture,
-    isFixtureEnabled,
-    resetFilters,
-  } = useFixtureFilter();
+  const { enabledFixtures, toggleFixture, isFixtureEnabled, resetFilters } =
+    useFixtureFilter();
 
   const [isOpen, setIsOpen] = useState(false);
 

@@ -60,6 +60,9 @@ interface ConsolidatedChartItem {
   [packageManager: string]: string | number | boolean;
 }
 
+type DnfKey = Extract<keyof FixtureResult, `${PackageManager}_dnf`>;
+type FillKey = Extract<keyof FixtureResult, `${PackageManager}_fill`>;
+
 interface VariationChartProps {
   title: string;
   variationData: FixtureResult[];
@@ -68,6 +71,14 @@ interface VariationChartProps {
   chartData: BenchmarkChartData;
   isPerPackage: boolean;
   currentVariation: string;
+}
+
+interface CustomXAxisTickProps {
+  x?: number | string;
+  y?: number | string;
+  payload?: {
+    value?: string | number;
+  };
 }
 
 export const VariationChart = ({
@@ -257,8 +268,8 @@ export const VariationChart = ({
 
       filteredPackageManagers.forEach((pm) => {
         const value = item[pm as keyof FixtureResult];
-        const fillKey = `${pm}_fill` as keyof FixtureResult;
-        const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+        const fillKey = `${pm}_fill` as FillKey;
+        const dnfKey = `${pm}_dnf` as DnfKey;
         const fillValue = item[fillKey];
         const isActive = variationActivePackageManagers.has(pm);
         const hasNumber = typeof value === "number";
@@ -275,7 +286,7 @@ export const VariationChart = ({
           chartItem[fillKey] = fillValue;
         }
         if (isDnf) {
-          (chartItem as any)[dnfKey] = true;
+          chartItem[dnfKey] = true;
           if (typeof chartItem[fillKey] !== "string") {
             chartItem[fillKey] = colors[pm];
           }
@@ -301,14 +312,19 @@ export const VariationChart = ({
     return label;
   };
 
-  const CustomXAxisTick = (props: any) => {
+  const CustomXAxisTick = (props: CustomXAxisTickProps) => {
     const { x, y, payload } = props;
 
-    if (!payload || !payload.value) {
+    if (
+      typeof x !== "number" ||
+      typeof y !== "number" ||
+      payload?.value === undefined ||
+      payload?.value === null
+    ) {
       return <g></g>; // Return empty group instead of null
     }
 
-    const text = normalizeTickLabel(payload.value);
+    const text = normalizeTickLabel(String(payload.value));
 
     // Split the text into package manager and version
     const parts = text.split(" v");
@@ -473,9 +489,7 @@ export const VariationChart = ({
                       <Cell
                         key={`${pm}-${entry.fixture}-${index}`}
                         fill={
-                          isDnf
-                            ? getDnfPatternFill("total", pm)
-                            : fillColor
+                          isDnf ? getDnfPatternFill("total", pm) : fillColor
                         }
                       />
                     );
@@ -517,8 +531,7 @@ export const VariationChart = ({
               const dnfKey = `${pm}_dnf` as keyof FixtureResult;
               const value = fixtureResult[pm];
               const hasNumber = typeof value === "number";
-              const shouldFallback =
-                !hasNumber && typeof slowest === "number";
+              const shouldFallback = !hasNumber && typeof slowest === "number";
               const isDnf = fixtureResult[dnfKey] === true || shouldFallback;
               const resolvedValue = hasNumber ? value : slowest;
 
@@ -527,9 +540,7 @@ export const VariationChart = ({
               }
 
               const fillColor =
-                pm === "vlt" && resolvedTheme === "dark"
-                  ? "white"
-                  : colors[pm];
+                pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm];
 
               return {
                 name: formatPackageManagerLabel(pm, chartData.versions),

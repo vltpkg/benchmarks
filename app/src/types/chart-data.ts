@@ -9,9 +9,18 @@ export type PackageManager =
   | "vlt"
   | "nx"
   | "turbo"
-  | "node";
+  | "node"
+  | "vlt-auth"
+  | "aws";
 
-export type Fixture = "next" | "astro" | "svelte" | "vue" | "large" | "babylon" | "run";
+export type Fixture =
+  | "next"
+  | "astro"
+  | "svelte"
+  | "vue"
+  | "large"
+  | "babylon"
+  | "run";
 
 export type Variation =
   | "average"
@@ -23,7 +32,9 @@ export type Variation =
   | "lockfile"
   | "lockfile+node_modules"
   | "node_modules"
-  | "run";
+  | "run"
+  | "registry-clean"
+  | "registry-lockfile";
 
 export type ColorMap = Record<PackageManager, string>;
 
@@ -39,6 +50,8 @@ export interface PackageManagerVersions {
   nx?: string;
   turbo?: string;
   node?: string;
+  "vlt-auth"?: string;
+  aws?: string;
 }
 
 export interface BaseFixtureResult {
@@ -57,6 +70,8 @@ export interface PackageManagerData {
   nx?: number;
   turbo?: number;
   node?: number;
+  "vlt-auth"?: number;
+  aws?: number;
 
   npm_stddev?: number;
   yarn_stddev?: number;
@@ -69,6 +84,8 @@ export interface PackageManagerData {
   nx_stddev?: number;
   turbo_stddev?: number;
   node_stddev?: number;
+  "vlt-auth_stddev"?: number;
+  aws_stddev?: number;
 
   npm_fill?: string;
   yarn_fill?: string;
@@ -81,6 +98,8 @@ export interface PackageManagerData {
   nx_fill?: string;
   turbo_fill?: string;
   node_fill?: string;
+  "vlt-auth_fill"?: string;
+  aws_fill?: string;
 
   npm_count?: number;
   yarn_count?: number;
@@ -93,6 +112,8 @@ export interface PackageManagerData {
   nx_count?: number;
   turbo_count?: number;
   node_count?: number;
+  "vlt-auth_count"?: number;
+  aws_count?: number;
 
   npm_dnf?: boolean;
   yarn_dnf?: boolean;
@@ -105,6 +126,8 @@ export interface PackageManagerData {
   nx_dnf?: boolean;
   turbo_dnf?: boolean;
   node_dnf?: boolean;
+  "vlt-auth_dnf"?: boolean;
+  aws_dnf?: boolean;
 }
 
 export type FixtureResult = BaseFixtureResult & PackageManagerData;
@@ -120,6 +143,7 @@ export interface BenchmarkChartData {
   date: string;
   chartData: ChartDataSet;
   perPackageCountChartData: ChartDataSet;
+  registryChartData?: ChartDataSet;
   versions?: PackageManagerVersions;
 }
 
@@ -141,6 +165,8 @@ export interface PackageCountData {
   nx?: PackageCountEntry;
   turbo?: PackageCountEntry;
   node?: PackageCountEntry;
+  "vlt-auth"?: PackageCountEntry;
+  aws?: PackageCountEntry;
 }
 
 export interface PackageCountTableRow {
@@ -176,6 +202,8 @@ export function isValidVariation(variation: string): variation is Variation {
     "lockfile+node_modules",
     "node_modules",
     "run",
+    "registry-clean",
+    "registry-lockfile",
   ];
   return validVariations.includes(variation as Variation);
 }
