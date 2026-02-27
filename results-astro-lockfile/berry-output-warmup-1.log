@@ -12,12 +12,12 @@
 ::group::Fetch step
 [94m➤[39m YN0013: │ [38;5;220m328[39m packages were added to the project ([38;5;160m+ 107.41 MiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 775ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 657ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [94m➤[39m YN0007: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.27.3[39m must be built because it never has been before or the last one failed
 [94m➤[39m YN0007: │ [38;5;173msharp[39m[38;5;111m@[39m[38;5;111mnpm:0.34.5[39m must be built because it never has been before or the last one failed
 [94m➤[39m YN0007: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.25.12[39m must be built because it never has been before or the last one failed
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 464ms
-[93m➤[39m YN0000: · Done with warnings in 3s 357ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 444ms
+[93m➤[39m YN0000: · Done with warnings in 3s 210ms
