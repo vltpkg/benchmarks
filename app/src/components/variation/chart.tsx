@@ -74,10 +74,10 @@ interface VariationChartProps {
 }
 
 interface CustomXAxisTickProps {
-  x?: number;
-  y?: number;
+  x?: number | string;
+  y?: number | string;
   payload?: {
-    value?: string;
+    value?: string | number;
   };
 }
 
@@ -315,11 +315,16 @@ export const VariationChart = ({
   const CustomXAxisTick = (props: CustomXAxisTickProps) => {
     const { x, y, payload } = props;
 
-    if (typeof x !== "number" || typeof y !== "number" || !payload?.value) {
+    if (
+      typeof x !== "number" ||
+      typeof y !== "number" ||
+      payload?.value === undefined ||
+      payload?.value === null
+    ) {
       return <g></g>; // Return empty group instead of null
     }
 
-    const text = normalizeTickLabel(payload.value);
+    const text = normalizeTickLabel(String(payload.value));
 
     // Split the text into package manager and version
     const parts = text.split(" v");
