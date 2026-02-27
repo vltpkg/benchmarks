@@ -13,7 +13,6 @@ import {
   getVariationCategories,
   getPackageManagerDisplayName,
   sortVariations,
-  isRegistryVariation,
 } from "@/lib/utils";
 import { getPackageManagerIcon } from "@/lib/get-icons";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";

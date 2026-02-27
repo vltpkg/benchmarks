@@ -40,7 +40,8 @@ DEFAULT_VARIATION="clean"
 AVAILABLE_REGISTRIES=(
   npm
   vlt
-  vlt-auth
+  # disabled until we have a way to test it
+  # vlt-auth
   codeartifact
 )
 
@@ -54,7 +55,7 @@ Usage:
 Options:
   --fixtures    Comma or space-separated fixture names (default: next)
   --pms         Comma or space-separated package managers (default: all)
-  --registries  Comma-separated registries for registry-* variations (default: auto-detect based on available tokens)
+  --registries  Comma-separated registries for registry-* variations (default: npm,vlt,vlt-auth,codeartifact)
   --variation   Benchmark variation (default: clean)
   --runs      Hyperfine runs (default: scripts/variations/common.sh default)
   --warmup    Hyperfine warmup runs (default: scripts/variations/common.sh default)
@@ -356,7 +357,7 @@ run_bench() {
     if [[ -n "$registries_env" ]]; then
       echo "  registries: $registries_env"
     else
-      echo "  registries: (auto-detect based on available tokens)"
+      echo "  registries: npm,vlt,vlt-auth,codeartifact (default)"
     fi
   elif [[ -n "$pms_env" ]]; then
     echo "  pms: $pms_env"

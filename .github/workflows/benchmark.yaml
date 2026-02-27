@@ -8,7 +8,7 @@ on:
         default: '["next", "astro", "vue", "svelte", "large", "babylon"]'
       variations:
         description: 'The benchmark variations to run'
-        default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules",  "lockfile", "lockfile+node_modules"]'
+        default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]'
       binaries:
         description: 'The binaries to run the benchmarks on'
         default: '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node"'
@@ -34,10 +34,13 @@ jobs:
     strategy:
       matrix:
         fixture: ${{ fromJson(inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "babylon"]') }}
-        variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules",  "lockfile", "lockfile+node_modules"]') }}
+        variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]') }}
         include:
           - variation: "run"
             fixture: "run"
+    permissions:
+      contents: read
+      id-token: write
     env:
       BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node"') }}
       BENCH_WARMUP: ${{ inputs.warmup || '2' }}
@@ -51,7 +54,28 @@ jobs:
       - name: Install & Setup Tools
         run: |
           bash ./scripts/setup.sh
+      - name: Configure AWS Credentials
+        if: startsWith(matrix.variation, 'registry-')
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+      - name: Get CodeArtifact Token
+        if: startsWith(matrix.variation, 'registry-')
+        id: codeartifact
+        run: |
+          CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token \
+            --domain vlt \
+            --domain-owner 451504312483 \
+            --region us-east-1 \
+            --query authorizationToken \
+            --output text)
+          echo "::add-mask::$CODEARTIFACT_AUTH_TOKEN"
+          echo "token=$CODEARTIFACT_AUTH_TOKEN" >> "$GITHUB_OUTPUT"
       - name: Run Benchmarks variations
+        env:
+          VLT_REGISTRY_AUTH_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
+          CODEARTIFACT_AUTH_TOKEN: ${{ steps.codeartifact.outputs.token }}
         run: |
           if [ "${{ matrix.variation }}" = "run" ]; then
             bash ./scripts/benchmark.sh run run
@@ -98,28 +122,6 @@ jobs:
             const fs = require('fs');
             const path = require('path');
 
-            // Define fixture and variation values from the strategy matrix
-            const fixtures = [
-              "next",
-              "astro",
-              "vue",
-              "svelte",
-              "large",
-              "babylon",
-              "run"
-            ];
-            const variations = [
-              "cache",
-              "cache+lockfile",
-              "cache+node_modules",
-              "cache+lockfile+node_modules",
-              "clean",
-              "lockfile",
-              "lockfile+node_modules",
-              "node_modules",
-              "run"
-            ];
-
             // Helper functions for statistical calculations
             function calculateMean(times) {
               return times.reduce((sum, time) => sum + time, 0) / times.length;
@@ -138,77 +140,82 @@ jobs:
                 : sorted[mid];
             }
 
-            // Clean benchmark results
-            for (const fixture of fixtures) {
-              for (const variation of variations) {
-                // we only handle one specific combination for run in which both its
-                // fixture and variation are named run. if it's anything else, we skip it.
-                const skipInvalidRunFixtures = variation === "run" && fixture !== "run";
-                const skipInvalidRunVariations = fixture === "run" && variation !== "run";
-                if (skipInvalidRunFixtures || skipInvalidRunVariations) {
-                  continue;
-                }
+            const resultsDir = 'results';
+            if (!fs.existsSync(resultsDir)) {
+              console.log('No results directory found, skipping clean step');
+              return;
+            }
 
-                const benchmarkPath = path.join('results', `results-${fixture}-${variation}`, 'benchmarks.json');
+            const resultArtifactDirs = fs
+              .readdirSync(resultsDir, { withFileTypes: true })
+              .filter((entry) => entry.isDirectory() && entry.name.startsWith('results-'))
+              .map((entry) => entry.name);
 
-                try {
-                  console.log(`Cleaning benchmark file: ${benchmarkPath}`);
-                  const benchmarkData = JSON.parse(fs.readFileSync(benchmarkPath, 'utf8'));
+            if (resultArtifactDirs.length === 0) {
+              console.log('No benchmark artifacts found, skipping clean step');
+              return;
+            }
 
-                  if (benchmarkData.results && benchmarkData.results.length > 0) {
-                    for (let i = 0; i < benchmarkData.results.length; i++) {
-                      const result = benchmarkData.results[i];
-                      const { times, exit_codes } = result;
+            for (const dirName of resultArtifactDirs) {
+              const benchmarkPath = path.join(resultsDir, dirName, 'benchmarks.json');
 
-                      if (times && exit_codes && times.length === exit_codes.length) {
-                        // Filter out times where exit_codes is not 0
-                        const cleanTimes = times.filter((time, index) => exit_codes[index] === 0);
-                        const cleanExitCodes = exit_codes.filter(code => code === 0);
+              if (!fs.existsSync(benchmarkPath)) {
+                console.warn(`No benchmarks.json in ${dirName}, skipping`);
+                continue;
+              }
 
-                        if (cleanTimes.length > 0) {
-                          // Recalculate statistics
-                          const mean = calculateMean(cleanTimes);
-                          const stddev = calculateStddev(cleanTimes, mean);
-                          const median = calculateMedian(cleanTimes);
-                          const min = Math.min(...cleanTimes);
-                          const max = Math.max(...cleanTimes);
+              try {
+                console.log(`Cleaning benchmark file: ${benchmarkPath}`);
+                const benchmarkData = JSON.parse(fs.readFileSync(benchmarkPath, 'utf8'));
 
-                          // Update the result object
-                          result.times = cleanTimes;
-                          result.exit_codes = cleanExitCodes;
-                          result.mean = mean;
-                          result.stddev = stddev;
-                          result.median = median;
-                          result.min = min;
-                          result.max = max;
+                if (benchmarkData.results && benchmarkData.results.length > 0) {
+                  for (let i = 0; i < benchmarkData.results.length; i++) {
+                    const result = benchmarkData.results[i];
+                    const { times, exit_codes } = result;
 
-                          console.log(`Cleaned ${fixture}-${variation} (result ${i}): ${times.length - cleanTimes.length} failed runs removed, ${cleanTimes.length} valid runs remaining`);
-                        } else {
-                          console.warn(`All runs failed for ${fixture}-${variation} (result ${i})`);
-                          // reset all values to 0
-                          result.times = [0];
-                          result.exit_codes = [1];
-                          result.mean = 0;
-                          result.stddev = 0;
-                          result.median = 0;
-                          result.min = 0;
-                          result.max = 0;
-                          result.user = 0;
-                          result.system = 0;
-                        }
+                    if (times && exit_codes && times.length === exit_codes.length) {
+                      const cleanTimes = times.filter((time, index) => exit_codes[index] === 0);
+                      const cleanExitCodes = exit_codes.filter(code => code === 0);
+
+                      if (cleanTimes.length > 0) {
+                        const mean = calculateMean(cleanTimes);
+                        const stddev = calculateStddev(cleanTimes, mean);
+                        const median = calculateMedian(cleanTimes);
+                        const min = Math.min(...cleanTimes);
+                        const max = Math.max(...cleanTimes);
+
+                        result.times = cleanTimes;
+                        result.exit_codes = cleanExitCodes;
+                        result.mean = mean;
+                        result.stddev = stddev;
+                        result.median = median;
+                        result.min = min;
+                        result.max = max;
+
+                        console.log(`Cleaned ${dirName} (result ${i}): ${times.length - cleanTimes.length} failed runs removed, ${cleanTimes.length} valid runs remaining`);
                       } else {
-                        console.warn(`Invalid times/exit_codes arrays for ${fixture}-${variation} (result ${i})`);
+                        console.warn(`All runs failed for ${dirName} (result ${i})`);
+                        result.times = [0];
+                        result.exit_codes = [1];
+                        result.mean = 0;
+                        result.stddev = 0;
+                        result.median = 0;
+                        result.min = 0;
+                        result.max = 0;
+                        result.user = 0;
+                        result.system = 0;
                       }
+                    } else {
+                      console.warn(`Invalid times/exit_codes arrays for ${dirName} (result ${i})`);
                     }
-
-                    // Save the cleaned data back to the file
-                    fs.writeFileSync(benchmarkPath, JSON.stringify(benchmarkData, null, 2));
-                  } else {
-                    console.warn(`No results found in ${benchmarkPath}`);
                   }
-                } catch (error) {
-                  console.error(`Failed to clean ${benchmarkPath}: ${error.message}`);
+
+                  fs.writeFileSync(benchmarkPath, JSON.stringify(benchmarkData, null, 2));
+                } else {
+                  console.warn(`No results found in ${benchmarkPath}`);
                 }
+              } catch (error) {
+                console.error(`Failed to clean ${benchmarkPath}: ${error.message}`);
               }
             }
 

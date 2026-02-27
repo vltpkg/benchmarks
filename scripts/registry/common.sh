@@ -68,21 +68,9 @@ BENCH_COMMAND_VLT_AUTH="{ echo 'registry=$BENCH_REGISTRY_VLT_URL'; echo \"//regi
 BENCH_COMMAND_CODEARTIFACT="{ echo 'registry=$BENCH_REGISTRY_CODEARTIFACT_URL'; echo '//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:always-auth=true'; echo \"//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:_authToken=\$CODEARTIFACT_AUTH_TOKEN\"; } > .npmrc && $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/codeartifact-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Registry include flags
-# If BENCH_INCLUDE_REGISTRY is explicitly set, use that list.
-# Otherwise, auto-detect: always include npm and vlt (no auth needed),
-# and include vlt-auth / codeartifact only when their tokens are available.
+# If BENCH_INCLUDE_REGISTRY is not set, default to running all registries.
 if [ -z "${BENCH_INCLUDE_REGISTRY:-}" ]; then
-  BENCH_INCLUDE_REGISTRY="npm,vlt"
-  if [ -n "${VLT_REGISTRY_AUTH_TOKEN:-}" ]; then
-    BENCH_INCLUDE_REGISTRY="$BENCH_INCLUDE_REGISTRY,vlt-auth"
-  else
-    echo "Note: VLT_REGISTRY_AUTH_TOKEN not set, skipping vlt-auth registry"
-  fi
-  if [ -n "${CODEARTIFACT_AUTH_TOKEN:-}" ]; then
-    BENCH_INCLUDE_REGISTRY="$BENCH_INCLUDE_REGISTRY,codeartifact"
-  else
-    echo "Note: CODEARTIFACT_AUTH_TOKEN not set, skipping codeartifact registry"
-  fi
+  BENCH_INCLUDE_REGISTRY="npm,vlt,vlt-auth,codeartifact"
 fi
 
 BENCH_INCLUDE_REG_NPM=""
@@ -92,12 +80,28 @@ BENCH_INCLUDE_REG_CODEARTIFACT=""
 
 for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
   case "$entry" in
+    "")           continue ;;
     npm)          BENCH_INCLUDE_REG_NPM=1 ;;
     vlt)          BENCH_INCLUDE_REG_VLT=1 ;;
     vlt-auth)     BENCH_INCLUDE_REG_VLT_AUTH=1 ;;
     codeartifact) BENCH_INCLUDE_REG_CODEARTIFACT=1 ;;
+    *)
+      echo "Error: Unknown registry '$entry' in BENCH_INCLUDE_REGISTRY"
+      exit 1
+      ;;
   esac
 done
+
+# If a protected registry is requested, token must be present.
+if [ -n "$BENCH_INCLUDE_REG_VLT_AUTH" ] && [ -z "${VLT_REGISTRY_AUTH_TOKEN:-}" ]; then
+  echo "Error: 'vlt-auth' registry was requested, but VLT_REGISTRY_AUTH_TOKEN is not set"
+  exit 1
+fi
+
+if [ -n "$BENCH_INCLUDE_REG_CODEARTIFACT" ] && [ -z "${CODEARTIFACT_AUTH_TOKEN:-}" ]; then
+  echo "Error: 'codeartifact' registry was requested, but CODEARTIFACT_AUTH_TOKEN is not set"
+  exit 1
+fi
 
 echo "Registry benchmarks will run: $BENCH_INCLUDE_REGISTRY"
 

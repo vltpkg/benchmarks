@@ -60,6 +60,9 @@ interface ConsolidatedChartItem {
   [packageManager: string]: string | number | boolean;
 }
 
+type DnfKey = Extract<keyof FixtureResult, `${PackageManager}_dnf`>;
+type FillKey = Extract<keyof FixtureResult, `${PackageManager}_fill`>;
+
 interface VariationChartProps {
   title: string;
   variationData: FixtureResult[];
@@ -68,6 +71,14 @@ interface VariationChartProps {
   chartData: BenchmarkChartData;
   isPerPackage: boolean;
   currentVariation: string;
+}
+
+interface CustomXAxisTickProps {
+  x?: number;
+  y?: number;
+  payload?: {
+    value?: string;
+  };
 }
 
 export const VariationChart = ({
@@ -257,8 +268,8 @@ export const VariationChart = ({
 
       filteredPackageManagers.forEach((pm) => {
         const value = item[pm as keyof FixtureResult];
-        const fillKey = `${pm}_fill` as keyof FixtureResult;
-        const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+        const fillKey = `${pm}_fill` as FillKey;
+        const dnfKey = `${pm}_dnf` as DnfKey;
         const fillValue = item[fillKey];
         const isActive = variationActivePackageManagers.has(pm);
         const hasNumber = typeof value === "number";
@@ -275,7 +286,7 @@ export const VariationChart = ({
           chartItem[fillKey] = fillValue;
         }
         if (isDnf) {
-          (chartItem as any)[dnfKey] = true;
+          chartItem[dnfKey] = true;
           if (typeof chartItem[fillKey] !== "string") {
             chartItem[fillKey] = colors[pm];
           }
@@ -301,10 +312,10 @@ export const VariationChart = ({
     return label;
   };
 
-  const CustomXAxisTick = (props: any) => {
+  const CustomXAxisTick = (props: CustomXAxisTickProps) => {
     const { x, y, payload } = props;
 
-    if (!payload || !payload.value) {
+    if (typeof x !== "number" || typeof y !== "number" || !payload?.value) {
       return <g></g>; // Return empty group instead of null
     }
 
