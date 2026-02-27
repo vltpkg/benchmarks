@@ -43,7 +43,7 @@ fi
 # Defines configurable values for the benchmark
 BENCH_WARMUP="${BENCH_WARMUP:=2}"
 BENCH_RUNS="${BENCH_RUNS:=10}"
-BENCH_LOGLEVEL="${BENCH_LOGLEVEL:=silent}"
+BENCH_LOGLEVEL="${BENCH_LOGLEVEL:=http}"
 BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
 
 # Add --ignore-scripts for babylon fixture to skip complex build pipeline
@@ -76,10 +76,12 @@ BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --
 BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
 
 # Registry verification helper runs in hyperfine --conclude (untimed, after each run).
-BENCH_VERIFY_REGISTRY="echo '--- effective registry ---' && npm config get registry && echo '--- lockfile resolved sample ---' && (grep -m3 '\"resolved\"' package-lock.json 2>/dev/null || echo 'no lockfile yet') && echo '---'"
-BENCH_CONCLUDE_NPM="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_CONCLUDE_VLT_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_CONCLUDE_AWS="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/aws-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_VERIFY_REGISTRY="npm config get registry && ((grep -m3 '\"resolved\"' package-lock.json 2>/dev/null | sed 's/^[[:space:]]*//') || echo 'no lockfile yet') && echo ''"
+# hyperfine does not provide HYPERFINE_ITERATION in conclude hooks, so these
+# write to per-registry verification logs instead of per-iteration logs.
+BENCH_CONCLUDE_NPM="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/npm-verify.log 2>&1"
+BENCH_CONCLUDE_VLT_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-verify.log 2>&1"
+BENCH_CONCLUDE_AWS="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/aws-verify.log 2>&1"
 
 # Registry commands are timed and should only run installs.
 BENCH_COMMAND_NPM="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
