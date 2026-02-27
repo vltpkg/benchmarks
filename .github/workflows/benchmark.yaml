@@ -51,7 +51,8 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: '24'
+          package-manager-cache: false
       - name: Install & Setup Tools
         run: |
           bash ./scripts/setup.sh
