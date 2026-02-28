@@ -14,7 +14,6 @@
         "compile": "tsc -b tsconfig.build.json",
         "clean": "rimraf dist"
     },
-    "dependencies": {},
     "devDependencies": {
         "@dev/build-tools": "1.0.0",
         "source-map-loader": "^4.0.0",

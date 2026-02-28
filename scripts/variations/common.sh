@@ -30,16 +30,6 @@ else
   BENCH_VARIATION="$4"
 fi
 
-# Special handling for babylon fixture - setup the repository
-if [ "$BENCH_FIXTURE" = "babylon" ]; then
-  echo "Setting up Babylon.js fixture..."
-  if [ -f "setup.sh" ]; then
-    bash setup.sh
-  else
-    echo "Warning: setup.sh not found for babylon fixture"
-  fi
-fi
-
 # Defines configurable values for the benchmark
 BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node}"
 BENCH_WARMUP="${BENCH_WARMUP:=2}"
@@ -83,11 +73,7 @@ BENCH_SETUP_DENO=""
 BENCH_SETUP_NX=""
 BENCH_SETUP_TURBO=""
 BENCH_SETUP_NODE=""
-# Add --ignore-scripts for babylon fixture to skip complex build pipeline
-SCRIPTS_FLAG=""
-if [ "$BENCH_FIXTURE" = "babylon" ]; then
-  SCRIPTS_FLAG="--ignore-scripts"
-fi
+
 
 BENCH_COMMAND_NPM="npm install --no-audit --no-fund --silent $SCRIPTS_FLAG >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_YARN="corepack yarn@1 install --silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
