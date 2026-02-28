@@ -1,6 +1,8 @@
 {
   "npm": {
-    "count": 476
+    "count": 476,
+    "minCount": 476,
+    "maxCount": 477
   },
   "yarn": {
     "count": 465
@@ -20,7 +22,9 @@
     "count": 441
   },
   "bun": {
-    "count": 462
+    "count": 463,
+    "minCount": 462,
+    "maxCount": 466
   },
   "deno": {
     "count": 439

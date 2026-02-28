@@ -7,7 +7,7 @@
 [94m➤[39m [90mYN0000[39m: ┌ Resolution step
 ::group::Resolution step
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 449ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 435ms
 [94m➤[39m [90mYN0000[39m: ┌ Post-resolution validation
 ::group::Post-resolution validation
 [93m➤[39m YN0060: │ [38;5;166m@types/[39m[38;5;173mreact[39m is listed by your project with version [38;5;111m19.2.14[39m ([38;5;111mpd4c850[39m), which doesn't satisfy what [38;5;166m@dev/[39m[38;5;173mshared-ui-components[39m and other dependencies request ([91mbut they have non-overlapping ranges![39m).
@@ -132,7 +132,7 @@
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 417ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 437ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [94m➤[39m YN0007: │ [38;5;173mbabylonjs[39m[38;5;111m@[39m[38;5;111mworkspace:packages/public/umd/babylonjs[39m must be built because it never has been before or the last one failed
@@ -148,12 +148,12 @@
 [94m➤[39m YN0007: │ [38;5;173msleep[39m[38;5;111m@[39m[38;5;111mnpm:6.1.0[39m must be built because it never has been before or the last one failed
 [94m➤[39m [90mYN0000[39m: │ [38;5;173mbabylonjs[39m[38;5;111m@[39m[38;5;111mworkspace:packages/public/umd/babylonjs[39m [32mSTDOUT[39m The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
 [94m➤[39m [90mYN0000[39m: │ [38;5;173mbabylonjs[39m[38;5;111m@[39m[38;5;111mworkspace:packages/public/umd/babylonjs[39m [32mSTDOUT[39m Read more here - https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking
-[94m➤[39m [90mYN0000[39m: │ [38;5;173mcanvas[39m[38;5;111m@[39m[38;5;111mnpm:3.2.1[39m [31mSTDERR[39m (node:14721) [DEP0176] DeprecationWarning: fs.R_OK is deprecated, use fs.constants.R_OK instead
+[94m➤[39m [90mYN0000[39m: │ [38;5;173mcanvas[39m[38;5;111m@[39m[38;5;111mnpm:3.2.1[39m [31mSTDERR[39m (node:14812) [DEP0176] DeprecationWarning: fs.R_OK is deprecated, use fs.constants.R_OK instead
 [94m➤[39m [90mYN0000[39m: │ [38;5;173mcanvas[39m[38;5;111m@[39m[38;5;111mnpm:3.2.1[39m [31mSTDERR[39m (Use `node --trace-deprecation ...` to show where the warning was created)
 [94m➤[39m [90mYN0000[39m: │ [38;5;173msleep[39m[38;5;111m@[39m[38;5;111mnpm:6.1.0[39m [31mSTDERR[39m gyp info it worked if it ends with ok
 [94m➤[39m [90mYN0000[39m: │ [38;5;173msleep[39m[38;5;111m@[39m[38;5;111mnpm:6.1.0[39m [31mSTDERR[39m gyp info using node-gyp@12.2.0
 [94m➤[39m [90mYN0000[39m: │ [38;5;173msleep[39m[38;5;111m@[39m[38;5;111mnpm:6.1.0[39m [31mSTDERR[39m gyp info using node@24.13.1 | linux | x64
-[94m➤[39m [90mYN0000[39m: │ [38;5;173msleep[39m[38;5;111m@[39m[38;5;111mnpm:6.1.0[39m [31mSTDERR[39m (node:14796) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[94m➤[39m [90mYN0000[39m: │ [38;5;173msleep[39m[38;5;111m@[39m[38;5;111mnpm:6.1.0[39m [31mSTDERR[39m (node:14857) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 [94m➤[39m [90mYN0000[39m: │ [38;5;173msleep[39m[38;5;111m@[39m[38;5;111mnpm:6.1.0[39m [31mSTDERR[39m (Use `node --trace-deprecation ...` to show where the warning was created)
 [94m➤[39m [90mYN0000[39m: │ [38;5;173mpuppeteer[39m[38;5;111m@[39m[38;5;111mnpm:22.15.0[39m [32mSTDOUT[39m Chrome (127.0.6533.88) downloaded to /home/runner/.cache/puppeteer/chrome/linux-127.0.6533.88
 [94m➤[39m [90mYN0000[39m: │ [38;5;173mpuppeteer[39m[38;5;111m@[39m[38;5;111mnpm:22.15.0[39m [32mSTDOUT[39m chrome-headless-shell (127.0.6533.88) downloaded to /home/runner/.cache/puppeteer/chrome-headless-shell/linux-127.0.6533.88
@@ -210,5 +210,5 @@
 [94m➤[39m YN0007: │ [38;5;166m@memlab/[39m[38;5;173mcli[39m[38;5;111m@[39m[38;5;111mnpm:1.0.45[39m must be built because it never has been before or the last one failed
 [94m➤[39m YN0007: │ [38;5;173mmemlab[39m[38;5;111m@[39m[38;5;111mnpm:1.1.60[39m must be built because it never has been before or the last one failed
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 21s 951ms
-[93m➤[39m YN0000: · Done with warnings in 24s 123ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 21s 435ms
+[93m➤[39m YN0000: · Done with warnings in 23s 611ms
