@@ -47,9 +47,9 @@ jobs:
       BENCH_WARMUP: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.warmup || '2') }}
       BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '10') }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           package-manager-cache: false
@@ -58,7 +58,7 @@ jobs:
           bash ./scripts/setup.sh
       - name: Configure AWS Credentials
         if: startsWith(matrix.variation, 'registry-')
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
@@ -82,13 +82,13 @@ jobs:
             --fixtures="${{ matrix.fixture }}" \
             --variation="${{ matrix.variation }}"
       - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: results-${{ matrix.fixture }}-${{ matrix.variation }}
           path: ./results/${{ matrix.fixture }}/${{ matrix.variation }}/
           retention-days: 7
       - name: Upload Versions Info
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: versions-${{ matrix.fixture }}-${{ matrix.variation }}
           path: ./results/versions.json
@@ -99,18 +99,18 @@ jobs:
     needs: [benchmark]
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "24"
       - name: Download Results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: results
           pattern: results-*
       - name: Download Versions
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: versions-temp
           pattern: versions-*
@@ -127,7 +127,7 @@ jobs:
           vlt run build
           popd
       - name: Upload Processed Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: results
           path: results/
@@ -140,14 +140,14 @@ jobs:
       contents: write
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download Results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: results
           path: results/
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: results
