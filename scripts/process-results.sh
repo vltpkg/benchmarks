@@ -8,8 +8,38 @@ DATE=$(date +%Y-%m-%d)
 mkdir -p "results/$DATE"
 mkdir -p "results/latest"
 
-# Find any versions.json file from the downloaded versions artifacts and copy it to results
-find versions-temp -name "versions.json" -type f | head -1 | xargs -I {} cp {} ./results/$DATE/versions.json || echo "No versions.json found"
+# Clean benchmark files before processing summaries and chart data.
+node ./scripts/clean-benchmarks.js ./results
+
+# Find any versions.json file from downloaded artifacts, otherwise use local one
+if [ -d "versions-temp" ]; then
+    find versions-temp -name "versions.json" -type f | head -1 | xargs -I {} cp {} "./results/$DATE/versions.json" || echo "No versions.json found in versions-temp"
+elif [ -f "results/versions.json" ]; then
+    cp "results/versions.json" "./results/$DATE/versions.json"
+else
+    echo "No versions.json found"
+fi
+
+resolve_result_path() {
+    local fixture=$1
+    local variation=$2
+    local filename=$3
+
+    local artifact_path="results/results-$fixture-$variation/$filename"
+    local local_path="results/$fixture/$variation/$filename"
+
+    if [ -f "$artifact_path" ]; then
+        echo "$artifact_path"
+        return 0
+    fi
+
+    if [ -f "$local_path" ]; then
+        echo "$local_path"
+        return 0
+    fi
+
+    return 1
+}
 
 # Function to print summary of results
 print_summary() {
@@ -54,18 +84,18 @@ echo "Processing results..."
 # Process variations results
 for fixture in next astro svelte vue large babylon; do
     for variation in cache cache+lockfile cache+lockfile+node_modules cache+node_modules clean lockfile lockfile+node_modules node_modules run; do
-        if [ -f "results/results-$fixture-$variation/benchmarks.json" ]; then
-            print_summary "results/results-$fixture-$variation/benchmarks.json" "$fixture" "$variation"
-            cp "results/results-$fixture-$variation/benchmarks.json" "results/$DATE/$fixture-$variation.json"
-            cp "results/results-$fixture-$variation/benchmarks.json" "results/latest/$fixture-$variation.json"
+        if benchmark_file=$(resolve_result_path "$fixture" "$variation" "benchmarks.json"); then
+            print_summary "$benchmark_file" "$fixture" "$variation"
+            cp "$benchmark_file" "results/$DATE/$fixture-$variation.json"
+            cp "$benchmark_file" "results/latest/$fixture-$variation.json"
         else
             echo "Warning: No results found for $fixture & $variation"
         fi
 
-        if [ -f "results/results-$fixture-$variation/package-count.json" ]; then
-            print_package_count "results/results-$fixture-$variation/package-count.json" "$fixture" "$variation"
-            cp "results/results-$fixture-$variation/package-count.json" "results/$DATE/$fixture-$variation-package-count.json"
-            cp "results/results-$fixture-$variation/package-count.json" "results/latest/$fixture-$variation-package-count.json"
+        if package_count_file=$(resolve_result_path "$fixture" "$variation" "package-count.json"); then
+            print_package_count "$package_count_file" "$fixture" "$variation"
+            cp "$package_count_file" "results/$DATE/$fixture-$variation-package-count.json"
+            cp "$package_count_file" "results/latest/$fixture-$variation-package-count.json"
         else
             echo "Warning: No package count found for $fixture & $variation"
         fi
@@ -75,10 +105,10 @@ done
 # Process registry variation results
 for fixture in next astro svelte vue large babylon; do
     for variation in registry-clean registry-lockfile; do
-        if [ -f "results/results-$fixture-$variation/benchmarks.json" ]; then
-            print_summary "results/results-$fixture-$variation/benchmarks.json" "$fixture" "$variation"
-            cp "results/results-$fixture-$variation/benchmarks.json" "results/$DATE/$fixture-$variation.json"
-            cp "results/results-$fixture-$variation/benchmarks.json" "results/latest/$fixture-$variation.json"
+        if benchmark_file=$(resolve_result_path "$fixture" "$variation" "benchmarks.json"); then
+            print_summary "$benchmark_file" "$fixture" "$variation"
+            cp "$benchmark_file" "results/$DATE/$fixture-$variation.json"
+            cp "$benchmark_file" "results/latest/$fixture-$variation.json"
         else
             echo "Warning: No results found for $fixture & $variation"
         fi
@@ -86,10 +116,10 @@ for fixture in next astro svelte vue large babylon; do
 done
 
 # Process run results
-if [ -f "results/results-run-run/benchmarks.json" ]; then
-    print_summary "results/results-run-run/benchmarks.json" "run" "run"
-    cp "results/results-run-run/benchmarks.json" "results/$DATE/run-run.json"
-    cp "results/results-run-run/benchmarks.json" "results/latest/run-run.json"
+if run_file=$(resolve_result_path "run" "run" "benchmarks.json"); then
+    print_summary "$run_file" "run" "run"
+    cp "$run_file" "results/$DATE/run-run.json"
+    cp "$run_file" "results/latest/run-run.json"
 else
     echo "Warning: No results found for run"
 fi

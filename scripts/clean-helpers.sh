@@ -102,11 +102,13 @@ clean_node_modules() {
 }
 
 # Function to clean various package manager files
+# Skips .npmrc since it may contain fixture-level config and is managed separately by clean_npmrc.
 clean_package_manager_files() {
   echo "Cleaning package manager files..."
-  safe_remove ".npm*"
-  safe_remove ".yarn*"
-  safe_remove ".pnp*"
+  for f in .npm* .yarn* .pnp*; do
+    [ "$f" = ".npmrc" ] && continue
+    safe_remove "$f"
+  done
 }
 
 # Function to remove benchmark-added registry lines from .npmrc

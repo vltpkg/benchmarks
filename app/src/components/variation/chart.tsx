@@ -8,7 +8,11 @@ import {
 } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/share-button";
-import { createSectionId, isTaskExecutionVariation } from "@/lib/utils";
+import {
+  createSectionId,
+  isRegistryVariation,
+  isTaskExecutionVariation,
+} from "@/lib/utils";
 import { resolveTheme, useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { useYAxis } from "@/contexts/y-axis-context";
@@ -93,6 +97,7 @@ export const VariationChart = ({
   const { theme } = useTheme();
   const { enabledPackageManagers } = usePackageManagerFilter();
   const { getYAxisDomain } = useYAxis();
+  const isRegistry = isRegistryVariation(currentVariation);
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -101,6 +106,7 @@ export const VariationChart = ({
   );
 
   const resolvedTheme = resolveTheme(theme);
+  const showVersions = !isRegistry;
   const patternIdPrefix = useId().replace(/:/g, "");
 
   const getDnfPatternId = (scope: string, pm: PackageManager) =>
@@ -151,19 +157,24 @@ export const VariationChart = ({
     const config: ChartConfig = {};
     filteredPackageManagers.forEach((pm) => {
       config[pm] = {
-        label: pm,
+        label: formatPackageManagerLabel(
+          pm,
+          showVersions ? chartData.versions : undefined,
+          { isRegistryVariation: isRegistry },
+        ),
         color: colors[pm],
       };
     });
     return config;
-  }, [filteredPackageManagers, colors]);
+  }, [filteredPackageManagers, colors, chartData.versions, showVersions, isRegistry]);
 
   const individualChartConfig = useMemo(() => {
     const config: ChartConfig = {};
     filteredPackageManagers.forEach((pm) => {
       const labelWithVersion = formatPackageManagerLabel(
         pm,
-        chartData.versions,
+        showVersions ? chartData.versions : undefined,
+        { isRegistryVariation: isRegistry },
       );
       config[labelWithVersion] = {
         label: labelWithVersion,
@@ -171,7 +182,7 @@ export const VariationChart = ({
       };
     });
     return config;
-  }, [filteredPackageManagers, colors, chartData.versions]);
+  }, [filteredPackageManagers, colors, chartData.versions, showVersions, isRegistry]);
 
   const yAxisLabel = isTaskExecutionVariation(currentVariation)
     ? "Time (seconds)"
@@ -447,7 +458,8 @@ export const VariationChart = ({
                           selectedPackageManagers.has(packageManager);
                         const formattedLabel = formatPackageManagerLabel(
                           packageManager,
-                          chartData.versions,
+                          showVersions ? chartData.versions : undefined,
+                          { isRegistryVariation: isRegistry },
                         );
 
                         return (
@@ -477,7 +489,11 @@ export const VariationChart = ({
                   key={pm}
                   dataKey={pm}
                   fill={pm === "vlt" && theme === "dark" ? "white" : colors[pm]}
-                  name={formatPackageManagerLabel(pm, chartData.versions)}
+                  name={formatPackageManagerLabel(
+                    pm,
+                    showVersions ? chartData.versions : undefined,
+                    { isRegistryVariation: isRegistry },
+                  )}
                   hide={!selectedPackageManagers.has(pm)}
                 >
                   {consolidatedData.map((entry, index) => {
@@ -543,7 +559,11 @@ export const VariationChart = ({
                 pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm];
 
               return {
-                name: formatPackageManagerLabel(pm, chartData.versions),
+                name: formatPackageManagerLabel(
+                  pm,
+                  showVersions ? chartData.versions : undefined,
+                  { isRegistryVariation: isRegistry },
+                ),
                 value: resolvedValue,
                 fill: isDnf ? getDnfPatternFill(fixtureId, pm) : fillColor,
                 dnf: isDnf,

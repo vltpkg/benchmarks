@@ -12,7 +12,8 @@ node_modules
 dist
 chart
 charts
-results
+/results/
+/versions-temp/
 
 # ignore latest in app for testing
-app/latest
+/app/latest/
