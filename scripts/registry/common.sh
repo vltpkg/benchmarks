@@ -46,14 +46,8 @@ BENCH_RUNS="${BENCH_RUNS:=10}"
 BENCH_LOGLEVEL="${BENCH_LOGLEVEL:=silent}"
 BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
 
-# Add --ignore-scripts for babylon fixture to skip complex build pipeline
-SCRIPTS_FLAG=""
-if [ "$BENCH_FIXTURE" = "babylon" ]; then
-  SCRIPTS_FLAG="--ignore-scripts"
-fi
-
 # Base npm install command (without .npmrc setup)
-BENCH_NPM_INSTALL="npm install --no-audit --no-fund --no-update-notifier --loglevel=$BENCH_LOGLEVEL $SCRIPTS_FLAG"
+BENCH_NPM_INSTALL="npm install --no-audit --no-fund --no-update-notifier --loglevel=$BENCH_LOGLEVEL"
 
 # Registry definitions
 BENCH_REGISTRY_NPM_URL="https://registry.npmjs.org/"

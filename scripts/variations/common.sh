@@ -74,15 +74,14 @@ BENCH_SETUP_NX=""
 BENCH_SETUP_TURBO=""
 BENCH_SETUP_NODE=""
 
-
-BENCH_COMMAND_NPM="npm install --no-audit --no-fund --silent $SCRIPTS_FLAG >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_YARN="corepack yarn@1 install --silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BERRY="corepack yarn@latest install $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/berry-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_ZPM="yarn install --silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_PNPM="corepack pnpm@latest install --silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_VLT="vlt install --view=silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BUN="bun install --silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_DENO="deno install --allow-scripts --quiet $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_NPM="npm install --no-audit --no-fund --silent >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_YARN="corepack yarn@1 install --silent > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BERRY="corepack yarn@latest install > $BENCH_OUTPUT_FOLDER/berry-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_ZPM="yarn install --silent > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_PNPM="corepack pnpm@latest install --silent > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT="vlt install --view=silent > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BUN="bun install --silent > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_DENO="deno install --allow-scripts --quiet > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Clean up & create the results directory
 rm -rf "$BENCH_OUTPUT_FOLDER"
