@@ -46,12 +46,6 @@ BENCH_RUNS="${BENCH_RUNS:=10}"
 BENCH_LOGLEVEL="${BENCH_LOGLEVEL:=http}"
 BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
 
-# Add --ignore-scripts for babylon fixture to skip complex build pipeline
-SCRIPTS_FLAG=""
-if [ "$BENCH_FIXTURE" = "babylon" ]; then
-  SCRIPTS_FLAG="--ignore-scripts"
-fi
-
 # Add --force for large fixture to bypass peer dependency errors
 FORCE_FLAG=""
 if [ "$BENCH_FIXTURE" = "large" ]; then
@@ -61,7 +55,7 @@ fi
 # Base npm install command (without .npmrc setup)
 # --prefer-online ensures npm always fetches from the network rather than
 # relying on any cached metadata, so we measure actual registry performance.
-BENCH_NPM_INSTALL="npm install --prefer-online --no-audit --no-fund --no-update-notifier --loglevel=$BENCH_LOGLEVEL $SCRIPTS_FLAG $FORCE_FLAG"
+BENCH_NPM_INSTALL="npm install --prefer-online --no-audit --no-fund --no-update-notifier --loglevel=$BENCH_LOGLEVEL $FORCE_FLAG"
 
 # Registry definitions
 BENCH_REGISTRY_NPM_URL="https://registry.npmjs.org/"

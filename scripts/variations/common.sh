@@ -30,16 +30,6 @@ else
   BENCH_VARIATION="$4"
 fi
 
-# Special handling for babylon fixture - setup the repository
-if [ "$BENCH_FIXTURE" = "babylon" ]; then
-  echo "Setting up Babylon.js fixture..."
-  if [ -f "setup.sh" ]; then
-    bash setup.sh
-  else
-    echo "Warning: setup.sh not found for babylon fixture"
-  fi
-fi
-
 # Defines configurable values for the benchmark
 BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node}"
 BENCH_WARMUP="${BENCH_WARMUP:=2}"
@@ -83,20 +73,15 @@ BENCH_SETUP_DENO=""
 BENCH_SETUP_NX=""
 BENCH_SETUP_TURBO=""
 BENCH_SETUP_NODE=""
-# Add --ignore-scripts for babylon fixture to skip complex build pipeline
-SCRIPTS_FLAG=""
-if [ "$BENCH_FIXTURE" = "babylon" ]; then
-  SCRIPTS_FLAG="--ignore-scripts"
-fi
 
-BENCH_COMMAND_NPM="npm install --no-audit --no-fund --silent $SCRIPTS_FLAG >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_YARN="corepack yarn@1 install --silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BERRY="corepack yarn@latest install $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/berry-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_ZPM="yarn install --silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_PNPM="corepack pnpm@latest install --silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_VLT="vlt install --view=silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BUN="bun install --silent $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_DENO="deno install --allow-scripts --quiet $SCRIPTS_FLAG > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_NPM="npm install --no-audit --no-fund --silent >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_YARN="corepack yarn@1 install --silent > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BERRY="corepack yarn@latest install > $BENCH_OUTPUT_FOLDER/berry-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_ZPM="yarn install --silent > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_PNPM="corepack pnpm@latest install --silent > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT="vlt install --view=silent > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BUN="bun install --silent > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_DENO="deno install --allow-scripts --quiet > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Clean up & create the results directory
 rm -rf "$BENCH_OUTPUT_FOLDER"

@@ -8,6 +8,5 @@
     "scripts": {
         "build": "tsc"
     },
-    "dependencies": {},
     "sideEffects": true
 }

@@ -101,14 +101,15 @@ clean_node_modules() {
   safe_remove "node_modules"
 }
 
-# Function to clean various package manager files
-# Skips .npmrc since it may contain fixture-level config and is managed separately by clean_npmrc.
+# Function to clean transient package manager artifacts.
+# Keep fixture config files (e.g. .yarnrc.yml / .npmrc) intact.
 clean_package_manager_files() {
   echo "Cleaning package manager files..."
-  for f in .npm* .yarn* .pnp*; do
-    [ "$f" = ".npmrc" ] && continue
-    safe_remove "$f"
-  done
+  safe_remove ".yarn"
+  safe_remove ".pnp.data.json"
+  safe_remove ".pnp.loader.mjs"
+  safe_remove "pnpm-debug.log"
+  safe_remove "yarn-error.log"
 }
 
 # Function to remove benchmark-added registry lines from .npmrc
@@ -140,7 +141,6 @@ clean_all_cache() {
 
 clean_build_files() {
   echo "Cleaning build tool files..."
-  safe_remove "nx.json"
   safe_remove ".nx"
   safe_remove ".turbo"
   safe_remove ".cache"
