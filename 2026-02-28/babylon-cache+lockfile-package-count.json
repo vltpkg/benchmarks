@@ -2,10 +2,18 @@
   "npm": {
     "count": 1780
   },
-  "yarn": {
-    "count": 1678
+  "berry": {
+    "count": 1736,
+    "minCount": 1678,
+    "maxCount": 1793
+  },
+  "pnpm": {
+    "count": 1501
   },
   "bun": {
     "count": 1589
+  },
+  "deno": {
+    "count": 1467
   }
 }

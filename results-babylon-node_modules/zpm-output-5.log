@@ -1,3 +1,3 @@
-Error: The provided arguments don't match any known syntax; use `--help` to get a list of possible options
+Error: File parsing error (Invalid syntax: Expected '"' at offset 1, got '' instead)
 
 › yarn install [--check-resolutions] [--immutable] [--immutable-cache] [--check-checksums] [--refresh-lockfile] [--mode <arg>] [--silent]
