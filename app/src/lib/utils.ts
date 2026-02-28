@@ -432,10 +432,16 @@ export function getFixtureDisplayName(fixture: Fixture): string {
 
 export function getPackageManagerDisplayName(
   packageManager: PackageManager,
+  options?: { isRegistryVariation?: boolean },
 ): string {
+  if (options?.isRegistryVariation) {
+    if (packageManager === "npm") return "registry.npmjs.org";
+    if (packageManager === "vlt") return "registry.vlt.io";
+    if (packageManager === "aws")
+      return "codeartifact.us-east-1.amazonaws.com";
+  }
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
-  if (packageManager === "vlt-auth") return "vlt (auth)";
   if (packageManager === "aws") return "AWS CodeArtifact";
   return packageManager;
 }
@@ -443,8 +449,9 @@ export function getPackageManagerDisplayName(
 export function formatPackageManagerLabel(
   packageManager: PackageManager,
   versions?: PackageManagerVersions,
+  options?: { isRegistryVariation?: boolean },
 ): string {
-  const displayName = getPackageManagerDisplayName(packageManager);
+  const displayName = getPackageManagerDisplayName(packageManager, options);
   if (!versions || !versions[packageManager]) {
     return displayName;
   }

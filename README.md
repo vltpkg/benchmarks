@@ -17,12 +17,14 @@ We may add Mac/Windows in the future but it will likely exponentially increase t
 ## Overview
 
 The benchmarks measure:
+
 - Per-package installation times
 - Total Project installation times
 - Run script execution performance
 - Standard deviation of results
 
 ### Project Types (fixtures)
+
 - Next.js
 - Astro
 - Svelte
@@ -31,6 +33,7 @@ The benchmarks measure:
 - Babylon.js (Massive 3D engine monorepo with 86+ packages)
 
 ### Package Managers
+
 - npm
 - yarn
 - pnpm
@@ -47,6 +50,7 @@ The benchmarks measure:
 We do a best-effort job to configure each tool to behave as similar as possible to its peers but there's limitations to this standardization in many scenarios (as each tool makes decisions about its default support for security checks/validations/feature-set). As part of the normalization process, we count the number of packages - post-installation - & use that to determine the average speed relative to the number of packages installed. This strategy helps account for when there are significant discrepancies between the package manager's dependency graph resolution ([you can read/see more here](https://docs.google.com/presentation/d/1ojXF4jb_1MyGhew2LCbdrZ4e_0vYUr-7CoMJLJsHwZY/edit?usp=sharing)).
 
 #### Example:
+
 - **Package Manager A** installs **1,000** packages in **10s** -> an avg. of **~10ms** per-package
 - **Package Manager B** installs **10** packages in **1s** -> an avg. of **~100ms** per-package
 
@@ -63,6 +67,33 @@ The installation tests we run today mimic a matrix of different variations (cold
 - `yarn berry`
 - `deno`
 - `bun`
+
+#### Supported Registries
+
+Registry benchmarking is available in the `registry-clean` and `registry-lockfile` variations.
+
+- `npm` (`https://registry.npmjs.org/`)
+- `vlt` (`https://registry.vlt.io/npm/`)
+- `aws` (CodeArtifact benchmark registry)
+
+Defaults:
+
+- Local and CI run `npm,vlt,aws` by default for `registry-*` variations.
+- You can limit registries with `--registries` (wrapper) or `BENCH_INCLUDE_REGISTRY` (script-level env).
+
+Examples:
+
+```bash
+# Run only npm + vlt registry benchmarks
+./bench run --variation=registry-clean --fixtures=next --registries=npm,vlt
+
+# Run only aws registry benchmarks (requires token)
+CODEARTIFACT_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=aws
+```
+
+Auth notes:
+
+- `aws` requires `CODEARTIFACT_AUTH_TOKEN`.
 
 ## Testing Script Execution
 
@@ -86,16 +117,12 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 ### Local Development
 
 - 1. Setup:
-
   - 1.1 Install `jq` using your OS package manager
-  
   - 1.2 Install `hyperfine`, version >= 1.19.0 is required
-  
   - 1.3 Install package managers and corepack:
     ```bash
     npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
     ```
-  
   - 1.4 Make a new `results` folder:
     ```bash
     mkdir -p results
@@ -105,18 +132,15 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 
   ```bash
   # Install and benchmark a specific project
-  bash ./scripts/benchmark.sh <fixture> <variation>
+  ./bench run --fixtures=<fixture> --variation=<variation>
 
   # Example: Benchmark Next.js with cold cache
-  bash ./scripts/benchmark.sh next clean
+  ./bench run --fixtures=next --variation=clean
   ```
 
-- 3. Local bench wrapper (optional):
+- 3. Local bench wrapper options:
 
   ```bash
-  # One-time: make the wrapper executable
-  chmod +x bench
-
   # Defaults: next + clean (uses script defaults for runs/warmup)
   ./bench run
 
@@ -126,25 +150,45 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
   # Run all fixtures (except "run")
   ./bench run --fixtures=all --variation=clean
 
+  # Run multiple variations in one command
+  ./bench run --fixtures=svelte --variation=lockfile,registry-lockfile,run --registries=npm,vlt
+
   # Script-execution benchmark
   ./bench run --variation=run --pms=vlt
 
+  # Clean failed runs immediately during run/chart (optional)
+  ./bench run --fixtures=next --variation=clean --clean
+
   # Generate chart data (and copy to app/latest) after a run
   ./bench run --fixtures=next --runs=3 --chart
+
+  # Run benchmarks then process outputs in one command
+  ./bench run --fixtures=next --runs=3 --process
 
   # Process existing results into chart data
   ./bench chart --fixtures=next --variation=clean
   ```
 
-  The wrapper filters failed runs by default; pass `--no-clean` to keep raw results.
+  By default, cleaning happens during `./bench process`. Use `--clean` on `run`/`chart` for immediate cleanup.
+
+- 4. Process benchmark output:
+
+  ```bash
+  # Filter failed runs and generate dated + latest outputs and chart data
+  ./bench process
+  # Or pass --process directly when running
+  ./bench run --fixtures=next --runs=3 --process
+  ```
 
 ### GitHub Actions
 
 The benchmarks run automatically on:
+
 - Push to main branch
 - Manual workflow trigger
 
 The workflow:
+
 1. Sets up the environment with all package managers
 2. Runs benchmarks for each project type (cold and warm cache)
 3. Executes task performance benchmarks
@@ -156,6 +200,7 @@ The workflow:
 ### Console Output
 
 Each benchmark run provides a summary in the console:
+
 ```
 === Project Name (cache type) ===
 package-manager: X.XXs (stddev: X.XXs)
@@ -165,6 +210,7 @@ package-manager: X.XXs (stddev: X.XXs)
 ### Generated Results
 
 Results are organized by date in the `YYYY-MM-DD/` directory:
+
 - `<fixture>-<variation>.json`: Cold cache installation results
 - `<fixture>-<variation>-package-count.json`: The count of packages installed for each package manager for a given fixture and variation
 - `index.html`: Interactive visualization
@@ -172,6 +218,7 @@ Results are organized by date in the `YYYY-MM-DD/` directory:
 ### Visualization
 
 The generated charts show:
+
 - Per-package installation times for each fixture and variation combination
 - Total installation times for each different combination
 - Run scripts execution performance
@@ -196,27 +243,44 @@ Each run creates a new dated html file with its results, making it easy to track
 
 ## Local debugging
 
-You can debug the result process scripts and the web app locally by using data
+You can debug the result processing scripts and the web app locally using data
 from previous [GitHub Action runs of the Package Manager Benchmarks workflow](https://github.com/vltpkg/benchmarks/actions/workflows/benchmark.yaml).
 
-Those can be individually downloaded and their `benchmarks.json` files renamed
-to a `results/<date>/<fixture>-<variation>.json` file, where `<date>` needs to
-match a folder name in the `results` folder in a `YYYY-MM-DD` pattern and
-`<fixture>` is one of the known project type fixtures and `<variation>` is one
-of the known variations (e.g. `clean`, `cache`, `lockfile`, etc).
+Preferred workflow (matches CI):
 
-You may test the chart data generation script locally by running: 
+1. Install and authenticate GitHub CLI (`gh auth login`).
+2. Download artifacts from the latest successful run on `main`:
 
-```sh
-node scripts/generate-chart.js <date>
-```
+   ```sh
+   ./scripts/download-latest-artifacts.sh
+   ```
 
-Make sure you have a `results/<date>` directory with valid benchmark
-result JSON files in it.
+   This keeps artifact-style directories such as
+   `results/results-<fixture>-<variation>/` and `versions-temp/`.
 
-After a succesful run, test the web app rendering the chart data locally
-by copying the result `results/<date>/chart-data.json` file to the
-web app folder in a `latest/` folder, e.g: `app/latest/chart-data.json`
+3. Process downloaded artifacts:
+
+   ```sh
+   ./bench process
+   ```
+
+   This cleans benchmark outputs, builds dated and latest result folders,
+   and generates chart data (`results/<date>/chart-data.json` and `results/latest/chart-data.json`).
+
+4. Copy the latest chart data into the app:
+
+   ```sh
+   mkdir -p app/latest
+   cp results/latest/chart-data.json app/latest/chart-data.json
+   ```
+
+5. Run the app:
+
+   ```sh
+   cd app
+   vlt install || npm install
+   vlr dev
+   ```
 
 ## License
 

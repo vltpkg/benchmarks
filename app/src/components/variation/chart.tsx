@@ -8,7 +8,11 @@ import {
 } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/share-button";
-import { createSectionId, isTaskExecutionVariation } from "@/lib/utils";
+import {
+  createSectionId,
+  isRegistryVariation,
+  isTaskExecutionVariation,
+} from "@/lib/utils";
 import { resolveTheme, useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { useYAxis } from "@/contexts/y-axis-context";
@@ -93,6 +97,7 @@ export const VariationChart = ({
   const { theme } = useTheme();
   const { enabledPackageManagers } = usePackageManagerFilter();
   const { getYAxisDomain } = useYAxis();
+  const isRegistry = isRegistryVariation(currentVariation);
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -101,7 +106,13 @@ export const VariationChart = ({
   );
 
   const resolvedTheme = resolveTheme(theme);
+  const showVersions = !isRegistry;
   const patternIdPrefix = useId().replace(/:/g, "");
+
+  // Resolve display color for a package manager — vlt uses white in dark mode
+  // since its brand color (#000000) is invisible on dark backgrounds
+  const getColor = (pm: PackageManager) =>
+    pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm];
 
   const getDnfPatternId = (scope: string, pm: PackageManager) =>
     `dnf-${patternIdPrefix}-${scope}-${pm}`;
@@ -112,7 +123,7 @@ export const VariationChart = ({
   const renderDnfPatterns = (scope: string) => (
     <defs>
       {filteredPackageManagers.map((pm) => {
-        const baseColor = colors[pm];
+        const baseColor = getColor(pm);
         const lightColor = lightenColor(baseColor);
         return (
           <pattern
@@ -151,27 +162,32 @@ export const VariationChart = ({
     const config: ChartConfig = {};
     filteredPackageManagers.forEach((pm) => {
       config[pm] = {
-        label: pm,
-        color: colors[pm],
+        label: formatPackageManagerLabel(
+          pm,
+          showVersions ? chartData.versions : undefined,
+          { isRegistryVariation: isRegistry },
+        ),
+        color: getColor(pm),
       };
     });
     return config;
-  }, [filteredPackageManagers, colors]);
+  }, [filteredPackageManagers, colors, chartData.versions, showVersions, isRegistry, resolvedTheme]);
 
   const individualChartConfig = useMemo(() => {
     const config: ChartConfig = {};
     filteredPackageManagers.forEach((pm) => {
       const labelWithVersion = formatPackageManagerLabel(
         pm,
-        chartData.versions,
+        showVersions ? chartData.versions : undefined,
+        { isRegistryVariation: isRegistry },
       );
       config[labelWithVersion] = {
         label: labelWithVersion,
-        color: colors[pm],
+        color: getColor(pm),
       };
     });
     return config;
-  }, [filteredPackageManagers, colors, chartData.versions]);
+  }, [filteredPackageManagers, colors, chartData.versions, showVersions, isRegistry, resolvedTheme]);
 
   const yAxisLabel = isTaskExecutionVariation(currentVariation)
     ? "Time (seconds)"
@@ -288,7 +304,7 @@ export const VariationChart = ({
         if (isDnf) {
           chartItem[dnfKey] = true;
           if (typeof chartItem[fillKey] !== "string") {
-            chartItem[fillKey] = colors[pm];
+            chartItem[fillKey] = getColor(pm);
           }
         }
       });
@@ -300,6 +316,7 @@ export const VariationChart = ({
     fixtureSlowestValues,
     variationActivePackageManagers,
     colors,
+    resolvedTheme,
   ]);
 
   const normalizeTickLabel = (label: string) => {
@@ -404,7 +421,7 @@ export const VariationChart = ({
                 dataKey="fixture"
                 tick={{
                   fontSize: 12,
-                  fill: theme === "dark" ? "white" : "currentColor",
+                  fill: resolvedTheme === "dark" ? "white" : "currentColor",
                 }}
               />
               <YAxis
@@ -414,7 +431,7 @@ export const VariationChart = ({
                   position: "outside",
                   style: {
                     textAnchor: "middle",
-                    fill: theme === "dark" ? "white" : "currentColor",
+                    fill: resolvedTheme === "dark" ? "white" : "currentColor",
                   },
                   offset: -10,
                 }}
@@ -422,7 +439,7 @@ export const VariationChart = ({
                 tick={{
                   fontFamily: "var(--font-mono)",
                   fontSize: 12,
-                  fill: theme === "dark" ? "white" : "currentColor",
+                  fill: resolvedTheme === "dark" ? "white" : "currentColor",
                 }}
                 width={80}
                 {...yAxisProps}
@@ -435,7 +452,7 @@ export const VariationChart = ({
                 verticalAlign="bottom"
                 height={100}
                 wrapperStyle={{
-                  color: theme === "dark" ? "white" : "currentColor",
+                  color: resolvedTheme === "dark" ? "white" : "currentColor",
                 }}
                 content={(props) => {
                   if (!props.payload) return null;
@@ -447,7 +464,8 @@ export const VariationChart = ({
                           selectedPackageManagers.has(packageManager);
                         const formattedLabel = formatPackageManagerLabel(
                           packageManager,
-                          chartData.versions,
+                          showVersions ? chartData.versions : undefined,
+                          { isRegistryVariation: isRegistry },
                         );
 
                         return (
@@ -476,20 +494,22 @@ export const VariationChart = ({
                 <Bar
                   key={pm}
                   dataKey={pm}
-                  fill={pm === "vlt" && theme === "dark" ? "white" : colors[pm]}
-                  name={formatPackageManagerLabel(pm, chartData.versions)}
+                  fill={getColor(pm)}
+                  name={formatPackageManagerLabel(
+                    pm,
+                    showVersions ? chartData.versions : undefined,
+                    { isRegistryVariation: isRegistry },
+                  )}
                   hide={!selectedPackageManagers.has(pm)}
                 >
                   {consolidatedData.map((entry, index) => {
                     const dnfKey = `${pm}_dnf`;
                     const isDnf = entry[dnfKey] === true;
-                    const fillColor =
-                      pm === "vlt" && theme === "dark" ? "white" : colors[pm];
                     return (
                       <Cell
                         key={`${pm}-${entry.fixture}-${index}`}
                         fill={
-                          isDnf ? getDnfPatternFill("total", pm) : fillColor
+                          isDnf ? getDnfPatternFill("total", pm) : getColor(pm)
                         }
                       />
                     );
@@ -539,15 +559,18 @@ export const VariationChart = ({
                 return null;
               }
 
-              const fillColor =
-                pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm];
+              const fillColor = getColor(pm);
 
               return {
-                name: formatPackageManagerLabel(pm, chartData.versions),
+                name: formatPackageManagerLabel(
+                  pm,
+                  showVersions ? chartData.versions : undefined,
+                  { isRegistryVariation: isRegistry },
+                ),
                 value: resolvedValue,
                 fill: isDnf ? getDnfPatternFill(fixtureId, pm) : fillColor,
                 dnf: isDnf,
-                dnfColor: colors[pm],
+                dnfColor: getColor(pm),
               };
             })
             .filter(Boolean);
@@ -602,7 +625,7 @@ export const VariationChart = ({
                         position: "outside",
                         style: {
                           textAnchor: "middle",
-                          fill: theme === "dark" ? "white" : "currentColor",
+                          fill: resolvedTheme === "dark" ? "white" : "currentColor",
                         },
                         offset: -10,
                       }}
@@ -610,7 +633,7 @@ export const VariationChart = ({
                       tick={{
                         fontFamily: "var(--font-mono)",
                         fontSize: 12,
-                        fill: theme === "dark" ? "white" : "currentColor",
+                        fill: resolvedTheme === "dark" ? "white" : "currentColor",
                       }}
                       width={80}
                       {...yAxisProps}

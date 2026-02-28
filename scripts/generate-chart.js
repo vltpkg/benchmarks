@@ -38,7 +38,6 @@ const COLORS = {
 const REGISTRY_COLORS = {
   npm: "#cb0606",
   vlt: "#000000",
-  "vlt-auth": "#6366f1",
   aws: "#ff9900",
 };
 

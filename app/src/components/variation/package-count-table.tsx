@@ -19,13 +19,18 @@ import { Button } from "@/components/ui/button";
 import {
   getPackageManagerDisplayName,
   getPackageManagerVersion,
+  getFixtureDisplayName,
+  sortFixtures,
   createSectionId,
+  isRegistryVariation,
 } from "@/lib/utils";
 import { ShareButton } from "@/components/share-button";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { Package } from "@/components/icons";
 
 import type {
+  Fixture,
+  PackageCountEntry,
   PackageCountTableRow,
   PackageManager,
   PackageManagerVersions,
@@ -41,7 +46,12 @@ interface PackageCountTableProps {
   currentVariation: string;
 }
 
-const columnHelper = createColumnHelper<PackageCountTableRow>();
+interface TransposedPackageCountRow {
+  packageManager: PackageManager;
+  packageCountsByFixture: Partial<Record<Fixture, PackageCountEntry>>;
+}
+
+const columnHelper = createColumnHelper<TransposedPackageCountRow>();
 
 export const PackageCountTable = ({
   title,
@@ -53,6 +63,8 @@ export const PackageCountTable = ({
 }: PackageCountTableProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
+  const isRegistry = isRegistryVariation(currentVariation);
+  const showVersions = !isRegistry;
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -60,28 +72,69 @@ export const PackageCountTable = ({
     [packageManagers, enabledPackageManagers],
   );
 
+  const fixtures = useMemo(
+    () =>
+      sortFixtures(
+        Array.from(new Set(packageCountData.map((item) => item.fixture))) as Fixture[],
+      ),
+    [packageCountData],
+  );
+
+  const transposedData = useMemo(
+    () =>
+      filteredPackageManagers.map((packageManager) => {
+        const packageCountsByFixture: Partial<Record<Fixture, PackageCountEntry>> = {};
+
+        packageCountData.forEach((fixtureResult) => {
+          const entry = fixtureResult.packageCounts[packageManager];
+          if (entry && typeof entry.count === "number") {
+            packageCountsByFixture[fixtureResult.fixture] = entry;
+          }
+        });
+
+        return {
+          packageManager,
+          packageCountsByFixture,
+        };
+      }),
+    [filteredPackageManagers, packageCountData],
+  );
+
   const columns = useMemo(
     () => [
-      columnHelper.accessor("fixture", {
-        header: "Fixture",
-        cell: (info) => info.getValue(),
+      columnHelper.accessor("packageManager", {
+        header: isRegistry ? "Registry" : "Package Manager",
+        cell: (info) => {
+          const packageManager = info.getValue();
+          const version = showVersions
+            ? getPackageManagerVersion(packageManager, versions)
+            : undefined;
+          const displayName = getPackageManagerDisplayName(packageManager, {
+            isRegistryVariation: isRegistry,
+          });
+          return version ? (
+            <div className="text-left">
+              <div className="font-bold">{displayName}</div>
+              <div className="text-xs text-muted-foreground">{version}</div>
+            </div>
+          ) : (
+            <span className="font-bold">{displayName}</span>
+          );
+        },
         enableSorting: true,
+        sortingFn: (rowA, rowB) =>
+          getPackageManagerDisplayName(rowA.original.packageManager, {
+            isRegistryVariation: isRegistry,
+          }).localeCompare(
+            getPackageManagerDisplayName(rowB.original.packageManager, {
+              isRegistryVariation: isRegistry,
+            }),
+          ),
       }),
-      ...filteredPackageManagers.map((pm) =>
-        columnHelper.accessor((row) => row.packageCounts[pm], {
-          id: pm,
-          header: () => {
-            const version = getPackageManagerVersion(pm, versions);
-            const displayName = getPackageManagerDisplayName(pm);
-            return version ? (
-              <div className="text-center">
-                <div className="font-bold">{displayName}</div>
-                <div className="text-xs text-muted-foreground">{version}</div>
-              </div>
-            ) : (
-              <span className="font-bold">{displayName}</span>
-            );
-          },
+      ...fixtures.map((fixture) =>
+        columnHelper.accessor((row) => row.packageCountsByFixture[fixture], {
+          id: fixture,
+          header: () => <span className="font-bold">{getFixtureDisplayName(fixture)}</span>,
           cell: (info) => {
             const entry = info.getValue();
             if (entry && typeof entry.count === "number") {
@@ -89,7 +142,7 @@ export const PackageCountTable = ({
 
               // For vlt, show range if min/max are available
               if (
-                pm === "vlt" &&
+                info.row.original.packageManager === "vlt" &&
                 minCount !== undefined &&
                 maxCount !== undefined &&
                 minCount !== maxCount
@@ -134,11 +187,11 @@ export const PackageCountTable = ({
         }),
       ),
     ],
-    [filteredPackageManagers, versions],
+    [fixtures, versions, showVersions, isRegistry],
   );
 
   const table = useReactTable({
-    data: packageCountData,
+    data: transposedData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -177,8 +230,8 @@ export const PackageCountTable = ({
                   <TableHead
                     key={header.id}
                     className={`${
-                      header.column.id === "fixture"
-                        ? "w-28"
+                      header.column.id === "packageManager"
+                        ? "w-52"
                         : "w-18 text-center"
                     }`}
                   >
@@ -229,7 +282,7 @@ export const PackageCountTable = ({
                     <TableCell
                       key={cell.id}
                       className={`font-medium text-center ${
-                        cell.column.id === "fixture"
+                        cell.column.id === "packageManager"
                           ? "pl-6 text-left"
                           : "pl-3 pr-7"
                       }`}

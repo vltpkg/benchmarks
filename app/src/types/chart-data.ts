@@ -10,7 +10,6 @@ export type PackageManager =
   | "nx"
   | "turbo"
   | "node"
-  | "vlt-auth"
   | "aws";
 
 export type Fixture =
@@ -50,7 +49,6 @@ export interface PackageManagerVersions {
   nx?: string;
   turbo?: string;
   node?: string;
-  "vlt-auth"?: string;
   aws?: string;
 }
 
@@ -70,7 +68,6 @@ export interface PackageManagerData {
   nx?: number;
   turbo?: number;
   node?: number;
-  "vlt-auth"?: number;
   aws?: number;
 
   npm_stddev?: number;
@@ -84,7 +81,6 @@ export interface PackageManagerData {
   nx_stddev?: number;
   turbo_stddev?: number;
   node_stddev?: number;
-  "vlt-auth_stddev"?: number;
   aws_stddev?: number;
 
   npm_fill?: string;
@@ -98,7 +94,6 @@ export interface PackageManagerData {
   nx_fill?: string;
   turbo_fill?: string;
   node_fill?: string;
-  "vlt-auth_fill"?: string;
   aws_fill?: string;
 
   npm_count?: number;
@@ -112,7 +107,6 @@ export interface PackageManagerData {
   nx_count?: number;
   turbo_count?: number;
   node_count?: number;
-  "vlt-auth_count"?: number;
   aws_count?: number;
 
   npm_dnf?: boolean;
@@ -126,7 +120,6 @@ export interface PackageManagerData {
   nx_dnf?: boolean;
   turbo_dnf?: boolean;
   node_dnf?: boolean;
-  "vlt-auth_dnf"?: boolean;
   aws_dnf?: boolean;
 }
 
@@ -165,7 +158,6 @@ export interface PackageCountData {
   nx?: PackageCountEntry;
   turbo?: PackageCountEntry;
   node?: PackageCountEntry;
-  "vlt-auth"?: PackageCountEntry;
   aws?: PackageCountEntry;
 }
 
