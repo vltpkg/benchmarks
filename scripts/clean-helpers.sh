@@ -55,7 +55,7 @@ clean_bun_cache() {
     bun pm cache rm -g || true
     bun pm cache rm || true
     # also clear global cache dir
-    safe_remove "~/.bun/install/cache"
+    safe_remove "$HOME/.bun/install/cache"
   fi
 }
 
@@ -262,4 +262,3 @@ else
     esac
   done
 fi
-
