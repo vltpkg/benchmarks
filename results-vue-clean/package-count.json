@@ -3,28 +3,26 @@
     "count": 476
   },
   "yarn": {
-    "count": 464
+    "count": 465
   },
   "berry": {
-    "count": 462
+    "count": 461
   },
   "zpm": {
-    "count": 468,
-    "minCount": 467,
-    "maxCount": 469
+    "count": 467,
+    "minCount": 466,
+    "maxCount": 468
   },
   "pnpm": {
-    "count": 442
+    "count": 441
   },
   "vlt": {
-    "count": 442
+    "count": 441
   },
   "bun": {
-    "count": 462,
-    "minCount": 462,
-    "maxCount": 466
+    "count": 462
   },
   "deno": {
-    "count": 440
+    "count": 439
   }
 }

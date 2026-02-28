@@ -4,11 +4,11 @@
     "minCount": 1761,
     "maxCount": 1780
   },
-  "berry": {
+  "yarn": {
     "count": 1678
   },
   "bun": {
-    "count": 1590,
+    "count": 1589,
     "minCount": 1589,
     "maxCount": 1590
   }
