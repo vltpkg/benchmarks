@@ -124,7 +124,13 @@ export const VariationChart = ({
     <defs>
       {filteredPackageManagers.map((pm) => {
         const baseColor = getColor(pm);
-        const lightColor = lightenColor(baseColor);
+        // In dark mode, vlt bars are white — lightening white is invisible.
+        // Use a light gray background with darker gray stripes instead.
+        const isWhiteBar =
+          resolvedTheme === "dark" &&
+          (baseColor === "white" || baseColor === "#ffffff" || baseColor === "#fff");
+        const lightColor = isWhiteBar ? "#d1d5db" : lightenColor(baseColor);
+        const stripeColor = isWhiteBar ? "#6b7280" : baseColor;
         return (
           <pattern
             key={`${scope}-${pm}`}
@@ -140,7 +146,7 @@ export const VariationChart = ({
               y1="0"
               x2="0"
               y2="8"
-              stroke={baseColor}
+              stroke={stripeColor}
               strokeWidth="3"
             />
           </pattern>
