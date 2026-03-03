@@ -41,6 +41,7 @@ DEFAULT_VARIATION="clean"
 AVAILABLE_REGISTRIES=(
   npm
   vlt
+  vlt-auth
   aws
 )
 
@@ -55,7 +56,7 @@ Usage:
 Options:
   --fixtures    Comma or space-separated fixture names (default: next)
   --pms         Comma or space-separated package managers (default: all)
-  --registries  Comma-separated registries for registry-* variations (default: npm,vlt,aws)
+  --registries  Comma-separated registries for registry-* variations (default: npm,vlt,vlt-auth,aws)
   --variation   Comma or space-separated benchmark variations (default: clean)
   --runs      Hyperfine runs (default: scripts/variations/common.sh default)
   --warmup    Hyperfine warmup runs (default: scripts/variations/common.sh default)
@@ -446,7 +447,7 @@ run_bench() {
       if [[ -n "$registries_env" ]]; then
         echo "  registries: $registries_env"
       else
-        echo "  registries: npm,vlt,aws (default)"
+        echo "  registries: npm,vlt,vlt-auth,aws (default)"
       fi
     fi
 

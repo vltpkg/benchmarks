@@ -60,6 +60,7 @@ BENCH_NPM_INSTALL="npm install --prefer-online --no-audit --no-fund --no-update-
 # Registry definitions
 BENCH_REGISTRY_NPM_URL="https://registry.npmjs.org/"
 BENCH_REGISTRY_VLT_URL="https://registry.vlt.io/npm/"
+BENCH_REGISTRY_VLT_AUTH_URL="https://registry.vlt.io/npm/"
 BENCH_REGISTRY_AWS_URL="https://vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/"
 BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#https://}"
 
@@ -67,6 +68,7 @@ BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#https://}"
 # Auth token is written as a literal placeholder so npm resolves it from env.
 BENCH_SETUP_REGISTRY_NPM="npm config set registry \"$BENCH_REGISTRY_NPM_URL\" --location=project"
 BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project"
+BENCH_SETUP_REGISTRY_VLT_AUTH="npm config set registry \"$BENCH_REGISTRY_VLT_AUTH_URL\" --location=project && npm config set \"//registry.vlt.io/npm/:_authToken=\${VLT_REGISTRY_AUTH_TOKEN}\" --location=project"
 BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
 
 # Registry verification helper runs in hyperfine --conclude (untimed, after each run).
@@ -75,21 +77,24 @@ BENCH_VERIFY_REGISTRY="npm config get registry && ((grep -m3 '\"resolved\"' pack
 # write to per-registry verification logs instead of per-iteration logs.
 BENCH_CONCLUDE_NPM="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/npm-verify.log 2>&1"
 BENCH_CONCLUDE_VLT_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-verify.log 2>&1"
+BENCH_CONCLUDE_VLT_AUTH_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-auth-verify.log 2>&1"
 BENCH_CONCLUDE_AWS="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/aws-verify.log 2>&1"
 
 # Registry commands are timed and should only run installs.
 BENCH_COMMAND_NPM="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT_REG="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT_AUTH_REG="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/vlt-auth-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_AWS="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/aws-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Registry include flags
 # If BENCH_INCLUDE_REGISTRY is not set, default to running all registries.
 if [ -z "${BENCH_INCLUDE_REGISTRY:-}" ]; then
-  BENCH_INCLUDE_REGISTRY="npm,vlt,aws"
+  BENCH_INCLUDE_REGISTRY="npm,vlt,vlt-auth,aws"
 fi
 
 BENCH_INCLUDE_REG_NPM=""
 BENCH_INCLUDE_REG_VLT=""
+BENCH_INCLUDE_REG_VLT_AUTH=""
 BENCH_INCLUDE_REG_AWS=""
 
 for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
@@ -97,6 +102,7 @@ for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
     "")           continue ;;
     npm)          BENCH_INCLUDE_REG_NPM=1 ;;
     vlt)          BENCH_INCLUDE_REG_VLT=1 ;;
+    vlt-auth)     BENCH_INCLUDE_REG_VLT_AUTH=1 ;;
     aws)          BENCH_INCLUDE_REG_AWS=1 ;;
     *)
       echo "Error: Unknown registry '$entry' in BENCH_INCLUDE_REGISTRY"
@@ -104,6 +110,11 @@ for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
       ;;
   esac
 done
+
+if [ -n "$BENCH_INCLUDE_REG_VLT_AUTH" ] && [ -z "${VLT_REGISTRY_AUTH_TOKEN:-}" ]; then
+  echo "Error: 'vlt-auth' registry was requested, but VLT_REGISTRY_AUTH_TOKEN is not set"
+  exit 1
+fi
 
 if [ -n "$BENCH_INCLUDE_REG_AWS" ] && [ -z "${CODEARTIFACT_AUTH_TOKEN:-}" ]; then
   echo "Error: 'aws' registry was requested, but CODEARTIFACT_AUTH_TOKEN is not set"
