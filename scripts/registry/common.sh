@@ -66,7 +66,7 @@ BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#https://}"
 # Registry setup commands run in hyperfine --prepare (untimed, before each run).
 # Auth token is written as a literal placeholder so npm resolves it from env.
 BENCH_SETUP_REGISTRY_NPM="npm config set registry \"$BENCH_REGISTRY_NPM_URL\" --location=project"
-BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project"
+BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//registry.vlt.io/npm/:_authToken=\${VLT_REGISTRY_AUTH_TOKEN}\" --location=project"
 BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
 
 # Registry verification helper runs in hyperfine --conclude (untimed, after each run).
@@ -104,6 +104,11 @@ for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
       ;;
   esac
 done
+
+if [ -n "$BENCH_INCLUDE_REG_VLT" ] && [ -z "${VLT_REGISTRY_AUTH_TOKEN:-}" ]; then
+  echo "Error: 'vlt' registry was requested, but VLT_REGISTRY_AUTH_TOKEN is not set"
+  exit 1
+fi
 
 if [ -n "$BENCH_INCLUDE_REG_AWS" ] && [ -z "${CODEARTIFACT_AUTH_TOKEN:-}" ]; then
   echo "Error: 'aws' registry was requested, but CODEARTIFACT_AUTH_TOKEN is not set"

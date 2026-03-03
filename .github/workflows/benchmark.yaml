@@ -77,6 +77,7 @@ jobs:
       - name: Run Benchmarks variations
         env:
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
+          VLT_REGISTRY_AUTH_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
         run: |
           ./bench run \
             --fixtures="${{ matrix.fixture }}" \
