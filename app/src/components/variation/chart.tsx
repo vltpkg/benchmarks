@@ -1,5 +1,13 @@
 import { useMemo, useState, useEffect, useId } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+} from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
@@ -21,6 +29,7 @@ import { YAxisToggle } from "@/components/y-axis-toggle";
 import { CHART_DEFAULTS } from "@/constants";
 import { formatPackageManagerLabel, getFixtureId } from "@/lib/utils";
 import { getFrameworkIcon } from "@/lib/get-icons";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 import type { ChartConfig } from "@/components/ui/chart";
 import type {
@@ -388,40 +397,192 @@ export const VariationChart = ({
     );
   };
 
+  const isMobile = useMediaQuery("(max-width: 767px)");
+
   if (!isPerPackage) {
     // Consolidated chart for Total Install Time
-    return (
-      <div className="space-y-8">
-        <div className="flex flex-col gap-3 md:gap-0 md:flex-row items-start md:items-center justify-between">
-          <h3 className="text-base md:text-lg w-full font-medium tracking-tighter flex items-center gap-2 group">
-            <Clock className="text-muted-foreground flex-shrink-0" />
-            <span>{title}</span>
-            <ShareButton
-              variation={currentVariation}
-              section={createSectionId(title)}
-              size="sm"
-              variant="ghost"
-              className="ml-auto"
-            />
-          </h3>
-          <div className="flex gap-2 flex-shrink-0">
-            <YAxisToggle />
-            <Button
-              onClick={handleReset}
-              disabled={isAllSelected}
-              variant="outline"
-              size="sm"
-              className="text-xs dark:bg-neutral-800 bg-white shadow-none"
-            >
-              Reset Selection
-            </Button>
+    const consolidatedHeader = (
+      <div className="flex flex-col gap-3 md:gap-0 md:flex-row items-start md:items-center justify-between">
+        <h3 className="text-base md:text-lg w-full font-medium tracking-tighter flex items-center gap-2 group">
+          <Clock className="text-muted-foreground flex-shrink-0" />
+          <span>{title}</span>
+          <ShareButton
+            variation={currentVariation}
+            section={createSectionId(title)}
+            size="sm"
+            variant="ghost"
+            className="ml-auto"
+          />
+        </h3>
+        <div className="flex gap-2 flex-shrink-0">
+          <YAxisToggle />
+          <Button
+            onClick={handleReset}
+            disabled={isAllSelected}
+            variant="outline"
+            size="sm"
+            className="text-xs dark:bg-neutral-800 bg-white shadow-none"
+          >
+            Reset Selection
+          </Button>
+        </div>
+      </div>
+    );
+
+    // MOBILE: Show individual fixture cards with horizontal bar charts
+    if (isMobile) {
+      return (
+        <div className="space-y-6">
+          {consolidatedHeader}
+
+          {/* Legend */}
+          <div className="flex flex-wrap gap-3">
+            {filteredPackageManagers.map((pm) => {
+              const isSelected = selectedPackageManagers.has(pm);
+              const formattedLabel = formatPackageManagerLabel(
+                pm,
+                showVersions ? chartData.versions : undefined,
+                { isRegistryVariation: isRegistry },
+              );
+              return (
+                <button
+                  key={pm}
+                  onClick={() => handleLegendClick(pm)}
+                  className={`flex items-center gap-2 px-2 py-1 rounded-md transition-all hover:bg-muted text-xs ${
+                    isSelected ? "opacity-100" : "opacity-40"
+                  }`}
+                >
+                  <div
+                    className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
+                    style={{ backgroundColor: getColor(pm) }}
+                  />
+                  <span className="font-medium">{formattedLabel}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Individual fixture cards */}
+          <div className="space-y-4">
+            {filteredVariationData.map((fixtureResult) => {
+              const fixture = fixtureResult.fixture;
+              const fixtureId = getFixtureId(fixture);
+              const Icon = getFrameworkIcon(fixture as Fixture);
+              const slowest = fixtureSlowestValues.get(fixture);
+
+              const barData = filteredPackageManagers
+                .filter(
+                  (pm) =>
+                    selectedPackageManagers.has(pm) &&
+                    variationActivePackageManagers.has(pm),
+                )
+                .map((pm) => {
+                  const dnfKey = `${pm}_dnf` as DnfKey;
+                  const value = fixtureResult[pm];
+                  const hasNumber = typeof value === "number";
+                  const shouldFallback =
+                    !hasNumber && typeof slowest === "number";
+                  const isDnf =
+                    fixtureResult[dnfKey] === true || shouldFallback;
+                  const resolvedValue = hasNumber ? value : slowest;
+
+                  if (typeof resolvedValue !== "number") return null;
+
+                  return {
+                    name: formatPackageManagerLabel(pm, showVersions ? chartData.versions : undefined, {
+                      isRegistryVariation: isRegistry,
+                    }),
+                    value: resolvedValue,
+                    fill: isDnf
+                      ? getDnfPatternFill(fixtureId, pm)
+                      : getColor(pm),
+                    dnf: isDnf,
+                    pm,
+                  };
+                })
+                .filter(Boolean);
+
+              const barHeight = Math.max(barData.length * 36, 120);
+
+              return (
+                <div
+                  key={fixture}
+                  id={fixtureId}
+                  className="bg-card rounded-xl p-4 border-[1px] border-border overflow-hidden"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    {Icon && <Icon />}
+                    <h4 className="text-sm font-medium capitalize">
+                      {fixture}
+                    </h4>
+                  </div>
+                  <div style={{ width: "100%", height: barHeight }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={barData}
+                        layout="vertical"
+                        margin={{ top: 0, right: 12, bottom: 0, left: 0 }}
+                      >
+                        {renderDnfPatterns(fixtureId)}
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                        <XAxis
+                          type="number"
+                          tick={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: 10,
+                            fill:
+                              resolvedTheme === "dark"
+                                ? "white"
+                                : "currentColor",
+                          }}
+                          tickCount={5}
+                        />
+                        <YAxis
+                          type="category"
+                          dataKey="name"
+                          width={70}
+                          tick={{
+                            fontSize: 10,
+                            fill:
+                              resolvedTheme === "dark"
+                                ? "white"
+                                : "currentColor",
+                          }}
+                          tickFormatter={(label: string) => {
+                            // Show just the PM name on mobile, strip version
+                            const parts = label.split(" v");
+                            return parts[0] ?? label;
+                          }}
+                        />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Bar dataKey="value" maxBarSize={28}>
+                          {barData.map((entry, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={entry?.fill}
+                            />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
+      );
+    }
 
-        <div className="bg-card rounded-xl p-3 md:p-6 border-border border-[1px] overflow-x-auto">
+    // DESKTOP: Grouped bar chart (existing layout)
+    return (
+      <div className="space-y-8">
+        {consolidatedHeader}
+
+        <div className="bg-card rounded-xl p-3 md:p-6 border-border border-[1px] overflow-hidden">
           <ChartContainer
             config={chartConfig}
-            className="min-h-[350px] md:min-h-[450px] w-full min-w-[500px]"
+            className="min-h-[350px] md:min-h-[450px] w-full"
           >
             <BarChart data={consolidatedData}>
               {renderDnfPatterns("total")}
@@ -586,11 +747,91 @@ export const VariationChart = ({
 
           const Icon = getFrameworkIcon(fixture as Fixture);
 
+          // MOBILE: Use horizontal bar chart for per-package cards
+          if (isMobile) {
+            const barHeight = Math.max(barChartData.length * 36, 120);
+            return (
+              <div
+                key={fixture}
+                id={fixtureId}
+                className="bg-card rounded-xl p-4 border-[1px] border-border overflow-hidden"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    {Icon && <Icon />}
+                    <h4 className="text-sm font-medium capitalize">
+                      {fixture} Project
+                    </h4>
+                  </div>
+                  <ShareButton
+                    variation={currentVariation}
+                    section={
+                      isPerPackage
+                        ? "per-package-install-time-by-fixture"
+                        : "total-install-time-by-fixture"
+                    }
+                    fixture={fixture}
+                    label="Share"
+                    size="sm"
+                    variant="ghost"
+                  />
+                </div>
+                <div style={{ width: "100%", height: barHeight }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={barChartData}
+                      layout="vertical"
+                      margin={{ top: 0, right: 12, bottom: 0, left: 0 }}
+                    >
+                      {renderDnfPatterns(fixtureId)}
+                      <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                      <XAxis
+                        type="number"
+                        tick={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: 10,
+                          fill:
+                            resolvedTheme === "dark"
+                              ? "white"
+                              : "currentColor",
+                        }}
+                        tickCount={5}
+                      />
+                      <YAxis
+                        type="category"
+                        dataKey="name"
+                        width={70}
+                        tick={{
+                          fontSize: 10,
+                          fill:
+                            resolvedTheme === "dark"
+                              ? "white"
+                              : "currentColor",
+                        }}
+                        tickFormatter={(label: string) => {
+                          const parts = label.split(" v");
+                          return parts[0] ?? label;
+                        }}
+                      />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Bar dataKey="value" maxBarSize={28}>
+                        {barChartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry?.fill} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            );
+          }
+
+          // DESKTOP: Vertical bar chart (existing layout)
           return (
             <div
               key={fixture}
               id={fixtureId}
-              className="bg-card rounded-xl p-3 md:p-6 border-[1px] border-border"
+              className="bg-card rounded-xl p-3 md:p-6 border-[1px] border-border overflow-hidden"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -613,7 +854,7 @@ export const VariationChart = ({
                   className="ml-auto"
                 />
               </div>
-              <div className="w-full">
+              <div className="w-full overflow-hidden">
                 <ChartContainer
                   config={individualChartConfig}
                   className={`h-[${CHART_DEFAULTS.HEIGHT}px] w-full`}
