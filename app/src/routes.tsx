@@ -29,7 +29,7 @@ const registryRoutes: RouteObject = {
   children: [
     {
       index: true,
-      element: <Navigate to="registry-lockfile" replace={true} />,
+      element: <Navigate to="registry-clean" replace={true} />,
     },
     { path: ":variation", element: <VariationPage /> },
     { path: ":variation/:section", element: <VariationPage /> },
