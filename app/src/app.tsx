@@ -44,7 +44,7 @@ const App = () => {
                 <div className="min-h-screen gradient-bg">
                   <Header chartData={chartData} />
 
-                  <main className="max-w-7xl mx-auto px-6 py-12">
+                  <main className="max-w-7xl mx-auto px-4 py-6 md:px-6 md:py-12">
                     {loading && <Loading />}
                     {error && <ErrorDisplay message={error} />}
                     <Outlet context={{ chartData }} />
@@ -56,7 +56,7 @@ const App = () => {
           </PackageManagerFilterProvider>
         ) : (
           <div className="min-h-screen gradient-bg">
-            <main className="max-w-7xl mx-auto px-6 py-12">
+            <main className="max-w-7xl mx-auto px-4 py-6 md:px-6 md:py-12">
               {loading && <Loading />}
               {error && <ErrorDisplay message={error} />}
             </main>

@@ -62,7 +62,7 @@ export const Header = ({
     >
       <HeaderWrapper>
         <HeaderSection>
-          <div className="flex md:flex-row flex-col items-start md:items-center md:justify-between gap-6">
+          <div className="flex md:flex-row flex-col items-start md:items-center md:justify-between gap-4 md:gap-6">
             <HeaderLogo />
 
             <HeaderNavigation />
@@ -124,31 +124,37 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
     return (
       <div
         ref={ref}
-        className={cn("flex md:flex-row flex-col gap-6", className)}
+        className={cn(
+          "flex md:flex-row flex-col gap-3 md:gap-6 w-full md:w-auto overflow-hidden",
+          className,
+        )}
         {...props}
       >
-        <div className="flex gap-4 md:gap-2">
-          {navigationOptions.map((option, idx) => {
-            const isActive = location.pathname.split("/")[1] === option.href;
+        <ScrollArea className="w-full md:w-auto">
+          <div className="flex gap-2 min-w-0">
+            {navigationOptions.map((option, idx) => {
+              const isActive = location.pathname.split("/")[1] === option.href;
 
-            return (
-              <Button
-                key={`${option.label}-${idx}`}
-                size="sm"
-                asChild
-                className={cn(
-                  "cursor-default rounded-lg shadow-none bg-transparent hover:bg-neutral-200 [&[data-state=open]>svg[data-id=chevron]]:rotate-90 dark:hover:bg-neutral-700 dark:bg-transparent text-black dark:text-white w-fit max-w-full",
-                  isActive && "dark:bg-neutral-500 bg-neutral-200",
-                )}
-              >
-                <NavLink to={`/${option.href}`}>{option.label}</NavLink>
-              </Button>
-            );
-          })}
-        </div>
+              return (
+                <Button
+                  key={`${option.label}-${idx}`}
+                  size="sm"
+                  asChild
+                  className={cn(
+                    "cursor-default rounded-lg shadow-none bg-transparent hover:bg-neutral-200 [&[data-state=open]>svg[data-id=chevron]]:rotate-90 dark:hover:bg-neutral-700 dark:bg-transparent text-black dark:text-white w-fit max-w-full whitespace-nowrap text-xs md:text-sm",
+                    isActive && "dark:bg-neutral-500 bg-neutral-200",
+                  )}
+                >
+                  <NavLink to={`/${option.href}`}>{option.label}</NavLink>
+                </Button>
+              );
+            })}
+          </div>
+          <ScrollBar orientation="horizontal" className="md:hidden" />
+        </ScrollArea>
 
         {chartData && (
-          <div className="flex items-center md:justify-none md:w-fit w-full gap-2">
+          <div className="flex items-center md:justify-none md:w-fit w-full gap-2 min-w-0">
             <PackageManagerFilter packageManagers={packageManagers} />
             <FixtureFilter fixtures={fixtures} />
             <VariationDropdown
@@ -189,15 +195,15 @@ const HeaderLogo = forwardRef<HTMLDivElement, ComponentProps<"div">>(
     <div
       ref={ref}
       className={cn(
-        "flex md:flex-row flex-col items-start md:items-center gap-2",
+        "flex flex-row items-center gap-2 flex-shrink-0",
         className,
       )}
       {...props}
     >
-      <Benchmarks className="size-10 md:size-6" />
-      <div className="flex flex-col md:flex-row items-start md:items-center md:gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">Benchmarks</h1>
-      </div>
+      <Benchmarks className="size-6" />
+      <h1 className="text-lg md:text-2xl font-semibold tracking-tight">
+        Benchmarks
+      </h1>
     </div>
   ),
 );
@@ -226,7 +232,9 @@ const HeaderSection = forwardRef<
     className={cn("border-border/50 border-b empty:hidden", className)}
     {...props}
   >
-    <div className="md:max-w-7xl md:mx-auto py-6 px-6 md:py-4">{children}</div>
+    <div className="md:max-w-7xl md:mx-auto py-3 px-4 md:py-4 md:px-6">
+      {children}
+    </div>
   </div>
 ));
 HeaderSection.displayName = "HeaderSection";

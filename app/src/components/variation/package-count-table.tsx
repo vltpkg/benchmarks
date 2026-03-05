@@ -221,8 +221,8 @@ export const PackageCountTable = ({
         )}
       </div>
 
-      <div className="bg-card rounded-xl border border-border overflow-hidden">
-        <Table className="cursor-default">
+      <div className="bg-card rounded-xl border border-border overflow-x-auto">
+        <Table className="cursor-default min-w-[600px]">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

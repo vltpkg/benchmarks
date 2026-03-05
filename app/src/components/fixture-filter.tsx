@@ -35,17 +35,17 @@ export const FixtureFilter = ({ fixtures }: FixtureFilterProps) => {
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger
         asChild
-        className="rounded-lg dark:border-neutral-700 dark:hover:border-neutral-600 border hover:border-neutral-300 border-neutral-200 shadow-none bg-neutral-100 hover:bg-neutral-200 [&[data-state=open]>svg[data-id=chevron]]:rotate-90 dark:hover:bg-neutral-700 dark:bg-neutral-800 text-black dark:text-white w-[150px]"
+        className="rounded-lg dark:border-neutral-700 dark:hover:border-neutral-600 border hover:border-neutral-300 border-neutral-200 shadow-none bg-neutral-100 hover:bg-neutral-200 [&[data-state=open]>svg[data-id=chevron]]:rotate-90 dark:hover:bg-neutral-700 dark:bg-neutral-800 text-black dark:text-white min-w-0 w-auto"
       >
-        <Button size="sm">
-          <Package />
+        <Button size="sm" className="text-xs md:text-sm">
+          <Package className="flex-shrink-0" />
           Fixtures
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground whitespace-nowrap">
             ({enabledCount}/{totalCount})
           </span>
           <ChevronRight
             data-id="chevron"
-            className="transition-transform duration-150 text-muted-foreground"
+            className="transition-transform duration-150 text-muted-foreground flex-shrink-0"
           />
         </Button>
       </DropdownMenuTrigger>

@@ -8,10 +8,10 @@ export const Footer = ({ lastUpdated }: { lastUpdated?: string }) => {
   const { theme } = useTheme();
 
   return (
-    <footer className="border-t border-border/50 bg-muted/20 mt-16">
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex items-start gap-6">
-          <div className="flex-shrink-0">
+    <footer className="border-t border-border/50 bg-muted/20 mt-8 md:mt-16">
+      <div className="max-w-7xl mx-auto px-4 py-6 md:px-6 md:py-8">
+        <div className="flex items-start gap-4 md:gap-6">
+          <div className="flex-shrink-0 hidden md:block">
             <a
               href="https://vlt.sh"
               target="_blank"
@@ -133,7 +133,7 @@ export const Footer = ({ lastUpdated }: { lastUpdated?: string }) => {
 
         <div
           className={cn(
-            "max-w-7xl ml-3 md:ml-0 justify-between w-full flex items-center px-6 md:pl-12 md:pr-0 py-8",
+            "max-w-7xl ml-0 justify-between w-full flex flex-col md:flex-row items-start md:items-center gap-3 px-0 md:pl-12 md:pr-0 pt-4 md:py-8",
             lastUpdated ? "md:justify-between" : "md:justify-end",
           )}
         >

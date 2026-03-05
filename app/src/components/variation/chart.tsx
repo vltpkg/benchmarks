@@ -392,10 +392,10 @@ export const VariationChart = ({
     // Consolidated chart for Total Install Time
     return (
       <div className="space-y-8">
-        <div className="flex md:flex-row flex-col items-start md:items-center justify-between">
-          <h3 className="text-lg w-full font-medium tracking-tighter flex md:items-center gap-2 group">
-            <Clock className="text-muted-foreground" />
-            <span className="-mt-1 md:mt-0">{title}</span>
+        <div className="flex flex-col gap-3 md:gap-0 md:flex-row items-start md:items-center justify-between">
+          <h3 className="text-base md:text-lg w-full font-medium tracking-tighter flex items-center gap-2 group">
+            <Clock className="text-muted-foreground flex-shrink-0" />
+            <span>{title}</span>
             <ShareButton
               variation={currentVariation}
               section={createSectionId(title)}
@@ -404,7 +404,7 @@ export const VariationChart = ({
               className="ml-auto"
             />
           </h3>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-shrink-0">
             <YAxisToggle />
             <Button
               onClick={handleReset}
@@ -418,8 +418,11 @@ export const VariationChart = ({
           </div>
         </div>
 
-        <div className="bg-card rounded-xl p-6 border-border border-[1px]">
-          <ChartContainer config={chartConfig} className="min-h-[450px] w-full">
+        <div className="bg-card rounded-xl p-3 md:p-6 border-border border-[1px] overflow-x-auto">
+          <ChartContainer
+            config={chartConfig}
+            className="min-h-[350px] md:min-h-[450px] w-full min-w-[500px]"
+          >
             <BarChart data={consolidatedData}>
               {renderDnfPatterns("total")}
               <CartesianGrid strokeDasharray="3 3" />
@@ -587,7 +590,7 @@ export const VariationChart = ({
             <div
               key={fixture}
               id={fixtureId}
-              className="bg-card rounded-xl p-6 border-[1px] border-border"
+              className="bg-card rounded-xl p-3 md:p-6 border-[1px] border-border"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
