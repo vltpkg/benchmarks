@@ -154,11 +154,19 @@ clean_git() {
   fi
 }
 
+clean_workspace_protocol() {
+  echo "Restoring package.json files (undo workspace: protocol changes)..."
+  if command -v git &> /dev/null && git rev-parse --git-dir > /dev/null 2>&1; then
+    git checkout -- packages/ package.json 2>/dev/null || true
+  fi
+}
+
 clean_all() {
   clean_node_modules
   clean_lockfiles
   clean_package_manager_field
   clean_package_manager_files
+  clean_workspace_protocol
   clean_all_cache
   clean_build_files
   echo "Cleanup completed successfully!"
@@ -243,6 +251,9 @@ else
         ;;
       clean_build_files)
         clean_build_files
+        ;;
+      clean_workspace_protocol)
+        clean_workspace_protocol
         ;;
       clean_git)
         clean_git
