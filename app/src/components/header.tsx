@@ -3,7 +3,7 @@ import { useLocation, NavLink } from "react-router";
 import { PackageManagerFilter } from "@/components/package-manager-filter";
 import { FixtureFilter } from "@/components/fixture-filter";
 import { VariationDropdown } from "@/components/variation-dropdown";
-import { Benchmarks } from "@/components/icons";
+import { Benchmarks, Package, StopWatch, Database } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   cn,
@@ -24,6 +24,7 @@ import type {
   Variation,
 } from "@/types/chart-data";
 import type { ComponentProps, PropsWithChildren } from "react";
+import type { LucideIcon } from "lucide-react";
 
 interface HeaderContextValue {
   categories: ReturnType<typeof getVariationCategories> | null;
@@ -82,6 +83,7 @@ export const Header = ({
 interface NavigationOption {
   label: string;
   href: string;
+  icon: LucideIcon;
 }
 
 const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
@@ -110,14 +112,17 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
       {
         label: "Package Managers",
         href: "package-managers",
+        icon: Package,
       },
       {
         label: "Task Runners",
         href: "task-runners",
+        icon: StopWatch,
       },
       {
         label: "Registries",
         href: "registries",
+        icon: Database,
       },
     ];
 
@@ -134,6 +139,7 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
           <div className="flex gap-2 min-w-0">
             {navigationOptions.map((option, idx) => {
               const isActive = location.pathname.split("/")[1] === option.href;
+              const Icon = option.icon;
 
               return (
                 <Button
@@ -145,7 +151,10 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
                     isActive && "dark:bg-neutral-500 bg-neutral-200",
                   )}
                 >
-                  <NavLink to={`/${option.href}`}>{option.label}</NavLink>
+                  <NavLink to={`/${option.href}`}>
+                    <Icon className="size-4" />
+                    {option.label}
+                  </NavLink>
                 </Button>
               );
             })}
@@ -159,6 +168,7 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
             <FixtureFilter fixtures={fixtures} />
             <VariationDropdown
               currentVariation={currentVariation ?? "average"}
+              baseRoute={location.pathname.split("/")[1] || "package-managers"}
               sortedVariations={(() => {
                 const baseRoute = location.pathname.split("/")[1];
                 const categories = getVariationCategories(
