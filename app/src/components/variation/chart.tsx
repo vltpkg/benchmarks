@@ -14,6 +14,7 @@ import {
   ChartTooltipContent,
   ChartLegend,
 } from "@/components/ui/chart";
+import { Tooltip as RechartsTooltip } from "recharts";
 import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/share-button";
 import {
@@ -76,6 +77,64 @@ interface ConsolidatedChartItem {
 type DnfKey = Extract<keyof FixtureResult, `${PackageManager}_dnf`>;
 type FillKey = Extract<keyof FixtureResult, `${PackageManager}_fill`>;
 
+/**
+ * Standalone tooltip content for mobile charts that use <ResponsiveContainer>
+ * instead of <ChartContainer>. ChartTooltipContent calls useChart() which
+ * requires a ChartContainer context — using it outside one crashes the app.
+ */
+const MobileTooltipContent = ({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: Array<{
+    name?: string | number;
+    value?: number | string;
+    color?: string;
+    fill?: string;
+    dataKey?: string | number;
+    payload?: Record<string, unknown>;
+  }>;
+}) => {
+  if (!active || !payload?.length) return null;
+
+  return (
+    <div className="border-border/50 bg-background rounded-lg border px-2.5 py-1.5 text-xs shadow-xl">
+      <div className="grid gap-1.5">
+        {payload.map((item, index) => {
+          const isDnf =
+            item.payload?.dnf === true ||
+            (typeof item.dataKey === "string" &&
+              item.payload?.[`${item.dataKey}_dnf`] === true);
+          const color =
+            (item.payload?.dnfColor as string) || item.fill || item.color;
+
+          return (
+            <div key={index} className="flex items-center gap-2">
+              <div
+                className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
+                style={{ backgroundColor: color }}
+              />
+              <div className="flex flex-1 justify-between items-center gap-4">
+                <span className="text-muted-foreground">
+                  {item.name ?? item.dataKey}
+                </span>
+                <span className="text-foreground font-mono font-medium tabular-nums">
+                  {isDnf
+                    ? "DNF"
+                    : typeof item.value === "number"
+                      ? item.value.toLocaleString()
+                      : String(item.value)}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 interface VariationChartProps {
   title: string;
   variationData: FixtureResult[];
@@ -137,7 +196,9 @@ export const VariationChart = ({
         // Use a light gray background with darker gray stripes instead.
         const isWhiteBar =
           resolvedTheme === "dark" &&
-          (baseColor === "white" || baseColor === "#ffffff" || baseColor === "#fff");
+          (baseColor === "white" ||
+            baseColor === "#ffffff" ||
+            baseColor === "#fff");
         const lightColor = isWhiteBar ? "#d1d5db" : lightenColor(baseColor);
         const stripeColor = isWhiteBar ? "#6b7280" : baseColor;
         return (
@@ -186,7 +247,14 @@ export const VariationChart = ({
       };
     });
     return config;
-  }, [filteredPackageManagers, colors, chartData.versions, showVersions, isRegistry, resolvedTheme]);
+  }, [
+    filteredPackageManagers,
+    colors,
+    chartData.versions,
+    showVersions,
+    isRegistry,
+    resolvedTheme,
+  ]);
 
   const individualChartConfig = useMemo(() => {
     const config: ChartConfig = {};
@@ -202,7 +270,14 @@ export const VariationChart = ({
       };
     });
     return config;
-  }, [filteredPackageManagers, colors, chartData.versions, showVersions, isRegistry, resolvedTheme]);
+  }, [
+    filteredPackageManagers,
+    colors,
+    chartData.versions,
+    showVersions,
+    isRegistry,
+    resolvedTheme,
+  ]);
 
   const yAxisLabel = isTaskExecutionVariation(currentVariation)
     ? "Time (seconds)"
@@ -489,9 +564,13 @@ export const VariationChart = ({
                   if (typeof resolvedValue !== "number") return null;
 
                   return {
-                    name: formatPackageManagerLabel(pm, showVersions ? chartData.versions : undefined, {
-                      isRegistryVariation: isRegistry,
-                    }),
+                    name: formatPackageManagerLabel(
+                      pm,
+                      showVersions ? chartData.versions : undefined,
+                      {
+                        isRegistryVariation: isRegistry,
+                      },
+                    ),
                     value: resolvedValue,
                     fill: isDnf
                       ? getDnfPatternFill(fixtureId, pm)
@@ -524,7 +603,10 @@ export const VariationChart = ({
                         margin={{ top: 0, right: 12, bottom: 0, left: 0 }}
                       >
                         {renderDnfPatterns(fixtureId)}
-                        <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          horizontal={false}
+                        />
                         <XAxis
                           type="number"
                           tick={{
@@ -554,13 +636,10 @@ export const VariationChart = ({
                             return parts[0] ?? label;
                           }}
                         />
-                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <RechartsTooltip content={<MobileTooltipContent />} />
                         <Bar dataKey="value" maxBarSize={28}>
                           {barData.map((entry, index) => (
-                            <Cell
-                              key={`cell-${index}`}
-                              fill={entry?.fill}
-                            />
+                            <Cell key={`cell-${index}`} fill={entry?.fill} />
                           ))}
                         </Bar>
                       </BarChart>
@@ -791,9 +870,7 @@ export const VariationChart = ({
                           fontFamily: "var(--font-mono)",
                           fontSize: 10,
                           fill:
-                            resolvedTheme === "dark"
-                              ? "white"
-                              : "currentColor",
+                            resolvedTheme === "dark" ? "white" : "currentColor",
                         }}
                         tickCount={5}
                       />
@@ -804,16 +881,14 @@ export const VariationChart = ({
                         tick={{
                           fontSize: 10,
                           fill:
-                            resolvedTheme === "dark"
-                              ? "white"
-                              : "currentColor",
+                            resolvedTheme === "dark" ? "white" : "currentColor",
                         }}
                         tickFormatter={(label: string) => {
                           const parts = label.split(" v");
                           return parts[0] ?? label;
                         }}
                       />
-                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <RechartsTooltip content={<MobileTooltipContent />} />
                       <Bar dataKey="value" maxBarSize={28}>
                         {barChartData.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={entry?.fill} />
@@ -875,7 +950,8 @@ export const VariationChart = ({
                         position: "outside",
                         style: {
                           textAnchor: "middle",
-                          fill: resolvedTheme === "dark" ? "white" : "currentColor",
+                          fill:
+                            resolvedTheme === "dark" ? "white" : "currentColor",
                         },
                         offset: -10,
                       }}
@@ -883,7 +959,8 @@ export const VariationChart = ({
                       tick={{
                         fontFamily: "var(--font-mono)",
                         fontSize: 12,
-                        fill: resolvedTheme === "dark" ? "white" : "currentColor",
+                        fill:
+                          resolvedTheme === "dark" ? "white" : "currentColor",
                       }}
                       width={80}
                       {...yAxisProps}
