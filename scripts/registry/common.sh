@@ -65,8 +65,11 @@ BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#https://}"
 
 # Registry setup commands run in hyperfine --prepare (untimed, before each run).
 # Auth token is written as a literal placeholder so npm resolves it from env.
+# For vlt registry, a random suffix is appended to the auth token on every
+# iteration (separated by `:`) so that each run uses a unique token string.
+# This ensures the registry does not serve cached responses across iterations.
 BENCH_SETUP_REGISTRY_NPM="npm config set registry \"$BENCH_REGISTRY_NPM_URL\" --location=project"
-BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//registry.vlt.io/npm/:_authToken=\${VLT_REGISTRY_AUTH_TOKEN}\" --location=project"
+BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//registry.vlt.io/npm/:_authToken=\${VLT_REGISTRY_AUTH_TOKEN}:\$(head -c 16 /dev/urandom | xxd -p)\" --location=project"
 BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
 
 # Registry verification helper runs in hyperfine --conclude (untimed, after each run).
