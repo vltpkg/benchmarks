@@ -4,6 +4,7 @@ export * from "./benchmarks.tsx";
 
 // general icons
 export * from "./clock.tsx";
+export * from "./database.tsx";
 export * from "./stop-watch.tsx";
 export * from "./share.tsx";
 export * from "./package.tsx";

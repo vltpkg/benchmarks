@@ -10,15 +10,26 @@ import { useLocation, useNavigate } from "react-router";
 
 import type { Variation } from "@/types/chart-data";
 
+const dropdownLabels: Record<string, string> = {
+  "package-managers": "Fixture",
+  "task-runners": "Fixture",
+  registries: "Registries",
+};
+
 export const VariationDropdown = ({
   sortedVariations,
   currentVariation,
+  baseRoute,
 }: {
   sortedVariations: Variation[];
   currentVariation: Variation;
+  baseRoute?: string;
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const resolvedRoute =
+    baseRoute || location.pathname.split("/")[1] || "package-managers";
+  const dropdownLabel = dropdownLabels[resolvedRoute] || "Fixture";
 
   return (
     <DropdownMenu>
@@ -28,7 +39,7 @@ export const VariationDropdown = ({
           size="sm"
           className="md:hidden rounded-lg dark:border-neutral-700 dark:hover:border-neutral-600 border hover:border-neutral-300 border-neutral-200 shadow-none bg-neutral-100 hover:bg-neutral-200 [&[data-state=open]>svg[data-id=chevron]]:rotate-90 dark:hover:bg-neutral-700 dark:bg-neutral-800 text-black dark:text-white w-fit max-w-full"
         >
-          Fixture
+          {dropdownLabel}
           <span className="text-xs text-muted-foreground max-w-12 truncate">
             {currentVariation}
           </span>
