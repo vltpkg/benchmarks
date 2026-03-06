@@ -1,3 +1,3 @@
-(node:5382) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:5397) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning " > @vitest/eslint-plugin@1.1.10" has unmet peer dependency "@typescript-eslint/utils@>= 8.0".
