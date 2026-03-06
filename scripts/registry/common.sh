@@ -60,8 +60,9 @@ BENCH_NPM_INSTALL="npm install --prefer-online --no-audit --no-fund --no-update-
 # Registry definitions
 BENCH_REGISTRY_NPM_URL="https://registry.npmjs.org/"
 BENCH_REGISTRY_VLT_URL="https://registry.vlt.io/npm/"
+BENCH_REGISTRY_VLT_URL_NPMRC_KEY="${BENCH_REGISTRY_VLT_URL#http*://}"
 BENCH_REGISTRY_AWS_URL="https://vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/"
-BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#https://}"
+BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#http*://}"
 
 # Registry setup commands run in hyperfine --prepare (untimed, before each run).
 # Auth token is written as a literal placeholder so npm resolves it from env.
@@ -69,8 +70,11 @@ BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#https://}"
 # iteration (separated by `:`) so that each run uses a unique token string.
 # This ensures the registry does not serve cached responses across iterations.
 BENCH_SETUP_REGISTRY_NPM="npm config set registry \"$BENCH_REGISTRY_NPM_URL\" --location=project"
-BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//registry.vlt.io/npm/:_authToken=\${VLT_REGISTRY_AUTH_TOKEN}:\$(head -c 16 /dev/urandom | xxd -p)\" --location=project"
-BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
+# The vlt registry auth token is appended with a random suffix with the iteration number to
+# ensure that a fresh cache is used for each iteration. A future update to the vlt registry
+# will allow sharing a public cache regardless of the authorization header.
+BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_VLT_URL_NPMRC_KEY}:_authToken=\\\${VLT_REGISTRY_AUTH_TOKEN}:$(head -c 16 /dev/urandom | xxd -p)_\\\${HYPERFINE_ITERATION}\" --location=project"
+BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\\\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
 
 # Registry verification helper runs in hyperfine --conclude (untimed, after each run).
 BENCH_VERIFY_REGISTRY="npm config get registry && ((grep -m3 '\"resolved\"' package-lock.json 2>/dev/null | sed 's/^[[:space:]]*//') || echo 'no lockfile yet') && echo ''"
