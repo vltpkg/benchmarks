@@ -1,0 +1,6 @@
+➤ · Yarn 6.0.0-rc.15.local
+➤ ┌ Installing packages
+➤ │ @react-dnd/asap@npm:5.0.2: Requests to registry.npmjs.org are taking suspiciously long...
+➤ │ @react-dnd/asap@npm:5.0.2: Network error: HTTP status client error (404 Not Found) for url (https://registry.npmjs.org/@react-dnd%2fasap/-/asap-5.0.2.tgz)
+➤ │ Fetched 1347 packages (291.10 MiB)
+➤ └ Completed in 5s 344ms
