@@ -59,10 +59,14 @@ export const Footer = ({ lastUpdated }: { lastUpdated?: string }) => {
                   </h4>
                   <ul className="text-neutral-500 font-medium space-y-1 text-sm">
                     <li>
-                      • <strong>VM:</strong> Linux
+                      • <strong>VM:</strong> Linux (Ubuntu 24.04)
                     </li>
                     <li>
-                      • <strong>Processor (CPU):</strong> 4 cores
+                      • <strong>Architecture:</strong> arm64
+                    </li>
+                    <li>
+                      • <strong>Processor (CPU):</strong> 4 cores (Ampere Altra
+                      Arm)
                     </li>
                     <li>
                       • <strong>Memory (RAM):</strong> 16 GB
@@ -71,7 +75,7 @@ export const Footer = ({ lastUpdated }: { lastUpdated?: string }) => {
                       • <strong>Storage (SSD):</strong> 14 GB
                     </li>
                     <li>
-                      • <strong>Workflow label:</strong> ubuntu-latest
+                      • <strong>Workflow label:</strong> ubuntu-24.04-arm
                     </li>
                   </ul>
                 </div>
