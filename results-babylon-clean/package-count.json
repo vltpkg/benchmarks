@@ -1,26 +1,26 @@
 {
   "npm": {
-    "count": 1763,
-    "minCount": 1760,
-    "maxCount": 1779
+    "count": 1771,
+    "minCount": 1768,
+    "maxCount": 1788
   },
   "berry": {
-    "count": 1736,
-    "minCount": 1678,
-    "maxCount": 1793
+    "count": 1748,
+    "minCount": 1691,
+    "maxCount": 1805
   },
   "pnpm": {
-    "count": 1500
+    "count": 1507
   },
   "vlt": {
-    "count": 1504
+    "count": 1510
   },
   "bun": {
-    "count": 1589,
-    "minCount": 1588,
-    "maxCount": 1589
+    "count": 1595,
+    "minCount": 1595,
+    "maxCount": 1596
   },
   "deno": {
-    "count": 1464
+    "count": 1471
   }
 }
