@@ -4,11 +4,6 @@ set -Eeuxo pipefail
 # Load registry common variables
 source "$1/registry/common.sh"
 
-# Limit runs for the babylon fixture since each clean install is very slow
-if [ "$BENCH_FIXTURE" = "babylon" ] && [ "$BENCH_RUNS" -gt 5 ]; then
-  BENCH_RUNS=5
-fi
-
 # Prepare command base for each run: clean everything and remove .npmrc
 BENCH_PREPARE_BASE="sleep 1; bash $BENCH_SCRIPTS/clean-helpers.sh clean_all clean_npmrc"
 
