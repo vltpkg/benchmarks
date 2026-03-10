@@ -17,7 +17,7 @@ on:
         default: "2"
       runs:
         description: "The number of runs on each benchmark"
-        default: "10"
+        default: "5"
   schedule:
     # GitHub Actions cron uses UTC. 10:17 UTC ~= 2:17 AM Pacific (PST).
     - cron: "17 10 * * *"
@@ -45,7 +45,7 @@ jobs:
     env:
       BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node"') }}
       BENCH_WARMUP: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.warmup || '2') }}
-      BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '10') }}
+      BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '5') }}
     steps:
       - uses: actions/checkout@v6
       - name: Install Node
