@@ -78,11 +78,12 @@ type DnfKey = Extract<keyof FixtureResult, `${PackageManager}_dnf`>;
 type FillKey = Extract<keyof FixtureResult, `${PackageManager}_fill`>;
 
 /**
- * Standalone tooltip content for mobile charts that use <ResponsiveContainer>
- * instead of <ChartContainer>. ChartTooltipContent calls useChart() which
- * requires a ChartContainer context — using it outside one crashes the app.
+ * Standalone tooltip content for horizontal bar charts that use
+ * <ResponsiveContainer> instead of <ChartContainer>. The shadcn/ui
+ * ChartTooltipContent calls useChart() which requires a ChartContainer
+ * context — using it outside one crashes the app.
  */
-const MobileTooltipContent = ({
+const HorizontalBarTooltipContent = ({
   active,
   payload,
 }: {
@@ -143,14 +144,6 @@ interface VariationChartProps {
   chartData: BenchmarkChartData;
   isPerPackage: boolean;
   currentVariation: string;
-}
-
-interface CustomXAxisTickProps {
-  x?: number | string;
-  y?: number | string;
-  payload?: {
-    value?: string | number;
-  };
 }
 
 export const VariationChart = ({
@@ -243,29 +236,6 @@ export const VariationChart = ({
           showVersions ? chartData.versions : undefined,
           { isRegistryVariation: isRegistry },
         ),
-        color: getColor(pm),
-      };
-    });
-    return config;
-  }, [
-    filteredPackageManagers,
-    colors,
-    chartData.versions,
-    showVersions,
-    isRegistry,
-    resolvedTheme,
-  ]);
-
-  const individualChartConfig = useMemo(() => {
-    const config: ChartConfig = {};
-    filteredPackageManagers.forEach((pm) => {
-      const labelWithVersion = formatPackageManagerLabel(
-        pm,
-        showVersions ? chartData.versions : undefined,
-        { isRegistryVariation: isRegistry },
-      );
-      config[labelWithVersion] = {
-        label: labelWithVersion,
         color: getColor(pm),
       };
     });
@@ -419,59 +389,6 @@ export const VariationChart = ({
     return label;
   };
 
-  const CustomXAxisTick = (props: CustomXAxisTickProps) => {
-    const { x, y, payload } = props;
-
-    if (
-      typeof x !== "number" ||
-      typeof y !== "number" ||
-      payload?.value === undefined ||
-      payload?.value === null
-    ) {
-      return <g></g>; // Return empty group instead of null
-    }
-
-    const text = normalizeTickLabel(String(payload.value));
-
-    // Split the text into package manager and version
-    const parts = text.split(" v");
-    const packageManager = parts[0] as PackageManager | undefined;
-    const version = parts[1] ? `v${parts[1]}` : "";
-
-    return (
-      <g transform={`translate(${x},${y})`}>
-        {/* Package manager name - bold, top line */}
-        <text
-          x={0}
-          y={0}
-          dy={6}
-          textAnchor="middle"
-          fill="#374151"
-          fontSize="11"
-          fontFamily="var(--font-mono)"
-          fontWeight="bold"
-        >
-          {packageManager}
-        </text>
-        {/* Version - normal weight, bottom line */}
-        {version && (
-          <text
-            x={0}
-            y={0}
-            dy={20}
-            textAnchor="middle"
-            fill="#6B7280"
-            fontSize="10"
-            fontFamily="var(--font-mono)"
-            fontWeight="normal"
-          >
-            {version}
-          </text>
-        )}
-      </g>
-    );
-  };
-
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   if (!isPerPackage) {
@@ -579,7 +496,8 @@ export const VariationChart = ({
                     pm,
                   };
                 })
-                .filter(Boolean);
+                .filter(Boolean)
+                .sort((a, b) => (a?.value ?? 0) - (b?.value ?? 0));
 
               const barHeight = Math.max(barData.length * 36, 120);
 
@@ -636,7 +554,9 @@ export const VariationChart = ({
                             return parts[0] ?? label;
                           }}
                         />
-                        <RechartsTooltip content={<MobileTooltipContent />} />
+                        <RechartsTooltip
+                          content={<HorizontalBarTooltipContent />}
+                        />
                         <Bar dataKey="value" maxBarSize={28}>
                           {barData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry?.fill} />
@@ -773,6 +693,7 @@ export const VariationChart = ({
   }
 
   // Individual charts for Per Package Install Time
+  // Uses horizontal bar charts sorted fastest-to-slowest for all screen sizes
   return (
     <div className="space-y-8">
       <div>
@@ -822,96 +743,22 @@ export const VariationChart = ({
                 dnfColor: getColor(pm),
               };
             })
-            .filter(Boolean);
+            .filter(Boolean)
+            .sort((a, b) => (a?.value ?? 0) - (b?.value ?? 0));
 
           const Icon = getFrameworkIcon(fixture as Fixture);
+          const barHeight = Math.max(barChartData.length * 40, 120);
 
-          // MOBILE: Use horizontal bar chart for per-package cards
-          if (isMobile) {
-            const barHeight = Math.max(barChartData.length * 36, 120);
-            return (
-              <div
-                key={fixture}
-                id={fixtureId}
-                className="bg-card rounded-xl p-4 border-[1px] border-border overflow-hidden"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    {Icon && <Icon />}
-                    <h4 className="text-sm font-medium capitalize">
-                      {fixture} Project
-                    </h4>
-                  </div>
-                  <ShareButton
-                    variation={currentVariation}
-                    section={
-                      isPerPackage
-                        ? "per-package-install-time-by-fixture"
-                        : "total-install-time-by-fixture"
-                    }
-                    fixture={fixture}
-                    label="Share"
-                    size="sm"
-                    variant="ghost"
-                  />
-                </div>
-                <div style={{ width: "100%", height: barHeight }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={barChartData}
-                      layout="vertical"
-                      margin={{ top: 0, right: 12, bottom: 0, left: 0 }}
-                    >
-                      {renderDnfPatterns(fixtureId)}
-                      <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                      <XAxis
-                        type="number"
-                        tick={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: 10,
-                          fill:
-                            resolvedTheme === "dark" ? "white" : "currentColor",
-                        }}
-                        tickCount={5}
-                      />
-                      <YAxis
-                        type="category"
-                        dataKey="name"
-                        width={70}
-                        tick={{
-                          fontSize: 10,
-                          fill:
-                            resolvedTheme === "dark" ? "white" : "currentColor",
-                        }}
-                        tickFormatter={(label: string) => {
-                          const parts = label.split(" v");
-                          return parts[0] ?? label;
-                        }}
-                      />
-                      <RechartsTooltip content={<MobileTooltipContent />} />
-                      <Bar dataKey="value" maxBarSize={28}>
-                        {barChartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry?.fill} />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            );
-          }
-
-          // DESKTOP: Vertical bar chart (existing layout)
           return (
             <div
               key={fixture}
               id={fixtureId}
-              className="bg-card rounded-xl p-3 md:p-6 border-[1px] border-border overflow-hidden"
+              className="bg-card rounded-xl p-4 md:p-6 border-[1px] border-border overflow-hidden"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 md:gap-3">
                   {Icon && <Icon />}
-                  <h4 className="text-md font-medium capitalize">
+                  <h4 className="text-sm md:text-md font-medium capitalize">
                     {fixture} Project
                   </h4>
                 </div>
@@ -926,53 +773,59 @@ export const VariationChart = ({
                   label="Share"
                   size="sm"
                   variant="ghost"
-                  className="ml-auto"
                 />
               </div>
-              <div className="w-full overflow-hidden">
-                <ChartContainer
-                  config={individualChartConfig}
-                  className={`h-[${CHART_DEFAULTS.HEIGHT}px] w-full`}
-                >
-                  <BarChart data={barChartData}>
+              <div style={{ width: "100%", height: barHeight }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={barChartData}
+                    layout="vertical"
+                    margin={{
+                      top: 0,
+                      right: isMobile ? 12 : 24,
+                      bottom: 0,
+                      left: 0,
+                    }}
+                  >
                     {renderDnfPatterns(fixtureId)}
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                     <XAxis
-                      dataKey="name"
-                      tick={(props) => <CustomXAxisTick {...props} />}
-                      height={70}
-                      interval={0}
-                    />
-                    <YAxis
-                      label={{
-                        value: yAxisLabel,
-                        angle: -90,
-                        position: "outside",
-                        style: {
-                          textAnchor: "middle",
-                          fill:
-                            resolvedTheme === "dark" ? "white" : "currentColor",
-                        },
-                        offset: -10,
-                      }}
-                      tickCount={CHART_DEFAULTS.TICK_COUNT}
+                      type="number"
                       tick={{
                         fontFamily: "var(--font-mono)",
-                        fontSize: 12,
+                        fontSize: isMobile ? 10 : 12,
                         fill:
                           resolvedTheme === "dark" ? "white" : "currentColor",
                       }}
-                      width={80}
-                      {...yAxisProps}
+                      tickCount={5}
                     />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="value">
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      width={isMobile ? 70 : 120}
+                      tick={{
+                        fontSize: isMobile ? 10 : 12,
+                        fill:
+                          resolvedTheme === "dark" ? "white" : "currentColor",
+                      }}
+                      tickFormatter={(label: string) => {
+                        if (isMobile) {
+                          const parts = label.split(" v");
+                          return parts[0] ?? label;
+                        }
+                        return normalizeTickLabel(label);
+                      }}
+                    />
+                    <RechartsTooltip
+                      content={<HorizontalBarTooltipContent />}
+                    />
+                    <Bar dataKey="value" maxBarSize={32}>
                       {barChartData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry?.fill} />
                       ))}
                     </Bar>
                   </BarChart>
-                </ChartContainer>
+                </ResponsiveContainer>
               </div>
             </div>
           );
