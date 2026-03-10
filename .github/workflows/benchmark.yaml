@@ -24,7 +24,7 @@ on:
 
 # Prevent multiple runs from interfering with each other
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-bust
   cancel-in-progress: true
 
 jobs:
