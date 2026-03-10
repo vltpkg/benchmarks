@@ -33,7 +33,7 @@ fi
 # Defines configurable values for the benchmark
 BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node}"
 BENCH_WARMUP="${BENCH_WARMUP:=2}"
-BENCH_RUNS="${BENCH_RUNS:=10}"
+BENCH_RUNS="${BENCH_RUNS:=5}"
 for pm in npm yarn berry zpm pnpm vlt bun deno nx turbo node; do
   CHOICE=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
   if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
