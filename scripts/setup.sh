@@ -21,8 +21,7 @@ echo "Installing system dependencies..."
 sudo apt-get update && sudo apt-get install -y jq
 
 # Install Hyperfine
-wget https://github.com/sharkdp/hyperfine/releases/download/v1.19.0/hyperfine_1.19.0_amd64.deb
-sudo dpkg -i hyperfine_1.19.0_amd64.deb
+sudo apt-get install -y hyperfine
 
 echo "Required system dependencies installed successfully!"
 JQ_VERSION=$(jq --version)
