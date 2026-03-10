@@ -11,10 +11,12 @@ import { PackageManagerFilterProvider } from "@/contexts/package-manager-filter-
 import { YAxisProvider } from "@/contexts/y-axis-context";
 import { Toaster } from "@/components/ui/sonner";
 import { useChartData } from "@/hooks/use-chart-data";
+import { useHistoryData } from "@/hooks/use-history-data";
 import { getAllFixtures, sortVariations } from "@/lib/utils";
 
 const App = () => {
   const { chartData, loading, error } = useChartData();
+  const { historyData } = useHistoryData();
   const location = useLocation();
   const navigate = useNavigate();
   const initialFixtures = useMemo(
@@ -47,7 +49,7 @@ const App = () => {
                   <main className="max-w-7xl mx-auto px-4 py-6 md:px-6 md:py-12">
                     {loading && <Loading />}
                     {error && <ErrorDisplay message={error} />}
-                    <Outlet context={{ chartData }} />
+                    <Outlet context={{ chartData, historyData }} />
                   </main>
                   <Footer lastUpdated={chartData.date} />
                 </div>

@@ -1,0 +1,206 @@
+import { useState, useEffect } from "react";
+import type { HistoryData, HistoryVariation } from "@/types/history";
+
+/** Max days to attempt fetching (generates date strings, 404s are skipped) */
+const MAX_DAYS = 180;
+
+/** How many fetches to run in parallel */
+const CONCURRENCY = 10;
+
+const PACKAGE_MANAGERS = [
+  "npm",
+  "yarn",
+  "pnpm",
+  "berry",
+  "zpm",
+  "deno",
+  "bun",
+  "vlt",
+];
+
+interface UseHistoryDataReturn {
+  historyData: HistoryData | null;
+  loading: boolean;
+  error: string | null;
+}
+
+/** Generate YYYY-MM-DD strings for the last N days (most recent last) */
+function generateDateStrings(days: number): string[] {
+  const dates: string[] = [];
+  const now = new Date();
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    dates.push(d.toISOString().slice(0, 10));
+  }
+  return dates;
+}
+
+/** Run async tasks with a concurrency limit */
+async function parallelLimit<T>(
+  tasks: (() => Promise<T>)[],
+  limit: number,
+): Promise<T[]> {
+  const results: T[] = new Array(tasks.length);
+  let idx = 0;
+
+  async function worker() {
+    while (idx < tasks.length) {
+      const i = idx++;
+      results[i] = await tasks[i]();
+    }
+  }
+
+  await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, worker));
+  return results;
+}
+
+interface ChartDataResponse {
+  date: string;
+  chartData: {
+    variations: string[];
+    data: Record<
+      string,
+      Array<Record<string, number | string> & { fixture: string }>
+    >;
+    packageManagers: string[];
+  };
+}
+
+/**
+ * Extract per-PM averages (across fixtures) for each variation from a single
+ * day's chart-data.json response.
+ */
+function extractDayData(
+  response: ChartDataResponse,
+): Record<string, Record<string, number>> {
+  const result: Record<string, Record<string, number>> = {};
+  const { data } = response.chartData;
+
+  for (const [variation, fixtures] of Object.entries(data)) {
+    if (!Array.isArray(fixtures) || fixtures.length === 0) continue;
+
+    const pmTotals: Record<string, { sum: number; count: number }> = {};
+
+    for (const fixture of fixtures) {
+      for (const pm of PACKAGE_MANAGERS) {
+        const val = fixture[pm];
+        if (typeof val === "number" && Number.isFinite(val)) {
+          if (!pmTotals[pm]) pmTotals[pm] = { sum: 0, count: 0 };
+          pmTotals[pm].sum += val;
+          pmTotals[pm].count++;
+        }
+      }
+    }
+
+    const pmAverages: Record<string, number> = {};
+    for (const [pm, { sum, count }] of Object.entries(pmTotals)) {
+      pmAverages[pm] = Math.round((sum / count) * 1000) / 1000;
+    }
+
+    if (Object.keys(pmAverages).length > 0) {
+      result[variation] = pmAverages;
+    }
+  }
+
+  return result;
+}
+
+export const useHistoryData = (): UseHistoryDataReturn => {
+  const [historyData, setHistoryData] = useState<HistoryData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const dateStrings = generateDateStrings(MAX_DAYS);
+
+        // Fetch each date's chart-data.json in parallel with concurrency limit
+        type FetchResult = { date: string; data: ChartDataResponse } | null;
+
+        const tasks = dateStrings.map(
+          (date) => async (): Promise<FetchResult> => {
+            try {
+              const response = await fetch(`/${date}/chart-data.json`);
+              if (!response.ok) return null;
+              const data: ChartDataResponse = await response.json();
+              return { date, data };
+            } catch {
+              return null;
+            }
+          },
+        );
+
+        const results = await parallelLimit(tasks, CONCURRENCY);
+
+        // Build the HistoryData structure from successful fetches
+        const successfulResults = results.filter(
+          (r): r is NonNullable<FetchResult> => r !== null,
+        );
+
+        if (successfulResults.length < 2) {
+          // Not enough data to show a meaningful chart
+          setHistoryData(null);
+          return;
+        }
+
+        // Collect all variations seen across all dates
+        const allVariations = new Set<string>();
+        const dayDataMap = new Map<
+          string,
+          Record<string, Record<string, number>>
+        >();
+
+        for (const { date, data } of successfulResults) {
+          const dayData = extractDayData(data);
+          dayDataMap.set(date, dayData);
+          for (const variation of Object.keys(dayData)) {
+            allVariations.add(variation);
+          }
+        }
+
+        const dates = successfulResults.map((r) => r.date);
+        const variations: Record<string, HistoryVariation> = {};
+
+        for (const variation of allVariations) {
+          const pmSeries: HistoryVariation = {};
+          for (const pm of PACKAGE_MANAGERS) {
+            pmSeries[pm] = [];
+          }
+
+          for (const date of dates) {
+            const dayData = dayDataMap.get(date);
+            const varData = dayData?.[variation];
+            for (const pm of PACKAGE_MANAGERS) {
+              pmSeries[pm].push(varData?.[pm] ?? null);
+            }
+          }
+
+          // Only include variation if it has data
+          const hasData = Object.values(pmSeries).some((arr) =>
+            arr.some((v) => v !== null),
+          );
+          if (hasData) {
+            variations[variation] = pmSeries;
+          }
+        }
+
+        setHistoryData({ dates, variations });
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : "Unknown error";
+        console.warn("History data not available:", msg);
+        setError(msg);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHistory();
+  }, []);
+
+  return { historyData, loading, error };
+};

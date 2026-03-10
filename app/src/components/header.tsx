@@ -148,7 +148,8 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
                   asChild
                   className={cn(
                     "cursor-default rounded-lg shadow-none bg-transparent hover:bg-neutral-200 [&[data-state=open]>svg[data-id=chevron]]:rotate-90 dark:hover:bg-neutral-700 dark:bg-transparent text-black dark:text-white w-fit max-w-full whitespace-nowrap text-xs md:text-sm",
-                    isActive && "dark:bg-neutral-500 bg-neutral-200",
+                    isActive &&
+                      "bg-black text-white hover:bg-black hover:text-white dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black",
                   )}
                 >
                   <NavLink to={`/${option.href}`}>
@@ -351,7 +352,7 @@ const VariationButton = ({
       className={cn(
         "cursor-default rounded-lg dark:border-neutral-700 dark:hover:border-neutral-600 border hover:border-neutral-300 border-neutral-200 shadow-none bg-neutral-100 hover:bg-neutral-200 [&[data-state=open]>svg[data-id=chevron]]:rotate-90 dark:hover:bg-neutral-700 dark:bg-neutral-800 text-black dark:text-white w-fit max-w-full",
         isActive &&
-          "dark:bg-neutral-600 bg-neutral-300 border-neutral-400 dark:border-neutral-500",
+          "bg-black text-white border-black hover:bg-black hover:text-white hover:border-black dark:bg-white dark:text-black dark:border-white dark:hover:bg-white dark:hover:text-black dark:hover:border-white",
       )}
     >
       <NavLink to={`/${baseRoute}/${variation}`}>{variation}</NavLink>

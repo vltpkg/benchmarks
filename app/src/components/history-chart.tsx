@@ -1,0 +1,223 @@
+import { useMemo, useState } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { Button } from "@/components/ui/button";
+import { resolveTheme, useTheme } from "@/components/theme-provider";
+import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { TrendingUp } from "lucide-react";
+import { format, parseISO } from "date-fns";
+
+import type { ChartConfig } from "@/components/ui/chart";
+import type { HistoryData, HistoryDataPoint } from "@/types/history";
+import type { ColorMap, PackageManager } from "@/types/chart-data";
+
+const RANGE_OPTIONS = [
+  { label: "30d", days: 30 },
+  { label: "60d", days: 60 },
+  { label: "90d", days: 90 },
+  { label: "All", days: Infinity },
+] as const;
+
+interface HistoryChartProps {
+  historyData: HistoryData;
+  currentVariation: string;
+  colors: ColorMap;
+  packageManagers: PackageManager[];
+}
+
+export const HistoryChart = ({
+  historyData,
+  currentVariation,
+  colors,
+  packageManagers,
+}: HistoryChartProps) => {
+  const { theme } = useTheme();
+  const resolvedTheme = resolveTheme(theme);
+  const { enabledPackageManagers } = usePackageManagerFilter();
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [range, setRange] = useState<number>(90);
+
+  const variationData = historyData.variations[currentVariation];
+
+  const filteredPMs = useMemo(
+    () => packageManagers.filter((pm) => enabledPackageManagers.has(pm)),
+    [packageManagers, enabledPackageManagers],
+  );
+
+  const getColor = (pm: PackageManager) =>
+    pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm];
+
+  const chartConfig = useMemo(() => {
+    const config: ChartConfig = {};
+    filteredPMs.forEach((pm) => {
+      config[pm] = {
+        label: pm,
+        color: getColor(pm),
+      };
+    });
+    return config;
+  }, [filteredPMs, colors, resolvedTheme]);
+
+  const chartData = useMemo((): HistoryDataPoint[] => {
+    if (!variationData) return [];
+
+    const { dates } = historyData;
+    const startIdx =
+      range === Infinity ? 0 : Math.max(0, dates.length - range);
+
+    const points: HistoryDataPoint[] = [];
+    for (let i = startIdx; i < dates.length; i++) {
+      const point: HistoryDataPoint = { date: dates[i] };
+      let hasAny = false;
+
+      for (const pm of filteredPMs) {
+        const series = variationData[pm];
+        if (series && series[i] !== null && series[i] !== undefined) {
+          point[pm] = series[i];
+          hasAny = true;
+        }
+      }
+
+      if (hasAny) {
+        points.push(point);
+      }
+    }
+
+    return points;
+  }, [historyData, variationData, filteredPMs, range]);
+
+  if (!variationData || chartData.length < 2) {
+    return null;
+  }
+
+  const formatDateTick = (dateStr: string) => {
+    try {
+      return format(parseISO(dateStr), isMobile ? "M/d" : "MMM d");
+    } catch {
+      return dateStr;
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col gap-3 md:gap-0 md:flex-row items-start md:items-center justify-between">
+        <h3 className="text-base md:text-lg w-full font-medium tracking-tighter flex items-center gap-2">
+          <TrendingUp className="size-5 text-muted-foreground flex-shrink-0" />
+          <span>Performance Over Time</span>
+        </h3>
+        <div className="flex gap-1 flex-shrink-0">
+          {RANGE_OPTIONS.map((opt) => (
+            <Button
+              key={opt.label}
+              size="sm"
+              variant="outline"
+              onClick={() => setRange(opt.days)}
+              className={`text-xs shadow-none ${
+                range === opt.days
+                  ? "bg-black text-white hover:bg-black hover:text-white dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black"
+                  : "dark:bg-neutral-800 bg-white"
+              }`}
+            >
+              {opt.label}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-card rounded-xl p-3 md:p-6 border-border border-[1px] overflow-hidden">
+        <ChartContainer
+          config={chartConfig}
+          className="min-h-[250px] md:min-h-[350px] w-full"
+        >
+          <LineChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="date"
+              tickFormatter={formatDateTick}
+              tick={{
+                fontSize: isMobile ? 10 : 12,
+                fill: resolvedTheme === "dark" ? "white" : "currentColor",
+              }}
+              interval="preserveStartEnd"
+              minTickGap={isMobile ? 40 : 60}
+            />
+            <YAxis
+              label={{
+                value: "Time (seconds)",
+                angle: -90,
+                position: "outside",
+                style: {
+                  textAnchor: "middle",
+                  fill: resolvedTheme === "dark" ? "white" : "currentColor",
+                },
+                offset: -10,
+              }}
+              tick={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 12,
+                fill: resolvedTheme === "dark" ? "white" : "currentColor",
+              }}
+              width={80}
+            />
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(label) => {
+                    try {
+                      return format(parseISO(String(label)), "MMM d, yyyy");
+                    } catch {
+                      return String(label);
+                    }
+                  }}
+                />
+              }
+            />
+            {filteredPMs.map((pm) => (
+              <Line
+                key={pm}
+                type="monotone"
+                dataKey={pm}
+                stroke={getColor(pm)}
+                strokeWidth={2}
+                dot={false}
+                connectNulls
+                name={pm}
+              />
+            ))}
+          </LineChart>
+        </ChartContainer>
+
+        {/* Legend */}
+        <div className="flex flex-wrap justify-center gap-4 mt-4">
+          {filteredPMs.map((pm) => {
+            const series = variationData[pm];
+            const hasData =
+              series && series.some((v) => v !== null && v !== undefined);
+            if (!hasData) return null;
+
+            return (
+              <div key={pm} className="flex items-center gap-2 text-sm">
+                <div
+                  className="w-3 h-0.5 rounded-full"
+                  style={{ backgroundColor: getColor(pm) }}
+                />
+                <span className="font-medium text-muted-foreground">{pm}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
