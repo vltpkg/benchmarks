@@ -28,9 +28,61 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  detect-changes:
+    name: "Detect Changes"
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      app_only: ${{ steps.check.outputs.app_only }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Check changed files
+        id: check
+        run: |
+          # For scheduled runs and manual triggers, always run benchmarks
+          if [[ "${{ github.event_name }}" != "push" ]]; then
+            echo "app_only=false" >> "$GITHUB_OUTPUT"
+            echo "Non-push event (${{ github.event_name }}), running full benchmarks"
+            exit 0
+          fi
+
+          # Get the list of changed files between this push and the previous commit
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "app_only=false" >> "$GITHUB_OUTPUT"
+            echo "Could not determine changed files, running full benchmarks"
+            exit 0
+          fi
+
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Check if ALL changed files are under app/ (or non-benchmark files like README, .editorconfig)
+          APP_ONLY=true
+          while IFS= read -r file; do
+            case "$file" in
+              app/*|README.md|.editorconfig|.cursor/*|.github/workflows/*)
+                # App or non-benchmark files — safe to skip benchmarks
+                ;;
+              *)
+                # Benchmark-relevant file changed
+                APP_ONLY=false
+                echo "Benchmark-relevant file changed: $file"
+                break
+                ;;
+            esac
+          done <<< "$CHANGED_FILES"
+
+          echo "app_only=$APP_ONLY" >> "$GITHUB_OUTPUT"
+          echo "App-only changes: $APP_ONLY"
+
   benchmark:
     name: "Run Benchmarks"
     runs-on: ubuntu-24.04-arm
+    needs: [detect-changes]
+    if: needs.detect-changes.outputs.app_only != 'true'
     timeout-minutes: 120
     strategy:
       matrix:
@@ -97,7 +149,8 @@ jobs:
   process:
     name: "Process Results"
     runs-on: ubuntu-24.04-arm
-    needs: [benchmark]
+    needs: [detect-changes, benchmark]
+    if: needs.detect-changes.outputs.app_only != 'true'
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
@@ -136,10 +189,10 @@ jobs:
   deploy:
     name: "Deploy Results"
     runs-on: ubuntu-24.04-arm
-    needs: [process]
+    needs: [detect-changes, process]
     permissions:
       contents: write
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.detect-changes.outputs.app_only != 'true'
     steps:
       - uses: actions/checkout@v6
       - name: Download Results
@@ -147,6 +200,46 @@ jobs:
         with:
           name: results
           path: results/
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: results
+          keep_files: true
+
+  deploy-app:
+    name: "Deploy App Only"
+    runs-on: ubuntu-24.04-arm
+    needs: [detect-changes]
+    permissions:
+      contents: write
+    if: github.ref == 'refs/heads/main' && needs.detect-changes.outputs.app_only == 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - name: Checkout gh-pages data
+        uses: actions/checkout@v6
+        with:
+          ref: gh-pages
+          path: gh-pages-data
+      - name: Install vlt
+        run: |
+          npm install -g vlt@latest
+      - name: Build App
+        run: |
+          pushd app
+          vlt install || true
+          vlt run build
+          popd
+      - name: Prepare deploy directory
+        run: |
+          # Copy the latest data files from gh-pages into the built results
+          cp -r gh-pages-data/latest results/latest
+          # Copy index.html and assets from the fresh build are already in results/
+          # The deploy action with keep_files merges with existing gh-pages content
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
