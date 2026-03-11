@@ -7,7 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ListFilter, Check, ChevronRight } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
+import { TerminalWindow } from "@/components/icons";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { getPackageManagerDisplayName } from "@/lib/utils";
 import { resolveTheme, useTheme } from "@/components/theme-provider";
@@ -52,7 +53,7 @@ export const PackageManagerFilter = ({
         className="rounded-lg dark:border-neutral-700 dark:hover:border-neutral-600 border hover:border-neutral-300 border-neutral-200 shadow-none bg-neutral-100 hover:bg-neutral-200 [&[data-state=open]>svg[data-id=chevron]]:rotate-90 dark:hover:bg-neutral-700 dark:bg-neutral-800 text-black dark:text-white min-w-0 w-auto"
       >
         <Button size="sm" className="text-xs md:text-sm">
-          <ListFilter className="flex-shrink-0" />
+          <TerminalWindow className="flex-shrink-0" />
           Tools
           <span className="text-xs text-muted-foreground whitespace-nowrap">
             ({enabledCount}/{totalCount})

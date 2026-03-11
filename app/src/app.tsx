@@ -51,7 +51,7 @@ const App = () => {
                     {error && <ErrorDisplay message={error} />}
                     <Outlet context={{ chartData, historyData }} />
                   </main>
-                  <Footer lastUpdated={chartData.date} />
+                  <Footer />
                 </div>
               </YAxisProvider>
             </FixtureFilterProvider>

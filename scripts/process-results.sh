@@ -124,9 +124,12 @@ else
     echo "Warning: No results found for run"
 fi
 
+# Get the commit SHA associated with this run (available in GitHub Actions)
+COMMIT_SHA="${GITHUB_SHA:-$(git rev-parse HEAD 2>/dev/null || echo "")}"
+
 # Generate visualization
 echo "Generating visualization..."
-if ! node scripts/generate-chart.js "$DATE"; then
+if ! node scripts/generate-chart.js "$DATE" "$COMMIT_SHA"; then
     echo "Error: Failed to generate chart"
     exit 1
 fi

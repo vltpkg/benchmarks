@@ -5,6 +5,7 @@ import { FixtureFilter } from "@/components/fixture-filter";
 import { VariationDropdown } from "@/components/variation-dropdown";
 import { Benchmarks, Package, StopWatch, Database } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 import {
   cn,
   calculateLeaderboard,
@@ -207,21 +208,47 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
 HeaderNavigation.displayName = "HeaderNavigation";
 
 const HeaderLogo = forwardRef<HTMLDivElement, ComponentProps<"div">>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        "flex flex-row items-center gap-2 flex-shrink-0",
-        className,
-      )}
-      {...props}
-    >
-      <Benchmarks className="size-6" />
-      <h1 className="text-lg md:text-2xl font-semibold tracking-tight">
-        Benchmarks
-      </h1>
-    </div>
-  ),
+  ({ className, ...props }, ref) => {
+    const { chartData } = useHeaderContext();
+    const lastUpdated = chartData?.date;
+    const commitSha = chartData?.commitSha;
+    const shortSha = commitSha ? commitSha.slice(0, 7) : undefined;
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "flex flex-row items-center gap-2 flex-shrink-0",
+          className,
+        )}
+        {...props}
+      >
+        <Benchmarks className="size-6" />
+        <h1 className="text-lg md:text-2xl font-semibold tracking-tight">
+          Benchmarks
+        </h1>
+        {lastUpdated && (
+          <span className="text-xs text-muted-foreground font-medium ml-1 hidden md:inline-flex items-center gap-1.5">
+            <span className="text-border">·</span>
+            {format(lastUpdated, "MMM d, yyyy")}
+            {shortSha && (
+              <>
+                <span className="text-border">·</span>
+                <a
+                  href={`https://github.com/vltpkg/benchmarks/commit/${commitSha}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono hover:underline text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {shortSha}
+                </a>
+              </>
+            )}
+          </span>
+        )}
+      </div>
+    );
+  },
 );
 HeaderLogo.displayName = "HeaderTitle";
 

@@ -141,6 +141,7 @@ export interface ChartDataSet {
 
 export interface BenchmarkChartData {
   date: string;
+  commitSha?: string;
   chartData: ChartDataSet;
   perPackageCountChartData: ChartDataSet;
   registryChartData?: ChartDataSet;
