@@ -20,6 +20,7 @@ const PACKAGE_MANAGERS = [
   "turbo",
   "node",
   "aws",
+  "cloudsmith",
 ];
 
 interface UseHistoryDataReturn {

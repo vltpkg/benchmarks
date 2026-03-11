@@ -15,6 +15,7 @@ export * from "./astro.tsx";
 export * from "./aws.tsx";
 export * from "./berry.tsx";
 export * from "./bun.tsx";
+export * from "./cloudsmith.tsx";
 export * from "./deno.tsx";
 export * from "./next.tsx";
 export * from "./node.tsx";

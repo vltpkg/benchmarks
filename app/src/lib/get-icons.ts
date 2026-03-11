@@ -4,6 +4,7 @@ import {
   Aws,
   Berry,
   Bun,
+  Cloudsmith,
   Deno,
   Next,
   Node,
@@ -24,6 +25,7 @@ import type { Fixture, PackageManager } from "@/types/chart-data";
 const packageManagerMap: Partial<Record<PackageManager, LucideIcon>> = {
   aws: Aws,
   bun: Bun,
+  cloudsmith: Cloudsmith,
   deno: Deno,
   node: Node,
   npm: Npm,

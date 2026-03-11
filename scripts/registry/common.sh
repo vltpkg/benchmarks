@@ -63,6 +63,11 @@ BENCH_REGISTRY_VLT_URL="https://registry.vlt.io/npm/"
 BENCH_REGISTRY_VLT_URL_NPMRC_KEY="${BENCH_REGISTRY_VLT_URL#http*://}"
 BENCH_REGISTRY_AWS_URL="https://vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/"
 BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#http*://}"
+# Cloudsmith registry URL is injected without the protocol prefix
+# (e.g. "//example.com/..."), so we prepend "https:" for the registry config.
+# The auth .npmrc key uses the URL as-is (without protocol).
+BENCH_REGISTRY_CLOUDSMITH_URL="https:${CLOUDSMITH_REGISTRY:-}"
+BENCH_REGISTRY_CLOUDSMITH_NPMRC_KEY="${CLOUDSMITH_REGISTRY#//}"
 
 # Registry setup commands run in hyperfine --prepare (untimed, before each run).
 # Auth token is written as a literal placeholder so npm resolves it from env.
@@ -75,6 +80,7 @@ BENCH_SETUP_REGISTRY_NPM="npm config set registry \"$BENCH_REGISTRY_NPM_URL\" --
 # will allow sharing a public cache regardless of the authorization header.
 BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_VLT_URL_NPMRC_KEY}:_authToken=\\\${VLT_REGISTRY_AUTH_TOKEN}:$(head -c 16 /dev/urandom | xxd -p)_\\\${HYPERFINE_ITERATION}\" --location=project"
 BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\\\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
+BENCH_SETUP_REGISTRY_CLOUDSMITH="npm config set registry \"$BENCH_REGISTRY_CLOUDSMITH_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_CLOUDSMITH_NPMRC_KEY}:_authToken=\\\${CLOUDSMITH_AUTH_TOKEN}\" --location=project"
 
 # Registry verification helper runs in hyperfine --conclude (untimed, after each run).
 BENCH_VERIFY_REGISTRY="npm config get registry && ((grep -m3 '\"resolved\"' package-lock.json 2>/dev/null | sed 's/^[[:space:]]*//') || echo 'no lockfile yet') && echo ''"
@@ -83,21 +89,24 @@ BENCH_VERIFY_REGISTRY="npm config get registry && ((grep -m3 '\"resolved\"' pack
 BENCH_CONCLUDE_NPM="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/npm-verify.log 2>&1"
 BENCH_CONCLUDE_VLT_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-verify.log 2>&1"
 BENCH_CONCLUDE_AWS="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/aws-verify.log 2>&1"
+BENCH_CONCLUDE_CLOUDSMITH="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/cloudsmith-verify.log 2>&1"
 
 # Registry commands are timed and should only run installs.
 BENCH_COMMAND_NPM="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT_REG="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_AWS="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/aws-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_CLOUDSMITH="$BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/cloudsmith-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Registry include flags
 # If BENCH_INCLUDE_REGISTRY is not set, default to running all registries.
 if [ -z "${BENCH_INCLUDE_REGISTRY:-}" ]; then
-  BENCH_INCLUDE_REGISTRY="npm,vlt,aws"
+  BENCH_INCLUDE_REGISTRY="npm,vlt,aws,cloudsmith"
 fi
 
 BENCH_INCLUDE_REG_NPM=""
 BENCH_INCLUDE_REG_VLT=""
 BENCH_INCLUDE_REG_AWS=""
+BENCH_INCLUDE_REG_CLOUDSMITH=""
 
 for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
   case "$entry" in
@@ -105,6 +114,7 @@ for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
     npm)          BENCH_INCLUDE_REG_NPM=1 ;;
     vlt)          BENCH_INCLUDE_REG_VLT=1 ;;
     aws)          BENCH_INCLUDE_REG_AWS=1 ;;
+    cloudsmith)   BENCH_INCLUDE_REG_CLOUDSMITH=1 ;;
     *)
       echo "Error: Unknown registry '$entry' in BENCH_INCLUDE_REGISTRY"
       exit 1
@@ -119,6 +129,16 @@ fi
 
 if [ -n "$BENCH_INCLUDE_REG_AWS" ] && [ -z "${CODEARTIFACT_AUTH_TOKEN:-}" ]; then
   echo "Error: 'aws' registry was requested, but CODEARTIFACT_AUTH_TOKEN is not set"
+  exit 1
+fi
+
+if [ -n "$BENCH_INCLUDE_REG_CLOUDSMITH" ] && [ -z "${CLOUDSMITH_AUTH_TOKEN:-}" ]; then
+  echo "Error: 'cloudsmith' registry was requested, but CLOUDSMITH_AUTH_TOKEN is not set"
+  exit 1
+fi
+
+if [ -n "$BENCH_INCLUDE_REG_CLOUDSMITH" ] && [ -z "${CLOUDSMITH_REGISTRY:-}" ]; then
+  echo "Error: 'cloudsmith' registry was requested, but CLOUDSMITH_REGISTRY is not set"
   exit 1
 fi
 
