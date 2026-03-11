@@ -14,6 +14,7 @@ import {
   getPackageManagerDisplayName,
   sortVariations,
 } from "@/lib/utils";
+import type { LeaderboardRoute } from "@/lib/utils";
 import { getPackageManagerIcon } from "@/lib/get-icons";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -254,16 +255,24 @@ interface LeaderBoardItemProps {
   packageManager: PackageManager;
   averageTime: number;
   idx: number;
+  unit?: string;
 }
 
 const LeaderBoardItem = ({
   packageManager,
   averageTime,
   idx,
+  unit = "ms/pkg",
 }: LeaderBoardItemProps) => {
   const Icon = getPackageManagerIcon(packageManager);
   const rank = idx + 1;
   const displayName = getPackageManagerDisplayName(packageManager);
+
+  // Format time based on unit
+  const formattedTime =
+    unit === "ms/pkg"
+      ? `${averageTime.toFixed(1)}ms/pkg`
+      : `${averageTime.toFixed(2)}s`;
 
   return (
     <div className="relative flex bg-card items-center gap-2 px-2 py-1.5 rounded-lg border border-border/50">
@@ -282,9 +291,7 @@ const LeaderBoardItem = ({
         </div>
         <div className="flex flex-col">
           <p className="text-xs font-medium">{displayName}</p>
-          <p className="text-[10px] text-muted-foreground">
-            {averageTime.toFixed(1)}ms/pkg
-          </p>
+          <p className="text-[10px] text-muted-foreground">{formattedTime}</p>
         </div>
       </div>
     </div>
@@ -296,22 +303,24 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
     const { enabledPackageManagers } = usePackageManagerFilter();
     const { chartData, location, currentVariation } = useHeaderContext();
 
-    // Only show leaderboard on package-managers routes, not task-runners routes
-    const baseRoute = location.pathname.split("/")[1];
+    const baseRoute = location.pathname.split("/")[1] as LeaderboardRoute;
+
+    // Determine the unit label based on route
+    const unit =
+      baseRoute === "package-managers" ? "ms/pkg" : "s";
 
     const leaderboard = useMemo(() => {
       if (chartData && currentVariation) {
         const fullLeaderboard = calculateLeaderboard(
           chartData,
           currentVariation,
+          baseRoute,
         );
         return fullLeaderboard.filter((item) =>
           enabledPackageManagers.has(item.packageManager),
         );
       }
-    }, [chartData, enabledPackageManagers, currentVariation]);
-
-    if (baseRoute !== "package-managers") return null;
+    }, [chartData, enabledPackageManagers, currentVariation, baseRoute]);
 
     if (leaderboard && leaderboard.length === 0) return null;
 
@@ -325,6 +334,7 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
                 idx={idx}
                 averageTime={item.averageTime}
                 packageManager={item.packageManager}
+                unit={unit}
               />
             ))}
         </div>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -15,12 +15,17 @@ import { Button } from "@/components/ui/button";
 import { resolveTheme, useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { formatPackageManagerLabel, isRegistryVariation } from "@/lib/utils";
 import { TrendingUp } from "lucide-react";
 import { format, parseISO } from "date-fns";
 
 import type { ChartConfig } from "@/components/ui/chart";
 import type { HistoryData, HistoryDataPoint } from "@/types/history";
-import type { ColorMap, PackageManager } from "@/types/chart-data";
+import type {
+  BenchmarkChartData,
+  ColorMap,
+  PackageManager,
+} from "@/types/chart-data";
 
 const RANGE_OPTIONS = [
   { label: "30d", days: 30 },
@@ -34,6 +39,7 @@ interface HistoryChartProps {
   currentVariation: string;
   colors: ColorMap;
   packageManagers: PackageManager[];
+  chartData: BenchmarkChartData;
 }
 
 export const HistoryChart = ({
@@ -41,12 +47,14 @@ export const HistoryChart = ({
   currentVariation,
   colors,
   packageManagers,
+  chartData,
 }: HistoryChartProps) => {
   const { theme } = useTheme();
   const resolvedTheme = resolveTheme(theme);
   const { enabledPackageManagers } = usePackageManagerFilter();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [range, setRange] = useState<number>(90);
+  const isRegistry = isRegistryVariation(currentVariation);
 
   const variationData = historyData.variations[currentVariation];
 
@@ -55,21 +63,52 @@ export const HistoryChart = ({
     [packageManagers, enabledPackageManagers],
   );
 
+  const [selectedPMs, setSelectedPMs] = useState<Set<string>>(
+    new Set(filteredPMs),
+  );
+
+  // Sync selection when global PM filter changes
+  useEffect(() => {
+    setSelectedPMs(new Set(filteredPMs));
+  }, [filteredPMs]);
+
   const getColor = (pm: PackageManager) =>
     pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm];
+
+  const handleLegendClick = (pm: string) => {
+    setSelectedPMs((prev) => {
+      const next = new Set(prev);
+      if (next.has(pm)) {
+        next.delete(pm);
+      } else {
+        next.add(pm);
+      }
+      return next;
+    });
+  };
+
+  const handleReset = () => {
+    setSelectedPMs(new Set(filteredPMs));
+  };
+
+  const isAllSelected = selectedPMs.size === filteredPMs.length;
 
   const chartConfig = useMemo(() => {
     const config: ChartConfig = {};
     filteredPMs.forEach((pm) => {
       config[pm] = {
-        label: pm,
+        label: formatPackageManagerLabel(
+          pm,
+          chartData.versions,
+          { isRegistryVariation: isRegistry },
+        ),
         color: getColor(pm),
       };
     });
     return config;
-  }, [filteredPMs, colors, resolvedTheme]);
+  }, [filteredPMs, colors, resolvedTheme, chartData.versions, isRegistry]);
 
-  const chartData = useMemo((): HistoryDataPoint[] => {
+  const chartDataPoints = useMemo((): HistoryDataPoint[] => {
     if (!variationData) return [];
 
     const { dates } = historyData;
@@ -97,7 +136,7 @@ export const HistoryChart = ({
     return points;
   }, [historyData, variationData, filteredPMs, range]);
 
-  if (!variationData || chartData.length < 2) {
+  if (!variationData || chartDataPoints.length < 2) {
     return null;
   }
 
@@ -132,15 +171,24 @@ export const HistoryChart = ({
               {opt.label}
             </Button>
           ))}
+          <Button
+            onClick={handleReset}
+            disabled={isAllSelected}
+            variant="outline"
+            size="sm"
+            className="text-xs dark:bg-neutral-800 bg-white shadow-none ml-2"
+          >
+            Reset
+          </Button>
         </div>
       </div>
 
       <div className="bg-card rounded-xl p-3 md:p-6 border-border border-[1px] overflow-hidden">
         <ChartContainer
           config={chartConfig}
-          className="min-h-[250px] md:min-h-[350px] w-full"
+          className="min-h-[180px] md:min-h-[250px] w-full"
         >
-          <LineChart data={chartData}>
+          <LineChart data={chartDataPoints}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="date"
@@ -192,28 +240,46 @@ export const HistoryChart = ({
                 strokeWidth={2}
                 dot={false}
                 connectNulls
-                name={pm}
+                hide={!selectedPMs.has(pm)}
+                name={formatPackageManagerLabel(
+                  pm,
+                  chartData.versions,
+                  { isRegistryVariation: isRegistry },
+                )}
               />
             ))}
           </LineChart>
         </ChartContainer>
 
-        {/* Legend */}
-        <div className="flex flex-wrap justify-center gap-4 mt-4">
+        {/* Clickable legend — matches bar chart style */}
+        <div className="flex flex-wrap md:justify-center gap-3 md:gap-4 mt-4">
           {filteredPMs.map((pm) => {
             const series = variationData[pm];
             const hasData =
               series && series.some((v) => v !== null && v !== undefined);
             if (!hasData) return null;
 
+            const isSelected = selectedPMs.has(pm);
+            const formattedLabel = formatPackageManagerLabel(
+              pm,
+              chartData.versions,
+              { isRegistryVariation: isRegistry },
+            );
+
             return (
-              <div key={pm} className="flex items-center gap-2 text-sm">
+              <button
+                key={pm}
+                onClick={() => handleLegendClick(pm)}
+                className={`flex items-center gap-2 px-3 py-1 rounded-md transition-all hover:bg-muted text-sm ${
+                  isSelected ? "opacity-100" : "opacity-40"
+                }`}
+              >
                 <div
-                  className="w-3 h-0.5 rounded-full"
+                  className="w-3 h-3 rounded-sm flex-shrink-0"
                   style={{ backgroundColor: getColor(pm) }}
                 />
-                <span className="font-medium text-muted-foreground">{pm}</span>
-              </div>
+                <span className="font-medium">{formattedLabel}</span>
+              </button>
             );
           })}
         </div>
