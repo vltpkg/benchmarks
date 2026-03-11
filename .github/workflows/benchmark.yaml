@@ -30,7 +30,7 @@ concurrency:
 jobs:
   benchmark:
     name: "Run Benchmarks"
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-32vcpu-ubuntu-2404-arm
     timeout-minutes: 120
     strategy:
       matrix:
@@ -96,7 +96,7 @@ jobs:
           retention-days: 7
   process:
     name: "Process Results"
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-32vcpu-ubuntu-2404-arm
     needs: [benchmark]
     timeout-minutes: 5
     steps:
@@ -135,7 +135,7 @@ jobs:
           retention-days: 7
   deploy:
     name: "Deploy Results"
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-32vcpu-ubuntu-2204-arm
     needs: [process]
     permissions:
       contents: write
