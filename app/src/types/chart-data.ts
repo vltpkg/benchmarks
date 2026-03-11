@@ -198,6 +198,7 @@ export interface ProcessCountData {
   node?: PackageCountEntry;
   aws?: PackageCountEntry;
   cloudsmith?: PackageCountEntry;
+  github?: PackageCountEntry;
 }
 
 export interface ProcessCountTableRow {
