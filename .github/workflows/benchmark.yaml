@@ -30,7 +30,7 @@ concurrency:
 jobs:
   detect-changes:
     name: "Detect Changes"
-    runs-on: ubuntu-24.04-arm
+    runs-on: self-hosted
     outputs:
       app_only: ${{ steps.check.outputs.app_only }}
     steps:
@@ -80,7 +80,7 @@ jobs:
 
   benchmark:
     name: "Run Benchmarks"
-    runs-on: ubuntu-24.04-arm
+    runs-on: self-hosted
     needs: [detect-changes]
     if: needs.detect-changes.outputs.app_only != 'true'
     timeout-minutes: 120
@@ -150,7 +150,7 @@ jobs:
           retention-days: 7
   process:
     name: "Process Results"
-    runs-on: ubuntu-24.04-arm
+    runs-on: self-hosted
     needs: [detect-changes, benchmark]
     if: needs.detect-changes.outputs.app_only != 'true'
     timeout-minutes: 5
@@ -190,7 +190,7 @@ jobs:
           retention-days: 7
   deploy:
     name: "Deploy Results"
-    runs-on: ubuntu-24.04-arm
+    runs-on: self-hosted
     needs: [detect-changes, process]
     permissions:
       contents: write
@@ -211,7 +211,7 @@ jobs:
 
   deploy-app:
     name: "Deploy App Only"
-    runs-on: ubuntu-24.04-arm
+    runs-on: self-hosted
     needs: [detect-changes]
     permissions:
       contents: write
