@@ -18,14 +18,14 @@ fi
 
 # Install system dependencies
 echo "Installing system dependencies..."
-sudo apt-get update && sudo apt-get install -y jq strace
+apt-get update && apt-get install -y jq strace
 
 # Install Hyperfine v1.19.0+ (required for --conclude flag)
 # Ubuntu 24.04 apt ships v1.18.0 which lacks --conclude, so we install from GitHub releases
 HYPERFINE_VERSION_TAG="v1.19.0"
 ARCH=$(dpkg --print-architecture)  # amd64 or arm64
 wget -q "https://github.com/sharkdp/hyperfine/releases/download/${HYPERFINE_VERSION_TAG}/hyperfine_${HYPERFINE_VERSION_TAG#v}_${ARCH}.deb" -O /tmp/hyperfine.deb
-sudo dpkg -i /tmp/hyperfine.deb
+dpkg -i /tmp/hyperfine.deb
 rm -f /tmp/hyperfine.deb
 
 echo "Required system dependencies installed successfully!"
