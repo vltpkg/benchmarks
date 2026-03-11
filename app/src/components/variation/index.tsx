@@ -166,7 +166,7 @@ export const VariationPage = () => {
   return (
     <div className="space-y-12">
       {/* History chart - performance over time */}
-      {historyData && !isTaskExecution && (
+      {historyData && (
         <HistoryChart
           historyData={historyData}
           currentVariation={variation}

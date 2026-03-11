@@ -198,24 +198,43 @@ interface RankingData {
   totalTests: number;
 }
 
+export type LeaderboardRoute =
+  | "package-managers"
+  | "task-runners"
+  | "registries";
+
 export const calculateLeaderboard = (
   chartData: BenchmarkChartData,
   specificVariation?: Variation,
+  route?: LeaderboardRoute,
 ): RankingData[] => {
-  // Define package managers only (exclude tools like node, nx, turbo)
-  const packageManagers = [
-    "npm",
-    "pnpm",
-    "yarn",
-    "zpm",
-    "berry",
-    "bun",
-    "deno",
-    "vlt",
-  ];
-  const availablePackageManagers = chartData.chartData.packageManagers.filter(
-    (pm: string) => packageManagers.includes(pm),
-  ) as PackageManager[];
+  const categories = getVariationCategories(chartData.chartData.variations);
+  const effectiveRoute = route ?? "package-managers";
+
+  // Determine which package managers to use based on route
+  const allPMs = chartData.chartData.packageManagers;
+  const availablePackageManagers =
+    effectiveRoute === "task-runners"
+      ? allPMs // task runners may include node, nx, turbo, etc.
+      : effectiveRoute === "registries"
+        ? allPMs.filter((pm: string) =>
+            // Registry variations use a different set of PMs
+            chartData.registryChartData?.packageManagers?.includes(
+              pm as PackageManager,
+            ) ?? false,
+          )
+        : allPMs.filter((pm: string) =>
+            [
+              "npm",
+              "pnpm",
+              "yarn",
+              "zpm",
+              "berry",
+              "bun",
+              "deno",
+              "vlt",
+            ].includes(pm),
+          );
 
   const packageManagerStats: Partial<
     Record<
@@ -224,49 +243,53 @@ export const calculateLeaderboard = (
     >
   > = {};
 
-  // Initialize stats for package managers only
+  // Initialize stats
   availablePackageManagers.forEach((pm) => {
-    packageManagerStats[pm] = { wins: 0, totalTime: 0, testCount: 0 };
+    packageManagerStats[pm as PackageManager] = {
+      wins: 0,
+      totalTime: 0,
+      testCount: 0,
+    };
   });
 
-  // Get package management variations (excluding "run")
+  // Determine which variations and data source to use
   let variationsToUse: Variation[];
+  const usePerPackageData =
+    effectiveRoute === "package-managers" && !isRegistryVariation(specificVariation ?? "");
 
   if (specificVariation && specificVariation !== "average") {
-    // Use only the specific variation
     variationsToUse = [specificVariation];
-  } else if (specificVariation === "average") {
-    // For average, use all package management variations
-    variationsToUse =
-      getVariationCategories(chartData.chartData.variations)
-        .find((cat) => cat.title === "Package Management")
-        ?.variations.filter((v) => v !== "average") || [];
   } else {
-    // Default behavior - use all package management variations
+    // Find the right category for this route
+    const categoryTitle =
+      effectiveRoute === "task-runners"
+        ? "Task Execution"
+        : effectiveRoute === "registries"
+          ? "Registries"
+          : "Package Management";
     variationsToUse =
-      getVariationCategories(chartData.chartData.variations)
-        .find((cat) => cat.title === "Package Management")
+      categories
+        .find((cat) => cat.title === categoryTitle)
         ?.variations.filter((v) => v !== "average") || [];
   }
 
-  // Calculate actual performance for each fixture and variation using per-package data
+  // Calculate performance
   variationsToUse.forEach((variation) => {
-    const variationData = chartData.perPackageCountChartData.data[variation];
+    const dataSource = usePerPackageData
+      ? chartData.perPackageCountChartData.data
+      : chartData.chartData.data;
+    const variationData = dataSource[variation];
     if (!variationData) return;
 
     variationData.forEach((fixtureResult: FixtureResult) => {
-      // Get all package manager times for this fixture (per-package timing)
       const times: Array<{ pm: PackageManager; time: number }> = [];
 
-      availablePackageManagers.forEach((pm) => {
+      (availablePackageManagers as PackageManager[]).forEach((pm) => {
         const time = fixtureResult[pm];
         const dnfKey = `${pm}_dnf` as keyof FixtureResult;
-        if (fixtureResult[dnfKey] === true) {
-          return;
-        }
+        if (fixtureResult[dnfKey] === true) return;
         if (typeof time === "number" && time > 0) {
           times.push({ pm, time });
-          // Add to total time and count
           const stats = packageManagerStats[pm];
           if (stats) {
             stats.totalTime += time;
@@ -275,21 +298,18 @@ export const calculateLeaderboard = (
         }
       });
 
-      // Sort by time to find winner (1st place)
       times.sort((a, b) => a.time - b.time);
-
-      // Award win to fastest
       if (times.length > 0) {
         const winnerStats = packageManagerStats[times[0].pm];
-        if (winnerStats) {
-          winnerStats.wins++;
-        }
+        if (winnerStats) winnerStats.wins++;
       }
     });
   });
 
-  // Calculate final rankings based on average performance
-  const leaderboard: RankingData[] = availablePackageManagers.map((pm) => {
+  // Calculate final rankings
+  const leaderboard: RankingData[] = (
+    availablePackageManagers as PackageManager[]
+  ).map((pm) => {
     const stats = packageManagerStats[pm];
     if (!stats) {
       return {
@@ -312,13 +332,13 @@ export const calculateLeaderboard = (
     };
   });
 
-  // Sort by average time (lower is better), then by wins as tiebreaker
-  return leaderboard.sort((a, b) => {
-    // Primary sort: average time (ascending - faster is better)
-    if (a.averageTime !== b.averageTime) return a.averageTime - b.averageTime;
-    // Tiebreaker: wins (descending - more wins is better)
-    return b.wins - a.wins;
-  });
+  // Filter out PMs with no data and sort by average time (lower is better)
+  return leaderboard
+    .filter((item) => item.totalTests > 0)
+    .sort((a, b) => {
+      if (a.averageTime !== b.averageTime) return a.averageTime - b.averageTime;
+      return b.wins - a.wins;
+    });
 };
 
 export function cn(...inputs: ClassValue[]) {
