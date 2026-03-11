@@ -3,6 +3,45 @@ import * as RechartsPrimitive from "recharts";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * Creates a CSS repeating-linear-gradient that matches the SVG diagonal-stripe
+ * pattern used for DNF (Did Not Finish) bars. Returns a background string
+ * suitable for inline styles, or null if no pattern is needed.
+ */
+const getDnfGradient = (baseColor: string): string => {
+  const normalizeHex = (hex: string): string | null => {
+    const raw = hex.replace("#", "").trim();
+    if (raw.length === 3)
+      return raw
+        .split("")
+        .map((c) => `${c}${c}`)
+        .join("");
+    if (raw.length === 6) return raw;
+    return null;
+  };
+
+  const lighten = (hex: string, amount = 0.45): string => {
+    const n = normalizeHex(hex);
+    if (!n) return hex;
+    const r = Number.parseInt(n.slice(0, 2), 16);
+    const g = Number.parseInt(n.slice(2, 4), 16);
+    const b = Number.parseInt(n.slice(4, 6), 16);
+    const mix = (ch: number) =>
+      Math.min(255, Math.round(ch + (255 - ch) * amount));
+    const h = (ch: number) => ch.toString(16).padStart(2, "0");
+    return `#${h(mix(r))}${h(mix(g))}${h(mix(b))}`;
+  };
+
+  const isWhite =
+    baseColor === "white" ||
+    baseColor === "#ffffff" ||
+    baseColor === "#fff";
+  const lightColor = isWhite ? "#d1d5db" : lighten(baseColor);
+  const stripeColor = isWhite ? "#6b7280" : baseColor;
+
+  return `repeating-linear-gradient(45deg, ${lightColor}, ${lightColor} 2px, ${stripeColor} 2px, ${stripeColor} 4px)`;
+};
+
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
 
@@ -295,6 +334,9 @@ function ChartTooltipContent({
                           {
                             "--color-bg": indicatorColor,
                             "--color-border": indicatorColor,
+                            ...(isDnf && indicatorColor
+                              ? { background: getDnfGradient(indicatorColor) }
+                              : {}),
                           } as React.CSSProperties
                         }
                       />
@@ -436,4 +478,5 @@ export {
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
+  getDnfGradient,
 };

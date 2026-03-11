@@ -13,6 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
+  getDnfGradient,
 } from "@/components/ui/chart";
 import { Tooltip as RechartsTooltip } from "recharts";
 import { Button } from "@/components/ui/button";
@@ -143,7 +144,11 @@ const HorizontalBarTooltipContent = ({
             <div key={index} className="flex items-center gap-2">
               <div
                 className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
-                style={{ backgroundColor: color }}
+                style={
+                  isDnf && color
+                    ? { background: getDnfGradient(color) }
+                    : { backgroundColor: color }
+                }
               />
               <div className="flex flex-1 justify-between items-center gap-4">
                 <span className="text-muted-foreground">
