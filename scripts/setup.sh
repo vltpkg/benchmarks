@@ -18,7 +18,7 @@ fi
 
 # Install system dependencies
 echo "Installing system dependencies..."
-sudo apt-get update && sudo apt-get install -y jq strace
+sudo apt-get update && sudo apt-get install -y jq strace unzip
 
 # Install Hyperfine v1.19.0+ (required for --conclude flag)
 # Ubuntu 24.04 apt ships v1.18.0 which lacks --conclude, so we install from GitHub releases
