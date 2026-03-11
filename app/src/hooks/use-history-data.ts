@@ -21,6 +21,7 @@ const PACKAGE_MANAGERS = [
   "node",
   "aws",
   "cloudsmith",
+  "github",
 ];
 
 interface UseHistoryDataReturn {
