@@ -166,7 +166,10 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
 
         {chartData && (
           <div className="flex items-center md:justify-none md:w-fit w-full gap-2 min-w-0">
-            <PackageManagerFilter packageManagers={packageManagers} />
+            <PackageManagerFilter
+              packageManagers={packageManagers}
+              colors={chartData?.chartData.colors}
+            />
             <FixtureFilter fixtures={fixtures} />
             <VariationDropdown
               currentVariation={currentVariation ?? "average"}
