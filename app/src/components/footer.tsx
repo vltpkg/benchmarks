@@ -1,10 +1,8 @@
 import { Vlt } from "@/components/icons";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { useTheme } from "@/components/theme-provider";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 
-export const Footer = ({ lastUpdated }: { lastUpdated?: string }) => {
+export const Footer = () => {
   const { theme } = useTheme();
 
   return (
@@ -135,20 +133,7 @@ export const Footer = ({ lastUpdated }: { lastUpdated?: string }) => {
           </div>
         </div>
 
-        <div
-          className={cn(
-            "max-w-7xl ml-0 justify-between w-full flex flex-col md:flex-row items-start md:items-center gap-3 px-0 md:pl-12 md:pr-0 pt-4 md:py-8",
-            lastUpdated ? "md:justify-between" : "md:justify-end",
-          )}
-        >
-          {lastUpdated && (
-            <p className="font-medium inline-flex items-baseline text-sm text-muted-foreground">
-              Last updated:
-              <span className="ml-2">
-                {format(lastUpdated, "MMMM dd, yyyy")}
-              </span>
-            </p>
-          )}
+        <div className="max-w-7xl ml-0 justify-end w-full flex flex-col md:flex-row items-start md:items-center gap-3 px-0 md:pl-12 md:pr-0 pt-4 md:py-8">
           <ThemeSwitcher />
         </div>
       </div>

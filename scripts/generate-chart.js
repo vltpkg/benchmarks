@@ -13,6 +13,9 @@ if (!DATE) {
   process.exit(1);
 }
 
+// Optional commit SHA passed as second argument
+const COMMIT_SHA = process.argv[3] || "";
+
 const RESULTS_DIR = path.resolve("results", DATE);
 if (!fs.existsSync(RESULTS_DIR)) {
   console.error(`Error: Results directory ${RESULTS_DIR} does not exist`);
@@ -375,6 +378,7 @@ const dumpChartData = () => {
 
   const results = {
     date: DATE,
+    ...(COMMIT_SHA ? { commitSha: COMMIT_SHA } : {}),
     chartData: {
       variations: chartData.variations,
       data: chartData.data,
