@@ -1,14 +1,18 @@
 import {
   Vlt,
   Astro,
+  Aws,
   Berry,
   Bun,
   Deno,
   Next,
+  Node,
   Npm,
+  Nx,
   Package,
   Pnpm,
   Svelte,
+  Turbo,
   Vue,
   Yarn,
   Zpm,
@@ -18,10 +22,14 @@ import type { LucideIcon } from "lucide-react";
 import type { Fixture, PackageManager } from "@/types/chart-data";
 
 const packageManagerMap: Partial<Record<PackageManager, LucideIcon>> = {
+  aws: Aws,
   bun: Bun,
   deno: Deno,
+  node: Node,
   npm: Npm,
+  nx: Nx,
   pnpm: Pnpm,
+  turbo: Turbo,
   yarn: Yarn,
   berry: Berry,
   zpm: Zpm,

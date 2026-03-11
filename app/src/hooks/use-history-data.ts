@@ -16,6 +16,10 @@ const PACKAGE_MANAGERS = [
   "deno",
   "bun",
   "vlt",
+  "nx",
+  "turbo",
+  "node",
+  "aws",
 ];
 
 interface UseHistoryDataReturn {
@@ -65,18 +69,43 @@ interface ChartDataResponse {
     >;
     packageManagers: string[];
   };
+  registryChartData?: {
+    variations: string[];
+    data: Record<
+      string,
+      Array<Record<string, number | string> & { fixture: string }>
+    >;
+    packageManagers: string[];
+  };
 }
 
 /**
  * Extract per-PM averages (across fixtures) for each variation from a single
- * day's chart-data.json response.
+ * day's chart-data.json response. Includes both main and registry data.
  */
 function extractDayData(
   response: ChartDataResponse,
 ): Record<string, Record<string, number>> {
   const result: Record<string, Record<string, number>> = {};
-  const { data } = response.chartData;
 
+  // Process main chart data
+  extractFromDataSet(response.chartData.data, result);
+
+  // Process registry chart data (separate data set)
+  if (response.registryChartData?.data) {
+    extractFromDataSet(response.registryChartData.data, result);
+  }
+
+  return result;
+}
+
+function extractFromDataSet(
+  data: Record<
+    string,
+    Array<Record<string, number | string> & { fixture: string }>
+  >,
+  result: Record<string, Record<string, number>>,
+): void {
   for (const [variation, fixtures] of Object.entries(data)) {
     if (!Array.isArray(fixtures) || fixtures.length === 0) continue;
 
@@ -102,8 +131,6 @@ function extractDayData(
       result[variation] = pmAverages;
     }
   }
-
-  return result;
 }
 
 export const useHistoryData = (): UseHistoryDataReturn => {
