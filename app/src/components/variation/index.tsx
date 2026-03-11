@@ -172,6 +172,7 @@ export const VariationPage = () => {
           currentVariation={variation}
           colors={colors}
           packageManagers={packageManagers}
+          chartData={chartData}
         />
       )}
 
