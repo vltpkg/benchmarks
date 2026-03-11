@@ -3,14 +3,12 @@ export * from "./vlt.tsx";
 export * from "./benchmarks.tsx";
 
 // general icons
-export * from "./briefcase.tsx";
 export * from "./clock.tsx";
 export * from "./database.tsx";
 export * from "./stop-watch.tsx";
 export * from "./share.tsx";
 export * from "./package.tsx";
 export * from "./bar-chart.tsx";
-export * from "./terminal-window.tsx";
 
 // ecosystem icons
 export * from "./astro.tsx";
