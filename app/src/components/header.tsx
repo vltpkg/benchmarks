@@ -17,6 +17,7 @@ import {
 import type { LeaderboardRoute } from "@/lib/utils";
 import { getPackageManagerIcon } from "@/lib/get-icons";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
+import { useFixtureFilter } from "@/contexts/fixture-filter-context";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 import type {
@@ -301,6 +302,7 @@ const LeaderBoardItem = ({
 const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
   ({ className, ...props }, ref) => {
     const { enabledPackageManagers } = usePackageManagerFilter();
+    const { enabledFixtures } = useFixtureFilter();
     const { chartData, location, currentVariation } = useHeaderContext();
 
     const baseRoute = location.pathname.split("/")[1] as LeaderboardRoute;
@@ -315,12 +317,13 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
           chartData,
           currentVariation,
           baseRoute,
+          enabledFixtures,
         );
         return fullLeaderboard.filter((item) =>
           enabledPackageManagers.has(item.packageManager),
         );
       }
-    }, [chartData, enabledPackageManagers, currentVariation, baseRoute]);
+    }, [chartData, enabledPackageManagers, enabledFixtures, currentVariation, baseRoute]);
 
     if (leaderboard && leaderboard.length === 0) return null;
 
