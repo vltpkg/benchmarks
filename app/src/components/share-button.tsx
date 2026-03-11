@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Share } from "@/components/icons";
 import { Check } from "lucide-react";
@@ -17,34 +18,17 @@ import type { VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 
 const createDeepLink = (
+  baseRoute: string,
   variation: string,
   section?: string,
   fixture?: string,
-  filters?: {
-    packageManagers?: string[];
-    fixtures?: string[];
-  },
 ): string => {
-  let path = `/${variation}`;
+  let path = `/${baseRoute}/${variation}`;
   if (section) {
     path += `/${section}`;
   }
   if (fixture) {
     path += `/${fixture}`;
-  }
-
-  if (filters && (filters.packageManagers || filters.fixtures)) {
-    const params = new URLSearchParams();
-
-    if (filters.packageManagers && filters.packageManagers.length > 0) {
-      params.set("tools", filters.packageManagers.join(","));
-    }
-
-    if (filters.fixtures && filters.fixtures.length > 0) {
-      params.set("fixtures", filters.fixtures.join(","));
-    }
-
-    path += `?${params.toString()}`;
   }
 
   return path;
@@ -67,10 +51,13 @@ export const ShareButton = ({
   className,
 }: ShareButtonProps) => {
   const [copied, setCopied] = useState<boolean>(false);
+  const location = useLocation();
   const Icon = copied ? Check : Share;
 
   const handleShare = async () => {
-    const deepLink = createDeepLink(variation, section, fixture);
+    // Extract the base route (package-managers, task-runners, registries) from the current path
+    const baseRoute = location.pathname.split("/")[1] || "package-managers";
+    const deepLink = createDeepLink(baseRoute, variation, section, fixture);
     const url = `${window.location.origin}${window.location.pathname}#${deepLink}`;
 
     try {
