@@ -13,6 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
+  getDnfGradient,
 } from "@/components/ui/chart";
 import { Tooltip as RechartsTooltip } from "recharts";
 import { Button } from "@/components/ui/button";
@@ -69,35 +70,6 @@ const lightenColor = (hex: string, amount = 0.45): string => {
   return `#${toHex(mix(r))}${toHex(mix(g))}${toHex(mix(b))}`;
 };
 
-/**
- * Returns a CSS background style that matches the SVG diagonal-stripe
- * pattern used for DNF bars. The SVG pattern uses 8×8 tiles rotated 45°
- * with a lightened background and 3px-wide stripes of the base color.
- * We replicate this with a repeating-linear-gradient.
- */
-const getDnfLegendStyle = (
-  baseColor: string,
-  resolvedTheme: string,
-): React.CSSProperties => {
-  const isWhiteBar =
-    resolvedTheme === "dark" &&
-    (baseColor === "white" ||
-      baseColor === "#ffffff" ||
-      baseColor === "#fff");
-  const lightColor = isWhiteBar ? "#d1d5db" : lightenColor(baseColor);
-  const stripeColor = isWhiteBar ? "#6b7280" : baseColor;
-
-  return {
-    background: `repeating-linear-gradient(
-      45deg,
-      ${lightColor},
-      ${lightColor} 2px,
-      ${stripeColor} 2px,
-      ${stripeColor} 4px
-    )`,
-  };
-};
-
 interface ConsolidatedChartItem {
   fixture: string;
   [packageManager: string]: string | number | boolean;
@@ -143,7 +115,11 @@ const HorizontalBarTooltipContent = ({
             <div key={index} className="flex items-center gap-2">
               <div
                 className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
-                style={{ backgroundColor: color }}
+                style={
+                  isDnf && color
+                    ? { background: getDnfGradient(color) }
+                    : { backgroundColor: color }
+                }
               />
               <div className="flex flex-1 justify-between items-center gap-4">
                 <span className="text-muted-foreground">
@@ -408,20 +384,6 @@ export const VariationChart = ({
     resolvedTheme,
   ]);
 
-  // Track which package managers have any DNF entries in the current data
-  // so the legend can show the hatched pattern for those PMs.
-  const dnfPackageManagers = useMemo(() => {
-    const dnfPMs = new Set<PackageManager>();
-    consolidatedData.forEach((entry) => {
-      filteredPackageManagers.forEach((pm) => {
-        if (entry[`${pm}_dnf`] === true) {
-          dnfPMs.add(pm);
-        }
-      });
-    });
-    return dnfPMs;
-  }, [consolidatedData, filteredPackageManagers]);
-
   const normalizeTickLabel = (label: string) => {
     if (label.toLowerCase().startsWith("yarn (berry)")) {
       return label.replace(/yarn \(berry\)/i, "berry");
@@ -639,15 +601,11 @@ export const VariationChart = ({
           <div className="flex flex-wrap gap-3">
             {filteredPackageManagers.map((pm) => {
               const isSelected = selectedPackageManagers.has(pm);
-              const hasDnf = dnfPackageManagers.has(pm);
               const formattedLabel = formatPackageManagerLabel(
                 pm,
                 showVersions ? chartData.versions : undefined,
                 { isRegistryVariation: isRegistry },
               );
-              const legendColorStyle = hasDnf
-                ? getDnfLegendStyle(getColor(pm), resolvedTheme)
-                : { backgroundColor: getColor(pm) };
               return (
                 <button
                   key={pm}
@@ -658,7 +616,7 @@ export const VariationChart = ({
                 >
                   <div
                     className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
-                    style={legendColorStyle}
+                    style={{ backgroundColor: getColor(pm) }}
                   />
                   <span className="font-medium">{formattedLabel}</span>
                 </button>
@@ -849,14 +807,6 @@ export const VariationChart = ({
                           { isRegistryVariation: isRegistry },
                         );
 
-                        const hasDnf = dnfPackageManagers.has(packageManager);
-                        const legendColorStyle = hasDnf
-                          ? getDnfLegendStyle(
-                              getColor(packageManager),
-                              resolvedTheme,
-                            )
-                          : { backgroundColor: entry.color };
-
                         return (
                           <button
                             key={String(entry.dataKey) || index}
@@ -866,8 +816,8 @@ export const VariationChart = ({
                             }`}
                           >
                             <div
-                              className="w-3 h-3 rounded-sm flex-shrink-0"
-                              style={legendColorStyle}
+                              className="w-3 h-3 rounded-sm"
+                              style={{ backgroundColor: entry.color }}
                             />
                             <span className="text-sm font-medium">
                               {formattedLabel}

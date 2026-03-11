@@ -10,15 +10,18 @@ import {
 import { ListFilter, Check, ChevronRight } from "lucide-react";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { getPackageManagerDisplayName } from "@/lib/utils";
+import { resolveTheme, useTheme } from "@/components/theme-provider";
 
-import type { PackageManager } from "@/types/chart-data";
+import type { PackageManager, ColorMap } from "@/types/chart-data";
 
 interface PackageManagerFilterProps {
   packageManagers: PackageManager[];
+  colors?: ColorMap;
 }
 
 export const PackageManagerFilter = ({
   packageManagers,
+  colors,
 }: PackageManagerFilterProps) => {
   const {
     enabledPackageManagers,
@@ -27,7 +30,14 @@ export const PackageManagerFilter = ({
     resetFilters,
   } = usePackageManagerFilter();
 
+  const { theme } = useTheme();
+  const resolvedTheme = resolveTheme(theme);
   const [isOpen, setIsOpen] = useState(false);
+
+  const getColor = (pm: PackageManager) => {
+    if (!colors) return undefined;
+    return pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm];
+  };
 
   const enabledCount = packageManagers.filter((pm) =>
     enabledPackageManagers.has(pm),
@@ -75,6 +85,12 @@ export const PackageManagerFilter = ({
                   <Check className="text-foreground dark:text-foreground" />
                 )}
               </div>
+              {colors && (
+                <div
+                  className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
+                  style={{ backgroundColor: getColor(pm) }}
+                />
+              )}
               <span>{displayName}</span>
             </DropdownMenuItem>
           );
