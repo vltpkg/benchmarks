@@ -132,6 +132,8 @@ jobs:
           VLT_REGISTRY_AUTH_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
           CLOUDSMITH_REGISTRY: ${{ secrets.CLOUDSMITH_REGISTRY }}
           CLOUDSMITH_AUTH_TOKEN: ${{ secrets.CLOUDSMITH_AUTH_TOKEN }}
+          GH_REGISTRY: ${{ secrets.GH_REGISTRY }}
+          GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
         run: |
           ./bench run \
             --fixtures="${{ matrix.fixture }}" \

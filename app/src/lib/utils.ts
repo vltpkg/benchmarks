@@ -466,12 +466,14 @@ export function getPackageManagerDisplayName(
     if (packageManager === "aws")
       return "codeartifact.us-east-1.amazonaws.com";
     if (packageManager === "cloudsmith") return "npm.cloudsmith.io";
+    if (packageManager === "github") return "npm.pkg.github.com";
   }
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
   if (packageManager === "turbo") return "turborepo";
   if (packageManager === "aws") return "AWS CodeArtifact";
   if (packageManager === "cloudsmith") return "Cloudsmith";
+  if (packageManager === "github") return "GitHub";
   return packageManager;
 }
 
