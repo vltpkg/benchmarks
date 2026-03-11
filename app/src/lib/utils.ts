@@ -207,6 +207,7 @@ export const calculateLeaderboard = (
   chartData: BenchmarkChartData,
   specificVariation?: Variation,
   route?: LeaderboardRoute,
+  enabledFixtures?: Set<Fixture>,
 ): RankingData[] => {
   const categories = getVariationCategories(chartData.chartData.variations);
   const effectiveRoute = route ?? "package-managers";
@@ -281,7 +282,12 @@ export const calculateLeaderboard = (
     const variationData = dataSource[variation];
     if (!variationData) return;
 
-    variationData.forEach((fixtureResult: FixtureResult) => {
+    // Filter by enabled fixtures if provided
+    const filteredVariationData = enabledFixtures
+      ? variationData.filter((item) => enabledFixtures.has(item.fixture))
+      : variationData;
+
+    filteredVariationData.forEach((fixtureResult: FixtureResult) => {
       const times: Array<{ pm: PackageManager; time: number }> = [];
 
       (availablePackageManagers as PackageManager[]).forEach((pm) => {
