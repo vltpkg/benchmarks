@@ -78,6 +78,24 @@ print_package_count() {
     echo
 }
 
+print_process_count() {
+    local file=$1
+    local fixture=$2
+    local variation=$3
+
+    if [ ! -f "$file" ]; then
+        echo "Warning: Process count file $file not found"
+        return 1
+    fi
+
+    echo "=== PROCESS COUNT: $fixture ($variation) ==="
+    if ! node -p "console.table(JSON.parse(fs.readFileSync('$file', 'utf8')))"; then
+        echo "Warning: Could not parse process count from $file"
+        return 1
+    fi
+    echo
+}
+
 # Process and copy results
 echo "Processing results..."
 
@@ -98,6 +116,14 @@ for fixture in next astro svelte vue large babylon; do
             cp "$package_count_file" "results/latest/$fixture-$variation-package-count.json"
         else
             echo "Warning: No package count found for $fixture & $variation"
+        fi
+
+        if process_count_file=$(resolve_result_path "$fixture" "$variation" "process-count.json"); then
+            print_process_count "$process_count_file" "$fixture" "$variation"
+            cp "$process_count_file" "results/$DATE/$fixture-$variation-process-count.json"
+            cp "$process_count_file" "results/latest/$fixture-$variation-process-count.json"
+        else
+            echo "Warning: No process count found for $fixture & $variation"
         fi
     done
 done

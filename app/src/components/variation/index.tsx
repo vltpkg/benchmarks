@@ -5,7 +5,9 @@ import { ERROR_MESSAGES } from "@/constants";
 import { VariationChart } from "@/components/variation/chart";
 import { VariationTable } from "@/components/variation/table";
 import { PackageCountTable } from "@/components/variation/package-count-table";
+import { ProcessCountTable } from "@/components/variation/process-count-table";
 import { usePackageCountData } from "@/hooks/use-package-count-data";
+import { useProcessCountData } from "@/hooks/use-process-count-data";
 import { useFixtureFilter } from "@/contexts/fixture-filter-context";
 import {
   sortFixtures,
@@ -14,6 +16,7 @@ import {
   getFixtureId,
   getAvailablePackageManagers,
   getAvailablePackageManagersFromPackageCount,
+  getAvailablePackageManagersFromProcessCount,
   isTaskExecutionVariation,
   isRegistryVariation,
 } from "@/lib/utils";
@@ -46,6 +49,11 @@ export const VariationPage = () => {
     loading: packageCountLoading,
     error: packageCountError,
   } = usePackageCountData(variation as Variation);
+  const {
+    processCountData,
+    loading: processCountLoading,
+    error: processCountError,
+  } = useProcessCountData(variation as Variation);
   const { enabledFixtures } = useFixtureFilter();
 
   // Handle deep linking to sections and fixtures
@@ -111,6 +119,9 @@ export const VariationPage = () => {
   const filteredPackageCountData = packageCountData.filter((item) =>
     enabledFixtures.has(item.fixture),
   );
+  const filteredProcessCountData = processCountData.filter((item) =>
+    enabledFixtures.has(item.fixture),
+  );
 
   // Filter package managers to only show those with data for this variation
   const packageManagers = getAvailablePackageManagers(
@@ -122,6 +133,13 @@ export const VariationPage = () => {
   const packageCountPackageManagers =
     getAvailablePackageManagersFromPackageCount(
       filteredPackageCountData,
+      allPackageManagers,
+    );
+
+  // Filter package managers for process count data to only show those with actual data
+  const processCountPackageManagers =
+    getAvailablePackageManagersFromProcessCount(
+      filteredProcessCountData,
       allPackageManagers,
     );
 
@@ -137,6 +155,7 @@ export const VariationPage = () => {
         perPackageChart: "Task Execution Time by Fixture",
         perPackageTable: "Task Execution Time Data",
         packageCountTable: "Package Count Data",
+        processCountTable: "Spawned Processes Data",
       }
     : isRegistry
       ? {
@@ -145,6 +164,7 @@ export const VariationPage = () => {
           perPackageChart: "Registry Install Time by Fixture",
           perPackageTable: "Registry Install Time Data",
           packageCountTable: "Package Count Data",
+          processCountTable: "Spawned Processes Data",
         }
       : {
           totalChart: "Total Install Time by Fixture",
@@ -152,6 +172,7 @@ export const VariationPage = () => {
           perPackageChart: "Per Package Install Time by Fixture",
           perPackageTable: "Per Package Install Time Data",
           packageCountTable: "Package Count Data",
+          processCountTable: "Spawned Processes Data",
         };
 
   // Section IDs for deep linking
@@ -161,6 +182,7 @@ export const VariationPage = () => {
     totalTable: createSectionId(titles.totalTable),
     perPackageTable: createSectionId(titles.perPackageTable),
     packageCountTable: createSectionId(titles.packageCountTable),
+    processCountTable: createSectionId(titles.processCountTable),
   };
 
   return (
@@ -235,6 +257,28 @@ export const VariationPage = () => {
               description="Number of packages installed by each package manager for this variation"
               packageCountData={filteredPackageCountData}
               packageManagers={packageCountPackageManagers}
+              versions={chartData.versions}
+              currentVariation={variation as string}
+            />
+          </div>
+        ) : null}
+
+        {/* 6. Spawned processes data table */}
+        {processCountLoading ? (
+          <div className="text-center text-muted-foreground">
+            Loading process count data...
+          </div>
+        ) : processCountError ? (
+          <div className="text-center text-destructive">
+            Error loading process count data: {processCountError}
+          </div>
+        ) : filteredProcessCountData.length > 0 ? (
+          <div id={sectionIds.processCountTable}>
+            <ProcessCountTable
+              title="Spawned Processes Data"
+              description="Number of processes spawned (execve calls) by each package manager during install"
+              processCountData={filteredProcessCountData}
+              packageManagers={processCountPackageManagers}
               versions={chartData.versions}
               currentVariation={variation as string}
             />

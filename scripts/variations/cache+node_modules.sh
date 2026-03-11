@@ -36,3 +36,4 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_DENO:+--command-name="deno" "$BENCH_COMMAND_DENO"}
 
 collect_package_count
+collect_process_count

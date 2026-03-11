@@ -74,14 +74,24 @@ BENCH_SETUP_NX=""
 BENCH_SETUP_TURBO=""
 BENCH_SETUP_NODE=""
 
-BENCH_COMMAND_NPM="npm install --no-audit --no-fund --silent >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_YARN="corepack yarn@1 install --silent > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BERRY="corepack yarn@latest install > $BENCH_OUTPUT_FOLDER/berry-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_ZPM="yarn install --silent > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_PNPM="corepack pnpm@latest install --silent > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_VLT="vlt install --view=silent > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BUN="bun install --silent > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_DENO="deno install --allow-scripts --quiet > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
+# Bare install commands (no log redirection) — used by strace process counting
+BENCH_INSTALL_NPM="npm install --no-audit --no-fund --silent"
+BENCH_INSTALL_YARN="corepack yarn@1 install --silent"
+BENCH_INSTALL_BERRY="corepack yarn@latest install"
+BENCH_INSTALL_ZPM="yarn install --silent"
+BENCH_INSTALL_PNPM="corepack pnpm@latest install --silent"
+BENCH_INSTALL_VLT="vlt install --view=silent"
+BENCH_INSTALL_BUN="bun install --silent"
+BENCH_INSTALL_DENO="deno install --allow-scripts --quiet"
+
+BENCH_COMMAND_NPM="$BENCH_INSTALL_NPM >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_YARN="$BENCH_INSTALL_YARN > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BERRY="$BENCH_INSTALL_BERRY > $BENCH_OUTPUT_FOLDER/berry-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_ZPM="$BENCH_INSTALL_ZPM > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_PNPM="$BENCH_INSTALL_PNPM > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT="$BENCH_INSTALL_VLT > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BUN="$BENCH_INSTALL_BUN > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_DENO="$BENCH_INSTALL_DENO > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Clean up & create the results directory
 rm -rf "$BENCH_OUTPUT_FOLDER"
@@ -130,4 +140,67 @@ collect_package_count() {
   done
 
   node "$BENCH_SCRIPTS/collect-package-count.js" "$BENCH_OUTPUT_FOLDER"
+}
+
+# Function to collect spawned process counts via strace.
+# Runs a single strace'd install for each included package manager under the
+# same state as the benchmark variation. BENCH_PREPARE_BASE must be set by the
+# calling variation script before invoking this function.
+collect_process_count() {
+  if ! command -v strace &>/dev/null; then
+    echo "Warning: strace not available, skipping process count collection"
+    return 0
+  fi
+
+  echo "=== Collecting spawned process counts ==="
+
+  # Map of pm name -> setup command and bare install command
+  local -A PM_SETUP=(
+    [npm]="$BENCH_SETUP_NPM"
+    [yarn]="$BENCH_SETUP_YARN"
+    [berry]="$BENCH_SETUP_BERRY"
+    [zpm]="$BENCH_SETUP_ZPM"
+    [pnpm]="$BENCH_SETUP_PNPM"
+    [vlt]="$BENCH_SETUP_VLT"
+    [bun]="$BENCH_SETUP_BUN"
+    [deno]="$BENCH_SETUP_DENO"
+  )
+  local -A PM_INSTALL=(
+    [npm]="$BENCH_INSTALL_NPM"
+    [yarn]="$BENCH_INSTALL_YARN"
+    [berry]="$BENCH_INSTALL_BERRY"
+    [zpm]="$BENCH_INSTALL_ZPM"
+    [pnpm]="$BENCH_INSTALL_PNPM"
+    [vlt]="$BENCH_INSTALL_VLT"
+    [bun]="$BENCH_INSTALL_BUN"
+    [deno]="$BENCH_INSTALL_DENO"
+  )
+  local -A PM_INCLUDE=(
+    [npm]="$BENCH_INCLUDE_NPM"
+    [yarn]="$BENCH_INCLUDE_YARN"
+    [berry]="$BENCH_INCLUDE_BERRY"
+    [zpm]="$BENCH_INCLUDE_ZPM"
+    [pnpm]="$BENCH_INCLUDE_PNPM"
+    [vlt]="$BENCH_INCLUDE_VLT"
+    [bun]="$BENCH_INCLUDE_BUN"
+    [deno]="$BENCH_INCLUDE_DENO"
+  )
+
+  for pm in npm yarn berry zpm pnpm vlt bun deno; do
+    if [ -n "${PM_INCLUDE[$pm]:-}" ]; then
+      local prepare_cmd="$BENCH_PREPARE_BASE"
+      local setup="${PM_SETUP[$pm]:-}"
+      if [ -n "$setup" ]; then
+        prepare_cmd="$prepare_cmd; $setup"
+      fi
+
+      bash "$BENCH_SCRIPTS/process-count.sh" \
+        "$BENCH_OUTPUT_FOLDER" \
+        "$pm" \
+        "${PM_INSTALL[$pm]}" \
+        "$prepare_cmd"
+    fi
+  done
+
+  node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
 }
