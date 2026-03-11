@@ -9,6 +9,7 @@ import type {
   BenchmarkChartData,
   FixtureResult,
   PackageCountData,
+  ProcessCountData,
 } from "@/types/chart-data";
 
 interface VariationCategory {
@@ -602,6 +603,31 @@ export const getAvailablePackageManagersFromPackageCount = (
       allPackageManagers.forEach((pm) => {
         const entry = item.packageCounts?.[pm as keyof PackageCountData];
         // Check if the package manager has valid data (entry exists and has count > 0)
+        if (
+          entry &&
+          typeof entry === "object" &&
+          entry.count &&
+          entry.count > 0
+        ) {
+          availablePackageManagers.add(pm);
+        }
+      });
+    }
+  });
+
+  return allPackageManagers.filter((pm) => availablePackageManagers.has(pm));
+};
+
+export const getAvailablePackageManagersFromProcessCount = (
+  processCountData: Array<{ processCounts?: ProcessCountData }>,
+  allPackageManagers: PackageManager[],
+): PackageManager[] => {
+  const availablePackageManagers = new Set<PackageManager>();
+
+  processCountData.forEach((item) => {
+    if (item.processCounts) {
+      allPackageManagers.forEach((pm) => {
+        const entry = item.processCounts?.[pm as keyof ProcessCountData];
         if (
           entry &&
           typeof entry === "object" &&

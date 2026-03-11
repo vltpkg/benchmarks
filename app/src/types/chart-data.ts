@@ -175,6 +175,28 @@ export interface PackageCountTableRow {
   packageCounts: PackageCountData;
 }
 
+export interface ProcessCountData {
+  npm?: PackageCountEntry;
+  yarn?: PackageCountEntry;
+  pnpm?: PackageCountEntry;
+  berry?: PackageCountEntry;
+  zpm?: PackageCountEntry;
+  deno?: PackageCountEntry;
+  bun?: PackageCountEntry;
+  vlt?: PackageCountEntry;
+  nx?: PackageCountEntry;
+  turbo?: PackageCountEntry;
+  node?: PackageCountEntry;
+  aws?: PackageCountEntry;
+  cloudsmith?: PackageCountEntry;
+}
+
+export interface ProcessCountTableRow {
+  fixture: Fixture;
+  variation: Variation;
+  processCounts: ProcessCountData;
+}
+
 export function isBenchmarkChartData(
   data: unknown,
 ): data is BenchmarkChartData {
