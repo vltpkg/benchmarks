@@ -10,7 +10,8 @@ export type PackageManager =
   | "nx"
   | "turbo"
   | "node"
-  | "aws";
+  | "aws"
+  | "cloudsmith";
 
 export type Fixture =
   | "next"
@@ -50,6 +51,7 @@ export interface PackageManagerVersions {
   turbo?: string;
   node?: string;
   aws?: string;
+  cloudsmith?: string;
 }
 
 export interface BaseFixtureResult {
@@ -69,6 +71,7 @@ export interface PackageManagerData {
   turbo?: number;
   node?: number;
   aws?: number;
+  cloudsmith?: number;
 
   npm_stddev?: number;
   yarn_stddev?: number;
@@ -82,6 +85,7 @@ export interface PackageManagerData {
   turbo_stddev?: number;
   node_stddev?: number;
   aws_stddev?: number;
+  cloudsmith_stddev?: number;
 
   npm_fill?: string;
   yarn_fill?: string;
@@ -95,6 +99,7 @@ export interface PackageManagerData {
   turbo_fill?: string;
   node_fill?: string;
   aws_fill?: string;
+  cloudsmith_fill?: string;
 
   npm_count?: number;
   yarn_count?: number;
@@ -108,6 +113,7 @@ export interface PackageManagerData {
   turbo_count?: number;
   node_count?: number;
   aws_count?: number;
+  cloudsmith_count?: number;
 
   npm_dnf?: boolean;
   yarn_dnf?: boolean;
@@ -121,6 +127,7 @@ export interface PackageManagerData {
   turbo_dnf?: boolean;
   node_dnf?: boolean;
   aws_dnf?: boolean;
+  cloudsmith_dnf?: boolean;
 }
 
 export type FixtureResult = BaseFixtureResult & PackageManagerData;
@@ -159,6 +166,7 @@ export interface PackageCountData {
   turbo?: PackageCountEntry;
   node?: PackageCountEntry;
   aws?: PackageCountEntry;
+  cloudsmith?: PackageCountEntry;
 }
 
 export interface PackageCountTableRow {
