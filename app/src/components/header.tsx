@@ -275,13 +275,13 @@ const LeaderBoardItem = ({
       : `${averageTime.toFixed(2)}s`;
 
   return (
-    <div className="relative flex bg-card items-center gap-2 px-2 py-1.5 rounded-lg border border-border/50">
+    <div className="relative flex bg-card items-center gap-2 px-2 py-1.5 rounded-lg border border-border/50 flex-shrink-0 whitespace-nowrap">
       <div className="text-lg text-muted-foreground font-mono font-medium flex-shrink-0 px-1">
         {rank}
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="items-center justify-center flex">
+        <div className="items-center justify-center flex flex-shrink-0">
           {Icon && (
             <Icon
               size={28}

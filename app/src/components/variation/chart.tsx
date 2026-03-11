@@ -391,8 +391,173 @@ export const VariationChart = ({
 
   const isMobile = useMediaQuery("(max-width: 767px)");
 
+  const isTaskOrRegistry =
+    isTaskExecutionVariation(currentVariation) || isRegistryVariation(currentVariation);
+
+  if (!isPerPackage && isTaskOrRegistry) {
+    // Task runners & registries: horizontal bar charts per fixture, sorted by speed
+    return (
+      <div className="space-y-8">
+        <div className="flex flex-col gap-3 md:gap-0 md:flex-row items-start md:items-center justify-between">
+          <h3 className="text-base md:text-lg w-full font-medium tracking-tighter flex items-center gap-2 group">
+            <Clock className="text-muted-foreground flex-shrink-0" />
+            <span>{title}</span>
+            <ShareButton
+              variation={currentVariation}
+              section={createSectionId(title)}
+              size="sm"
+              variant="ghost"
+              className="ml-auto"
+            />
+          </h3>
+          <div className="flex gap-2 flex-shrink-0">
+            <Button
+              onClick={handleReset}
+              disabled={isAllSelected}
+              variant="outline"
+              size="sm"
+              className="text-xs dark:bg-neutral-800 bg-white shadow-none"
+            >
+              Reset Selection
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {filteredVariationData.map((fixtureResult) => {
+            const fixture = fixtureResult.fixture;
+            const fixtureId = getFixtureId(fixture);
+            const Icon = getFrameworkIcon(fixture as Fixture);
+            const slowest = fixtureSlowestValues.get(fixture);
+
+            const barData = filteredPackageManagers
+              .filter(
+                (pm) =>
+                  selectedPackageManagers.has(pm) &&
+                  variationActivePackageManagers.has(pm),
+              )
+              .map((pm) => {
+                const dnfKey = `${pm}_dnf` as DnfKey;
+                const value = fixtureResult[pm];
+                const hasNumber = typeof value === "number";
+                const shouldFallback =
+                  !hasNumber && typeof slowest === "number";
+                const isDnf =
+                  fixtureResult[dnfKey] === true || shouldFallback;
+                const resolvedValue = hasNumber ? value : slowest;
+
+                if (typeof resolvedValue !== "number") return null;
+
+                return {
+                  name: formatPackageManagerLabel(
+                    pm,
+                    showVersions ? chartData.versions : undefined,
+                    { isRegistryVariation: isRegistry },
+                  ),
+                  value: resolvedValue,
+                  fill: isDnf
+                    ? getDnfPatternFill(fixtureId, pm)
+                    : getColor(pm),
+                  dnf: isDnf,
+                  dnfColor: getColor(pm),
+                };
+              })
+              .filter(Boolean)
+              .sort((a, b) => (a?.value ?? 0) - (b?.value ?? 0));
+
+            const barHeight = Math.max(barData.length * 40, 120);
+
+            return (
+              <div
+                key={fixture}
+                id={fixtureId}
+                className="bg-card rounded-xl p-4 md:p-6 border-[1px] border-border overflow-hidden"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    {Icon && <Icon />}
+                    <h4 className="text-sm md:text-md font-medium capitalize">
+                      {fixture}
+                    </h4>
+                  </div>
+                  <ShareButton
+                    variation={currentVariation}
+                    section={createSectionId(title)}
+                    fixture={fixture}
+                    label="Share"
+                    size="sm"
+                    variant="ghost"
+                  />
+                </div>
+                <div style={{ width: "100%", height: barHeight }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={barData}
+                      layout="vertical"
+                      margin={{
+                        top: 0,
+                        right: isMobile ? 12 : 24,
+                        bottom: 0,
+                        left: 0,
+                      }}
+                    >
+                      {renderDnfPatterns(fixtureId)}
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        horizontal={false}
+                      />
+                      <XAxis
+                        type="number"
+                        tick={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: isMobile ? 10 : 12,
+                          fill:
+                            resolvedTheme === "dark"
+                              ? "white"
+                              : "currentColor",
+                        }}
+                        tickCount={5}
+                      />
+                      <YAxis
+                        type="category"
+                        dataKey="name"
+                        width={isMobile ? 70 : 120}
+                        tick={{
+                          fontSize: isMobile ? 10 : 12,
+                          fill:
+                            resolvedTheme === "dark"
+                              ? "white"
+                              : "currentColor",
+                        }}
+                        tickFormatter={(label: string) => {
+                          if (isMobile) {
+                            const parts = label.split(" v");
+                            return parts[0] ?? label;
+                          }
+                          return normalizeTickLabel(label);
+                        }}
+                      />
+                      <RechartsTooltip
+                        content={<HorizontalBarTooltipContent />}
+                      />
+                      <Bar dataKey="value" maxBarSize={32}>
+                        {barData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry?.fill} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   if (!isPerPackage) {
-    // Consolidated chart for Total Install Time
+    // Consolidated chart for Total Install Time (package management variations)
     const consolidatedHeader = (
       <div className="flex flex-col gap-3 md:gap-0 md:flex-row items-start md:items-center justify-between">
         <h3 className="text-base md:text-lg w-full font-medium tracking-tighter flex items-center gap-2 group">

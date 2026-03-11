@@ -462,6 +462,7 @@ export function getPackageManagerDisplayName(
   }
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
+  if (packageManager === "turbo") return "turborepo";
   if (packageManager === "aws") return "AWS CodeArtifact";
   return packageManager;
 }
