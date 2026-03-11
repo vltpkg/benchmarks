@@ -18,14 +18,18 @@ import {
   isRegistryVariation,
 } from "@/lib/utils";
 
+import { HistoryChart } from "@/components/history-chart";
+
 import type {
   BenchmarkChartData,
   Variation,
   FixtureResult,
 } from "@/types/chart-data";
+import type { HistoryData } from "@/types/history";
 
 interface OutletContext {
   chartData: BenchmarkChartData;
+  historyData: HistoryData | null;
 }
 
 export const VariationPage = () => {
@@ -34,7 +38,7 @@ export const VariationPage = () => {
     section?: string;
     fixture?: string;
   }>();
-  const { chartData } = useOutletContext<OutletContext>();
+  const { chartData, historyData } = useOutletContext<OutletContext>();
 
   // Call hooks before any early returns to comply with Rules of Hooks
   const {
@@ -161,6 +165,16 @@ export const VariationPage = () => {
 
   return (
     <div className="space-y-12">
+      {/* History chart - performance over time */}
+      {historyData && !isTaskExecution && (
+        <HistoryChart
+          historyData={historyData}
+          currentVariation={variation}
+          colors={colors}
+          packageManagers={packageManagers}
+        />
+      )}
+
       {/* 4. Total time chart */}
       <div id={sectionIds.totalChart}>
         <VariationChart
