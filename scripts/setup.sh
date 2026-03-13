@@ -34,23 +34,11 @@ HYPERFINE_VERSION=$(hyperfine --version)
 echo "jq: $JQ_VERSION"
 echo "hyperfine: $HYPERFINE_VERSION"
 
-# Install Node.js package managers and tools in parallel for faster CI setup
+# Install Node.js package managers and tools
 echo "Installing package managers and tools..."
-npm install -g npm@latest corepack@latest &
-PID_NPM=$!
-npm install -g vlt@latest &
-PID_VLT=$!
-npm install -g bun@latest &
-PID_BUN=$!
-npm install -g deno@latest &
-PID_DENO=$!
-npm install -g nx@latest turbo@latest &
-PID_NXTURBO=$!
+npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
 
-# Wait for all npm installs to complete
-wait $PID_NPM $PID_VLT $PID_BUN $PID_DENO $PID_NXTURBO
-
-# Configure Package Managers (depends on corepack being installed above)
+# Configure Package Managers
 echo "Configuring package managers..."
 corepack enable yarn pnpm
 
