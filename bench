@@ -61,6 +61,7 @@ Options:
   --variation   Comma or space-separated benchmark variations (default: clean)
   --runs      Hyperfine runs (default: scripts/variations/common.sh default)
   --warmup    Hyperfine warmup runs (default: scripts/variations/common.sh default)
+  --timeout   Per-command timeout in seconds (default: 300)
   --chart     Generate chart data and copy to app/latest
   --process   Process results after run (clean + dated/latest outputs + chart data)
   --date      Date folder for chart output (default: today)
@@ -373,6 +374,7 @@ run_bench() {
   local chart_date="$9"
   local registries_input="${10:-}"
   local process_results="${11:-0}"
+  local timeout_input="${12:-}"
 
   if [[ ! -f "$BENCH_SCRIPT" ]]; then
     echo "Error: Missing benchmark script at $BENCH_SCRIPT"
@@ -390,6 +392,9 @@ run_bench() {
   fi
   if [[ -n "$warmup_input" ]]; then
     validate_number "$warmup_input" "--warmup"
+  fi
+  if [[ -n "$timeout_input" ]]; then
+    validate_number "$timeout_input" "--timeout"
   fi
 
   local pms_env=""
@@ -418,6 +423,11 @@ run_bench() {
     echo "  warmup: $warmup_input"
   else
     echo "  warmup: (default)"
+  fi
+  if [[ -n "$timeout_input" ]]; then
+    echo "  timeout: ${timeout_input}s"
+  else
+    echo "  timeout: 300s (default)"
   fi
   if [[ "$clean_results" -eq 1 ]]; then
     echo "  clean: enabled"
@@ -471,6 +481,9 @@ run_bench() {
     fi
     if [[ -n "$warmup_input" ]]; then
       env_args+=("BENCH_WARMUP=$warmup_input")
+    fi
+    if [[ -n "$timeout_input" ]]; then
+      env_args+=("BENCH_TIMEOUT=$timeout_input")
     fi
 
     local cmd=(bash "$BENCH_SCRIPT" "$fixture" "$variation")
@@ -623,6 +636,7 @@ case "$command" in
     VARIATION_INPUT=""
     RUNS_INPUT=""
     WARMUP_INPUT=""
+    TIMEOUT_INPUT=""
     DRY_RUN=0
     CLEAN_RESULTS=0
     CHART_RESULTS=0
@@ -679,6 +693,14 @@ case "$command" in
           WARMUP_INPUT="${1#*=}"
           shift
           ;;
+        --timeout)
+          TIMEOUT_INPUT="${2:-}"
+          shift 2
+          ;;
+        --timeout=*)
+          TIMEOUT_INPUT="${1#*=}"
+          shift
+          ;;
         --chart)
           CHART_RESULTS=1
           shift
@@ -719,7 +741,7 @@ case "$command" in
       esac
     done
 
-    run_bench "$FIXTURES_INPUT" "$PMS_INPUT" "$VARIATION_INPUT" "$RUNS_INPUT" "$WARMUP_INPUT" "$DRY_RUN" "$CLEAN_RESULTS" "$CHART_RESULTS" "$CHART_DATE" "$REGISTRIES_INPUT" "$PROCESS_RESULTS"
+    run_bench "$FIXTURES_INPUT" "$PMS_INPUT" "$VARIATION_INPUT" "$RUNS_INPUT" "$WARMUP_INPUT" "$DRY_RUN" "$CLEAN_RESULTS" "$CHART_RESULTS" "$CHART_DATE" "$REGISTRIES_INPUT" "$PROCESS_RESULTS" "$TIMEOUT_INPUT"
     ;;
   process)
     DRY_RUN=0
