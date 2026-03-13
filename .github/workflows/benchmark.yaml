@@ -83,8 +83,9 @@ jobs:
     runs-on: ubuntu-24.04-arm
     needs: [detect-changes]
     if: needs.detect-changes.outputs.app_only != 'true'
-    timeout-minutes: 120
+    timeout-minutes: 45
     strategy:
+      fail-fast: false
       matrix:
         fixture: ${{ fromJson((github.event_name == 'push' && github.ref != 'refs/heads/main') && '["next", "astro", "vue", "svelte"]' || (inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "babylon"]')) }}
         variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]') }}
@@ -126,6 +127,22 @@ jobs:
             --output text)
           echo "::add-mask::$CODEARTIFACT_AUTH_TOKEN"
           echo "token=$CODEARTIFACT_AUTH_TOKEN" >> "$GITHUB_OUTPUT"
+      - name: Tune settings for heavy fixtures
+        id: tune
+        run: |
+          # Heavy fixtures (large, babylon) get reduced warmup/runs to keep
+          # individual jobs under the timeout while still producing useful data.
+          case "${{ matrix.fixture }}" in
+            large|babylon)
+              echo "warmup=1" >> "$GITHUB_OUTPUT"
+              echo "runs=3" >> "$GITHUB_OUTPUT"
+              echo "Heavy fixture detected — using warmup=1, runs=3"
+              ;;
+            *)
+              echo "warmup=$BENCH_WARMUP" >> "$GITHUB_OUTPUT"
+              echo "runs=$BENCH_RUNS" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
       - name: Run Benchmarks variations
         env:
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
@@ -134,6 +151,8 @@ jobs:
           CLOUDSMITH_AUTH_TOKEN: ${{ secrets.CLOUDSMITH_AUTH_TOKEN }}
           GH_REGISTRY: ${{ secrets.GH_REGISTRY }}
           GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
+          BENCH_WARMUP: ${{ steps.tune.outputs.warmup }}
+          BENCH_RUNS: ${{ steps.tune.outputs.runs }}
         run: |
           ./bench run \
             --fixtures="${{ matrix.fixture }}" \

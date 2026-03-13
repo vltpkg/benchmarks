@@ -29,17 +29,17 @@ BENCH_INSTALL_PREPARE_DENO="$(prepend_setup "$BENCH_INSTALL_COMMAND_DENO" "$BENC
 
 # Run defines its own command scripts to actually run a test
 # script in the fixture directory instead of installing packages.
-BENCH_COMMAND_NPM="npm run test > $BENCH_OUTPUT_FOLDER/npm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_YARN="corepack yarn@1 run test > $BENCH_OUTPUT_FOLDER/yarn-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BERRY="corepack yarn@latest run test > $BENCH_OUTPUT_FOLDER/berry-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_ZPM="yarn run test > $BENCH_OUTPUT_FOLDER/zpm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_PNPM="corepack pnpm@latest run test > $BENCH_OUTPUT_FOLDER/pnpm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_VLT="vlt run test --view=human > $BENCH_OUTPUT_FOLDER/vlt-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BUN="bun run test > $BENCH_OUTPUT_FOLDER/bun-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_DENO="deno run test > $BENCH_OUTPUT_FOLDER/deno-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_NX="nx run test > $BENCH_OUTPUT_FOLDER/nx-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_TURBO="turbo run test --dangerously-disable-package-manager-check --cache-dir=.cache --no-cache > $BENCH_OUTPUT_FOLDER/turbo-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_NODE="node --run test > $BENCH_OUTPUT_FOLDER/node-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_NPM="timeout $BENCH_TIMEOUT npm run test > $BENCH_OUTPUT_FOLDER/npm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_YARN="timeout $BENCH_TIMEOUT corepack yarn@1 run test > $BENCH_OUTPUT_FOLDER/yarn-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BERRY="timeout $BENCH_TIMEOUT corepack yarn@latest run test > $BENCH_OUTPUT_FOLDER/berry-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT yarn run test > $BENCH_OUTPUT_FOLDER/zpm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT corepack pnpm@latest run test > $BENCH_OUTPUT_FOLDER/pnpm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT vlt run test --view=human > $BENCH_OUTPUT_FOLDER/vlt-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT bun run test > $BENCH_OUTPUT_FOLDER/bun-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT deno run test > $BENCH_OUTPUT_FOLDER/deno-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_NX="timeout $BENCH_TIMEOUT nx run test > $BENCH_OUTPUT_FOLDER/nx-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_TURBO="timeout $BENCH_TIMEOUT turbo run test --dangerously-disable-package-manager-check --cache-dir=.cache --no-cache > $BENCH_OUTPUT_FOLDER/turbo-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_NODE="timeout $BENCH_TIMEOUT node --run test > $BENCH_OUTPUT_FOLDER/node-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Run the benchmark run-script benchmarks
 # The install step is defined as a "prepare" option so that time spent
