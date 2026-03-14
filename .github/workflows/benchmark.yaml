@@ -30,7 +30,7 @@ concurrency:
 jobs:
   detect-changes:
     name: "Detect Changes"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     outputs:
       app_only: ${{ steps.check.outputs.app_only }}
     steps:
@@ -80,10 +80,10 @@ jobs:
 
   benchmark:
     name: "Run Benchmarks"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     needs: [detect-changes]
     if: needs.detect-changes.outputs.app_only != 'true'
-    timeout-minutes: 45
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
@@ -171,10 +171,10 @@ jobs:
           retention-days: 7
   process:
     name: "Process Results"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     needs: [detect-changes, benchmark]
     if: needs.detect-changes.outputs.app_only != 'true'
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
       - name: Install Node
@@ -211,7 +211,7 @@ jobs:
           retention-days: 7
   deploy:
     name: "Deploy Results"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     needs: [detect-changes, process]
     permissions:
       contents: write
@@ -232,7 +232,7 @@ jobs:
 
   deploy-app:
     name: "Deploy App Only"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     needs: [detect-changes]
     permissions:
       contents: write
