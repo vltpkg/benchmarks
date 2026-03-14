@@ -1,6 +1,6 @@
 {
   "npm": {
-    "count": 1771,
+    "count": 1773,
     "minCount": 1767,
     "maxCount": 1787
   },
@@ -17,7 +17,7 @@
   },
   "bun": {
     "count": 1594,
-    "minCount": 1593,
+    "minCount": 1594,
     "maxCount": 1595
   },
   "deno": {
