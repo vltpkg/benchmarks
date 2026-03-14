@@ -30,7 +30,7 @@ concurrency:
 jobs:
   detect-changes:
     name: "Detect Changes"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     outputs:
       app_only: ${{ steps.check.outputs.app_only }}
     steps:
@@ -78,10 +78,51 @@ jobs:
           echo "app_only=$APP_ONLY" >> "$GITHUB_OUTPUT"
           echo "App-only changes: $APP_ONLY"
 
+  setup:
+    name: "Setup Environment"
+    runs-on: ubuntu-24.04-arm
+    needs: [detect-changes]
+    if: needs.detect-changes.outputs.app_only != 'true'
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install & Setup Tools
+        run: bash ./scripts/setup.sh
+      - name: Package tools
+        run: |
+          PREFIX=$(npm config get prefix)
+          echo "npm prefix: $PREFIX"
+          tar czf /tmp/bench-tools.tar.gz \
+            "$PREFIX/lib/node_modules" \
+            "$PREFIX/bin" \
+            /usr/bin/hyperfine \
+            ~/.yarn \
+            ~/.cache/node/corepack \
+            ~/.npmrc \
+            ./results/versions.json
+          echo "Archive size: $(du -h /tmp/bench-tools.tar.gz | cut -f1)"
+      - name: Upload Tools
+        uses: actions/upload-artifact@v7
+        with:
+          name: bench-tools
+          path: /tmp/bench-tools.tar.gz
+          retention-days: 1
+      - name: Upload Versions Info
+        uses: actions/upload-artifact@v7
+        with:
+          name: versions-info
+          path: ./results/versions.json
+          retention-days: 7
+
   benchmark:
     name: "Run Benchmarks"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
-    needs: [detect-changes]
+    runs-on: ubuntu-24.04-arm
+    needs: [detect-changes, setup]
     if: needs.detect-changes.outputs.app_only != 'true'
     timeout-minutes: 45
     strategy:
@@ -106,9 +147,19 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      - name: Install & Setup Tools
+      - name: Download tools
+        uses: actions/download-artifact@v8
+        with:
+          name: bench-tools
+          path: /tmp/bench-tools
+      - name: Restore tools
         run: |
-          bash ./scripts/setup.sh
+          sudo tar xzf /tmp/bench-tools/bench-tools.tar.gz -C /
+          echo "$HOME/.yarn/switch/bin" >> "$GITHUB_PATH"
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq strace unzip
+          mkdir -p ./results/
       - name: Configure AWS Credentials
         if: startsWith(matrix.variation, 'registry-')
         uses: aws-actions/configure-aws-credentials@v6
@@ -163,15 +214,10 @@ jobs:
           name: results-${{ matrix.fixture }}-${{ matrix.variation }}
           path: ./results/${{ matrix.fixture }}/${{ matrix.variation }}/
           retention-days: 7
-      - name: Upload Versions Info
-        uses: actions/upload-artifact@v7
-        with:
-          name: versions-${{ matrix.fixture }}-${{ matrix.variation }}
-          path: ./results/versions.json
-          retention-days: 7
+
   process:
     name: "Process Results"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     needs: [detect-changes, benchmark]
     if: needs.detect-changes.outputs.app_only != 'true'
     timeout-minutes: 5
@@ -181,6 +227,15 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: "24"
+      - name: Download tools
+        uses: actions/download-artifact@v8
+        with:
+          name: bench-tools
+          path: /tmp/bench-tools
+      - name: Restore tools
+        run: sudo tar xzf /tmp/bench-tools/bench-tools.tar.gz -C /
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y jq
       - name: Download Results
         uses: actions/download-artifact@v8
         with:
@@ -194,9 +249,6 @@ jobs:
       - name: Process Results
         run: |
           ./bench process
-      - name: Install vlt
-        run: |
-          npm install -g vlt@latest
       - name: Build Charts View
         run: |
           pushd app
@@ -209,9 +261,10 @@ jobs:
           name: results
           path: results/
           retention-days: 7
+
   deploy:
     name: "Deploy Results"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     needs: [detect-changes, process]
     permissions:
       contents: write
@@ -232,7 +285,7 @@ jobs:
 
   deploy-app:
     name: "Deploy App Only"
-    runs-on: blacksmith-8vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     needs: [detect-changes]
     permissions:
       contents: write
