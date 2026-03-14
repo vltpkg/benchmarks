@@ -38,6 +38,14 @@ echo "hyperfine: $HYPERFINE_VERSION"
 echo "Installing package managers and tools..."
 npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
 
+# Install Vite+ (vp) via its installer script
+curl -fsSL https://vite.plus | bash
+export PATH="$HOME/.vite-plus/bin:$PATH"
+# Persist vp on PATH for subsequent CI steps
+if [ -n "${GITHUB_PATH:-}" ]; then
+  echo "$HOME/.vite-plus/bin" >> "$GITHUB_PATH"
+fi
+
 # Configure Package Managers
 echo "Configuring package managers..."
 corepack enable yarn pnpm
@@ -63,6 +71,7 @@ BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"
 TURBO_VERSION="$(npm view turbo@latest version)"
+VP_VERSION="$(vp --version 2>/dev/null || echo "unknown")"
 NODE_VERSION=$(node -v)
 
 # Output versions
@@ -76,6 +85,7 @@ echo "bun: $BUN_VERSION"
 echo "deno: $DENO_VERSION"
 echo "nx: $NX_VERSION"
 echo "turbo: $TURBO_VERSION"
+echo "vp: $VP_VERSION"
 echo "node: $NODE_VERSION"
 
 # Save versions to JSON file
@@ -90,6 +100,7 @@ echo "{
   \"deno\": \"$DENO_VERSION\",
   \"nx\": \"$NX_VERSION\",
   \"turbo\": \"$TURBO_VERSION\",
+  \"vp\": \"$VP_VERSION\",
   \"node\": \"$NODE_VERSION\"
 }" > ./results/versions.json
 

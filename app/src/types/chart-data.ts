@@ -9,6 +9,7 @@ export type PackageManager =
   | "vlt"
   | "nx"
   | "turbo"
+  | "vp"
   | "node"
   | "aws"
   | "cloudsmith"
@@ -50,6 +51,7 @@ export interface PackageManagerVersions {
   vlt?: string;
   nx?: string;
   turbo?: string;
+  vp?: string;
   node?: string;
   aws?: string;
   cloudsmith?: string;
@@ -71,6 +73,7 @@ export interface PackageManagerData {
   vlt?: number;
   nx?: number;
   turbo?: number;
+  vp?: number;
   node?: number;
   aws?: number;
   cloudsmith?: number;
@@ -86,6 +89,7 @@ export interface PackageManagerData {
   vlt_stddev?: number;
   nx_stddev?: number;
   turbo_stddev?: number;
+  vp_stddev?: number;
   node_stddev?: number;
   aws_stddev?: number;
   cloudsmith_stddev?: number;
@@ -101,6 +105,7 @@ export interface PackageManagerData {
   vlt_fill?: string;
   nx_fill?: string;
   turbo_fill?: string;
+  vp_fill?: string;
   node_fill?: string;
   aws_fill?: string;
   cloudsmith_fill?: string;
@@ -116,6 +121,7 @@ export interface PackageManagerData {
   vlt_count?: number;
   nx_count?: number;
   turbo_count?: number;
+  vp_count?: number;
   node_count?: number;
   aws_count?: number;
   cloudsmith_count?: number;
@@ -131,6 +137,7 @@ export interface PackageManagerData {
   vlt_dnf?: boolean;
   nx_dnf?: boolean;
   turbo_dnf?: boolean;
+  vp_dnf?: boolean;
   node_dnf?: boolean;
   aws_dnf?: boolean;
   cloudsmith_dnf?: boolean;
@@ -172,6 +179,7 @@ export interface PackageCountData {
   vlt?: PackageCountEntry;
   nx?: PackageCountEntry;
   turbo?: PackageCountEntry;
+  vp?: PackageCountEntry;
   node?: PackageCountEntry;
   aws?: PackageCountEntry;
   cloudsmith?: PackageCountEntry;
@@ -195,6 +203,7 @@ export interface ProcessCountData {
   vlt?: PackageCountEntry;
   nx?: PackageCountEntry;
   turbo?: PackageCountEntry;
+  vp?: PackageCountEntry;
   node?: PackageCountEntry;
   aws?: PackageCountEntry;
   cloudsmith?: PackageCountEntry;

@@ -472,6 +472,7 @@ export function getPackageManagerDisplayName(
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
   if (packageManager === "turbo") return "turborepo";
+  if (packageManager === "vp") return "vite+";
   if (packageManager === "aws") return "AWS CodeArtifact";
   if (packageManager === "cloudsmith") return "Cloudsmith";
   if (packageManager === "github") return "GitHub";

@@ -31,18 +31,18 @@ else
 fi
 
 # Defines configurable values for the benchmark
-BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node}"
+BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,vp,node}"
 BENCH_WARMUP="${BENCH_WARMUP:=2}"
 BENCH_RUNS="${BENCH_RUNS:=5}"
 # Per-command timeout in seconds (default: 5 minutes).
 # If a single install exceeds this, it is killed. hyperfine --ignore-failure
 # lets the suite continue; the timed-out run records as a failure.
 BENCH_TIMEOUT="${BENCH_TIMEOUT:=300}"
-for pm in npm yarn berry zpm pnpm vlt bun deno nx turbo node; do
+for pm in npm yarn berry zpm pnpm vlt bun deno nx turbo vp node; do
   CHOICE=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
   if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
-    # Only allow nx, turbo, node if BENCH_VARIATION is "run"
-    if [[ "$pm" == "nx" || "$pm" == "turbo" || "$pm" == "node" ]]; then
+    # Only allow nx, turbo, vp, node if BENCH_VARIATION is "run"
+    if [[ "$pm" == "nx" || "$pm" == "turbo" || "$pm" == "vp" || "$pm" == "node" ]]; then
       if [ "$BENCH_VARIATION" = "run" ]; then
         eval "BENCH_INCLUDE_${CHOICE}=1"
       else
@@ -76,6 +76,7 @@ BENCH_SETUP_BUN=""
 BENCH_SETUP_DENO=""
 BENCH_SETUP_NX=""
 BENCH_SETUP_TURBO=""
+BENCH_SETUP_VP=""
 BENCH_SETUP_NODE=""
 
 # Bare install commands (no log redirection) — used by strace process counting
@@ -128,7 +129,7 @@ collect_package_count() {
   ls -la "$BENCH_OUTPUT_FOLDER"
 
   # Prints the output of each install
-  for pm in npm yarn berry zpm pnpm vlt bun deno nx turbo node; do
+  for pm in npm yarn berry zpm pnpm vlt bun deno nx turbo vp node; do
     if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
       for i in {0..9}; do
         echo "-- Reading output of $pm install $i ---"

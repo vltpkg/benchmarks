@@ -75,6 +75,13 @@ clean_deno_cache() {
   fi
 }
 
+# Function to safely clean vp cache
+clean_vp_cache() {
+  if command -v vp &> /dev/null; then
+    vp cache clean >/dev/null 2>&1 || true
+  fi
+}
+
 # Function to clean lockfiles for all package managers
 clean_lockfiles() {
   echo "Cleaning lockfiles..."
@@ -137,6 +144,7 @@ clean_all_cache() {
   clean_bun_cache
   clean_nx_cache
   clean_deno_cache
+  clean_vp_cache
 }
 
 clean_build_files() {

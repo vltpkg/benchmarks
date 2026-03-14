@@ -18,6 +18,7 @@ const PACKAGE_MANAGERS = [
   "vlt",
   "nx",
   "turbo",
+  "vp",
   "node",
   "aws",
   "cloudsmith",

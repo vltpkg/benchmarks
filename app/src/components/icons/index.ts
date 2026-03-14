@@ -27,4 +27,5 @@ export * from "./svelte.tsx";
 export * from "./turbo.tsx";
 export * from "./vue.tsx";
 export * from "./yarn.tsx";
+export * from "./vp.tsx";
 export * from "./zpm.tsx";

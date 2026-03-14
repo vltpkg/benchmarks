@@ -11,7 +11,7 @@ on:
         default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]'
       binaries:
         description: "The binaries to run the benchmarks on"
-        default: '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node"'
+        default: '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,vp,node"'
       warmup:
         description: "The number of warmup runs on each benchmark"
         default: "2"
@@ -96,7 +96,7 @@ jobs:
       contents: read
       id-token: write
     env:
-      BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,node"') }}
+      BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,nx,turbo,vp,node"') }}
       BENCH_WARMUP: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.warmup || '2') }}
       BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '5') }}
     steps:
