@@ -34,6 +34,7 @@ const COLORS = {
   vlt: "#000000",
   nx: "#3b82f6",
   turbo: "#ff1e56",
+  vp: "#4f30e8",
   node: "#84ba64",
 };
 

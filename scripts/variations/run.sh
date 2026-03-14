@@ -18,6 +18,7 @@ BENCH_INSTALL_COMMAND_PNPM="${BENCH_COMMAND_PNPM//\$\{HYPERFINE_ITERATION\}/run}
 BENCH_INSTALL_COMMAND_VLT="${BENCH_COMMAND_VLT//\$\{HYPERFINE_ITERATION\}/run}"
 BENCH_INSTALL_COMMAND_BUN="${BENCH_COMMAND_BUN//\$\{HYPERFINE_ITERATION\}/run}"
 BENCH_INSTALL_COMMAND_DENO="${BENCH_COMMAND_DENO//\$\{HYPERFINE_ITERATION\}/run}"
+BENCH_INSTALL_COMMAND_VP="timeout $BENCH_TIMEOUT vp install > $BENCH_OUTPUT_FOLDER/vp-output-run.log 2>&1"
 BENCH_INSTALL_PREPARE_NPM="$(prepend_setup "$BENCH_INSTALL_COMMAND_NPM" "$BENCH_SETUP_NPM")"
 BENCH_INSTALL_PREPARE_YARN="$(prepend_setup "$BENCH_INSTALL_COMMAND_YARN" "$BENCH_SETUP_YARN")"
 BENCH_INSTALL_PREPARE_BERRY="$(prepend_setup "$BENCH_INSTALL_COMMAND_BERRY" "$BENCH_SETUP_BERRY")"
@@ -26,6 +27,7 @@ BENCH_INSTALL_PREPARE_PNPM="$(prepend_setup "$BENCH_INSTALL_COMMAND_PNPM" "$BENC
 BENCH_INSTALL_PREPARE_VLT="$(prepend_setup "$BENCH_INSTALL_COMMAND_VLT" "$BENCH_SETUP_VLT")"
 BENCH_INSTALL_PREPARE_BUN="$(prepend_setup "$BENCH_INSTALL_COMMAND_BUN" "$BENCH_SETUP_BUN")"
 BENCH_INSTALL_PREPARE_DENO="$(prepend_setup "$BENCH_INSTALL_COMMAND_DENO" "$BENCH_SETUP_DENO")"
+BENCH_INSTALL_PREPARE_VP="$(prepend_setup "$BENCH_INSTALL_COMMAND_VP" "$BENCH_SETUP_VP")"
 
 # Run defines its own command scripts to actually run a test
 # script in the fixture directory instead of installing packages.
@@ -37,6 +39,7 @@ BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT corepack pnpm@latest run test > $BENC
 BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT vlt run test --view=human > $BENCH_OUTPUT_FOLDER/vlt-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT bun run test > $BENCH_OUTPUT_FOLDER/bun-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT deno run test > $BENCH_OUTPUT_FOLDER/deno-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VP="timeout $BENCH_TIMEOUT vp run test > $BENCH_OUTPUT_FOLDER/vp-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_NX="timeout $BENCH_TIMEOUT nx run test > $BENCH_OUTPUT_FOLDER/nx-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_TURBO="timeout $BENCH_TIMEOUT turbo run test --dangerously-disable-package-manager-check --cache-dir=.cache --no-cache > $BENCH_OUTPUT_FOLDER/turbo-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_NODE="timeout $BENCH_TIMEOUT node --run test > $BENCH_OUTPUT_FOLDER/node-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
@@ -66,6 +69,8 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_BUN:+--command-name="bun" "$BENCH_COMMAND_BUN"} \
   ${BENCH_INCLUDE_DENO:+--prepare="$BENCH_INSTALL_PREPARE_DENO"} \
   ${BENCH_INCLUDE_DENO:+--command-name="deno" "$BENCH_COMMAND_DENO"} \
+  ${BENCH_INCLUDE_VP:+--prepare="$BENCH_INSTALL_PREPARE_VP"} \
+  ${BENCH_INCLUDE_VP:+--command-name="vp" "$BENCH_COMMAND_VP"} \
   ${BENCH_INCLUDE_NX:+--prepare="$BENCH_INSTALL_PREPARE_NPM || true"} \
   ${BENCH_INCLUDE_NX:+--command-name="nx" "$BENCH_COMMAND_NX"} \
   ${BENCH_INCLUDE_TURBO:+--prepare="$BENCH_INSTALL_PREPARE_NPM || true"} \
