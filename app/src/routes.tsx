@@ -7,7 +7,7 @@ import type { RouteObject } from "react-router";
 const packageManagerRoutes: RouteObject = {
   path: "package-managers",
   children: [
-    { index: true, element: <Navigate to="clean" replace={true} /> },
+    { index: true, element: <Navigate to="average" replace={true} /> },
     { path: ":variation", element: <VariationPage /> },
     { path: ":variation/:section", element: <VariationPage /> },
     { path: ":variation/:section/:fixture", element: <VariationPage /> },
