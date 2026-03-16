@@ -4,9 +4,18 @@
 set -e
 
 # Environment Configuration
-COREPACK_ENABLE_STRICT=0
-COREPACK_ENABLE_AUTO_PIN=0
-YARN_ENABLE_IMMUTABLE_INSTALLS=false
+export COREPACK_ENABLE_STRICT=0
+export COREPACK_ENABLE_AUTO_PIN=0
+export YARN_ENABLE_IMMUTABLE_INSTALLS=false
+
+# Persist corepack env vars for subsequent CI steps (e.g., benchmark runs).
+# Without these, corepack 0.34+ auto-pins packageManager and refuses to run
+# a different PM than what packageManager specifies — breaking benchmarks
+# that cycle through multiple package managers on the same fixture.
+if [ -n "${GITHUB_ENV:-}" ]; then
+  echo "COREPACK_ENABLE_STRICT=0" >> "$GITHUB_ENV"
+  echo "COREPACK_ENABLE_AUTO_PIN=0" >> "$GITHUB_ENV"
+fi
 
 # Check Node version
 REQUIRED_NODE_VERSION="24"
@@ -39,8 +48,13 @@ echo "Installing package managers and tools..."
 npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
 
 # Install Vite+ (vp) via its installer script
+# Note: The vp installer auto-enables Node.js version management in CI
+# (detects $CI env var). We must disable it after install so vp's shims
+# don't intercept node/npm/corepack — we use actions/setup-node for that.
 curl -fsSL https://vite.plus | bash
 export PATH="$HOME/.vite-plus/bin:$PATH"
+# Disable vp's Node.js version management to avoid interfering with corepack
+"$HOME/.vite-plus/bin/vp" env off 2>/dev/null || true
 # Persist vp on PATH for subsequent CI steps
 if [ -n "${GITHUB_PATH:-}" ]; then
   echo "$HOME/.vite-plus/bin" >> "$GITHUB_PATH"
