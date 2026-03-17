@@ -2,7 +2,25 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Mar 14 10:40 package.json
+-rw-r--r-- 1 runner runner 7944 Mar 17 15:24 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+Error: Yarn cannot be used on project configured for use with yarn
+
+› yarn […ARGSN]
+canary version:
+6.0.0-rc.15
+packageManager (before):
+"pnpm@10.32.1"
+set packageManager=yarn@6.0.0-rc.15:
+packageManager (after):
+"yarn@6.0.0-rc.15"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/babylon
+package.json:
+-rw-r--r-- 1 runner runner 7909 Mar 17 15:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -18,7 +36,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Mar 14 10:40 package.json
+-rw-r--r-- 1 runner runner 7909 Mar 17 15:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -34,7 +52,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Mar 14 10:40 package.json
+-rw-r--r-- 1 runner runner 7909 Mar 17 15:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -50,31 +68,17 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Mar 14 10:41 package.json
+-rw-r--r-- 1 runner runner 7945 Mar 17 15:36 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-1.22.22
+Error: Yarn cannot be used on project configured for use with yarn
+
+› yarn […ARGSN]
 canary version:
 6.0.0-rc.15
 packageManager (before):
-{}
-set packageManager=yarn@6.0.0-rc.15:
-packageManager (after):
-"yarn@6.0.0-rc.15"
-[zpm prepare]
-cwd:
-/home/runner/work/benchmarks/benchmarks/fixtures/babylon
-package.json:
--rw-r--r-- 1 runner runner 8357 Mar 14 10:46 package.json
-yarn path:
-/home/runner/.yarn/switch/bin/yarn
-yarn version:
-1.22.22
-canary version:
-6.0.0-rc.15
-packageManager (before):
-{}
+"pnpm@10.32.1"
 set packageManager=yarn@6.0.0-rc.15:
 packageManager (after):
 "yarn@6.0.0-rc.15"
