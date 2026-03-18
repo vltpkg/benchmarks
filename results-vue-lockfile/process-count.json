@@ -1,9 +1,9 @@
 {
   "npm": {
-    "count": 121
+    "count": 6
   },
   "yarn": {
-    "count": 28
+    "count": 5
   },
   "berry": {
     "count": 19
@@ -18,9 +18,9 @@
     "count": 6
   },
   "bun": {
-    "count": 13
+    "count": 2
   },
   "deno": {
-    "count": 10
+    "count": 2
   }
 }

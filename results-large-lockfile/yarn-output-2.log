@@ -1,6 +1,6 @@
 warning package.json: No license field
 warning alotta-modules@0.0.1: No license field
-(node:8844) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:8797) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning " > autoprefixer@10.4.27" has unmet peer dependency "postcss@^8.1.0".
 warning " > babel-loader@9.2.1" has unmet peer dependency "@babel/core@^7.12.0".
@@ -79,3 +79,4 @@ warning " > react-tappable@1.0.4" has unmet peer dependency "prop-types@^15.5.8"
 warning " > react-tappable@1.0.4" has incorrect peer dependency "react@^0.14 || ^15.0.0-rc || ^15.0.0 || ^16.0.0".
 warning " > react-tappable@1.0.4" has incorrect peer dependency "react-dom@^0.14 || ^15.0.0-rc || ^15.0.0 || ^16.0.0".
 warning " > style-loader@3.3.4" has unmet peer dependency "webpack@^5.0.0".
+warning Ignored scripts due to flag.
