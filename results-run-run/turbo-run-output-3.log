@@ -19,7 +19,7 @@ cache bypass, force executing 9f4dc87c373e4a4d
 
  Tasks:    0 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    1.103s 
+  Time:    319ms 
 Failed:    //#test
 
  ERROR  run failed: command  exited (1)
