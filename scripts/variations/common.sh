@@ -79,15 +79,20 @@ BENCH_SETUP_TURBO=""
 BENCH_SETUP_VP=""
 BENCH_SETUP_NODE=""
 
-# Bare install commands (no log redirection) — used by strace process counting
-BENCH_INSTALL_NPM="npm install --no-audit --no-fund --silent"
-BENCH_INSTALL_YARN="corepack yarn@1 install --silent"
+# Bare install commands (no log redirection) — used by strace process counting.
+# Install scripts are disabled where the PM runs them by default, so benchmarks
+# measure dependency resolution + linking only (not arbitrary postinstall work).
+#   npm, yarn classic, bun: run scripts by default → --ignore-scripts
+#   berry, zpm, pnpm v10+, vlt: don't run scripts by default → no flag needed
+#   deno: doesn't run scripts by default → removed --allow-scripts
+BENCH_INSTALL_NPM="npm install --no-audit --no-fund --ignore-scripts --silent"
+BENCH_INSTALL_YARN="corepack yarn@1 install --ignore-scripts --silent"
 BENCH_INSTALL_BERRY="corepack yarn@latest install"
 BENCH_INSTALL_ZPM="yarn install --silent"
 BENCH_INSTALL_PNPM="corepack pnpm@latest install --silent"
 BENCH_INSTALL_VLT="vlt install --view=silent"
-BENCH_INSTALL_BUN="bun install --silent"
-BENCH_INSTALL_DENO="deno install --allow-scripts --quiet"
+BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
+BENCH_INSTALL_DENO="deno install --quiet"
 
 BENCH_COMMAND_NPM="timeout $BENCH_TIMEOUT $BENCH_INSTALL_NPM >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_YARN="timeout $BENCH_TIMEOUT $BENCH_INSTALL_YARN > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
