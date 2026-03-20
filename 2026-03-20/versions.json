@@ -1,0 +1,32 @@
+{
+  "npm": "11.12.0",
+  "vlt": "1.0.0-rc.23",
+  "yarn": "1.22.22",
+  "berry": "4.13.0",
+  "zpm": "6.0.0-rc.15",
+  "pnpm": "10.32.1",
+  "bun": "1.3.11",
+  "deno": "2.7.7",
+  "nx": "22.6.0",
+  "turbo": "2.8.20",
+  "vp": "VITE+ - The Unified Toolchain for the Web
+
+vp v0.1.13
+
+Local vite-plus:
+  vite-plus  Not found
+
+Tools:
+  vite             Not found
+  rolldown         Not found
+  vitest           Not found
+  oxfmt            Not found
+  oxlint           Not found
+  oxlint-tsgolint  Not found
+  tsdown           Not found
+
+Environment:
+  Package manager  Not found
+  Node.js          v24.14.0",
+  "node": "v24.14.0"
+}
