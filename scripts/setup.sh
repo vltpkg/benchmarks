@@ -71,6 +71,7 @@ YARN_VERSION="$(corepack yarn@1 -v)"
 BERRY_VERSION="$(corepack yarn@latest -v)"
 ZPM_VERSION="$(curl https://repo.yarnpkg.com/channels/default/canary)"
 PNPM_VERSION="$(corepack pnpm@latest -v)"
+PNPM11_VERSION="$(corepack pnpm@next-11 -v)"
 BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"
@@ -85,6 +86,7 @@ echo "yarn: $YARN_VERSION"
 echo "yarn (berry): $BERRY_VERSION"
 echo "yarn (zpm): $ZPM_VERSION"
 echo "pnpm: $PNPM_VERSION"
+echo "pnpm11: $PNPM11_VERSION"
 echo "bun: $BUN_VERSION"
 echo "deno: $DENO_VERSION"
 echo "nx: $NX_VERSION"
@@ -100,6 +102,7 @@ echo "{
   \"berry\": \"$BERRY_VERSION\",
   \"zpm\": \"$ZPM_VERSION\",
   \"pnpm\": \"$PNPM_VERSION\",
+  \"pnpm11\": \"$PNPM11_VERSION\",
   \"bun\": \"$BUN_VERSION\",
   \"deno\": \"$DENO_VERSION\",
   \"nx\": \"$NX_VERSION\",
