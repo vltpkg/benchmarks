@@ -1,21 +1,21 @@
 {
   "npm": {
-    "count": 6
+    "count": 4
   },
   "yarn": {
-    "count": 5
+    "count": 4
   },
   "berry": {
-    "count": 13
+    "count": 12
   },
   "zpm": {
     "count": 3
   },
   "pnpm": {
-    "count": 5
+    "count": 4
   },
   "vlt": {
-    "count": 7
+    "count": 6
   },
   "bun": {
     "count": 2
