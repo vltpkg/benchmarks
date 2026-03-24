@@ -21,7 +21,7 @@ cache bypass, force executing 6a7023d004e05e17
 
  Tasks:    0 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    370ms 
+  Time:    366ms 
 Failed:    //#test
 
  ERROR  run failed: command  exited (1)
