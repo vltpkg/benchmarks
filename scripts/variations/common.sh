@@ -85,13 +85,14 @@ BENCH_SETUP_NODE=""
 # measure dependency resolution + linking only (not arbitrary postinstall work).
 #   npm, yarn classic, bun: run scripts by default → --ignore-scripts
 #   berry, zpm, pnpm v10+, vlt: don't run scripts by default → no flag needed
+#   pnpm v11+: errors on ignored build scripts (ERR_PNPM_IGNORED_BUILDS) → --ignore-scripts
 #   deno: doesn't run scripts by default → removed --allow-scripts
 BENCH_INSTALL_NPM="npm install --no-audit --no-fund --ignore-scripts --silent"
 BENCH_INSTALL_YARN="corepack yarn@1 install --ignore-scripts --silent"
 BENCH_INSTALL_BERRY="corepack yarn@latest install"
 BENCH_INSTALL_ZPM="yarn install --silent"
 BENCH_INSTALL_PNPM="corepack pnpm@latest install --silent"
-BENCH_INSTALL_PNPM11="corepack pnpm@next-11 install --silent"
+BENCH_INSTALL_PNPM11="corepack pnpm@next-11 install --ignore-scripts --silent"
 BENCH_INSTALL_VLT="vlt install --view=silent"
 BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
 BENCH_INSTALL_DENO="deno install --quiet"
