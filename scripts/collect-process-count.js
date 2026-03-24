@@ -25,6 +25,7 @@ const countFiles = [
   { filename: 'berry-process-count.txt', pmName: 'berry' },
   { filename: 'zpm-process-count.txt', pmName: 'zpm' },
   { filename: 'pnpm-process-count.txt', pmName: 'pnpm' },
+  { filename: 'pnpm11-process-count.txt', pmName: 'pnpm11' },
   { filename: 'vlt-process-count.txt', pmName: 'vlt' },
   { filename: 'bun-process-count.txt', pmName: 'bun' },
   { filename: 'deno-process-count.txt', pmName: 'deno' },

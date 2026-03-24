@@ -229,6 +229,7 @@ export const calculateLeaderboard = (
             [
               "npm",
               "pnpm",
+              "pnpm11",
               "yarn",
               "zpm",
               "berry",

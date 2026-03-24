@@ -28,6 +28,8 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_ZPM:+--command-name="zpm" "$BENCH_COMMAND_ZPM"} \
   ${BENCH_INCLUDE_PNPM:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_PNPM")"} \
   ${BENCH_INCLUDE_PNPM:+--command-name="pnpm" "$BENCH_COMMAND_PNPM"} \
+  ${BENCH_INCLUDE_PNPM11:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_PNPM11")"} \
+  ${BENCH_INCLUDE_PNPM11:+--command-name="pnpm11" "$BENCH_COMMAND_PNPM11"} \
   ${BENCH_INCLUDE_VLT:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_VLT")"} \
   ${BENCH_INCLUDE_VLT:+--command-name="vlt" "$BENCH_COMMAND_VLT"} \
   ${BENCH_INCLUDE_BUN:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_BUN")"} \

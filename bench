@@ -27,6 +27,7 @@ AVAILABLE_PMS=(
   berry
   zpm
   pnpm
+  pnpm11
   vlt
   bun
   deno

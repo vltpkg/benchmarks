@@ -25,6 +25,7 @@ const countFiles = [
   { filename: 'berry-count.txt', pmName: 'berry' },
   { filename: 'zpm-count.txt', pmName: 'zpm' },
   { filename: 'pnpm-count.txt', pmName: 'pnpm' },
+  { filename: 'pnpm11-count.txt', pmName: 'pnpm11' },
   { filename: 'vlt-count.txt', pmName: 'vlt' },
   { filename: 'bun-count.txt', pmName: 'bun' },
   { filename: 'deno-count.txt', pmName: 'deno' }
