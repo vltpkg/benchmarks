@@ -47,18 +47,8 @@ echo "hyperfine: $HYPERFINE_VERSION"
 echo "Installing package managers and tools..."
 npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
 
-# Install Vite+ (vp) via its installer script
-# Note: The vp installer auto-enables Node.js version management in CI
-# (detects $CI env var). We must disable it after install so vp's shims
-# don't intercept node/npm/corepack — we use actions/setup-node for that.
-curl -fsSL https://vite.plus | bash
-export PATH="$HOME/.vite-plus/bin:$PATH"
-# Disable vp's Node.js version management to avoid interfering with corepack
-"$HOME/.vite-plus/bin/vp" env off 2>/dev/null || true
-# Persist vp on PATH for subsequent CI steps
-if [ -n "${GITHUB_PATH:-}" ]; then
-  echo "$HOME/.vite-plus/bin" >> "$GITHUB_PATH"
-fi
+# Install Vite+ (vp) via npm (available as the `vite-plus` package)
+npm install -g vite-plus@latest
 
 # Configure Package Managers
 echo "Configuring package managers..."
@@ -85,7 +75,7 @@ BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"
 TURBO_VERSION="$(npm view turbo@latest version)"
-VP_VERSION="$(vp --version 2>/dev/null || echo "unknown")"
+VP_VERSION="$(npm view vite-plus@latest version 2>/dev/null || echo "unknown")"
 NODE_VERSION=$(node -v)
 
 # Output versions
