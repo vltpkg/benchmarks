@@ -42,6 +42,14 @@ clean_pnpm_cache() {
   fi
 }
 
+# Function to safely clean pnpm 11 cache
+clean_pnpm11_cache() {
+  if command -v corepack &> /dev/null; then
+    corepack pnpm@next-11 cache delete * --silent || true
+    safe_remove "$(corepack pnpm@next-11 store path | xargs)"
+  fi
+}
+
 # Function to safely clean vlt cache
 clean_vlt_cache() {
   if command -v vlt &> /dev/null; then
@@ -140,6 +148,7 @@ clean_all_cache() {
   clean_berry_cache
   clean_zpm_cache
   clean_pnpm_cache
+  clean_pnpm11_cache
   clean_vlt_cache
   clean_bun_cache
   clean_nx_cache
@@ -188,6 +197,7 @@ show_help() {
   echo "  clean_berry_cache"
   echo "  clean_zpm_cache"
   echo "  clean_pnpm_cache"
+  echo "  clean_pnpm11_cache"
   echo "  clean_vlt_cache"
   echo "  clean_bun_cache"
   echo "  clean_nx_cache"
@@ -223,6 +233,9 @@ else
         ;;
       clean_pnpm_cache)
         clean_pnpm_cache
+        ;;
+      clean_pnpm11_cache)
+        clean_pnpm11_cache
         ;;
       clean_vlt_cache)
         clean_vlt_cache
