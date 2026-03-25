@@ -62,8 +62,12 @@ clean_bun_cache() {
   if command -v bun &> /dev/null; then
     bun pm cache rm -g || true
     bun pm cache rm || true
-    # also clear global cache dir
-    safe_remove "$HOME/.bun/install/cache"
+    # Remove the entire install directory (includes cache/ and metadata files)
+    safe_remove "$HOME/.bun/install"
+    # Also remove BUN_INSTALL_CACHE_DIR if set to a custom location
+    if [ -n "${BUN_INSTALL_CACHE_DIR:-}" ]; then
+      safe_remove "$BUN_INSTALL_CACHE_DIR"
+    fi
   fi
 }
 
