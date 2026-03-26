@@ -1,0 +1,6 @@
+➤ · Yarn 6.0.0-rc.15.local
+➤ ┌ Installing packages
+➤ │ vendors@npm:1.0.4: Requests to registry.npmjs.org are taking suspiciously long...
+➤ │ @eslint-community/eslint-utils@npm:4.9.1: Network error: HTTP status client error (404 Not Found) for url (https://registry.npmjs.org/@eslint-community%2feslint-utils/-/eslint-utils-4.9.1.tgz)
+➤ │ Resolved 1699 packages, fetched 1345 packages (290.50 MiB)
+➤ └ Completed in 6s 429ms

@@ -1,0 +1,29 @@
+{
+  "npm": {
+    "count": 4
+  },
+  "yarn": {
+    "count": 4
+  },
+  "berry": {
+    "count": 414
+  },
+  "zpm": {
+    "count": 3
+  },
+  "pnpm": {
+    "count": 36
+  },
+  "pnpm11": {
+    "count": 4
+  },
+  "vlt": {
+    "count": 10
+  },
+  "bun": {
+    "count": 2
+  },
+  "deno": {
+    "count": 2
+  }
+}
