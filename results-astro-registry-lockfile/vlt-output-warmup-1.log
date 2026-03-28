@@ -1,561 +1,967 @@
-npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-loong64-musl 255ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-ppc64-musl 131ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-openbsd-x64 1042ms (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/zwitch/-/zwitch-2.0.4.tgz 207ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/vfile-message/-/vfile-message-4.0.3.tgz 217ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/yocto-spinner/-/yocto-spinner-0.2.3.tgz 265ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/vitefu/-/vitefu-1.1.2.tgz 270ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/wrap-ansi/-/wrap-ansi-9.0.2.tgz 278ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/web-namespaces/-/web-namespaces-2.0.1.tgz 278ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/yocto-queue/-/yocto-queue-1.2.2.tgz 281ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/yoctocolors/-/yoctocolors-2.1.2.tgz 280ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/zod-to-ts/-/zod-to-ts-1.2.0.tgz 282ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/widest-line/-/widest-line-5.0.0.tgz 281ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/which-pm-runs/-/which-pm-runs-1.1.0.tgz 282ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/xxhash-wasm/-/xxhash-wasm-1.1.0.tgz 293ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/vfile-location/-/vfile-location-5.0.3.tgz 296ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/yargs-parser/-/yargs-parser-21.1.1.tgz 323ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit-children/-/unist-util-visit-children-3.0.0.tgz 328ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-remove-position/-/unist-util-remove-position-5.0.0.tgz 331ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit/-/unist-util-visit-5.1.0.tgz 334ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-modify-children/-/unist-util-modify-children-4.0.0.tgz 335ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-position/-/unist-util-position-5.0.0.tgz 336ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-is/-/unist-util-is-6.0.1.tgz 337ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-find-after/-/unist-util-find-after-5.0.0.tgz 339ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-stringify-position/-/unist-util-stringify-position-4.0.0.tgz 348ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/tinyexec/-/tinyexec-1.0.4.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/unifont/-/unifont-0.7.4.tgz 368ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/stringify-entities/-/stringify-entities-4.0.4.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit-parents/-/unist-util-visit-parents-6.0.2.tgz 376ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/string-width/-/string-width-7.2.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/uncrypto/-/uncrypto-0.1.3.tgz 401ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/retext-smartypants/-/retext-smartypants-6.2.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/retext-latin/-/retext-latin-4.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/trough/-/trough-2.2.0.tgz 424ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/strip-ansi/-/strip-ansi-7.2.0.tgz 432ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/trim-lines/-/trim-lines-3.0.1.tgz 433ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/unified/-/unified-11.0.5.tgz 440ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/tinyglobby/-/tinyglobby-0.2.15.tgz 440ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/tiny-inflate/-/tiny-inflate-1.0.3.tgz 442ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/remark-stringify/-/remark-stringify-11.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/ufo/-/ufo-1.6.3.tgz 455ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/rehype-stringify/-/rehype-stringify-10.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/space-separated-tokens/-/space-separated-tokens-2.0.2.tgz 458ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/rehype/-/rehype-13.0.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/rehype-parse/-/rehype-parse-9.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/sisteransi/-/sisteransi-1.0.5.tgz 466ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/retext-stringify/-/retext-stringify-4.0.0.tgz 471ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/sax/-/sax-1.6.0.tgz 473ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/retext/-/retext-9.0.0.tgz 472ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/remark-smartypants/-/remark-smartypants-3.0.2.tgz 474ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/readdirp/-/readdirp-5.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/remark-rehype/-/remark-rehype-11.1.2.tgz 481ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/tsconfck/-/tsconfck-3.1.6.tgz 490ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/vfile/-/vfile-6.0.3.tgz 499ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/remark-gfm/-/remark-gfm-4.0.1.tgz 491ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/prismjs/-/prismjs-1.30.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/remark-parse/-/remark-parse-11.0.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/postcss/-/postcss-8.5.8.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/astro 2291ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/dlv 1147ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/clsx 1159ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/zod 1928ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/diff 1433ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/dset 1459ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/svgo 1914ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/acorn 1325ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/vite 2243ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/boxen 1071ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/debug 995ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/shiki 498ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/cookie 426ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/vfile 520ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mrmime 369ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/cssesc 409ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rehype 311ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/vitefu 236ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ci-info 251ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/semver 292ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/devalue 197ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/esbuild 271ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/flattie 260ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/fontace 245ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/js-yaml 173ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/p-limit 177ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/p-queue 225ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/prompts 367ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unifont 357ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/magicast 371ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/tsconfck 236ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/tinyexec 286ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/piccolore 204ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/picomatch 211ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/smol-toml 250ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ultrahtml 199ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unstorage 278ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/zod-to-ts 221ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/aria-query 208ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/tinyglobby 214ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/neotraverse 221ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/xxhash-wasm 229ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/html-escaper 315ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/magic-string 309ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/yargs-parser 299ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/estree-walker 309ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/yocto-spinner 293ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/axobject-query 271ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/github-slugger 664ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/es-module-lexer 665ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@oslojs%2fencoding 688ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit 337ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs%2ftelemetry 309ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs%2fcompiler 463ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@capsizecss%2funpack 280ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/zod-to-json-schema 297ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2fpluginutils 311ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/import-meta-resolve 261ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/common-ancestor-path 250ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/http-cache-semantics 237ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/package-manager-detector 258ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs%2fmarkdown-remark 359ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs%2finternal-helpers 332ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/deterministic-object-hash 321ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sharp 460ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fnode 684ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/jiti 459ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/less 114ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/lightningcss 324ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sass 609ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sass-embedded 867ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/stylus 371ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sugarss 995ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/postcss 698ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/terser 1140ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/tsx 279ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/yaml 240ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/typescript 1774ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@azure%2fapp-configuration 1220ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@azure%2fcosmos 1513ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@azure%2fdata-tables 937ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@azure%2fidentity 1033ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@azure%2fkeyvault-secrets 778ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@azure%2fstorage-blob 911ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@capacitor%2fpreferences 1214ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@capacitor%2fcore 1330ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@deno%2fkv 222ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@netlify%2fblobs 656ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@planetscale%2fdatabase 109ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@upstash%2fredis 1201ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@vercel%2fblob 366ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@vercel%2ffunctions 211ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@aws-sdk%2fcredential-provider-web-identity 634ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@vercel%2fkv 145ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/aws4fetch 109ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/db0 180ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@electric-sql%2fpglite 228ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@libsql%2fclient 254ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/better-sqlite3 274ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/drizzle-orm 4251ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@aws-sdk%2fclient-rds-data 1229ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@cloudflare%2fworkers-types 930ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@libsql%2fclient-wasm 270ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@neondatabase%2fserverless 153ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@op-engineering%2fop-sqlite 800ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/react 1749ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/react-native 3215ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2freact 231ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@opentelemetry%2fapi 195ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@prisma%2fclient 10534ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/prisma 7013ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/typescript 47ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@tidbcloud%2fserverless 108ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fbetter-sqlite3 150ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fpg 106ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fsql.js 85ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@vercel%2fpostgres 151ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@xata.io%2fclient 2051ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/bun-types 493ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/expo-sqlite 327ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/expo 677ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@expo%2fdom-webview 98ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@expo%2fmetro-runtime 149ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/react-dom 829ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/react-native-webview 249ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/gel 125ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/knex 304ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/pg-query-stream 128ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/pg 153ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/pg-native 90ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/kysely 200ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mysql2 227ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fnode 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/postgres 113ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sql.js 125ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sqlite3 139ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/idb-keyval 96ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ioredis 210ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/uploadthing 181ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/express 257ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/h3 190ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/crossws 88ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/srvx 140ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/tailwindcss 861ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/typescript 49ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/rollup 290ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rehype-raw 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-gfm 90ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unified 103ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-parse 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs%2fprism 73ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-rehype 98ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rehype-stringify 74ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-to-text 76ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-smartypants 82ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-from-html 87ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-definitions 78ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/debug 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit-parents 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ci-info 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-remove-position 96ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/is-wsl 76ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/which-pm-runs 67ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/is-docker 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/picomatch 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/fontkitten 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/estree-walker 28ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2festree 89ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/camelcase 78ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/chalk 107ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/cli-boxes 66ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/wrap-ansi 67ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ansi-align 85ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/type-fest 126ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/widest-line 242ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/string-width 219ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ms 221ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/base-64 76ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-arm 81ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2faix-ppc64 88ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-x64 74ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fsunos-x64 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fwin32-x64 75ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fdarwin-x64 106ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-ia32 90ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fnetbsd-x64 104ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fwin32-ia32 75ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fandroid-arm 85ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fandroid-x64 117ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-arm64 121ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2ffreebsd-x64 165ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-ppc64 91ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-s390x 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fopenbsd-x64 88ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fwin32-arm64 103ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fdarwin-arm64 90ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fnetbsd-arm64 111ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fandroid-arm64 113ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2ffreebsd-arm64 102ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fopenbsd-arm64 381ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-riscv64 417ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-loong64 469ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/fontkitten 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-mips64el 80ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fopenharmony-arm64 75ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/argparse 74ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell%2fsourcemap-codec 102ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@babel%2ftypes 101ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/source-map-js 113ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@babel%2fparser 151ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/yocto-queue 124ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/p-timeout 74ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/eventemitter3 94ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/kleur 80ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unified 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/sisteransi 103ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fhast 104ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rehype-stringify 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/rehype-parse 96ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fcolour 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/detect-libc 72ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-wasm32 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-linux-arm 80ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-linux-x64 101ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-win32-x64 105ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-darwin-x64 71ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-win32-ia32 72ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-linux-arm64 69ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-linux-ppc64 76ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-linux-s390x 99ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-win32-arm64 97ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-darwin-arm64 123ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-linux-riscv64 108ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-linuxmusl-x64 105ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-linuxmusl-arm64 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-linux-arm 84ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-linux-x64 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-darwin-x64 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-linux-arm64 112ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-linux-ppc64 111ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-linux-s390x 106ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-darwin-arm64 182ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-linux-riscv64 222ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-linuxmusl-x64 219ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fhast 28ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img%2fsharp-libvips-linuxmusl-arm64 147ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs%2flangs 111ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs%2fcore 131ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs%2ftypes 97ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs%2fthemes 87ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs%2fvscode-textmate 128ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs%2fengine-oniguruma 110ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sax 71ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs%2fengine-javascript 123ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/csso 89ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/css-what 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/css-tree 118ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/css-select 77ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/commander 113ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/picocolors 85ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ohash 95ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/css-tree 27ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/fdir 158ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ofetch 161ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit-parents 28ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/h3 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2funist 249ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-is 254ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ufo 187ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/destr 122ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/anymatch 90ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/chokidar 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/node-fetch-native 194ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/fdir 28ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/lru-cache 237ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rollup 33ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/esbuild 53ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/vfile-message 249ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/postcss 46ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/fsevents 84ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/yoctocolors 103ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/devlop 62ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/prismjs 71ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/parse5 75ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-from-parse5 99ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-find-after 120ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-is-element 200ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-raw 133ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fmdast 169ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fmdast 28ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-to-html 96ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm 88ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-stringify 138ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm 129ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-types 373ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-from-markdown 714ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-to-hast 728ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/retext 459ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/devlop 28ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/retext-smartypants 75ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/bail 78ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/extend 86ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/trough 86ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/is-plain-obj 78ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/is-inside-container 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/tiny-inflate 88ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/string-width 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/emoji-regex 90ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/strip-ansi 26ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/strip-ansi 133ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/get-east-asian-width 107ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ansi-styles 91ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/strip-ansi 18ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/emoji-regex 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/is-fullwidth-code-point 87ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2funist 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/hastscript 94ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/dequal 99ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/vfile-location 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/web-namespaces 102ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/property-information 184ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/entities 171ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-stringify-position 168ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-parse-selector 86ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/comma-separated-tokens 88ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/space-separated-tokens 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@babel%2fhelper-string-parser 97ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@babel%2fhelper-validator-identifier 100ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/zwitch 83ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-to-parse5 104ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/html-void-elements 117ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-position 71ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@ungap%2fstructured-clone 134ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-sanitize-uri 790ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/trim-lines 826ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-encode 123ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-character 123ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-symbol 123ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-whitespace 84ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/stringify-entities 91ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ccount 94ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/character-entities-html4 99ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/character-entities-legacy 105ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-footnote 72ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-table 75ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-to-markdown 83ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-strikethrough 120ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-task-list-item 120ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-autolink-literal 114ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-footnote 82ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-table 89ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-tagfilter 86ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-combine-extensions 91ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-strikethrough 112ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-task-list-item 148ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-autolink-literal 103ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-decode-string 129ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark 141ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-to-string 143ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/decode-named-character-reference 89ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-normalize-identifier 83ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-decode-numeric-character-reference 90ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-find-and-replace 73ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/markdown-table 97ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/longest-streak 102ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-phrasing 63ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-classify-character 80ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fdebug 66ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/character-entities 71ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-chunked 88ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-space 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-core-commonmark 119ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-resolve-all 101ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-subtokenize 61ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/escape-string-regexp 116ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-label 89ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fms 100ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-title 118ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-html-tag-name 116ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-whitespace 250ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-destination 393ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/retext-latin 108ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/retext-stringify 109ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fnlcst 114ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types%2fnlcst 28ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/nlcst-to-string 100ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/parse-latin 121ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit-children 113ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-modify-children 116ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/array-iterate 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@emnapi%2fruntime 85ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/tslib 98ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/oniguruma-to-es 79ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/regex-recursion 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/oniguruma-parser 86ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/regex 109ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/regex-utilities 92ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/regex-utilities 101ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ansi-regex 357ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/boolbase 79ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/nth-check 84ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/domutils 89ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/domhandler 75ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdn-data 77ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/domelementtype 67ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/dom-serializer 72ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/domelementtype 86ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdn-data 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/entities 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/ufo 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/readdirp 75ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/normalize-path 79ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/crossws 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/defu 118ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/radix3 66ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/uncrypto 66ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/cookie-es 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/iron-webcrypto 87ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/node-mock-http 77ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-arm 37ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-x64 38ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2faix-ppc64 41ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fsunos-x64 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fwin32-x64 32ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fdarwin-x64 32ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fnetbsd-x64 32ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-ia32 34ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fwin32-ia32 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fandroid-x64 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fandroid-arm 33ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2ffreebsd-x64 32ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-arm64 32ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-s390x 32ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-ppc64 33ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fdarwin-arm64 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fopenbsd-x64 33ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fwin32-arm64 33ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fnetbsd-arm64 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fandroid-arm64 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2ffreebsd-arm64 31ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-loong64 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-riscv64 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fopenbsd-arm64 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2flinux-mips64el 29ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild%2fopenharmony-arm64 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/nanoid 98ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-darwin-x64 110ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-freebsd-x64 119ms (cache miss)
+npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-openbsd-x64 97ms (cache skip)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-darwin-arm64 88ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-android-arm64 123ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-freebsd-arm64 115ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-x64-gnu 117ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-win32-x64-gnu 98ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-x64-musl 749ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-win32-x64-msvc 859ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-arm64-gnu 851ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-ppc64-gnu 260ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-s390x-gnu 192ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-win32-ia32-msvc 181ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-android-arm-eabi 124ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-arm64-musl 99ms (cache miss)
+npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-ppc64-musl 105ms (cache skip)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-win32-arm64-msvc 89ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-loong64-gnu 70ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-riscv64-gnu 73ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-openharmony-arm64 69ms (cache miss)
+npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-loong64-musl 60ms (cache skip)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-arm-gnueabihf 74ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-riscv64-musl 113ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup%2frollup-linux-arm-musleabihf 88ms (cache miss)
+npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-openbsd-x64 16ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-ppc64-musl 15ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-loong64-musl 16ms (cache skip)
+npm http fetch GET 200 https://registry.vlt.io/npm/ansi-regex 30ms (cache revalidated)
+npm http fetch GET 200 https://registry.vlt.io/npm/ansi-styles/-/ansi-styles-6.2.3.tgz 155ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz 157ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/yoctocolors/-/yoctocolors-2.1.2.tgz 155ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/normalize-path/-/normalize-path-3.0.0.tgz 178ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/h3/-/h3-1.15.10.tgz 183ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/readdirp/-/readdirp-5.0.0.tgz 199ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/nanoid/-/nanoid-3.3.11.tgz 236ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/cookie-es/-/cookie-es-1.2.2.tgz 242ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/iron-webcrypto/-/iron-webcrypto-1.2.1.tgz 248ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/chokidar/-/chokidar-5.0.0.tgz 246ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/uncrypto/-/uncrypto-0.1.3.tgz 250ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/anymatch/-/anymatch-3.1.3.tgz 254ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/radix3/-/radix3-1.1.2.tgz 257ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/destr/-/destr-2.0.5.tgz 263ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ohash/-/ohash-2.0.11.tgz 274ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/array-iterate/-/array-iterate-2.0.1.tgz 280ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/trough/-/trough-2.2.0.tgz 281ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/extend/-/extend-3.0.2.tgz 282ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/boolbase/-/boolbase-1.0.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/is-plain-obj/-/is-plain-obj-4.1.0.tgz 290ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/picocolors/-/picocolors-1.1.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/rehype-raw/-/rehype-raw-7.0.0.tgz 500ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/sax/-/sax-1.6.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/fdir/-/fdir-6.5.0.tgz 298ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/bail/-/bail-2.0.2.tgz 299ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ufo/-/ufo-1.6.3.tgz 304ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/dom-serializer/-/dom-serializer-2.0.0.tgz 313ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/nth-check/-/nth-check-2.1.1.tgz 317ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/domelementtype/-/domelementtype-2.3.0.tgz 320ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/domhandler/-/domhandler-5.0.3.tgz 320ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/get-east-asian-width/-/get-east-asian-width-1.5.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/regex-utilities/-/regex-utilities-2.3.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/css-what/-/css-what-6.2.2.tgz 327ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/regex-recursion/-/regex-recursion-6.0.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/oniguruma-parser/-/oniguruma-parser-0.12.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@shikijs/types/-/types-3.23.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@shikijs/vscode-textmate/-/vscode-textmate-10.0.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/character-entities-html4/-/character-entities-html4-2.1.0.tgz 355ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@shikijs/engine-oniguruma/-/engine-oniguruma-3.23.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/ofetch/-/ofetch-1.5.1.tgz 375ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@img/sharp-linux-arm64/-/sharp-linux-arm64-0.34.5.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/strip-ansi/-/strip-ansi-7.2.0.tgz 377ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/emoji-regex/-/emoji-regex-10.6.0.tgz 383ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/character-entities-legacy/-/character-entities-legacy-3.0.0.tgz 385ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@img/colour/-/colour-1.1.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/unist-util-modify-children/-/unist-util-modify-children-4.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/nlcst-to-string/-/nlcst-to-string-4.0.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/ansi-regex/-/ansi-regex-6.2.2.tgz 401ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/retext-latin/-/retext-latin-4.0.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/defu/-/defu-6.1.4.tgz 411ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/detect-libc/-/detect-libc-2.1.2.tgz 407ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/retext/-/retext-9.0.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/engine-javascript/-/engine-javascript-3.23.0.tgz 413ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-table/-/micromark-extension-gfm-table-2.1.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-tagfilter/-/micromark-extension-gfm-tagfilter-2.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/retext-smartypants/-/retext-smartypants-6.2.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-footnote/-/micromark-extension-gfm-footnote-2.1.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-autolink-literal/-/micromark-extension-gfm-autolink-literal-2.1.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-html-tag-name/-/micromark-util-html-tag-name-2.0.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-subtokenize/-/micromark-util-subtokenize-2.1.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-combine-extensions/-/micromark-util-combine-extensions-2.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/core/-/core-3.23.0.tgz 461ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/micromark-core-commonmark/-/micromark-core-commonmark-2.0.3.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/retext-stringify/-/retext-stringify-4.0.0.tgz 469ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-classify-character/-/micromark-util-classify-character-2.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/nlcst/-/nlcst-2.0.3.tgz 473ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@types/ms/-/ms-2.1.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/longest-streak/-/longest-streak-3.1.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-strikethrough/-/micromark-extension-gfm-strikethrough-2.1.0.tgz 488ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/commander/-/commander-11.1.0.tgz 496ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit-children/-/unist-util-visit-children-3.0.0.tgz 495ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-find-and-replace/-/mdast-util-find-and-replace-3.0.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-label/-/micromark-factory-label-2.0.1.tgz 495ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/character-entities/-/character-entities-2.0.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-whitespace/-/micromark-factory-whitespace-2.0.1.tgz 499ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-decode-numeric-character-reference/-/micromark-util-decode-numeric-character-reference-2.0.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/unist-util-stringify-position/-/unist-util-stringify-position-4.0.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-title/-/micromark-factory-title-2.0.1.tgz 503ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-chunked/-/micromark-util-chunked-2.0.1.tgz 504ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/decode-named-character-reference/-/decode-named-character-reference-1.3.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-resolve-all/-/micromark-util-resolve-all-2.0.1.tgz 508ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-to-string/-/mdast-util-to-string-4.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-to-markdown/-/mdast-util-to-markdown-2.1.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-destination/-/micromark-factory-destination-2.0.1.tgz 513ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/debug/-/debug-4.1.13.tgz 513ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-space/-/micromark-factory-space-2.0.1.tgz 515ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-decode-string/-/micromark-util-decode-string-2.0.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-footnote/-/mdast-util-gfm-footnote-2.1.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-task-list-item/-/mdast-util-gfm-task-list-item-2.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-autolink-literal/-/mdast-util-gfm-autolink-literal-2.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-phrasing/-/mdast-util-phrasing-4.1.0.tgz 528ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-from-markdown/-/mdast-util-from-markdown-2.0.3.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/markdown-table/-/markdown-table-3.0.4.tgz 531ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-task-list-item/-/micromark-extension-gfm-task-list-item-2.1.0.tgz 536ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-is/-/unist-util-is-6.0.1.tgz 532ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/remark-stringify/-/remark-stringify-11.0.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/escape-string-regexp/-/escape-string-regexp-5.0.0.tgz 534ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/stringify-entities/-/stringify-entities-4.0.4.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-normalize-identifier/-/micromark-util-normalize-identifier-2.0.1.tgz 539ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/hast-util-whitespace/-/hast-util-whitespace-3.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/hast-util-to-html/-/hast-util-to-html-9.0.5.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-types/-/micromark-util-types-2.0.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.60.0.tgz 567ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-symbol/-/micromark-util-symbol-2.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/node-mock-http/-/node-mock-http-1.0.4.tgz 571ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/trim-lines/-/trim-lines-3.0.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-character/-/micromark-util-character-2.1.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-table/-/mdast-util-gfm-table-2.0.0.tgz 557ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdn-data/-/mdn-data-2.27.1.tgz 576ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/node-fetch-native/-/node-fetch-native-1.6.7.tgz 581ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/zwitch/-/zwitch-2.0.4.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm/-/micromark-extension-gfm-3.0.0.tgz 562ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-to-hast/-/mdast-util-to-hast-13.2.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/hast-util-raw/-/hast-util-raw-9.1.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-strikethrough/-/mdast-util-gfm-strikethrough-2.0.0.tgz 572ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/html-void-elements/-/html-void-elements-3.0.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm/-/mdast-util-gfm-3.1.0.tgz 573ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/sisteransi/-/sisteransi-1.0.5.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-encode/-/micromark-util-encode-2.0.1.tgz 576ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/entities/-/entities-6.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/ccount/-/ccount-2.0.1.tgz 579ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/p-timeout/-/p-timeout-6.1.4.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-sanitize-uri/-/micromark-util-sanitize-uri-2.0.1.tgz 580ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/eventemitter3/-/eventemitter3-5.0.4.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@types/mdast/-/mdast-4.0.4.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/postcss/-/postcss-8.5.8.tgz 616ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-position/-/unist-util-position-5.0.0.tgz 591ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@babel/helper-validator-identifier/-/helper-validator-identifier-7.28.5.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@ungap/structured-clone/-/structured-clone-1.3.0.tgz 595ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@babel/types/-/types-7.29.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@babel/parser/-/parser-7.29.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/space-separated-tokens/-/space-separated-tokens-2.0.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-to-parse5/-/hast-util-to-parse5-8.0.1.tgz 603ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rehype-parse/-/rehype-parse-9.0.1.tgz 603ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/kleur/-/kleur-3.0.3.tgz 606ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/hast-util-parse-selector/-/hast-util-parse-selector-4.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/comma-separated-tokens/-/comma-separated-tokens-2.0.3.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/yocto-queue/-/yocto-queue-1.2.2.tgz 612ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/hast-util-is-element/-/hast-util-is-element-3.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/unist-util-find-after/-/unist-util-find-after-5.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/is-inside-container/-/is-inside-container-1.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/web-namespaces/-/web-namespaces-2.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/lru-cache/-/lru-cache-11.2.7.tgz 649ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/property-information/-/property-information-7.1.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/hastscript/-/hastscript-9.0.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/dequal/-/dequal-2.0.3.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/vfile-message/-/vfile-message-4.0.3.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@types/unist/-/unist-3.0.3.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/argparse/-/argparse-2.0.1.tgz 633ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/parse5/-/parse5-7.3.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/hast-util-from-parse5/-/hast-util-from-parse5-8.0.3.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@babel/helper-string-parser/-/helper-string-parser-7.27.1.tgz 642ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/vfile-location/-/vfile-location-5.0.3.tgz 641ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/base-64/-/base-64-1.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@types/hast/-/hast-3.0.4.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/crossws/-/crossws-0.3.5.tgz 680ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/type-fest/-/type-fest-4.41.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/chalk/-/chalk-5.6.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/string-width/-/string-width-7.2.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/ansi-align/-/ansi-align-3.0.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/camelcase/-/camelcase-8.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/devlop/-/devlop-1.1.0.tgz 668ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/fontkitten/-/fontkitten-1.0.3.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/is-wsl/-/is-wsl-3.1.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/widest-line/-/widest-line-5.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/is-docker/-/is-docker-3.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/prismjs/-/prismjs-1.30.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/unist-util-visit-parents/-/unist-util-visit-parents-6.0.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/oniguruma-to-es/-/oniguruma-to-es-4.3.5.tgz 714ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ms/-/ms-2.1.3.tgz 692ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/remark-smartypants/-/remark-smartypants-3.0.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/remark-rehype/-/remark-rehype-11.1.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/tiny-inflate/-/tiny-inflate-1.0.3.tgz 696ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/wrap-ansi/-/wrap-ansi-9.0.2.tgz 695ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/rehype-stringify/-/rehype-stringify-10.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/cli-boxes/-/cli-boxes-3.0.0.tgz 695ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/remark-gfm/-/remark-gfm-4.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/source-map-js/-/source-map-js-1.2.1.tgz 704ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/rehype-raw/-/rehype-raw-7.0.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/which-pm-runs/-/which-pm-runs-1.1.0.tgz 705ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-definitions/-/mdast-util-definitions-6.0.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/hast-util-to-text/-/hast-util-to-text-4.0.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-parse/-/remark-parse-11.0.0.tgz 712ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/typescript/-/typescript-5.9.3.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/zod-to-ts/-/zod-to-ts-1.2.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-remove-position/-/unist-util-remove-position-5.0.0.tgz 715ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/zod-to-json-schema/-/zod-to-json-schema-3.25.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/zod/-/zod-3.25.76.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/yargs-parser/-/yargs-parser-21.1.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/yocto-spinner/-/yocto-spinner-0.2.3.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/parse-latin/-/parse-latin-7.0.0.tgz 750ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/vitefu/-/vitefu-1.1.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/unstorage/-/unstorage-1.17.5.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/rollup/-/rollup-4.60.0.tgz 776ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/unist-util-visit/-/unist-util-visit-5.1.0.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs/prism/-/prism-3.3.0.tgz 739ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-from-html/-/hast-util-from-html-2.0.3.tgz 739ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unified/-/unified-11.0.5.tgz 741ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/regex/-/regex-6.1.0.tgz 774ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/tsconfck/-/tsconfck-3.1.6.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/tinyexec/-/tinyexec-1.0.4.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/tinyglobby/-/tinyglobby-0.2.15.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/domutils/-/domutils-3.2.2.tgz 788ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/semver/-/semver-7.7.4.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/rehype/-/rehype-13.0.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/smol-toml/-/smol-toml-1.6.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/prompts/-/prompts-2.4.2.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/piccolore/-/piccolore-0.1.3.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/regex-recursion/-/regex-recursion-6.0.2.tgz 517ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/radix3/-/radix3-1.1.2.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/source-map-js/-/source-map-js-1.2.1.tgz 536ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/p-limit/-/p-limit-6.2.0.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/p-queue/-/p-queue-8.1.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/regex-utilities/-/regex-utilities-2.3.0.tgz 551ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/node-fetch-native/-/node-fetch-native-1.6.7.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/package-manager-detector/-/package-manager-detector-1.6.0.tgz 562ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/smol-toml/-/smol-toml-1.6.1.tgz 571ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/neotraverse/-/neotraverse-0.6.18.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/picomatch/-/picomatch-4.0.4.tgz 581ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-symbol/-/micromark-util-symbol-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-subtokenize/-/micromark-util-subtokenize-2.1.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/p-timeout/-/p-timeout-6.1.4.tgz 588ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-resolve-all/-/micromark-util-resolve-all-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/normalize-path/-/normalize-path-3.0.0.tgz 591ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-normalize-identifier/-/micromark-util-normalize-identifier-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/nth-check/-/nth-check-2.1.1.tgz 595ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-html-tag-name/-/micromark-util-html-tag-name-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/nlcst-to-string/-/nlcst-to-string-4.0.0.tgz 601ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-decode-string/-/micromark-util-decode-string-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-encode/-/micromark-util-encode-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-combine-extensions/-/micromark-util-combine-extensions-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/ms/-/ms-2.1.3.tgz 612ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-classify-character/-/micromark-util-classify-character-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-types/-/micromark-util-types-2.0.2.tgz 613ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-factory-space/-/micromark-factory-space-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-sanitize-uri/-/micromark-util-sanitize-uri-2.0.1.tgz 631ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-factory-destination/-/micromark-factory-destination-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/ultrahtml/-/ultrahtml-1.6.0.tgz 653ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-table/-/micromark-extension-gfm-table-2.1.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-strikethrough/-/micromark-extension-gfm-strikethrough-2.1.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-chunked/-/micromark-util-chunked-2.0.1.tgz 646ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-character/-/micromark-util-character-2.1.1.tgz 646ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm/-/micromark-extension-gfm-3.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/nanoid/-/nanoid-3.3.11.tgz 660ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-decode-numeric-character-reference/-/micromark-util-decode-numeric-character-reference-2.0.2.tgz 658ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark/-/micromark-4.0.2.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/ofetch/-/ofetch-1.5.1.tgz 664ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/ohash/-/ohash-2.0.11.tgz 667ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-whitespace/-/micromark-factory-whitespace-2.0.1.tgz 660ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-title/-/micromark-factory-title-2.0.1.tgz 663ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-to-string/-/mdast-util-to-string-4.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-label/-/micromark-factory-label-2.0.1.tgz 673ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-to-markdown/-/mdast-util-to-markdown-2.1.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-to-hast/-/mdast-util-to-hast-13.2.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-tagfilter/-/micromark-extension-gfm-tagfilter-2.0.0.tgz 677ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-task-list-item/-/mdast-util-gfm-task-list-item-2.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/sharp/-/sharp-0.34.5.tgz 694ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-table/-/mdast-util-gfm-table-2.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-task-list-item/-/micromark-extension-gfm-task-list-item-2.1.0.tgz 684ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/semver/-/semver-7.7.4.tgz 700ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-footnote/-/micromark-extension-gfm-footnote-2.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-footnote/-/mdast-util-gfm-footnote-2.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-strikethrough/-/mdast-util-gfm-strikethrough-2.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-autolink-literal/-/micromark-extension-gfm-autolink-literal-2.1.0.tgz 691ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-autolink-literal/-/mdast-util-gfm-autolink-literal-2.0.1.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/magicast/-/magicast-0.5.2.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/magic-string/-/magic-string-0.30.21.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/longest-streak/-/longest-streak-3.1.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-phrasing/-/mdast-util-phrasing-4.1.0.tgz 717ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/is-plain-obj/-/is-plain-obj-4.1.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/unifont/-/unifont-0.7.4.tgz 782ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/js-yaml/-/js-yaml-4.1.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/is-inside-container/-/is-inside-container-1.0.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/is-wsl/-/is-wsl-3.1.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-find-and-replace/-/mdast-util-find-and-replace-3.0.2.tgz 735ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm/-/mdast-util-gfm-3.1.0.tgz 739ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-definitions/-/mdast-util-definitions-6.0.0.tgz 738ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/markdown-table/-/markdown-table-3.0.4.tgz 741ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/html-void-elements/-/html-void-elements-3.0.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/is-docker/-/is-docker-3.0.0.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/import-meta-resolve/-/import-meta-resolve-4.2.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/html-escaper/-/html-escaper-3.0.3.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/kleur/-/kleur-3.0.3.tgz 758ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/hastscript/-/hastscript-9.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-to-text/-/hast-util-to-text-4.0.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-whitespace/-/hast-util-whitespace-3.0.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-to-parse5/-/hast-util-to-parse5-8.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-to-html/-/hast-util-to-html-9.0.5.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/iron-webcrypto/-/iron-webcrypto-1.2.1.tgz 773ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/hast-util-parse-selector/-/hast-util-parse-selector-4.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/magicast/-/magicast-0.5.2.tgz 789ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/hast-util-is-element/-/hast-util-is-element-3.0.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/h3/-/h3-1.15.10.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-from-html/-/hast-util-from-html-2.0.3.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/get-east-asian-width/-/get-east-asian-width-1.5.0.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/github-slugger/-/github-slugger-2.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/vite/-/vite-6.4.1.tgz 825ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/fontkitten/-/fontkitten-1.0.3.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-raw/-/hast-util-raw-9.1.0.tgz 803ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/fdir/-/fdir-6.5.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/node-mock-http/-/node-mock-http-1.0.4.tgz 824ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-from-parse5/-/hast-util-from-parse5-8.0.3.tgz 808ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-from-markdown/-/mdast-util-from-markdown-2.0.3.tgz 815ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/oniguruma-to-es/-/oniguruma-to-es-4.3.5.tgz 828ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/html-escaper/-/html-escaper-3.0.3.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/fontace/-/fontace-0.4.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/xxhash-wasm/-/xxhash-wasm-1.1.0.tgz 796ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/package-manager-detector/-/package-manager-detector-1.6.0.tgz 794ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/estree-walker/-/estree-walker-3.0.3.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/parse-latin/-/parse-latin-7.0.0.tgz 832ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/escape-string-regexp/-/escape-string-regexp-5.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/mdn-data/-/mdn-data-2.27.1.tgz 830ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/property-information/-/property-information-7.1.0.tgz 842ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/fontace/-/fontace-0.4.1.tgz 822ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/es-module-lexer/-/es-module-lexer-1.7.0.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/esbuild/-/esbuild-0.27.4.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/regex/-/regex-6.1.0.tgz 847ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/picomatch/-/picomatch-4.0.4.tgz 803ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/dset/-/dset-3.1.4.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/entities/-/entities-6.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/domutils/-/domutils-3.2.2.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/extend/-/extend-3.0.2.tgz 835ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/dlv/-/dlv-1.1.3.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/flattie/-/flattie-1.1.1.tgz 837ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/diff/-/diff-8.0.4.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/emoji-regex/-/emoji-regex-10.6.0.tgz 843ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/eventemitter3/-/eventemitter3-5.0.4.tgz 844ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/devalue/-/devalue-5.6.4.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/deterministic-object-hash/-/deterministic-object-hash-2.0.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/destr/-/destr-2.0.5.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/detect-libc/-/detect-libc-2.1.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/decode-named-character-reference/-/decode-named-character-reference-1.3.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/defu/-/defu-6.1.4.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/csso/-/csso-5.0.5.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/devlop/-/devlop-1.1.0.tgz 862ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/rollup/-/rollup-4.60.0.tgz 895ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/cssesc/-/cssesc-3.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/lru-cache/-/lru-cache-11.2.7.tgz 884ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/css-tree/-/css-tree-3.2.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/css-select/-/css-select-5.2.2.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/debug/-/debug-4.4.3.tgz 881ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/dequal/-/dequal-2.0.3.tgz 882ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/crossws/-/crossws-0.3.5.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/cookie/-/cookie-1.1.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/commander/-/commander-11.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/cookie-es/-/cookie-es-1.2.2.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/dom-serializer/-/dom-serializer-2.0.0.tgz 896ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/common-ancestor-path/-/common-ancestor-path-1.0.1.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/ci-info/-/ci-info-4.4.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/cli-boxes/-/cli-boxes-3.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/prompts/-/prompts-2.4.2.tgz 934ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/character-entities-legacy/-/character-entities-legacy-3.0.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/character-entities/-/character-entities-2.0.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/character-entities-html4/-/character-entities-html4-2.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/chalk/-/chalk-5.6.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ccount/-/ccount-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/comma-separated-tokens/-/comma-separated-tokens-2.0.3.tgz 919ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/clsx/-/clsx-2.1.1.tgz 920ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/chokidar/-/chokidar-5.0.0.tgz 921ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/camelcase/-/camelcase-8.0.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/boolbase/-/boolbase-1.0.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/boxen/-/boxen-8.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/bail/-/bail-2.0.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/debug/-/debug-4.4.3.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/clsx/-/clsx-2.1.1.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/axobject-query/-/axobject-query-4.1.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/boxen/-/boxen-8.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/flattie/-/flattie-1.1.1.tgz 825ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/aria-query/-/aria-query-5.3.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/array-iterate/-/array-iterate-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ansi-styles/-/ansi-styles-6.2.3.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/css-what/-/css-what-6.2.2.tgz 950ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/argparse/-/argparse-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ansi-regex/-/ansi-regex-6.2.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ansi-align/-/ansi-align-3.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/acorn/-/acorn-8.16.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/base-64/-/base-64-1.0.0.tgz 958ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/parse5/-/parse5-7.3.0.tgz 992ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@ungap/structured-clone/-/structured-clone-1.3.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/anymatch/-/anymatch-3.1.3.tgz 962ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@types/unist/-/unist-3.0.3.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/ms/-/ms-2.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/hast/-/hast-3.0.4.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/mdast/-/mdast-4.0.4.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/vscode-textmate/-/vscode-textmate-10.0.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/debug/-/debug-4.1.13.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/@types/nlcst/-/nlcst-2.0.3.tgz 986ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/themes/-/themes-3.23.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/langs/-/langs-3.23.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/engine-oniguruma/-/engine-oniguruma-3.23.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/engine-javascript/-/engine-javascript-3.23.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/core/-/core-3.23.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.60.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/types/-/types-3.23.0.tgz 1002ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/type-fest/-/type-fest-4.41.0.tgz 1051ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/es-module-lexer/-/es-module-lexer-1.7.0.tgz 832ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/@rollup/pluginutils/-/pluginutils-5.3.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@oslojs/encoding/-/encoding-1.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@img/sharp-libvips-linux-arm64/-/sharp-libvips-linux-arm64-1.2.4.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@img/sharp-linux-arm64/-/sharp-linux-arm64-0.34.5.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@img/colour/-/colour-1.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.27.4.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/@capsizecss/unpack/-/unpack-4.0.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/unstorage/-/unstorage-1.17.5.tgz 1077ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@babel/types/-/types-7.29.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@astrojs/telemetry/-/telemetry-3.3.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@babel/parser/-/parser-7.29.2.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@oslojs/encoding/-/encoding-1.1.0.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/@astrojs/markdown-remark/-/markdown-remark-6.3.11.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@babel/helper-validator-identifier/-/helper-validator-identifier-7.28.5.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@babel/helper-string-parser/-/helper-string-parser-7.27.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@astrojs/prism/-/prism-3.3.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/entities/-/entities-4.5.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/@astrojs/internal-helpers/-/internal-helpers-0.7.6.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-core-commonmark/-/micromark-core-commonmark-2.0.3.tgz 1083ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/cookie/-/cookie-1.1.1.tgz 837ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@astrojs/telemetry/-/telemetry-3.3.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/astro/-/astro-5.18.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/vfile/-/vfile-6.0.3.tgz 854ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/@astrojs/compiler/-/compiler-2.13.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/svgo/-/svgo-4.0.1.tgz 1108ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/mdn-data/-/mdn-data-2.0.28.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/css-tree/-/css-tree-2.2.1.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/picomatch/-/picomatch-2.3.2.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/zod-to-json-schema/-/zod-to-json-schema-3.25.2.tgz 1124ms (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/mdn-data/-/mdn-data-2.0.28.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/entities/-/entities-4.5.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/css-tree/-/css-tree-2.2.1.tgz attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/ansi-regex/-/ansi-regex-5.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/string-width/-/string-width-4.2.3.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/strip-ansi/-/strip-ansi-6.0.1.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/neotraverse/-/neotraverse-0.6.18.tgz 866ms (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/emoji-regex/-/emoji-regex-8.0.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/domelementtype/-/domelementtype-2.3.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/domhandler/-/domhandler-5.0.3.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/oniguruma-parser/-/oniguruma-parser-0.12.1.tgz 1124ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/strip-ansi/-/strip-ansi-6.0.1.tgz 1081ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/estree-walker/-/estree-walker-2.0.2.tgz 1081ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/typescript/-/typescript-5.9.3.tgz 1291ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/zod/-/zod-3.25.76.tgz 1440ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/shiki/-/shiki-3.23.0.tgz 1458ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/astro/-/astro-5.18.1.tgz 1585ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/tinyexec/-/tinyexec-1.0.4.tgz 10419ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/stringify-entities/-/stringify-entities-4.0.4.tgz 10428ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/string-width/-/string-width-7.2.0.tgz 10448ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/retext-smartypants/-/retext-smartypants-6.2.0.tgz 10476ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/retext-latin/-/retext-latin-4.0.0.tgz 10483ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/rehype-stringify/-/rehype-stringify-10.0.1.tgz 10505ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/remark-stringify/-/remark-stringify-11.0.0.tgz 10507ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/rehype/-/rehype-13.0.2.tgz 10522ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/rehype-parse/-/rehype-parse-9.0.1.tgz 10523ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/readdirp/-/readdirp-5.0.0.tgz 10523ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/postcss/-/postcss-8.5.8.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/picocolors/-/picocolors-1.1.1.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/remark-parse/-/remark-parse-11.0.0.tgz 10550ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/piccolore/-/piccolore-0.1.3.tgz 10560ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/p-limit/-/p-limit-6.2.0.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/radix3/-/radix3-1.1.2.tgz 10586ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/p-queue/-/p-queue-8.1.1.tgz 10601ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-subtokenize/-/micromark-util-subtokenize-2.1.0.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/node-fetch-native/-/node-fetch-native-1.6.7.tgz 10629ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-resolve-all/-/micromark-util-resolve-all-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-symbol/-/micromark-util-symbol-2.0.1.tgz 10640ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-decode-string/-/micromark-util-decode-string-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-combine-extensions/-/micromark-util-combine-extensions-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-util-classify-character/-/micromark-util-classify-character-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-normalize-identifier/-/micromark-util-normalize-identifier-2.0.1.tgz 10660ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-html-tag-name/-/micromark-util-html-tag-name-2.0.1.tgz 10659ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-encode/-/micromark-util-encode-2.0.1.tgz 10662ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/neotraverse/-/neotraverse-0.6.18.tgz 10668ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-space/-/micromark-factory-space-2.0.1.tgz 10667ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-factory-destination/-/micromark-factory-destination-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-table/-/micromark-extension-gfm-table-2.1.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-strikethrough/-/micromark-extension-gfm-strikethrough-2.1.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm/-/micromark-extension-gfm-3.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-to-string/-/mdast-util-to-string-4.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-to-hast/-/mdast-util-to-hast-13.2.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-to-markdown/-/mdast-util-to-markdown-2.1.2.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/prismjs/-/prismjs-1.30.0.tgz 10738ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/micromark-extension-gfm-footnote/-/micromark-extension-gfm-footnote-2.1.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-footnote/-/mdast-util-gfm-footnote-2.1.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mdast-util-gfm-autolink-literal/-/mdast-util-gfm-autolink-literal-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-table/-/mdast-util-gfm-table-2.0.0.tgz 10736ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-task-list-item/-/mdast-util-gfm-task-list-item-2.0.0.tgz 10736ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-strikethrough/-/mdast-util-gfm-strikethrough-2.0.0.tgz 10740ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark/-/micromark-4.0.2.tgz 10753ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/magic-string/-/magic-string-0.30.21.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/longest-streak/-/longest-streak-3.1.0.tgz 10761ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/is-plain-obj/-/is-plain-obj-4.1.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/is-wsl/-/is-wsl-3.1.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/js-yaml/-/js-yaml-4.1.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/is-inside-container/-/is-inside-container-1.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/html-void-elements/-/html-void-elements-3.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/import-meta-resolve/-/import-meta-resolve-4.2.0.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/is-docker/-/is-docker-3.0.0.tgz 10795ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-whitespace/-/hast-util-whitespace-3.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-to-text/-/hast-util-to-text-4.0.2.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-to-parse5/-/hast-util-to-parse5-8.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-to-html/-/hast-util-to-html-9.0.5.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/html-escaper/-/html-escaper-3.0.3.tgz 10816ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/hast-util-parse-selector/-/hast-util-parse-selector-4.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/hast-util-is-element/-/hast-util-is-element-3.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/get-east-asian-width/-/get-east-asian-width-1.5.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/fontkitten/-/fontkitten-1.0.3.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-from-html/-/hast-util-from-html-2.0.3.tgz 10839ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/h3/-/h3-1.15.10.tgz 10840ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/hastscript/-/hastscript-9.0.1.tgz 10844ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/fdir/-/fdir-6.5.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/estree-walker/-/estree-walker-3.0.3.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/github-slugger/-/github-slugger-2.0.0.tgz 10855ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/escape-string-regexp/-/escape-string-regexp-5.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/esbuild/-/esbuild-0.27.4.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/es-module-lexer/-/es-module-lexer-1.7.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/entities/-/entities-6.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/domutils/-/domutils-3.2.2.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/dset/-/dset-3.1.4.tgz 10872ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/dlv/-/dlv-1.1.3.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/diff/-/diff-8.0.4.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/deterministic-object-hash/-/deterministic-object-hash-2.0.2.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/devalue/-/devalue-5.6.4.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/destr/-/destr-2.0.5.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/decode-named-character-reference/-/decode-named-character-reference-1.3.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/cssesc/-/cssesc-3.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/csso/-/csso-5.0.5.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/detect-libc/-/detect-libc-2.1.2.tgz 10914ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/css-tree/-/css-tree-3.2.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/css-select/-/css-select-5.2.2.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/defu/-/defu-6.1.4.tgz 10920ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/commander/-/commander-11.1.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/crossws/-/crossws-0.3.5.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/cookie/-/cookie-1.1.1.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/common-ancestor-path/-/common-ancestor-path-1.0.1.tgz 10943ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/cookie-es/-/cookie-es-1.2.2.tgz 10945ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/character-entities-legacy/-/character-entities-legacy-3.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/character-entities/-/character-entities-2.0.2.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/cli-boxes/-/cli-boxes-3.0.0.tgz 10966ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/character-entities-html4/-/character-entities-html4-2.1.0.tgz 10965ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/ccount/-/ccount-2.0.1.tgz 10966ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/chalk/-/chalk-5.6.2.tgz 10968ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/boolbase/-/boolbase-1.0.0.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/camelcase/-/camelcase-8.0.0.tgz 10972ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/boxen/-/boxen-8.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/bail/-/bail-2.0.2.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/axobject-query/-/axobject-query-4.1.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/array-iterate/-/array-iterate-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ci-info/-/ci-info-4.4.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ansi-regex/-/ansi-regex-6.2.2.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ansi-align/-/ansi-align-3.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/acorn/-/acorn-8.16.0.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/ansi-styles/-/ansi-styles-6.2.3.tgz 11002ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/argparse/-/argparse-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/@ungap/structured-clone/-/structured-clone-1.3.0.tgz 11009ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@types/unist/-/unist-3.0.3.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/hast/-/hast-3.0.4.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/vscode-textmate/-/vscode-textmate-10.0.2.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/ms/-/ms-2.1.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/debug/-/debug-4.1.13.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/mdast/-/mdast-4.0.4.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/themes/-/themes-3.23.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/langs/-/langs-3.23.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/engine-javascript/-/engine-javascript-3.23.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.60.0.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/core/-/core-3.23.0.tgz 11047ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@rollup/pluginutils/-/pluginutils-5.3.0.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/engine-oniguruma/-/engine-oniguruma-3.23.0.tgz 11056ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@img/colour/-/colour-1.1.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@img/sharp-linux-arm64/-/sharp-linux-arm64-0.34.5.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.27.4.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@capsizecss/unpack/-/unpack-4.0.0.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/@oslojs/encoding/-/encoding-1.1.0.tgz 11067ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@astrojs/telemetry/-/telemetry-3.3.0.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/string-width/-/string-width-4.2.3.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz attempt 1 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/estree-walker/-/estree-walker-2.0.2.tgz attempt 1 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/ultrahtml/-/ultrahtml-1.6.0.tgz 896ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/acorn/-/acorn-8.16.0.tgz 890ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sharp/-/sharp-0.34.5.tgz 905ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark/-/micromark-4.0.2.tgz 931ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/csso/-/csso-5.0.5.tgz 978ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/themes/-/themes-3.23.0.tgz 1008ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/vite/-/vite-6.4.1.tgz 982ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/css-select/-/css-select-5.2.2.tgz 1039ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.27.4.tgz 1110ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/diff/-/diff-8.0.4.tgz 1103ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/svgo/-/svgo-4.0.1.tgz 1117ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img/sharp-libvips-linux-arm64/-/sharp-libvips-linux-arm64-1.2.4.tgz 1197ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/css-tree/-/css-tree-3.2.1.tgz 1247ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/langs/-/langs-3.23.0.tgz 1314ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/shiki/-/shiki-3.23.0.tgz 1355ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/boolbase/-/boolbase-1.0.0.tgz 10327ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/picocolors/-/picocolors-1.1.1.tgz 10333ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sax/-/sax-1.6.0.tgz 10333ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/get-east-asian-width/-/get-east-asian-width-1.5.0.tgz 10360ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/regex-utilities/-/regex-utilities-2.3.0.tgz 10360ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/regex-recursion/-/regex-recursion-6.0.2.tgz 10364ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/types/-/types-3.23.0.tgz 10404ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/vscode-textmate/-/vscode-textmate-10.0.2.tgz 10407ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img/sharp-linux-arm64/-/sharp-linux-arm64-0.34.5.tgz 10423ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@img/colour/-/colour-1.1.0.tgz 10426ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-modify-children/-/unist-util-modify-children-4.0.0.tgz 10433ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/nlcst-to-string/-/nlcst-to-string-4.0.0.tgz 10433ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/retext-latin/-/retext-latin-4.0.0.tgz 10435ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/retext/-/retext-9.0.0.tgz 10442ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/retext-smartypants/-/retext-smartypants-6.2.0.tgz 10459ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-tagfilter/-/micromark-extension-gfm-tagfilter-2.0.0.tgz 10462ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-table/-/micromark-extension-gfm-table-2.1.1.tgz 10466ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-html-tag-name/-/micromark-util-html-tag-name-2.0.1.tgz 10473ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/oniguruma-parser/-/oniguruma-parser-0.12.1.tgz 10480ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-footnote/-/micromark-extension-gfm-footnote-2.1.0.tgz 10481ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-autolink-literal/-/micromark-extension-gfm-autolink-literal-2.1.0.tgz 10483ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-combine-extensions/-/micromark-util-combine-extensions-2.0.1.tgz 10490ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-subtokenize/-/micromark-util-subtokenize-2.1.0.tgz 10495ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-classify-character/-/micromark-util-classify-character-2.0.1.tgz 10506ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/ms/-/ms-2.1.0.tgz 10517ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/longest-streak/-/longest-streak-3.1.0.tgz 10526ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/character-entities/-/character-entities-2.0.2.tgz 10531ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-stringify-position/-/unist-util-stringify-position-4.0.0.tgz 10536ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-decode-numeric-character-reference/-/micromark-util-decode-numeric-character-reference-2.0.2.tgz 10536ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/decode-named-character-reference/-/decode-named-character-reference-1.3.0.tgz 10546ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-find-and-replace/-/mdast-util-find-and-replace-3.0.2.tgz 10551ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-decode-string/-/micromark-util-decode-string-2.0.1.tgz 10558ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-to-string/-/mdast-util-to-string-4.0.0.tgz 10563ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-autolink-literal/-/mdast-util-gfm-autolink-literal-2.0.1.tgz 10566ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-task-list-item/-/mdast-util-gfm-task-list-item-2.0.0.tgz 10569ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-footnote/-/mdast-util-gfm-footnote-2.1.0.tgz 10571ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/micromark-util-symbol/-/micromark-util-symbol-2.0.1.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/trim-lines/-/trim-lines-3.0.1.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-whitespace/-/hast-util-whitespace-3.0.0.tgz 10584ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-stringify/-/remark-stringify-11.0.0.tgz 10585ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-types/-/micromark-util-types-2.0.2.tgz 10588ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/zwitch/-/zwitch-2.0.4.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-from-markdown/-/mdast-util-from-markdown-2.0.3.tgz 10595ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/stringify-entities/-/stringify-entities-4.0.4.tgz 10595ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-character/-/micromark-util-character-2.1.1.tgz 10600ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-raw/-/hast-util-raw-9.1.0.tgz 10609ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/html-void-elements/-/html-void-elements-3.0.0.tgz 10609ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sisteransi/-/sisteransi-1.0.5.tgz 10610ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/p-timeout/-/p-timeout-6.1.4.tgz 10618ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/engine-oniguruma/-/engine-oniguruma-3.23.0.tgz 10640ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/eventemitter3/-/eventemitter3-5.0.4.tgz 10627ms attempt #2 (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/@babel/types/-/types-7.29.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@babel/parser/-/parser-7.29.2.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@astrojs/markdown-remark/-/markdown-remark-6.3.11.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@babel/helper-validator-identifier/-/helper-validator-identifier-7.28.5.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@babel/helper-string-parser/-/helper-string-parser-7.27.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@astrojs/prism/-/prism-3.3.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/entities/-/entities-4.5.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@astrojs/internal-helpers/-/internal-helpers-0.7.6.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@astrojs/compiler/-/compiler-2.13.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mdn-data/-/mdn-data-2.0.28.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/css-tree/-/css-tree-2.2.1.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/hast-util-parse-selector/-/hast-util-parse-selector-4.0.0.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-to-html/-/hast-util-to-html-9.0.5.tgz 10643ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/mdast/-/mdast-4.0.4.tgz 10644ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/web-namespaces/-/web-namespaces-2.0.1.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@babel/helper-validator-identifier/-/helper-validator-identifier-7.28.5.tgz 10652ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/comma-separated-tokens/-/comma-separated-tokens-2.0.3.tgz 10652ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/space-separated-tokens/-/space-separated-tokens-2.0.2.tgz 10653ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/dequal/-/dequal-2.0.3.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-is-element/-/hast-util-is-element-3.0.0.tgz 10669ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/is-inside-container/-/is-inside-container-1.0.0.tgz 10669ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-find-after/-/unist-util-find-after-5.0.0.tgz 10674ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@types/hast/-/hast-3.0.4.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-from-parse5/-/hast-util-from-parse5-8.0.3.tgz 10682ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/type-fest/-/type-fest-4.41.0.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/vfile-message/-/vfile-message-4.0.3.tgz 10684ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/unist/-/unist-3.0.3.tgz 10687ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/camelcase/-/camelcase-8.0.0.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz 10695ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/base-64/-/base-64-1.0.0.tgz 10696ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/chalk/-/chalk-5.6.2.tgz 10699ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/fontkitten/-/fontkitten-1.0.3.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/ansi-align/-/ansi-align-3.0.1.tgz 10707ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hastscript/-/hastscript-9.0.1.tgz 10711ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/widest-line/-/widest-line-5.0.0.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/string-width/-/string-width-7.2.0.tgz 10709ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/is-docker/-/is-docker-3.0.0.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/unist-util-visit-parents/-/unist-util-visit-parents-6.0.2.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/remark-rehype/-/remark-rehype-11.1.2.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/remark-smartypants/-/remark-smartypants-3.0.2.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/rehype-raw/-/rehype-raw-7.0.0.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@babel/parser/-/parser-7.29.2.tgz 10737ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/rehype-stringify/-/rehype-stringify-10.0.1.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/is-wsl/-/is-wsl-3.1.1.tgz 10732ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-core-commonmark/-/micromark-core-commonmark-2.0.3.tgz 10754ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/mdast-util-definitions/-/mdast-util-definitions-6.0.0.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/hast-util-to-text/-/hast-util-to-text-4.0.2.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/zod-to-ts/-/zod-to-ts-1.2.0.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/zod-to-json-schema/-/zod-to-json-schema-3.25.2.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-gfm/-/remark-gfm-4.0.1.tgz 10750ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/unstorage/-/unstorage-1.17.5.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/property-information/-/property-information-7.1.0.tgz 10777ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/yocto-spinner/-/yocto-spinner-0.2.3.tgz 10770ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/tsconfck/-/tsconfck-3.1.6.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/vitefu/-/vitefu-1.1.2.tgz 10771ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit/-/unist-util-visit-5.1.0.tgz 10780ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/rehype/-/rehype-13.0.2.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/semver/-/semver-7.7.4.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/smol-toml/-/smol-toml-1.6.1.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/yargs-parser/-/yargs-parser-21.1.1.tgz 10789ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/prompts/-/prompts-2.4.2.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/tinyglobby/-/tinyglobby-0.2.15.tgz 10793ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/piccolore/-/piccolore-0.1.3.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/tinyexec/-/tinyexec-1.0.4.tgz 10801ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-to-hast/-/mdast-util-to-hast-13.2.1.tgz 10826ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/js-yaml/-/js-yaml-4.1.1.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/p-limit/-/p-limit-6.2.0.tgz 10815ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/p-queue/-/p-queue-8.1.1.tgz 10819ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/github-slugger/-/github-slugger-2.0.0.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/html-escaper/-/html-escaper-3.0.3.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/esbuild/-/esbuild-0.27.4.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/fontace/-/fontace-0.4.1.tgz 10829ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/dlv/-/dlv-1.1.3.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/cssesc/-/cssesc-3.0.0.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/deterministic-object-hash/-/deterministic-object-hash-2.0.2.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/magicast/-/magicast-0.5.2.tgz 10846ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/estree-walker/-/estree-walker-3.0.3.tgz 10843ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/clsx/-/clsx-2.1.1.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/debug/-/debug-4.4.3.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/boxen/-/boxen-8.0.1.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/dset/-/dset-3.1.4.tgz 10857ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/common-ancestor-path/-/common-ancestor-path-1.0.1.tgz 10856ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/devalue/-/devalue-5.6.4.tgz 10857ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@astrojs/telemetry/-/telemetry-3.3.0.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/import-meta-resolve/-/import-meta-resolve-4.2.0.tgz 10872ms attempt #2 (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/picomatch/-/picomatch-2.3.2.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/ci-info/-/ci-info-4.4.0.tgz 10874ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/@astrojs/compiler/-/compiler-2.13.1.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/magic-string/-/magic-string-0.30.21.tgz 10883ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/entities/-/entities-4.5.0.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/entities/-/entities-6.0.1.tgz 10904ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/css-tree/-/css-tree-2.2.1.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/mdn-data/-/mdn-data-2.0.28.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/strip-ansi/-/strip-ansi-6.0.1.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@oslojs/encoding/-/encoding-1.1.0.tgz 10887ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs/internal-helpers/-/internal-helpers-0.7.6.tgz 10888ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs/markdown-remark/-/markdown-remark-6.3.11.tgz 10890ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/npm/string-width/-/string-width-4.2.3.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ansi-regex/-/ansi-regex-5.0.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/emoji-regex/-/emoji-regex-8.0.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/domhandler/-/domhandler-5.0.3.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/domelementtype/-/domelementtype-2.3.0.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/aria-query/-/aria-query-5.3.2.tgz 11144ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@img/sharp-libvips-linux-arm64/-/sharp-libvips-linux-arm64-1.2.4.tgz 11224ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/picocolors/-/picocolors-1.1.1.tgz 70601ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/postcss/-/postcss-8.5.8.tgz 70609ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/p-limit/-/p-limit-6.2.0.tgz 70623ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz 70664ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-subtokenize/-/micromark-util-subtokenize-2.1.0.tgz 70676ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-resolve-all/-/micromark-util-resolve-all-2.0.1.tgz 70681ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-decode-string/-/micromark-util-decode-string-2.0.1.tgz 70689ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-combine-extensions/-/micromark-util-combine-extensions-2.0.1.tgz 70696ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-classify-character/-/micromark-util-classify-character-2.0.1.tgz 70697ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-factory-destination/-/micromark-factory-destination-2.0.1.tgz 70720ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-strikethrough/-/micromark-extension-gfm-strikethrough-2.1.0.tgz 70735ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm/-/micromark-extension-gfm-3.0.0.tgz 70741ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-table/-/micromark-extension-gfm-table-2.1.1.tgz 70746ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-to-string/-/mdast-util-to-string-4.0.0.tgz 70758ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-to-hast/-/mdast-util-to-hast-13.2.1.tgz 70781ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-footnote/-/mdast-util-gfm-footnote-2.1.0.tgz 70791ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/micromark-extension-gfm-footnote/-/micromark-extension-gfm-footnote-2.1.0.tgz 70808ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/is-wsl/-/is-wsl-3.1.1.tgz 70818ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/is-plain-obj/-/is-plain-obj-4.1.0.tgz 70819ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/is-inside-container/-/is-inside-container-1.0.0.tgz 70821ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz 70825ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-to-markdown/-/mdast-util-to-markdown-2.1.2.tgz 70842ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/html-void-elements/-/html-void-elements-3.0.0.tgz 70839ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-gfm-autolink-literal/-/mdast-util-gfm-autolink-literal-2.0.1.tgz 70851ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-whitespace/-/hast-util-whitespace-3.0.0.tgz 70866ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-to-text/-/hast-util-to-text-4.0.2.tgz 70866ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz 70870ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-to-parse5/-/hast-util-to-parse5-8.0.1.tgz 70869ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-to-html/-/hast-util-to-html-9.0.5.tgz 70880ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-parse-selector/-/hast-util-parse-selector-4.0.0.tgz 70881ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/magic-string/-/magic-string-0.30.21.tgz 70897ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/fontkitten/-/fontkitten-1.0.3.tgz 70893ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/import-meta-resolve/-/import-meta-resolve-4.2.0.tgz 70899ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/estree-walker/-/estree-walker-3.0.3.tgz 70903ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/js-yaml/-/js-yaml-4.1.1.tgz 70918ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/get-east-asian-width/-/get-east-asian-width-1.5.0.tgz 70913ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/fdir/-/fdir-6.5.0.tgz 70921ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/escape-string-regexp/-/escape-string-regexp-5.0.0.tgz 70920ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-is-element/-/hast-util-is-element-3.0.0.tgz 70923ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/es-module-lexer/-/es-module-lexer-1.7.0.tgz 70933ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/dlv/-/dlv-1.1.3.tgz 70935ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/destr/-/destr-2.0.5.tgz 70947ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/css-select/-/css-select-5.2.2.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/css-select/-/css-select-5.2.2.tgz 70961ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/cssesc/-/cssesc-3.0.0.tgz 70988ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/deterministic-object-hash/-/deterministic-object-hash-2.0.2.tgz 70995ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/esbuild/-/esbuild-0.27.4.tgz 71005ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/decode-named-character-reference/-/decode-named-character-reference-1.3.0.tgz 71000ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/cookie/-/cookie-1.1.1.tgz 71001ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/devalue/-/devalue-5.6.4.tgz 71005ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/character-entities-legacy/-/character-entities-legacy-3.0.0.tgz 71005ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/commander/-/commander-11.1.0.tgz 71010ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/boolbase/-/boolbase-1.0.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/boolbase/-/boolbase-1.0.0.tgz 71013ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/axobject-query/-/axobject-query-4.1.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/axobject-query/-/axobject-query-4.1.0.tgz 71021ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/bail/-/bail-2.0.2.tgz 71026ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/boxen/-/boxen-8.0.1.tgz 71033ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/character-entities/-/character-entities-2.0.2.tgz 71036ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/argparse/-/argparse-2.0.1.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/argparse/-/argparse-2.0.1.tgz 71044ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/array-iterate/-/array-iterate-2.0.1.tgz 71045ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/ansi-regex/-/ansi-regex-6.2.2.tgz 71045ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/domutils/-/domutils-3.2.2.tgz 71055ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/ci-info/-/ci-info-4.4.0.tgz 71053ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz 71059ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@types/ms/-/ms-2.1.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@types/ms/-/ms-2.1.0.tgz 71064ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/ansi-align/-/ansi-align-3.0.1.tgz 71070ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@types/unist/-/unist-3.0.3.tgz 71072ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/vscode-textmate/-/vscode-textmate-10.0.2.tgz 71075ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@shikijs/engine-javascript/-/engine-javascript-3.23.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@shikijs/engine-javascript/-/engine-javascript-3.23.0.tgz 71074ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.60.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.60.0.tgz 71083ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/crossws/-/crossws-0.3.5.tgz 71094ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@types/hast/-/hast-3.0.4.tgz 71093ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@types/debug/-/debug-4.1.13.tgz 71094ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@types/mdast/-/mdast-4.0.4.tgz 71096ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@img/colour/-/colour-1.1.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@img/colour/-/colour-1.1.0.tgz 71094ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@img/sharp-linux-arm64/-/sharp-linux-arm64-0.34.5.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@img/sharp-linux-arm64/-/sharp-linux-arm64-0.34.5.tgz 71103ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@capsizecss/unpack/-/unpack-4.0.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@capsizecss/unpack/-/unpack-4.0.0.tgz 71107ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/acorn/-/acorn-8.16.0.tgz 71116ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@rollup/pluginutils/-/pluginutils-5.3.0.tgz 71119ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@astrojs/telemetry/-/telemetry-3.3.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@astrojs/telemetry/-/telemetry-3.3.0.tgz 71117ms attempt #3 (cache skip)
+npm http fetch GET https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz attempt 2 failed with 503
+npm http fetch GET https://registry.vlt.io/npm/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup/pluginutils/-/pluginutils-5.3.0.tgz 10903ms attempt #2 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/estree-walker/-/estree-walker-2.0.2.tgz attempt 2 failed with 503
+npm http fetch GET 200 https://registry.vlt.io/npm/ansi-regex/-/ansi-regex-5.0.1.tgz 10909ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@capsizecss/unpack/-/unpack-4.0.0.tgz 10910ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/emoji-regex/-/emoji-regex-8.0.0.tgz 10909ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/parse5/-/parse5-7.3.0.tgz 10935ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-to-markdown/-/mdast-util-to-markdown-2.1.2.tgz 10952ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/axobject-query/-/axobject-query-4.1.0.tgz 11078ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/aria-query/-/aria-query-5.3.2.tgz 11150ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/typescript/-/typescript-5.9.3.tgz 11226ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/prismjs/-/prismjs-1.30.0.tgz 11259ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/zod/-/zod-3.25.76.tgz 11338ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/astro/-/astro-5.18.1.tgz 11488ms attempt #2 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/micromark-util-symbol/-/micromark-util-symbol-2.0.1.tgz 70621ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/trim-lines/-/trim-lines-3.0.1.tgz 70627ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/zwitch/-/zwitch-2.0.4.tgz 70627ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-parse-selector/-/hast-util-parse-selector-4.0.0.tgz 70677ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/web-namespaces/-/web-namespaces-2.0.1.tgz 70679ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/dequal/-/dequal-2.0.3.tgz 70694ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/hast/-/hast-3.0.4.tgz 70709ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@babel/types/-/types-7.29.0.tgz 70723ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/camelcase/-/camelcase-8.0.0.tgz 70725ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz 70741ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/fontkitten/-/fontkitten-1.0.3.tgz 70742ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/widest-line/-/widest-line-5.0.0.tgz 70754ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/is-docker/-/is-docker-3.0.0.tgz 70758ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rehype-raw/-/rehype-raw-7.0.0.tgz 70765ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-smartypants/-/remark-smartypants-3.0.2.tgz 70767ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/remark-rehype/-/remark-rehype-11.1.2.tgz 70768ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unist-util-visit-parents/-/unist-util-visit-parents-6.0.2.tgz 70771ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/hast-util-to-text/-/hast-util-to-text-4.0.2.tgz 70774ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/zod-to-ts/-/zod-to-ts-1.2.0.tgz 70779ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/type-fest/-/type-fest-4.41.0.tgz 70788ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdast-util-definitions/-/mdast-util-definitions-6.0.0.tgz 70784ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rehype-stringify/-/rehype-stringify-10.0.1.tgz 70788ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rehype/-/rehype-13.0.2.tgz 70829ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/smol-toml/-/smol-toml-1.6.1.tgz 70833ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/piccolore/-/piccolore-0.1.3.tgz 70845ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/tsconfck/-/tsconfck-3.1.6.tgz 70850ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz 70856ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/html-escaper/-/html-escaper-3.0.3.tgz 70870ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/github-slugger/-/github-slugger-2.0.0.tgz 70871ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/dlv/-/dlv-1.1.3.tgz 70876ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/deterministic-object-hash/-/deterministic-object-hash-2.0.2.tgz 70876ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/esbuild/-/esbuild-0.27.4.tgz 70878ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/cssesc/-/cssesc-3.0.0.tgz 70885ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/boxen/-/boxen-8.0.1.tgz 70892ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/clsx/-/clsx-2.1.1.tgz 70893ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/js-yaml/-/js-yaml-4.1.1.tgz 70903ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/semver/-/semver-7.7.4.tgz 70907ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs/telemetry/-/telemetry-3.3.0.tgz 70905ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/debug/-/debug-4.4.3.tgz 70909ms attempt #3 (cache miss)
 npm http fetch GET https://registry.vlt.io/npm/entities/-/entities-4.5.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/entities/-/entities-4.5.0.tgz 71140ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs/markdown-remark/-/markdown-remark-6.3.11.tgz 71150ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@astrojs/compiler/-/compiler-2.13.1.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@astrojs/compiler/-/compiler-2.13.1.tgz 71151ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/@babel/helper-string-parser/-/helper-string-parser-7.27.1.tgz 71153ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@babel/helper-validator-identifier/-/helper-validator-identifier-7.28.5.tgz 71154ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs/prism/-/prism-3.3.0.tgz 71155ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/css-tree/-/css-tree-2.2.1.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/css-tree/-/css-tree-2.2.1.tgz 71158ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz 71162ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/emoji-regex/-/emoji-regex-8.0.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/emoji-regex/-/emoji-regex-8.0.0.tgz 71174ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/domelementtype/-/domelementtype-2.3.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/domelementtype/-/domelementtype-2.3.0.tgz 71173ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/string-width/-/string-width-4.2.3.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/string-width/-/string-width-4.2.3.tgz 71176ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs/internal-helpers/-/internal-helpers-0.7.6.tgz 71181ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/ansi-regex/-/ansi-regex-5.0.1.tgz 71200ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/picomatch/-/picomatch-2.3.2.tgz 71205ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/domhandler/-/domhandler-5.0.3.tgz 71207ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz 71237ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/diff/-/diff-8.0.4.tgz 71252ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mdn-data/-/mdn-data-2.0.28.tgz 71248ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/entities/-/entities-6.0.1.tgz 71272ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@babel/parser/-/parser-7.29.2.tgz 71255ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/csso/-/csso-5.0.5.tgz 71274ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/themes/-/themes-3.23.0.tgz 71346ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz 71411ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.27.4.tgz 71416ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@babel/types/-/types-7.29.0.tgz 71449ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/css-tree/-/css-tree-3.2.1.tgz 71484ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@shikijs/langs/-/langs-3.23.0.tgz 71528ms attempt #3 (cache miss)
+npm http fetch GET 503 https://registry.vlt.io/npm/entities/-/entities-4.5.0.tgz 70907ms attempt #3 (cache skip)
+npm http fetch GET 200 https://registry.vlt.io/npm/picomatch/-/picomatch-2.3.2.tgz 70919ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/strip-ansi/-/strip-ansi-6.0.1.tgz 70929ms attempt #3 (cache miss)
+npm http fetch GET https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz attempt 3 failed with 503
+npm http fetch GET 503 https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz 70946ms attempt #3 (cache skip)
+npm http fetch GET 200 https://registry.vlt.io/npm/string-width/-/string-width-4.2.3.tgz 70954ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/prompts/-/prompts-2.4.2.tgz 70969ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz 70959ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/estree-walker/-/estree-walker-2.0.2.tgz 70963ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mdn-data/-/mdn-data-2.0.28.tgz 70971ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/zod-to-json-schema/-/zod-to-json-schema-3.25.2.tgz 71026ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/unstorage/-/unstorage-1.17.5.tgz 71043ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@astrojs/compiler/-/compiler-2.13.1.tgz 71052ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz 71075ms attempt #3 (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/css-tree/-/css-tree-2.2.1.tgz 71111ms attempt #3 (cache miss)
 npm error code E503
-npm error 503 Service Temporarily Unavailable - GET https://registry.vlt.io/npm/domelementtype/-/domelementtype-2.3.0.tgz
-npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-03-28T16_24_48_817Z-debug-0.log
+npm error 503 Service Temporarily Unavailable - GET https://registry.vlt.io/npm/entities/-/entities-4.5.0.tgz
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-03-28T18_08_47_895Z-debug-0.log

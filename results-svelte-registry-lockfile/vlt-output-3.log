@@ -1,153 +1,64 @@
-npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-loong64-musl 150ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-ppc64-musl 113ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-openbsd-x64 115ms (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/vite/-/vite-6.4.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/picomatch/-/picomatch-4.0.4.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/source-map-js/-/source-map-js-1.2.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/svelte-check/-/svelte-check-4.4.5.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/rollup/-/rollup-4.60.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/vitefu/-/vitefu-1.1.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/totalist/-/totalist-3.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/zimmerframe/-/zimmerframe-1.1.4.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/tinyglobby/-/tinyglobby-0.2.15.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/svelte/-/svelte-5.55.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/picocolors/-/picocolors-1.1.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/sade/-/sade-1.8.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/postcss/-/postcss-8.5.8.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/set-cookie-parser/-/set-cookie-parser-3.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/nanoid/-/nanoid-3.3.11.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ms/-/ms-2.1.3.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/kleur/-/kleur-4.1.5.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/import-meta-resolve/-/import-meta-resolve-4.2.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/esrap/-/esrap-2.2.4.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/readdirp/-/readdirp-4.1.2.tgz 125ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/esm-env/-/esm-env-1.2.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/deepmerge/-/deepmerge-4.3.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/devalue/-/devalue-5.6.4.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/debug/-/debug-4.4.3.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/clsx/-/clsx-2.1.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/sirv/-/sirv-3.0.2.tgz 146ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/chokidar/-/chokidar-4.0.3.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/axobject-query/-/axobject-query-4.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/aria-query/-/aria-query-5.3.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@typescript-eslint/types/-/types-8.57.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/acorn/-/acorn-8.16.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/trusted-types/-/trusted-types-2.0.7.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/cookie/-/cookie-0.6.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@sveltejs/vite-plugin-svelte-inspector/-/vite-plugin-svelte-inspector-4.0.1.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@sveltejs/kit/-/kit-2.55.0.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/mri/-/mri-1.2.0.tgz 160ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/is-reference/-/is-reference-3.0.3.tgz 162ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/locate-character/-/locate-character-3.0.0.tgz 163ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/fdir/-/fdir-6.5.0.tgz 163ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@sveltejs/adapter-auto/-/adapter-auto-3.3.1.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/cookie/-/cookie-0.6.0.tgz 163ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@sveltejs/acorn-typescript/-/acorn-typescript-1.0.9.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@standard-schema/spec/-/spec-1.1.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.60.0.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@neoconfetti/svelte/-/svelte-2.2.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/trace-mapping/-/trace-mapping-0.3.31.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/remapping/-/remapping-2.3.5.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/resolve-uri/-/resolve-uri-3.1.2.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@fontsource/fira-mono/-/fira-mono-5.2.7.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz attempt 1 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/magic-string/-/magic-string-0.30.21.tgz 183ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@polka/url/-/url-1.0.0-next.29.tgz 179ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz attempt 1 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-5.1.1.tgz 194ms (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/typescript/-/typescript-5.9.3.tgz 351ms (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/vite/-/vite-6.4.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/picomatch/-/picomatch-4.0.4.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/vitefu/-/vitefu-1.1.2.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/zimmerframe/-/zimmerframe-1.1.4.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/set-cookie-parser/-/set-cookie-parser-3.1.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/ms/-/ms-2.1.3.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/source-map-js/-/source-map-js-1.2.1.tgz 10142ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/kleur/-/kleur-4.1.5.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/esrap/-/esrap-2.2.4.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/totalist/-/totalist-3.0.1.tgz 10157ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/esm-env/-/esm-env-1.2.2.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/sade/-/sade-1.8.1.tgz 10158ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/tinyglobby/-/tinyglobby-0.2.15.tgz 10161ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/picocolors/-/picocolors-1.1.1.tgz 10158ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/debug/-/debug-4.4.3.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/chokidar/-/chokidar-4.0.3.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/deepmerge/-/deepmerge-4.3.1.tgz 10174ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/aria-query/-/aria-query-5.3.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/trusted-types/-/trusted-types-2.0.7.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz 10179ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@types/cookie/-/cookie-0.6.0.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@sveltejs/vite-plugin-svelte-inspector/-/vite-plugin-svelte-inspector-4.0.1.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/devalue/-/devalue-5.6.4.tgz 10187ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/clsx/-/clsx-2.1.1.tgz 10191ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@sveltejs/adapter-auto/-/adapter-auto-3.3.1.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/nanoid/-/nanoid-3.3.11.tgz 10201ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/trace-mapping/-/trace-mapping-0.3.31.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/import-meta-resolve/-/import-meta-resolve-4.2.0.tgz 10203ms attempt #2 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@neoconfetti/svelte/-/svelte-2.2.2.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/remapping/-/remapping-2.3.5.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@fontsource/fira-mono/-/fira-mono-5.2.7.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz attempt 2 failed with 503
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz attempt 2 failed with 503
-npm http fetch GET 200 https://registry.vlt.io/npm/@standard-schema/spec/-/spec-1.1.0.tgz 10219ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@sveltejs/acorn-typescript/-/acorn-typescript-1.0.9.tgz 10221ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@typescript-eslint/types/-/types-8.57.2.tgz 10229ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/resolve-uri/-/resolve-uri-3.1.2.tgz 10232ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/postcss/-/postcss-8.5.8.tgz 10274ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.60.0.tgz 10275ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/rollup/-/rollup-4.60.0.tgz 10287ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/axobject-query/-/axobject-query-4.1.0.tgz 10352ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/acorn/-/acorn-8.16.0.tgz 10356ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/svelte-check/-/svelte-check-4.4.5.tgz 10393ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@sveltejs/kit/-/kit-2.55.0.tgz 10389ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/svelte/-/svelte-5.55.0.tgz 10515ms attempt #2 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/vite/-/vite-6.4.1.tgz 70138ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/picomatch/-/picomatch-4.0.4.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/picomatch/-/picomatch-4.0.4.tgz 70133ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/zimmerframe/-/zimmerframe-1.1.4.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/zimmerframe/-/zimmerframe-1.1.4.tgz 70143ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/vitefu/-/vitefu-1.1.2.tgz 70152ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/ms/-/ms-2.1.3.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/ms/-/ms-2.1.3.tgz 70156ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/set-cookie-parser/-/set-cookie-parser-3.1.0.tgz 70168ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz 70168ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/esrap/-/esrap-2.2.4.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/esrap/-/esrap-2.2.4.tgz 70172ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/esm-env/-/esm-env-1.2.2.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/esm-env/-/esm-env-1.2.2.tgz 70176ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/kleur/-/kleur-4.1.5.tgz 70181ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/chokidar/-/chokidar-4.0.3.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/chokidar/-/chokidar-4.0.3.tgz 70196ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/debug/-/debug-4.4.3.tgz 70199ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@types/trusted-types/-/trusted-types-2.0.7.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@types/trusted-types/-/trusted-types-2.0.7.tgz 70200ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@sveltejs/vite-plugin-svelte-inspector/-/vite-plugin-svelte-inspector-4.0.1.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@sveltejs/vite-plugin-svelte-inspector/-/vite-plugin-svelte-inspector-4.0.1.tgz 70202ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@types/cookie/-/cookie-0.6.0.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@types/cookie/-/cookie-0.6.0.tgz 70205ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@sveltejs/adapter-auto/-/adapter-auto-3.3.1.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@sveltejs/adapter-auto/-/adapter-auto-3.3.1.tgz 70216ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@neoconfetti/svelte/-/svelte-2.2.2.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@neoconfetti/svelte/-/svelte-2.2.2.tgz 70222ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/trace-mapping/-/trace-mapping-0.3.31.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@jridgewell/trace-mapping/-/trace-mapping-0.3.31.tgz 70222ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz 70227ms attempt #3 (cache miss)
-npm http fetch GET https://registry.vlt.io/npm/@fontsource/fira-mono/-/fira-mono-5.2.7.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@fontsource/fira-mono/-/fira-mono-5.2.7.tgz 70232ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz 70233ms attempt #3 (cache skip)
-npm http fetch GET https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz 70240ms attempt #3 (cache skip)
-npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/remapping/-/remapping-2.3.5.tgz 70259ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/aria-query/-/aria-query-5.3.1.tgz 70282ms attempt #3 (cache miss)
-npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz 70281ms attempt #3 (cache miss)
-npm error code E503
-npm error 503 Service Temporarily Unavailable - GET https://registry.vlt.io/npm/zimmerframe/-/zimmerframe-1.1.4.tgz
-npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-03-28T16_23_37_103Z-debug-0.log
+npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-loong64-musl 120ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-linux-ppc64-musl 43ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/npm/@rollup%2frollup-openbsd-x64 46ms (cache skip)
+npm http fetch GET 200 https://registry.vlt.io/npm/zimmerframe/-/zimmerframe-1.1.4.tgz 81ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/vitefu/-/vitefu-1.1.2.tgz 86ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/tinyglobby/-/tinyglobby-0.2.15.tgz 148ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sirv/-/sirv-3.0.2.tgz 148ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/totalist/-/totalist-3.0.1.tgz 154ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/readdirp/-/readdirp-4.1.2.tgz 151ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/set-cookie-parser/-/set-cookie-parser-3.1.0.tgz 174ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/sade/-/sade-1.8.1.tgz 184ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/picocolors/-/picocolors-1.1.1.tgz 207ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/ms/-/ms-2.1.3.tgz 220ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/picomatch/-/picomatch-4.0.4.tgz 224ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mrmime/-/mrmime-2.0.1.tgz 222ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/mri/-/mri-1.2.0.tgz 229ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/kleur/-/kleur-4.1.5.tgz 228ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/fdir/-/fdir-6.5.0.tgz 263ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/locate-character/-/locate-character-3.0.0.tgz 267ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/devalue/-/devalue-5.6.4.tgz 264ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/is-reference/-/is-reference-3.0.3.tgz 267ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/esm-env/-/esm-env-1.2.2.tgz 269ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/deepmerge/-/deepmerge-4.3.1.tgz 268ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/debug/-/debug-4.4.3.tgz 270ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/esbuild/-/esbuild-0.25.12.tgz 277ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/trusted-types/-/trusted-types-2.0.7.tgz 279ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/cookie/-/cookie-0.6.0.tgz 283ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@types/estree/-/estree-1.0.8.tgz 286ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@sveltejs/adapter-auto/-/adapter-auto-3.3.1.tgz 287ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/resolve-uri/-/resolve-uri-3.1.2.tgz 288ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@sveltejs/vite-plugin-svelte-inspector/-/vite-plugin-svelte-inspector-4.0.1.tgz 291ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@sveltejs/acorn-typescript/-/acorn-typescript-1.0.9.tgz 296ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@standard-schema/spec/-/spec-1.1.0.tgz 297ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@polka/url/-/url-1.0.0-next.29.tgz 297ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@neoconfetti/svelte/-/svelte-2.2.2.tgz 298ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/chokidar/-/chokidar-4.0.3.tgz 311ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/cookie/-/cookie-0.6.0.tgz 309ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/source-map-js/-/source-map-js-1.2.1.tgz 325ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/nanoid/-/nanoid-3.3.11.tgz 329ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/esrap/-/esrap-2.2.4.tgz 343ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/magic-string/-/magic-string-0.30.21.tgz 346ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/import-meta-resolve/-/import-meta-resolve-4.2.0.tgz 345ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@typescript-eslint/types/-/types-8.57.2.tgz 342ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/clsx/-/clsx-2.1.1.tgz 341ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/remapping/-/remapping-2.3.5.tgz 347ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/acorn/-/acorn-8.16.0.tgz 354ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz 391ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz 407ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.60.0.tgz 432ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-5.1.1.tgz 435ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@jridgewell/trace-mapping/-/trace-mapping-0.3.31.tgz 441ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/postcss/-/postcss-8.5.8.tgz 459ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@fontsource/fira-mono/-/fira-mono-5.2.7.tgz 485ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/vite/-/vite-6.4.1.tgz 509ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/rollup/-/rollup-4.60.0.tgz 522ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/svelte-check/-/svelte-check-4.4.5.tgz 554ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz 607ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/axobject-query/-/axobject-query-4.1.0.tgz 634ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/@sveltejs/kit/-/kit-2.55.0.tgz 683ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/aria-query/-/aria-query-5.3.1.tgz 695ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/typescript/-/typescript-5.9.3.tgz 781ms (cache miss)
+npm http fetch GET 200 https://registry.vlt.io/npm/svelte/-/svelte-5.55.0.tgz 846ms (cache miss)
+
+added 59 packages in 1s
