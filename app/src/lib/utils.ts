@@ -486,6 +486,10 @@ export function formatPackageManagerLabel(
   options?: { isRegistryVariation?: boolean },
 ): string {
   const displayName = getPackageManagerDisplayName(packageManager, options);
+  // Registry variations show registry hostnames, not tool versions
+  if (options?.isRegistryVariation) {
+    return displayName;
+  }
   if (!versions || !versions[packageManager]) {
     return displayName;
   }

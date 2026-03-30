@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { resolveTheme, useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { formatPackageManagerLabel, isRegistryVariation } from "@/lib/utils";
+import { formatPackageManagerLabel, isRegistryVariation, isTaskExecutionVariation } from "@/lib/utils";
 import { TrendingUp } from "lucide-react";
 import { format, parseISO } from "date-fns";
 
@@ -55,6 +55,10 @@ export const HistoryChart = ({
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [range, setRange] = useState<number>(90);
   const isRegistry = isRegistryVariation(currentVariation);
+  const isTaskExecution = isTaskExecutionVariation(currentVariation);
+  // Package-management variations now use per-package data (ms/pkg);
+  // registry and task-runner variations still use total time (seconds).
+  const isPerPackageVariation = !isRegistry && !isTaskExecution;
 
   const variationData = historyData.variations[currentVariation];
 
@@ -202,7 +206,7 @@ export const HistoryChart = ({
             />
             <YAxis
               label={{
-                value: "Time (seconds)",
+                value: isPerPackageVariation ? "Time (ms/pkg)" : "Time (seconds)",
                 angle: -90,
                 position: "outside",
                 style: {
@@ -228,6 +232,18 @@ export const HistoryChart = ({
                       return String(label);
                     }
                   }}
+                  formatter={(value, name) => (
+                    <div className="flex flex-1 justify-between items-center gap-4">
+                      <span className="text-muted-foreground">{name}</span>
+                      <span className="font-mono font-medium tabular-nums text-foreground">
+                        {typeof value === "number"
+                          ? isPerPackageVariation
+                            ? `${value.toFixed(1)} ms/pkg`
+                            : `${value.toFixed(2)}s`
+                          : String(value)}
+                      </span>
+                    </div>
+                  )}
                 />
               }
             />

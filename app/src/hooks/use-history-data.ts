@@ -63,39 +63,53 @@ async function parallelLimit<T>(
   return results;
 }
 
+type FixtureDataSet = Record<
+  string,
+  Array<Record<string, number | string> & { fixture: string }>
+>;
+
 interface ChartDataResponse {
   date: string;
   chartData: {
     variations: string[];
-    data: Record<
-      string,
-      Array<Record<string, number | string> & { fixture: string }>
-    >;
+    data: FixtureDataSet;
+    packageManagers: string[];
+  };
+  perPackageCountChartData?: {
+    variations: string[];
+    data: FixtureDataSet;
     packageManagers: string[];
   };
   registryChartData?: {
     variations: string[];
-    data: Record<
-      string,
-      Array<Record<string, number | string> & { fixture: string }>
-    >;
+    data: FixtureDataSet;
     packageManagers: string[];
   };
 }
 
 /**
  * Extract per-PM averages (across fixtures) for each variation from a single
- * day's chart-data.json response. Includes both main and registry data.
+ * day's chart-data.json response.
+ *
+ * For package-management variations (clean, cache, lockfile, etc.) we use
+ * perPackageCountChartData when available — these values are already in ms/pkg
+ * and match what the leaderboard cards display.  Falls back to total-time
+ * chartData for older files that lack per-package data.
+ *
+ * Registry and task-runner variations always use total-time data.
  */
 function extractDayData(
   response: ChartDataResponse,
 ): Record<string, Record<string, number>> {
   const result: Record<string, Record<string, number>> = {};
 
-  // Process main chart data
-  extractFromDataSet(response.chartData.data, result);
+  // Use per-package data for package-management variations when available,
+  // otherwise fall back to total-time chartData
+  const pmSource =
+    response.perPackageCountChartData?.data ?? response.chartData.data;
+  extractFromDataSet(pmSource, result);
 
-  // Process registry chart data (separate data set)
+  // Process registry chart data (separate data set, always total time)
   if (response.registryChartData?.data) {
     extractFromDataSet(response.registryChartData.data, result);
   }
