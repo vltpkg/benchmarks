@@ -292,6 +292,22 @@ function generateRegistryChartData(option = {}) {
             // Ignore parse errors, fallback to undefined counts
           }
         }
+
+        // Fall back to npm count from PM variation data for this fixture.
+        // registry-clean → clean, registry-lockfile → lockfile
+        if (Object.keys(packageCounts).length === 0) {
+          const pmVariationMap = { 'registry-clean': 'clean', 'registry-lockfile': 'lockfile' };
+          const pmVariation = pmVariationMap[variation] || 'clean';
+          const pmCountFile = path.resolve(RESULTS_DIR, `${fixture}-${pmVariation}-package-count.json`);
+          if (fs.existsSync(pmCountFile)) {
+            try {
+              const pmCountData = JSON.parse(fs.readFileSync(pmCountFile, 'utf8'));
+              if (pmCountData?.npm?.count && typeof pmCountData.npm.count === 'number') {
+                registries.forEach(reg => { packageCounts[reg] = pmCountData.npm.count; });
+              }
+            } catch (e) { /* ignore */ }
+          }
+        }
       }
 
       const pmEntries = {};
