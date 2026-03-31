@@ -92,13 +92,21 @@ BENCH_SETUP_REGISTRY_GITHUB="npm config set registry \"$BENCH_REGISTRY_GITHUB_UR
 
 # Registry verification helper runs in hyperfine --conclude (untimed, after each run).
 BENCH_VERIFY_REGISTRY="npm config get registry && ((grep -m3 '\"resolved\"' package-lock.json 2>/dev/null | sed 's/^[[:space:]]*//') || echo 'no lockfile yet') && echo ''"
+# Package count collection: after each run, count installed packages and tag
+# them with the registry name (e.g. npm-count.txt, vlt-count.txt, aws-count.txt).
+# This uses registry-package-count.sh which writes <registry>-count.txt files.
+BENCH_COLLECT_PKG_COUNT_NPM="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER npm"
+BENCH_COLLECT_PKG_COUNT_VLT="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER vlt"
+BENCH_COLLECT_PKG_COUNT_AWS="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER aws"
+BENCH_COLLECT_PKG_COUNT_CLOUDSMITH="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER cloudsmith"
+BENCH_COLLECT_PKG_COUNT_GITHUB="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER github"
 # hyperfine does not provide HYPERFINE_ITERATION in conclude hooks, so these
 # write to per-registry verification logs instead of per-iteration logs.
-BENCH_CONCLUDE_NPM="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/npm-verify.log 2>&1"
-BENCH_CONCLUDE_VLT_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-verify.log 2>&1"
-BENCH_CONCLUDE_AWS="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/aws-verify.log 2>&1"
-BENCH_CONCLUDE_CLOUDSMITH="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/cloudsmith-verify.log 2>&1"
-BENCH_CONCLUDE_GITHUB="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/github-verify.log 2>&1"
+BENCH_CONCLUDE_NPM="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/npm-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_NPM"
+BENCH_CONCLUDE_VLT_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_VLT"
+BENCH_CONCLUDE_AWS="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/aws-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_AWS"
+BENCH_CONCLUDE_CLOUDSMITH="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/cloudsmith-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_CLOUDSMITH"
+BENCH_CONCLUDE_GITHUB="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/github-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_GITHUB"
 
 # Registry commands are timed and should only run installs.
 # Each command is wrapped with `timeout` to prevent runaway installs.
@@ -174,4 +182,12 @@ mkdir -p "$BENCH_OUTPUT_FOLDER"
 # Cleanup function for .npmrc
 registry_cleanup() {
   bash "$BENCH_SCRIPTS/clean-helpers.sh" clean_npmrc
+}
+
+# Function to collect package count data from per-registry count files into package-count.json.
+# Called after the hyperfine run completes — the --conclude hooks have already
+# written <registry>-count.txt files for each iteration.
+collect_registry_package_count() {
+  ls -la "$BENCH_OUTPUT_FOLDER"
+  node "$BENCH_SCRIPTS/collect-package-count.js" "$BENCH_OUTPUT_FOLDER"
 }

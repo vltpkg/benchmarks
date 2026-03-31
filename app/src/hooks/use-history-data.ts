@@ -85,6 +85,11 @@ interface ChartDataResponse {
     data: FixtureDataSet;
     packageManagers: string[];
   };
+  registryPerPackageCountChartData?: {
+    variations: string[];
+    data: FixtureDataSet;
+    packageManagers: string[];
+  };
 }
 
 /**
@@ -109,9 +114,14 @@ function extractDayData(
     response.perPackageCountChartData?.data ?? response.chartData.data;
   extractFromDataSet(pmSource, result);
 
-  // Process registry chart data (separate data set, always total time)
-  if (response.registryChartData?.data) {
-    extractFromDataSet(response.registryChartData.data, result);
+  // Process registry chart data. Use registryPerPackageCountChartData when
+  // available (normalized ms/pkg values); fall back to total-time
+  // registryChartData for older files that lack per-package registry data.
+  const registrySource =
+    response.registryPerPackageCountChartData?.data ??
+    response.registryChartData?.data;
+  if (registrySource) {
+    extractFromDataSet(registrySource, result);
   }
 
   return result;

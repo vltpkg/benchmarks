@@ -291,10 +291,23 @@ function ChartTooltipContent({
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
           const isDnf = isDnfPayload(item);
           const dnfIndicatorColor = isDnf ? getDnfIndicatorColor(item) : null;
+          // Resolve the indicator color. For DNF entries, getDnfIndicatorColor
+          // reads the hex color from `${dataKey}_fill` in the payload. For
+          // non-DNF entries, we also try `${dataKey}_fill` as a reliable
+          // fallback since item.color / item.payload?.fill may be a pattern
+          // URL when <Cell> overrides the fill for SVG stripe patterns.
+          const payloadFillKey =
+            typeof (item.dataKey ?? item.name) === "string"
+              ? `${item.dataKey ?? item.name}_fill`
+              : undefined;
+          const payloadFillColor =
+            payloadFillKey && item.payload
+              ? (item.payload[payloadFillKey] as string | undefined)
+              : undefined;
           const indicatorColor =
             dnfIndicatorColor ||
             color ||
-            (item.payload?.fill as string) ||
+            payloadFillColor ||
             item.color;
 
           return (

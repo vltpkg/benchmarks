@@ -102,6 +102,13 @@ export const useChartData = (): UseChartDataReturn => {
     perPackageCountChartData: applyDnfFallbacksToDataSet(
       data.perPackageCountChartData,
     ),
+    ...(data.registryPerPackageCountChartData
+      ? {
+          registryPerPackageCountChartData: applyDnfFallbacksToDataSet(
+            data.registryPerPackageCountChartData,
+          ),
+        }
+      : {}),
   });
 
   const fetchChartData = async () => {
@@ -154,6 +161,8 @@ export const useChartData = (): UseChartDataReturn => {
 
       // Merge registry chart data into main chart data if present
       const registryData = normalizedChartData.registryChartData;
+      const registryPerPackageData =
+        normalizedChartData.registryPerPackageCountChartData;
       const registryVariations: Variation[] = registryData?.variations ?? [];
       const allVariations: Variation[] = [
         ...variations,
@@ -172,7 +181,13 @@ export const useChartData = (): UseChartDataReturn => {
       if (registryData) {
         for (const [variation, data] of Object.entries(registryData.data)) {
           mergedData[variation as Variation] = data;
-          mergedPerPackageData[variation as Variation] = data;
+          // For per-package data, use registryPerPackageCountChartData when
+          // available (has normalized ms/pkg values). Falls back to the total
+          // time data for older chart-data.json files that lack it.
+          const perPkgVariationData =
+            registryPerPackageData?.data?.[variation as Variation];
+          mergedPerPackageData[variation as Variation] =
+            perPkgVariationData ?? data;
         }
       }
 

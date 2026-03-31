@@ -138,6 +138,14 @@ for fixture in next astro svelte vue large babylon; do
         else
             echo "Warning: No results found for $fixture & $variation"
         fi
+
+        if package_count_file=$(resolve_result_path "$fixture" "$variation" "package-count.json"); then
+            print_package_count "$package_count_file" "$fixture" "$variation"
+            cp "$package_count_file" "results/$DATE/$fixture-$variation-package-count.json"
+            cp "$package_count_file" "results/latest/$fixture-$variation-package-count.json"
+        else
+            echo "Warning: No package count found for $fixture & $variation (registry)"
+        fi
     done
 done
 

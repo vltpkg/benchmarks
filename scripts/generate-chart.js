@@ -248,7 +248,7 @@ function generateChartData(option = {}) {
 }
 
 // Generate chart data for registry benchmarks
-function generateRegistryChartData() {
+function generateRegistryChartData(option = {}) {
   const fixtures = ["next", "astro", "svelte", "vue", "large", "babylon"];
   const variations = ["registry-clean", "registry-lockfile"];
   const registries = Object.keys(REGISTRY_COLORS);
@@ -267,6 +267,33 @@ function generateRegistryChartData() {
       }
 
       const results = readResults(file);
+      const packageCounts = {};
+
+      // If perPackageCount is enabled, try to load the package count for this fixture/variation
+      if (option.perPackageCount) {
+        const countFile = path.resolve(
+          RESULTS_DIR,
+          `${fixture}-${variation}-package-count.json`,
+        );
+        if (fs.existsSync(countFile)) {
+          try {
+            const countData = JSON.parse(fs.readFileSync(countFile, "utf8"));
+            registries.forEach((reg) => {
+              if (
+                countData &&
+                typeof countData === "object" &&
+                countData[reg] &&
+                typeof countData[reg].count === "number"
+              ) {
+                packageCounts[reg] = countData[reg].count;
+              }
+            });
+          } catch (e) {
+            // Ignore parse errors, fallback to undefined counts
+          }
+        }
+      }
+
       const pmEntries = {};
       const validValues = [];
 
@@ -276,10 +303,21 @@ function generateRegistryChartData() {
 
         const didFail =
           registryResult.failed || !Number.isFinite(registryResult.mean);
+        const count = packageCounts[registry];
         let value =
           typeof registryResult.mean === "number"
             ? registryResult.mean
             : undefined;
+
+        if (
+          !didFail &&
+          option.perPackageCount &&
+          typeof count === "number" &&
+          count > 0 &&
+          typeof value === "number"
+        ) {
+          value = (value / count) * 1000;
+        }
 
         if (!didFail && typeof value === "number") {
           validValues.push(value);
@@ -289,6 +327,7 @@ function generateRegistryChartData() {
           didFail,
           value: didFail ? undefined : value,
           stddev: didFail ? undefined : registryResult.stddev,
+          count,
         };
       });
 
@@ -311,6 +350,9 @@ function generateRegistryChartData() {
 
       Object.entries(entry.pmEntries).forEach(([registry, regEntry]) => {
         fixtureResults[`${registry}_fill`] = REGISTRY_COLORS[registry];
+        if (regEntry.count !== undefined) {
+          fixtureResults[`${registry}_count`] = regEntry.count;
+        }
 
         if (regEntry.didFail) {
           fixtureResults[`${registry}_dnf`] = true;
@@ -377,6 +419,9 @@ const dumpChartData = () => {
   const chartData = generateChartData();
   const perPackageCountChartData = generateChartData({ perPackageCount: true });
   const registryChartData = generateRegistryChartData();
+  const registryPerPackageCountChartData = generateRegistryChartData({
+    perPackageCount: true,
+  });
   const versions = loadPackageManagersVersionData();
 
   const results = {
@@ -399,6 +444,12 @@ const dumpChartData = () => {
       data: registryChartData.data,
       packageManagers: registryChartData.packageManagers,
       colors: registryChartData.colors,
+    },
+    registryPerPackageCountChartData: {
+      variations: registryPerPackageCountChartData.variations,
+      data: registryPerPackageCountChartData.data,
+      packageManagers: registryPerPackageCountChartData.packageManagers,
+      colors: registryPerPackageCountChartData.colors,
     },
     versions,
   };

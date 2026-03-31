@@ -147,6 +147,18 @@ export const VariationPage = () => {
   const isTaskExecution = isTaskExecutionVariation(variation as string);
   const isRegistry = isRegistryVariation(variation as string);
 
+  // For registry variations, check if per-package data actually contains
+  // count fields (indicating package counts were collected). Without counts
+  // the per-package data is identical to total time — don't show the section.
+  const hasRegistryPerPackageData =
+    isRegistry &&
+    filteredPerPackageVariationData.some((fixture) =>
+      packageManagers.some((pm) => {
+        const countKey = `${pm}_count` as keyof FixtureResult;
+        return typeof fixture[countKey] === "number";
+      }),
+    );
+
   // Dynamic titles and section IDs based on variation type
   const titles = isTaskExecution
     ? {
@@ -161,8 +173,8 @@ export const VariationPage = () => {
       ? {
           totalChart: "Registry Install Time by Fixture",
           totalTable: "Registry Install Time Data",
-          perPackageChart: "Registry Install Time by Fixture",
-          perPackageTable: "Registry Install Time Data",
+          perPackageChart: "Registry Per Package Install Time by Fixture",
+          perPackageTable: "Registry Per Package Install Time Data",
           packageCountTable: "Package Count Data",
           processCountTable: "Spawned Processes Data",
         }
@@ -211,8 +223,8 @@ export const VariationPage = () => {
         />
       </div>
 
-      {/* 1. Per-package fixture charts - only show for package management tests */}
-      {!isTaskExecution && !isRegistry && (
+      {/* 1. Per-package fixture charts - show for PM tests and registry when data available */}
+      {(!isTaskExecution && !isRegistry) || hasRegistryPerPackageData ? (
         <div id={sectionIds.perPackageChart}>
           <VariationChart
             title={titles.perPackageChart}
@@ -224,11 +236,11 @@ export const VariationPage = () => {
             currentVariation={variation as string}
           />
         </div>
-      )}
+      ) : null}
 
       <div className="space-y-8">
-        {/* 2. Per-package fixture data table - only show for package management tests */}
-        {!isTaskExecution && !isRegistry && (
+        {/* 2. Per-package fixture data table - show for PM tests and registry when data available */}
+        {(!isTaskExecution && !isRegistry) || hasRegistryPerPackageData ? (
           <div id={sectionIds.perPackageTable}>
             <VariationTable
               title={titles.perPackageTable}
@@ -239,7 +251,7 @@ export const VariationPage = () => {
               currentVariation={variation as string}
             />
           </div>
-        )}
+        ) : null}
 
         {/* 3. Package count data table */}
         {packageCountLoading ? (

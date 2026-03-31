@@ -108,8 +108,21 @@ const HorizontalBarTooltipContent = ({
             item.payload?.dnf === true ||
             (typeof item.dataKey === "string" &&
               item.payload?.[`${item.dataKey}_dnf`] === true);
-          const color =
-            (item.payload?.dnfColor as string) || item.fill || item.color;
+          // Resolve color for the indicator box. For DNF entries, use the
+          // explicit dnfColor (hex) from the data row. For non-DNF entries,
+          // use the data row's fill (a hex color for normal bars). We prefer
+          // item.payload?.dnfColor / item.payload?.fill over item.fill /
+          // item.color because Recharts derives those from the <Bar> component
+          // (which has no fill prop), NOT from the <Cell> fill override.
+          const color = isDnf
+            ? (item.payload?.dnfColor as string) ||
+              (item.payload?.fill as string) ||
+              item.fill ||
+              item.color
+            : (item.payload?.dnfColor as string) ||
+              (item.payload?.fill as string) ||
+              item.fill ||
+              item.color;
 
           return (
             <div key={index} className="flex items-center gap-2">
@@ -663,6 +676,7 @@ export const VariationChart = ({
                       ? getDnfPatternFill(fixtureId, pm)
                       : getColor(pm),
                     dnf: isDnf,
+                    dnfColor: getColor(pm),
                     pm,
                   };
                 })

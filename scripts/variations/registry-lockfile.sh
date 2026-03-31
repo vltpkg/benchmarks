@@ -33,3 +33,5 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_REG_GITHUB:+--prepare="$BENCH_PREPARE_BASE && $BENCH_SETUP_REGISTRY_GITHUB"} \
   ${BENCH_INCLUDE_REG_GITHUB:+--command-name="github" "$BENCH_COMMAND_GITHUB"} \
   ${BENCH_INCLUDE_REG_GITHUB:+--conclude="$BENCH_CONCLUDE_GITHUB"}
+
+collect_registry_package_count

@@ -166,6 +166,7 @@ export interface BenchmarkChartData {
   chartData: ChartDataSet;
   perPackageCountChartData: ChartDataSet;
   registryChartData?: ChartDataSet;
+  registryPerPackageCountChartData?: ChartDataSet;
   versions?: PackageManagerVersions;
 }
 

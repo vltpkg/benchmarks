@@ -18,7 +18,7 @@ try {
   result = {};
 }
 
-// Define the possible count files and their corresponding package manager names
+// Define the possible count files and their corresponding package manager / registry names
 const countFiles = [
   { filename: 'npm-count.txt', pmName: 'npm' },
   { filename: 'yarn-count.txt', pmName: 'yarn' },
@@ -28,7 +28,11 @@ const countFiles = [
   { filename: 'pnpm11-count.txt', pmName: 'pnpm11' },
   { filename: 'vlt-count.txt', pmName: 'vlt' },
   { filename: 'bun-count.txt', pmName: 'bun' },
-  { filename: 'deno-count.txt', pmName: 'deno' }
+  { filename: 'deno-count.txt', pmName: 'deno' },
+  // Registry names (for registry benchmark variations)
+  { filename: 'aws-count.txt', pmName: 'aws' },
+  { filename: 'cloudsmith-count.txt', pmName: 'cloudsmith' },
+  { filename: 'github-count.txt', pmName: 'github' },
 ];
 
 let pmName = null;
