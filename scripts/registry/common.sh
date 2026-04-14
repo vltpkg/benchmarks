@@ -119,7 +119,7 @@ BENCH_COMMAND_GITHUB="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT
 # Registry include flags
 # If BENCH_INCLUDE_REGISTRY is not set, default to running all registries.
 if [ -z "${BENCH_INCLUDE_REGISTRY:-}" ]; then
-  BENCH_INCLUDE_REGISTRY="npm,vlt,aws,cloudsmith,github"
+  BENCH_INCLUDE_REGISTRY="npm,vlt,aws,github"
 fi
 
 BENCH_INCLUDE_REG_NPM=""

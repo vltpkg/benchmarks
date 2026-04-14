@@ -43,7 +43,6 @@ AVAILABLE_REGISTRIES=(
   npm
   vlt
   aws
-  cloudsmith
   github
 )
 
@@ -58,7 +57,7 @@ Usage:
 Options:
   --fixtures    Comma or space-separated fixture names (default: next)
   --pms         Comma or space-separated package managers (default: all)
-  --registries  Comma-separated registries for registry-* variations (default: npm,vlt,aws,cloudsmith,github)
+  --registries  Comma-separated registries for registry-* variations (default: npm,vlt,aws,github)
   --variation   Comma or space-separated benchmark variations (default: clean)
   --runs      Hyperfine runs (default: scripts/variations/common.sh default)
   --warmup    Hyperfine warmup runs (default: scripts/variations/common.sh default)
@@ -80,7 +79,6 @@ Examples:
   ./bench run --variation=registry-clean --fixtures=next
   ./bench run --variation=registry-lockfile --registries=npm,vlt
   CODEARTIFACT_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=aws
-  CLOUDSMITH_REGISTRY=<url> CLOUDSMITH_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=cloudsmith
   GH_REGISTRY=<url> GH_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=github
   ./bench chart --fixtures=next --variation=clean
   ./bench process
@@ -461,7 +459,7 @@ run_bench() {
       if [[ -n "$registries_env" ]]; then
         echo "  registries: $registries_env"
       else
-        echo "  registries: npm,vlt,aws,cloudsmith,github (default)"
+        echo "  registries: npm,vlt,aws,github (default)"
       fi
     fi
 
