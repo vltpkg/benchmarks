@@ -84,6 +84,7 @@ jobs:
     needs: [detect-changes]
     if: needs.detect-changes.outputs.app_only != 'true'
     timeout-minutes: 90
+    environment: Benchmark
     strategy:
       fail-fast: false
       matrix:
