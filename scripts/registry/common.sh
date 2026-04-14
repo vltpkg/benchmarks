@@ -65,11 +65,7 @@ BENCH_REGISTRY_VLT_URL="https://registry.vlt.io/npm/"
 BENCH_REGISTRY_VLT_URL_NPMRC_KEY="${BENCH_REGISTRY_VLT_URL#http*://}"
 BENCH_REGISTRY_AWS_URL="https://vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/"
 BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#http*://}"
-# Cloudsmith registry URL is injected without the protocol prefix
-# (e.g. "//example.com/..."), so we prepend "https:" for the registry config.
-# The auth .npmrc key uses the URL as-is (without protocol).
-BENCH_REGISTRY_CLOUDSMITH_URL="https:${CLOUDSMITH_REGISTRY:-}"
-BENCH_REGISTRY_CLOUDSMITH_NPMRC_KEY="${CLOUDSMITH_REGISTRY#//}"
+
 # GitHub registry URL is injected without the protocol prefix
 # (e.g. "//npm.pkg.github.com/..."), so we prepend "https:" for the registry config.
 # The auth .npmrc key uses the URL as-is (without protocol).
@@ -87,7 +83,6 @@ BENCH_SETUP_REGISTRY_NPM="npm config set registry \"$BENCH_REGISTRY_NPM_URL\" --
 # will allow sharing a public cache regardless of the authorization header.
 BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_VLT_URL_NPMRC_KEY}:_authToken=\\\${VLT_REGISTRY_AUTH_TOKEN}:$(head -c 16 /dev/urandom | xxd -p)_\\\${HYPERFINE_ITERATION}\" --location=project"
 BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\\\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
-BENCH_SETUP_REGISTRY_CLOUDSMITH="npm config set registry \"$BENCH_REGISTRY_CLOUDSMITH_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_CLOUDSMITH_NPMRC_KEY}:_authToken=\\\${CLOUDSMITH_AUTH_TOKEN}\" --location=project"
 BENCH_SETUP_REGISTRY_GITHUB="npm config set registry \"$BENCH_REGISTRY_GITHUB_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_GITHUB_NPMRC_KEY}:_authToken=\\\${GH_AUTH_TOKEN}\" --location=project"
 
 # Registry verification helper runs in hyperfine --conclude (untimed, after each run).
@@ -98,14 +93,12 @@ BENCH_VERIFY_REGISTRY="npm config get registry && ((grep -m3 '\"resolved\"' pack
 BENCH_COLLECT_PKG_COUNT_NPM="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER npm"
 BENCH_COLLECT_PKG_COUNT_VLT="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER vlt"
 BENCH_COLLECT_PKG_COUNT_AWS="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER aws"
-BENCH_COLLECT_PKG_COUNT_CLOUDSMITH="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER cloudsmith"
 BENCH_COLLECT_PKG_COUNT_GITHUB="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER github"
 # hyperfine does not provide HYPERFINE_ITERATION in conclude hooks, so these
 # write to per-registry verification logs instead of per-iteration logs.
 BENCH_CONCLUDE_NPM="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/npm-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_NPM"
 BENCH_CONCLUDE_VLT_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_VLT"
 BENCH_CONCLUDE_AWS="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/aws-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_AWS"
-BENCH_CONCLUDE_CLOUDSMITH="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/cloudsmith-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_CLOUDSMITH"
 BENCH_CONCLUDE_GITHUB="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/github-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_GITHUB"
 
 # Registry commands are timed and should only run installs.
@@ -113,7 +106,6 @@ BENCH_CONCLUDE_GITHUB="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/githu
 BENCH_COMMAND_NPM="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT_REG="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_AWS="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/aws-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_CLOUDSMITH="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/cloudsmith-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_GITHUB="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/github-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Registry include flags
@@ -125,7 +117,6 @@ fi
 BENCH_INCLUDE_REG_NPM=""
 BENCH_INCLUDE_REG_VLT=""
 BENCH_INCLUDE_REG_AWS=""
-BENCH_INCLUDE_REG_CLOUDSMITH=""
 BENCH_INCLUDE_REG_GITHUB=""
 
 for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
@@ -134,7 +125,6 @@ for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
     npm)          BENCH_INCLUDE_REG_NPM=1 ;;
     vlt)          BENCH_INCLUDE_REG_VLT=1 ;;
     aws)          BENCH_INCLUDE_REG_AWS=1 ;;
-    cloudsmith)   BENCH_INCLUDE_REG_CLOUDSMITH=1 ;;
     github)       BENCH_INCLUDE_REG_GITHUB=1 ;;
     *)
       echo "Error: Unknown registry '$entry' in BENCH_INCLUDE_REGISTRY"
@@ -150,16 +140,6 @@ fi
 
 if [ -n "$BENCH_INCLUDE_REG_AWS" ] && [ -z "${CODEARTIFACT_AUTH_TOKEN:-}" ]; then
   echo "Error: 'aws' registry was requested, but CODEARTIFACT_AUTH_TOKEN is not set"
-  exit 1
-fi
-
-if [ -n "$BENCH_INCLUDE_REG_CLOUDSMITH" ] && [ -z "${CLOUDSMITH_AUTH_TOKEN:-}" ]; then
-  echo "Error: 'cloudsmith' registry was requested, but CLOUDSMITH_AUTH_TOKEN is not set"
-  exit 1
-fi
-
-if [ -n "$BENCH_INCLUDE_REG_CLOUDSMITH" ] && [ -z "${CLOUDSMITH_REGISTRY:-}" ]; then
-  echo "Error: 'cloudsmith' registry was requested, but CLOUDSMITH_REGISTRY is not set"
   exit 1
 fi
 
