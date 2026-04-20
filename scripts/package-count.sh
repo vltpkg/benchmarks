@@ -42,13 +42,28 @@ infer_package_manager() {
 
 # If the node_modules directory exists, count the number of packages
 if [ -d "node_modules" ]; then
-  BENCH_PACKAGE_COUNT=$(
-    find node_modules -name package.json -type f \
-    | grep -E 'node_modules/([a-zA-Z0-9_-]+)/package\.json$|node_modules/@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/package\.json$' \
-    | sort -u \
-    | wc -l \
-    | xargs
-  ) || true
+  # aube uses symlinks inside node_modules/.aube/ (unlike pnpm which uses
+  # hard links inside .pnpm/), so the standard `find -type f` cannot
+  # traverse them.  When .aube/ is present, use `find -L` scoped to
+  # node_modules/.aube to follow symlinks and extract unique package names.
+  if [ -d "node_modules/.aube" ]; then
+    BENCH_PACKAGE_COUNT=$(
+      find -L node_modules/.aube -name package.json -type f \
+      | grep -E 'node_modules/([a-zA-Z0-9_-]+)/package\.json$|node_modules/@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/package\.json$' \
+      | sed 's|.*node_modules/||; s|/package\.json$||' \
+      | sort -u \
+      | wc -l \
+      | xargs
+    ) || true
+  else
+    BENCH_PACKAGE_COUNT=$(
+      find node_modules -name package.json -type f \
+      | grep -E 'node_modules/([a-zA-Z0-9_-]+)/package\.json$|node_modules/@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/package\.json$' \
+      | sort -u \
+      | wc -l \
+      | xargs
+    ) || true
+  fi
 else
   # if there is no node_modules directory, the install failed
   # and we can't infer the package manager, so we'll skip this run

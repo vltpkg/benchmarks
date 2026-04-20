@@ -292,24 +292,48 @@ export const calculateLeaderboard = (
 
     filteredVariationData.forEach((fixtureResult: FixtureResult) => {
       const times: Array<{ pm: PackageManager; time: number }> = [];
+      const dnfPMs: PackageManager[] = [];
 
+      // First pass: collect successful times and DNFs
       (availablePackageManagers as PackageManager[]).forEach((pm) => {
         const time = fixtureResult[pm];
         const dnfKey = `${pm}_dnf` as keyof FixtureResult;
-        if (fixtureResult[dnfKey] === true) return;
+        if (fixtureResult[dnfKey] === true) {
+          dnfPMs.push(pm);
+          return;
+        }
         if (typeof time === "number" && time > 0) {
           times.push({ pm, time });
-          const stats = packageManagerStats[pm];
-          if (stats) {
-            stats.totalTime += time;
-            stats.testCount++;
-          }
         }
       });
 
-      times.sort((a, b) => a.time - b.time);
-      if (times.length > 0) {
-        const winnerStats = packageManagerStats[times[0].pm];
+      // Skip this fixture entirely if ALL PMs DNF'd
+      if (times.length === 0) return;
+
+      // Find the slowest successful time for DNF penalty
+      const slowestTime = Math.max(...times.map((t) => t.time));
+
+      // Apply DNF penalty: assign slowest successful time
+      dnfPMs.forEach((pm) => {
+        times.push({ pm, time: slowestTime });
+      });
+
+      // Accumulate stats for all PMs (successful + penalized DNFs)
+      times.forEach(({ pm, time }) => {
+        const stats = packageManagerStats[pm];
+        if (stats) {
+          stats.totalTime += time;
+          stats.testCount++;
+        }
+      });
+
+      // Determine the winner (lowest time, only among successful PMs)
+      const successfulTimes = times.filter(
+        (t) => !dnfPMs.includes(t.pm),
+      );
+      successfulTimes.sort((a, b) => a.time - b.time);
+      if (successfulTimes.length > 0) {
+        const winnerStats = packageManagerStats[successfulTimes[0].pm];
         if (winnerStats) winnerStats.wins++;
       }
     });
@@ -341,10 +365,19 @@ export const calculateLeaderboard = (
     };
   });
 
-  // Filter out PMs with no data and sort by average time (lower is better)
+  // Determine if we're showing the average/default leaderboard
+  const isAverageView = !specificVariation || specificVariation === "average";
+
+  // Filter out PMs with no data, then sort:
+  // - Average view: sort by wins first (most wins = #1), then average time as tiebreaker
+  // - Specific variant views: sort by average time (lower is better), then wins as tiebreaker
   return leaderboard
     .filter((item) => item.totalTests > 0)
     .sort((a, b) => {
+      if (isAverageView) {
+        if (a.wins !== b.wins) return b.wins - a.wins;
+        return a.averageTime - b.averageTime;
+      }
       if (a.averageTime !== b.averageTime) return a.averageTime - b.averageTime;
       return b.wins - a.wins;
     });
