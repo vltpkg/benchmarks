@@ -37,17 +37,27 @@ clean_zpm_cache() {
 # Function to safely clean pnpm cache
 clean_pnpm_cache() {
   if command -v corepack &> /dev/null; then
-    corepack pnpm cache delete * --silent || true
-    safe_remove "$(corepack pnpm store path | xargs)"
+    corepack pnpm cache delete '*' --silent || true
+    # Remove the version-specific store directory reported by this pnpm
+    safe_remove "$(corepack pnpm store path 2>/dev/null | xargs)"
   fi
+  # Also wipe the entire metadata cache and store parent to catch any
+  # leftover version directories (v3, v9, v10, v11 …) that a single
+  # `pnpm store path` wouldn't return.
+  safe_remove "$HOME/.cache/pnpm"
+  safe_remove "$HOME/.local/share/pnpm/store"
 }
 
 # Function to safely clean pnpm 11 cache
 clean_pnpm11_cache() {
   if command -v corepack &> /dev/null; then
-    corepack pnpm@next-11 cache delete * --silent || true
-    safe_remove "$(corepack pnpm@next-11 store path | xargs)"
+    corepack pnpm@next-11 cache delete '*' --silent || true
+    safe_remove "$(corepack pnpm@next-11 store path 2>/dev/null | xargs)"
   fi
+  # The parent directories are already cleaned by clean_pnpm_cache above,
+  # but if clean_pnpm11_cache is called in isolation we still need them.
+  safe_remove "$HOME/.cache/pnpm"
+  safe_remove "$HOME/.local/share/pnpm/store"
 }
 
 # Function to safely clean vlt cache
@@ -94,12 +104,22 @@ clean_vp_cache() {
   fi
 }
 
-# Function to safely clean aube cache
-clean_aube_cache() {
+# Function to safely clean aube metadata cache (packument JSONs only).
+# This removes the registry metadata that `aube cache delete` covers,
+# but leaves the global store and the rest of ~/.cache/aube intact.
+clean_aube_metadata_cache() {
   if command -v aube &> /dev/null; then
-    aube cache clean >/dev/null 2>&1 || true
-    safe_remove "$HOME/.local/share/aube"
+    aube cache delete '*' >/dev/null 2>&1 || true
   fi
+}
+
+# Function to safely clean ALL aube caches — metadata cache, package index,
+# virtual-store (all under ~/.cache/aube/) AND the global content-addressable
+# store (~/.aube-store/).  Used in "clean" (fully cold) variations.
+clean_aube_cache() {
+  clean_aube_metadata_cache
+  safe_remove "$HOME/.cache/aube"
+  safe_remove "$HOME/.aube-store"
 }
 
 # Function to clean lockfiles for all package managers
@@ -138,6 +158,7 @@ clean_package_manager_files() {
   safe_remove ".pnp.loader.mjs"
   safe_remove "pnpm-debug.log"
   safe_remove "yarn-error.log"
+  safe_remove ".aube"
 }
 
 # Function to remove benchmark-added registry lines from .npmrc
@@ -217,6 +238,7 @@ show_help() {
   echo "  clean_nx_cache"
   echo "  clean_deno_cache"
   echo "  clean_aube_cache"
+  echo "  clean_aube_metadata_cache"
   echo "  clean_lockfiles"
   echo "  clean_package_manager_field"
   echo "  clean_package_manager_files"
@@ -269,6 +291,9 @@ else
         ;;
       clean_aube_cache)
         clean_aube_cache
+        ;;
+      clean_aube_metadata_cache)
+        clean_aube_metadata_cache
         ;;
       clean_lockfiles)
         clean_lockfiles

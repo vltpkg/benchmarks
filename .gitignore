@@ -3,6 +3,7 @@
 
 # deps
 node_modules
+.aube
 
 # build
 .nx/installation
