@@ -1,3 +1,4 @@
 Error:   × failed to resolve dependencies
-  ╰─▶ registry error for @dev/loaders: package not found: @dev/loaders
+  ╰─▶ registry error for jshint: I/O error: duplicate field
+      `bundledDependencies`
 

@@ -1,4 +1,3 @@
 Error:   × failed to resolve dependencies
-  ╰─▶ registry error for @tools/gui-editor: package not found: @tools/gui-
-      editor
+  ╰─▶ registry error for tap: I/O error: duplicate field `bundledDependencies`
 

@@ -1,4 +1,4 @@
 Error:   × failed to resolve dependencies
-  ╰─▶ registry error for @dev/post-processes: package not found: @dev/post-
-      processes
+  ╰─▶ registry error for jshint: I/O error: duplicate field
+      `bundledDependencies`
 
