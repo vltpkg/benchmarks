@@ -2,127 +2,127 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 685 Apr 20 20:11 package.json
+-rw-r--r-- 1 runner runner 685 Apr 21 10:50 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 4.14.1
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 "yarn@4.14.1"
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Apr 20 20:11 package.json
+-rw-r--r-- 1 runner runner 651 Apr 21 10:50 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Apr 20 20:11 package.json
+-rw-r--r-- 1 runner runner 651 Apr 21 10:50 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Apr 20 20:11 package.json
+-rw-r--r-- 1 runner runner 651 Apr 21 10:50 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Apr 20 20:11 package.json
+-rw-r--r-- 1 runner runner 651 Apr 21 10:50 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Apr 20 20:11 package.json
+-rw-r--r-- 1 runner runner 651 Apr 21 10:50 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Apr 20 20:11 package.json
+-rw-r--r-- 1 runner runner 651 Apr 21 10:50 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 686 Apr 20 20:15 package.json
+-rw-r--r-- 1 runner runner 686 Apr 21 10:54 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 4.14.1
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 "yarn@4.14.1"
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"

@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7944 Apr 20 20:20 package.json
+-rw-r--r-- 1 runner runner 7944 Apr 21 10:58 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -10,65 +10,65 @@ Error: Yarn cannot be used on project configured for use with yarn
 
 › yarn […ARGSN]
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 "pnpm@10.33.0"
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7909 Apr 20 20:20 package.json
+-rw-r--r-- 1 runner runner 7909 Apr 21 10:58 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7909 Apr 20 20:20 package.json
+-rw-r--r-- 1 runner runner 7909 Apr 21 10:58 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7909 Apr 20 20:20 package.json
+-rw-r--r-- 1 runner runner 7909 Apr 21 10:58 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7945 Apr 20 20:34 package.json
+-rw-r--r-- 1 runner runner 7945 Apr 21 11:13 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -76,9 +76,9 @@ Error: Yarn cannot be used on project configured for use with yarn
 
 › yarn […ARGSN]
 canary version:
-6.0.0-rc.16
+6.0.0-rc.17
 packageManager (before):
 "pnpm@10.33.0"
-set packageManager=yarn@6.0.0-rc.16:
+set packageManager=yarn@6.0.0-rc.17:
 packageManager (after):
-"yarn@6.0.0-rc.16"
+"yarn@6.0.0-rc.17"

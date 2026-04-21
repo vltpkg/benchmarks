@@ -1,0 +1,16 @@
+{
+  "npm": {
+    "count": 1784,
+    "minCount": 1780,
+    "maxCount": 1793
+  },
+  "vlt": {
+    "count": 1781
+  },
+  "aws": {
+    "count": 1781
+  },
+  "github": {
+    "count": 1781
+  }
+}

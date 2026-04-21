@@ -5,15 +5,23 @@
 
 [;31mtest[;0m
 cache bypass, force executing 35febd2fb84eaf21
-[31m[1mUsage Error[22m[39m: Unrecognized or legacy configuration settings found: switchPath - run "yarn config" to see the list of settings supported in Yarn (in [38;5;170m<environment>[39m)
-
-[1m$ [22myarn run [--inspect] [--inspect-brk] [-T,--top-level] [-B,--binaries-only] [--require #0] <scriptName> ...
+[31m[1mInternal Error[22m[39m: [38;5;173mrun[39m[38;5;37m@[39m[38;5;37mworkspace:.[39m: This package doesn't seem to be present in your lockfile; run "yarn install" to update the lockfile
+    at DT.getCandidates (/home/runner/.yarn/switch/cache/0b7f03e74fa73f193f94c2773c991d75/bin.js:204:4607)
+    at em.getCandidates (/home/runner/.yarn/switch/cache/0b7f03e74fa73f193f94c2773c991d75/bin.js:141:1311)
+    at /home/runner/.yarn/switch/cache/0b7f03e74fa73f193f94c2773c991d75/bin.js:209:8420
+    at VE (/home/runner/.yarn/switch/cache/0b7f03e74fa73f193f94c2773c991d75/bin.js:140:45054)
+    at st (/home/runner/.yarn/switch/cache/0b7f03e74fa73f193f94c2773c991d75/bin.js:209:8400)
+    at async Promise.allSettled (index 0)
+    at async Lu (/home/runner/.yarn/switch/cache/0b7f03e74fa73f193f94c2773c991d75/bin.js:140:44382)
+    at async /home/runner/.yarn/switch/cache/0b7f03e74fa73f193f94c2773c991d75/bin.js:209:9166
+    at async ki.startProgressPromise (/home/runner/.yarn/switch/cache/0b7f03e74fa73f193f94c2773c991d75/bin.js:140:130220)
+    at async e.resolveEverything (/home/runner/.yarn/switch/cache/0b7f03e74fa73f193f94c2773c991d75/bin.js:209:7138)
 ::error::test: command (/home/runner/work/benchmarks/benchmarks/fixtures/run/) /home/runner/.yarn/switch/bin/yarn run test exited (1)
  ERROR  test: command (/home/runner/work/benchmarks/benchmarks/fixtures/run/) /home/runner/.yarn/switch/bin/yarn run test exited (1)
 
  Tasks:    0 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    275ms 
+  Time:    357ms 
 Failed:    //#test
 
  ERROR  run failed: command  exited (1)
