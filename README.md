@@ -90,11 +90,24 @@ Examples:
 
 # Run only aws registry benchmarks (requires token)
 CODEARTIFACT_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=aws
+
+# Run isolated VSR registry benchmarks through toxiproxy with a bandwidth cap
+VLT_REGISTRY_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=vlt --network-profile=vsr-bandwidth --network-rate-kbps=8192
 ```
 
 Auth notes:
 
 - `aws` requires `CODEARTIFACT_AUTH_TOKEN`.
+
+#### Network isolation
+
+Registry benchmarks can optionally be routed through a local `toxiproxy` instance to make the benchmark use a controlled network path instead of the host's default connection.
+
+- `vsr-bandwidth` is currently supported for `vlt` registry benchmarks only.
+- This profile rewrites `registry.vlt.io` to a local toxiproxy listener, then proxies TLS traffic to the real VSR upstream with symmetric bandwidth limits.
+- Use `--registries=vlt` together with `--network-profile=vsr-bandwidth`.
+- `--network-rate-kbps` controls both upstream and downstream bandwidth in KB/s.
+- The helper temporarily edits `/etc/hosts`, so local runs require `sudo` access.
 
 ## Testing Script Execution
 
@@ -154,6 +167,9 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 
   # Run multiple variations in one command
   ./bench run --fixtures=svelte --variation=lockfile,registry-lockfile,run --registries=npm,vlt
+
+  # Run an isolated VSR benchmark with a bandwidth cap
+  VLT_REGISTRY_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=vlt --network-profile=vsr-bandwidth --network-rate-kbps=8192
 
   # Script-execution benchmark
   ./bench run --variation=run --pms=vlt

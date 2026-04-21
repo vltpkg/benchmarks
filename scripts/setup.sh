@@ -37,11 +37,21 @@ wget -q "https://github.com/sharkdp/hyperfine/releases/download/${HYPERFINE_VERS
 sudo dpkg -i /tmp/hyperfine.deb
 rm -f /tmp/hyperfine.deb
 
+# Install toxiproxy for opt-in network-isolated registry benchmarks
+TOXIPROXY_VERSION_TAG="v2.12.0"
+for binary in toxiproxy-server toxiproxy-cli; do
+  curl -fsSL "https://github.com/Shopify/toxiproxy/releases/download/${TOXIPROXY_VERSION_TAG}/${binary}-linux-${ARCH}" -o "/tmp/${binary}"
+  chmod +x "/tmp/${binary}"
+  sudo mv "/tmp/${binary}" "/usr/local/bin/${binary}"
+done
+
 echo "Required system dependencies installed successfully!"
 JQ_VERSION=$(jq --version)
 HYPERFINE_VERSION=$(hyperfine --version)
+TOXIPROXY_SERVER_VERSION=$(toxiproxy-server -version 2>/dev/null || toxiproxy-server --version 2>/dev/null || echo "installed")
 echo "jq: $JQ_VERSION"
 echo "hyperfine: $HYPERFINE_VERSION"
+echo "toxiproxy: $TOXIPROXY_SERVER_VERSION"
 
 # Install Node.js package managers and tools
 echo "Installing package managers and tools..."

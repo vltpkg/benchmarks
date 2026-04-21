@@ -46,6 +46,8 @@ BENCH_RUNS="${BENCH_RUNS:=5}"
 # Per-command timeout in seconds (default: 5 minutes)
 BENCH_TIMEOUT="${BENCH_TIMEOUT:=300}"
 BENCH_LOGLEVEL="${BENCH_LOGLEVEL:=http}"
+BENCH_NETWORK_PROFILE="${BENCH_NETWORK_PROFILE:=}"
+BENCH_TOXIPROXY_RATE_KBPS="${BENCH_TOXIPROXY_RATE_KBPS:=8192}"
 BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
 
 # Add --force for large fixture to bypass peer dependency errors
@@ -71,6 +73,8 @@ BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#http*://}"
 # The auth .npmrc key uses the URL as-is (without protocol).
 BENCH_REGISTRY_GITHUB_URL="https:${GH_REGISTRY:-}"
 BENCH_REGISTRY_GITHUB_NPMRC_KEY="${GH_REGISTRY#//}"
+BENCH_REGISTRY_VLT_EFFECTIVE_URL="$BENCH_REGISTRY_VLT_URL"
+BENCH_REGISTRY_VLT_EFFECTIVE_NPMRC_KEY="${BENCH_REGISTRY_VLT_EFFECTIVE_URL#http*://}"
 
 # Registry setup commands run in hyperfine --prepare (untimed, before each run).
 # Auth token is written as a literal placeholder so npm resolves it from env.
@@ -81,7 +85,7 @@ BENCH_SETUP_REGISTRY_NPM="npm config set registry \"$BENCH_REGISTRY_NPM_URL\" --
 # The vlt registry auth token is appended with a random suffix with the iteration number to
 # ensure that a fresh cache is used for each iteration. A future update to the vlt registry
 # will allow sharing a public cache regardless of the authorization header.
-BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_VLT_URL_NPMRC_KEY}:_authToken=\\\${VLT_REGISTRY_AUTH_TOKEN}:$(head -c 16 /dev/urandom | xxd -p)_\\\${HYPERFINE_ITERATION}\" --location=project"
+BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_EFFECTIVE_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_VLT_EFFECTIVE_NPMRC_KEY}:_authToken=\\\${VLT_REGISTRY_AUTH_TOKEN}:$(head -c 16 /dev/urandom | xxd -p)_\\\${HYPERFINE_ITERATION}\" --location=project"
 BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\\\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
 BENCH_SETUP_REGISTRY_GITHUB="npm config set registry \"$BENCH_REGISTRY_GITHUB_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_GITHUB_NPMRC_KEY}:_authToken=\\\${GH_AUTH_TOKEN}\" --location=project"
 
@@ -153,7 +157,32 @@ if [ -n "$BENCH_INCLUDE_REG_GITHUB" ] && [ -z "${GH_REGISTRY:-}" ]; then
   exit 1
 fi
 
+if [ -n "$BENCH_NETWORK_PROFILE" ]; then
+  case "$BENCH_NETWORK_PROFILE" in
+    vsr-bandwidth)
+      if [ -z "$BENCH_INCLUDE_REG_VLT" ] || [ -n "$BENCH_INCLUDE_REG_NPM" ] || [ -n "$BENCH_INCLUDE_REG_AWS" ] || [ -n "$BENCH_INCLUDE_REG_GITHUB" ]; then
+        echo "Error: BENCH_NETWORK_PROFILE=vsr-bandwidth currently requires BENCH_INCLUDE_REGISTRY=vlt"
+        exit 1
+      fi
+
+      source "$BENCH_SCRIPTS/network-isolation.sh"
+      setup_vsr_bandwidth_proxy
+      trap cleanup_network_isolation EXIT
+      BENCH_REGISTRY_VLT_EFFECTIVE_URL="$BENCH_VSR_PROXY_URL"
+      BENCH_REGISTRY_VLT_EFFECTIVE_NPMRC_KEY="${BENCH_REGISTRY_VLT_EFFECTIVE_URL#http*://}"
+      BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_EFFECTIVE_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_VLT_EFFECTIVE_NPMRC_KEY}:_authToken=\\\${VLT_REGISTRY_AUTH_TOKEN}:$(head -c 16 /dev/urandom | xxd -p)_\\\${HYPERFINE_ITERATION}\" --location=project"
+      ;;
+    *)
+      echo "Error: Unknown BENCH_NETWORK_PROFILE '$BENCH_NETWORK_PROFILE'"
+      exit 1
+      ;;
+  esac
+fi
+
 echo "Registry benchmarks will run: $BENCH_INCLUDE_REGISTRY"
+if [ -n "$BENCH_NETWORK_PROFILE" ]; then
+  echo "Network isolation profile: $BENCH_NETWORK_PROFILE (${BENCH_TOXIPROXY_RATE_KBPS} KB/s)"
+fi
 
 # Clean up & create the results directory
 rm -rf "$BENCH_OUTPUT_FOLDER"
