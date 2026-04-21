@@ -20,7 +20,7 @@ on:
         default: "5"
       network_profile:
         description: "Optional network isolation profile for registry benchmarks"
-        default: ""
+        default: "registry-bandwidth"
       network_rate_kbps:
         description: "Bandwidth cap in KB/s for supported network profiles"
         default: "8192"
@@ -110,7 +110,7 @@ jobs:
       BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,pnpm11,pacquet,vlt,bun,deno,aube,nx,turbo,vp,node"') }}
       BENCH_WARMUP: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.warmup || '2') }}
       BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '5') }}
-      BENCH_NETWORK_PROFILE: ${{ inputs.network_profile || '' }}
+      BENCH_NETWORK_PROFILE: ${{ inputs.network_profile || 'registry-bandwidth' }}
       BENCH_TOXIPROXY_RATE_KBPS: ${{ inputs.network_rate_kbps || '8192' }}
     steps:
       - uses: actions/checkout@v6

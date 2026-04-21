@@ -7,11 +7,11 @@ BENCH_TOXIPROXY_API_PORT="${BENCH_TOXIPROXY_API_PORT:-8474}"
 BENCH_TOXIPROXY_LISTEN_HOST="${BENCH_TOXIPROXY_LISTEN_HOST:-127.0.0.1}"
 BENCH_TOXIPROXY_LISTEN_PORT="${BENCH_TOXIPROXY_LISTEN_PORT:-7443}"
 BENCH_TOXIPROXY_RATE_KBPS="${BENCH_TOXIPROXY_RATE_KBPS:-8192}"
-BENCH_TOXIPROXY_PROXY_NAME="${BENCH_TOXIPROXY_PROXY_NAME:-bench-vsr}"
 BENCH_TOXIPROXY_PID_FILE="${BENCH_TOXIPROXY_PID_FILE:-/tmp/vlt-benchmarks-toxiproxy.pid}"
 BENCH_TOXIPROXY_LOG_FILE="${BENCH_TOXIPROXY_LOG_FILE:-/tmp/vlt-benchmarks-toxiproxy.log}"
 BENCH_TOXIPROXY_HOSTS_START="# >>> vlt-benchmarks toxiproxy >>>"
 BENCH_TOXIPROXY_HOSTS_END="# <<< vlt-benchmarks toxiproxy <<<"
+BENCH_TOXIPROXY_HOSTS_ENTRIES="${BENCH_TOXIPROXY_HOSTS_ENTRIES:-}"
 
 toxiproxy_api_url() {
   echo "http://${BENCH_TOXIPROXY_API_HOST}:${BENCH_TOXIPROXY_API_PORT}"
@@ -72,10 +72,8 @@ reset_toxiproxy() {
   curl -fsS -X POST "$(toxiproxy_api_url)/reset" >/dev/null
 }
 
-update_hosts_mapping() {
-  local host="$1"
-  local ip="$2"
-  local target="${ip} ${host}"
+write_hosts_mapping() {
+  local entries="$1"
 
   sudo node -e '
     const fs = require("node:fs")
@@ -83,77 +81,101 @@ update_hosts_mapping() {
     const filePath = "/etc/hosts"
     const start = process.argv[1]
     const end = process.argv[2]
-    const entry = process.argv[3]
+    const entries = process.argv[3]
     const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
     let content = fs.readFileSync(filePath, "utf8")
-    const block = `${start}\n${entry}\n${end}`
     const pattern = new RegExp(`${escapeRegex(start)}\\n?[\\s\\S]*?${escapeRegex(end)}\\n?`, "g")
     content = content.replace(pattern, "")
     content = content.replace(/\n*$/, "\n")
-    fs.writeFileSync(filePath, `${content}${block}\n`)
-  ' "$BENCH_TOXIPROXY_HOSTS_START" "$BENCH_TOXIPROXY_HOSTS_END" "$target"
+    if (entries.length > 0) {
+      const block = `${start}\n${entries}\n${end}`
+      content = `${content}${block}\n`
+    }
+    fs.writeFileSync(filePath, content)
+  ' "$BENCH_TOXIPROXY_HOSTS_START" "$BENCH_TOXIPROXY_HOSTS_END" "$entries"
 }
 
-clear_hosts_mapping() {
-  sudo node -e '
-    const fs = require("node:fs")
+append_hosts_mapping() {
+  local host="$1"
+  local entry="${BENCH_TOXIPROXY_LISTEN_HOST} ${host}"
 
-    const filePath = "/etc/hosts"
-    const start = process.argv[1]
-    const end = process.argv[2]
-    const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  if ! printf '%s\n' "$BENCH_TOXIPROXY_HOSTS_ENTRIES" | grep -Fxq "$entry"; then
+    if [ -n "$BENCH_TOXIPROXY_HOSTS_ENTRIES" ]; then
+      BENCH_TOXIPROXY_HOSTS_ENTRIES="${BENCH_TOXIPROXY_HOSTS_ENTRIES}
+${entry}"
+    else
+      BENCH_TOXIPROXY_HOSTS_ENTRIES="$entry"
+    fi
+  fi
 
-    let content = fs.readFileSync(filePath, "utf8")
-    const pattern = new RegExp(`${escapeRegex(start)}\\n?[\\s\\S]*?${escapeRegex(end)}\\n?`, "g")
-    content = content.replace(pattern, "")
-    fs.writeFileSync(filePath, content.replace(/\n*$/, "\n"))
-  ' "$BENCH_TOXIPROXY_HOSTS_START" "$BENCH_TOXIPROXY_HOSTS_END"
+  write_hosts_mapping "$BENCH_TOXIPROXY_HOSTS_ENTRIES"
 }
 
 create_toxiproxy_proxy() {
-  local upstream_host="$1"
-  local upstream_ip="$2"
-  local upstream_port="$3"
-  local rate_kbps="$4"
+  local proxy_name="$1"
+  local upstream_host="$2"
+  local upstream_ip="$3"
+  local upstream_port="$4"
+  local listen_port="$5"
+  local rate_kbps="$6"
 
   curl -fsS -X POST "$(toxiproxy_api_url)/proxies" \
     -H 'Content-Type: application/json' \
-    -d "{\"name\":\"${BENCH_TOXIPROXY_PROXY_NAME}\",\"listen\":\"${BENCH_TOXIPROXY_LISTEN_HOST}:${BENCH_TOXIPROXY_LISTEN_PORT}\",\"upstream\":\"${upstream_ip}:${upstream_port}\"}" \
+    -d "{\"name\":\"${proxy_name}\",\"listen\":\"${BENCH_TOXIPROXY_LISTEN_HOST}:${listen_port}\",\"upstream\":\"${upstream_ip}:${upstream_port}\"}" \
     >/dev/null
 
-  curl -fsS -X POST "$(toxiproxy_api_url)/proxies/${BENCH_TOXIPROXY_PROXY_NAME}/toxics" \
+  curl -fsS -X POST "$(toxiproxy_api_url)/proxies/${proxy_name}/toxics" \
     -H 'Content-Type: application/json' \
     -d "{\"name\":\"bandwidth_upstream\",\"type\":\"bandwidth\",\"stream\":\"upstream\",\"attributes\":{\"rate\":${rate_kbps}}}" \
     >/dev/null
 
-  curl -fsS -X POST "$(toxiproxy_api_url)/proxies/${BENCH_TOXIPROXY_PROXY_NAME}/toxics" \
+  curl -fsS -X POST "$(toxiproxy_api_url)/proxies/${proxy_name}/toxics" \
     -H 'Content-Type: application/json' \
     -d "{\"name\":\"bandwidth_downstream\",\"type\":\"bandwidth\",\"stream\":\"downstream\",\"attributes\":{\"rate\":${rate_kbps}}}" \
     >/dev/null
 
-  echo "Toxiproxy configured for ${upstream_host} at ${BENCH_TOXIPROXY_LISTEN_HOST}:${BENCH_TOXIPROXY_LISTEN_PORT} (${rate_kbps} KB/s)"
+  echo "Toxiproxy configured for ${upstream_host} at ${BENCH_TOXIPROXY_LISTEN_HOST}:${listen_port} (${rate_kbps} KB/s)" >&2
 }
 
-setup_vsr_bandwidth_proxy() {
-  local upstream_host="registry.vlt.io"
-  local upstream_path="/npm/"
-  local upstream_port="443"
+url_field() {
+  local url="$1"
+  local field="$2"
+
+  node -e '
+    const parsed = new URL(process.argv[1])
+    const field = process.argv[2]
+    const value = field === "port"
+      ? (parsed.port || (parsed.protocol === "https:" ? "443" : "80"))
+      : parsed[field]
+    process.stdout.write(value)
+  ' "$url" "$field"
+}
+
+setup_registry_bandwidth_proxy() {
+  local proxy_name="$1"
+  local registry_url="$2"
+  local listen_port="$3"
+  local upstream_host
+  local upstream_path
+  local upstream_protocol
+  local upstream_port
   local upstream_ip
 
-  ensure_toxiproxy_installed
+  upstream_host="$(url_field "$registry_url" hostname)"
+  upstream_path="$(url_field "$registry_url" pathname)"
+  upstream_protocol="$(url_field "$registry_url" protocol)"
+  upstream_port="$(url_field "$registry_url" port)"
   upstream_ip="$(resolve_ipv4 "$upstream_host")"
-  start_toxiproxy_server
-  reset_toxiproxy
-  create_toxiproxy_proxy "$upstream_host" "$upstream_ip" "$upstream_port" "$BENCH_TOXIPROXY_RATE_KBPS"
-  update_hosts_mapping "$upstream_host" "$BENCH_TOXIPROXY_LISTEN_HOST"
 
-  BENCH_VSR_PROXY_URL="https://${upstream_host}:${BENCH_TOXIPROXY_LISTEN_PORT}${upstream_path}"
-  export BENCH_VSR_PROXY_URL
+  create_toxiproxy_proxy "$proxy_name" "$upstream_host" "$upstream_ip" "$upstream_port" "$listen_port" "$BENCH_TOXIPROXY_RATE_KBPS"
+  append_hosts_mapping "$upstream_host"
+
+  echo "${upstream_protocol}//${upstream_host}:${listen_port}${upstream_path}"
 }
 
 cleanup_network_isolation() {
-  clear_hosts_mapping || true
+  write_hosts_mapping "" || true
 
   if curl -fsS "$(toxiproxy_api_url)/version" >/dev/null 2>&1; then
     curl -fsS -X POST "$(toxiproxy_api_url)/reset" >/dev/null || true

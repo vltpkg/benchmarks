@@ -66,7 +66,7 @@ Options:
   --runs      Hyperfine runs (default: scripts/variations/common.sh default)
   --warmup    Hyperfine warmup runs (default: scripts/variations/common.sh default)
   --timeout   Per-command timeout in seconds (default: 300)
-  --network-profile  Optional network isolation profile for registry-* runs
+  --network-profile  Network isolation profile for registry-* runs (default: registry-bandwidth, use none to disable)
   --network-rate-kbps  Bandwidth cap in KB/s for supported profiles (default: 8192)
   --chart     Generate chart data and copy to app/latest
   --process   Process results after run (clean + dated/latest outputs + chart data)
@@ -84,7 +84,7 @@ Examples:
   ./bench run --fixtures=next --chart --process --runs=3
   ./bench run --variation=registry-clean --fixtures=next
   ./bench run --variation=registry-lockfile --registries=npm,vlt
-  ./bench run --variation=registry-clean --fixtures=next --registries=vlt --network-profile=vsr-bandwidth --network-rate-kbps=8192
+  ./bench run --variation=registry-clean --fixtures=next --registries=vlt --network-profile=registry-bandwidth --network-rate-kbps=8192
   CODEARTIFACT_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=aws
   GH_REGISTRY=<url> GH_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=github
   ./bench chart --fixtures=next --variation=clean
@@ -443,7 +443,7 @@ run_bench() {
   if [[ -n "$network_profile_input" ]]; then
     echo "  network profile: $network_profile_input"
   else
-    echo "  network profile: disabled"
+    echo "  network profile: registry script default"
   fi
   if [[ -n "$network_rate_input" ]]; then
     echo "  network rate: ${network_rate_input} KB/s"
