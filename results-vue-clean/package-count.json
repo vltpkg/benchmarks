@@ -12,9 +12,7 @@
     "count": 467
   },
   "pnpm": {
-    "count": 442,
-    "minCount": 442,
-    "maxCount": 443
+    "count": 442
   },
   "vlt": {
     "count": 442
@@ -24,5 +22,8 @@
   },
   "deno": {
     "count": 440
+  },
+  "aube": {
+    "count": 410
   }
 }

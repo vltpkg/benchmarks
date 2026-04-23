@@ -1,4 +1,5 @@
-Error:   × failed to resolve dependencies
-  ╰─▶ registry error for jshint: I/O error: duplicate field
-      `bundledDependencies`
+Error:   × lockfile is out of date with package.json: packages/public/umd/babylonjs:
+  │ @dev/build-tools: manifest says 1.0.0, lockfile says ^1.0.0
+  │ help: run without --frozen-lockfile to update the lockfile, or run `aube
+  │ install --no-frozen-lockfile` to regenerate it
 

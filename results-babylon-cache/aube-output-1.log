@@ -1,4 +1,0 @@
-Error:   × failed to resolve dependencies
-  ╰─▶ registry error for jshint: I/O error: duplicate field
-      `bundledDependencies`
-

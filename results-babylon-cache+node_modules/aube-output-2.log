@@ -1,3 +1,0 @@
-Error:   × failed to resolve dependencies
-  ╰─▶ registry error for tap: I/O error: duplicate field `bundledDependencies`
-
