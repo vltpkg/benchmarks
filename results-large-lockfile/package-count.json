@@ -1,4 +1,7 @@
 {
+  "npm": {
+    "count": 1395
+  },
   "yarn": {
     "count": 1326
   },
@@ -15,10 +18,10 @@
     "count": 1294
   },
   "bun": {
-    "count": 1555
+    "count": 1556
   },
   "deno": {
-    "count": 1282
+    "count": 1283
   },
   "aube": {
     "count": 1088

@@ -5,7 +5,9 @@
     "maxCount": 1793
   },
   "vlt": {
-    "count": 1781
+    "count": 1781,
+    "minCount": 1781,
+    "maxCount": 1782
   },
   "aws": {
     "count": 1781
