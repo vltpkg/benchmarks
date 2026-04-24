@@ -89,6 +89,10 @@ BENCH_SETUP_NODE=""
 #   pnpm v11+: errors on ignored build scripts (ERR_PNPM_IGNORED_BUILDS) → --ignore-scripts
 #   deno: doesn't run scripts by default → removed --allow-scripts
 BENCH_INSTALL_NPM="npm install --no-audit --no-fund --ignore-scripts --silent"
+# npm ERESOLVE: medium-draft@0.5.18 requires react@^15||^16 but large has react@^18
+if [ "$BENCH_FIXTURE" = "large" ]; then
+  BENCH_INSTALL_NPM="$BENCH_INSTALL_NPM --legacy-peer-deps"
+fi
 BENCH_INSTALL_YARN="corepack yarn@1 install --ignore-scripts --silent"
 BENCH_INSTALL_BERRY="corepack yarn@latest install"
 BENCH_INSTALL_ZPM="yarn install --silent"
