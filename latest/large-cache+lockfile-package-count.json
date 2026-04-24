@@ -1,15 +1,15 @@
 {
   "npm": {
-    "count": 1395
+    "count": 1394
   },
   "yarn": {
-    "count": 1326
+    "count": 1325
   },
   "berry": {
-    "count": 1327
+    "count": 1326
   },
   "zpm": {
-    "count": 1507
+    "count": 1506
   },
   "pnpm": {
     "count": 1288
@@ -21,7 +21,7 @@
     "count": 1554
   },
   "deno": {
-    "count": 1282
+    "count": 1283
   },
   "aube": {
     "count": 1088
