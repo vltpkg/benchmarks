@@ -1,7 +1,6 @@
 Error:   × failed to resolve dependencies
-  ╰─▶ registry error for @next/eslint-plugin-next: HTTP error: error decoding
-      response body
-  help: package: @next/eslint-plugin-next
+  ╰─▶ registry error for tailwindcss: HTTP error: error decoding response body
+  help: package: tailwindcss
         packument fetch failed — verify the registry URL in .npmrc, check auth
         (`npm login` / `NPM_TOKEN`), and confirm network connectivity
 

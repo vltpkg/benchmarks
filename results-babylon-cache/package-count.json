@@ -15,7 +15,9 @@
     "maxCount": 1519
   },
   "vlt": {
-    "count": 1518
+    "count": 1519,
+    "minCount": 1518,
+    "maxCount": 1521
   },
   "bun": {
     "count": 1603
