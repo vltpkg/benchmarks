@@ -1,0 +1,6 @@
+Error:   × failed to resolve dependencies
+  ╰─▶ registry error for @types/node: HTTP error: error decoding response body
+  help: package: @types/node
+        packument fetch failed — verify the registry URL in .npmrc, check auth
+        (`npm login` / `NPM_TOKEN`), and confirm network connectivity
+
