@@ -80,7 +80,7 @@ DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"
 TURBO_VERSION="$(npm view turbo@latest version)"
 VP_VERSION="$(npm view vite-plus@latest version 2>/dev/null || echo "unknown")"
-AUBE_VERSION="$(aube --version 2>/dev/null | head -1 | sed -E 's/^aube //; s/[[:space:]]*\\(.*$//; s/[[:space:]].*$//' || echo "unknown")"
+AUBE_VERSION="$(aube --version 2>/dev/null | head -1 | grep -Eo '[0-9]+[.][0-9]+[.][0-9]+([-+][0-9A-Za-z.-]+)?' | head -1 || true)"
 NODE_VERSION=$(node -v)
 
 # Output versions
