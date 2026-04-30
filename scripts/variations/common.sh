@@ -31,14 +31,14 @@ else
 fi
 
 # Defines configurable values for the benchmark
-BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,pnpm11,vlt,bun,deno,aube,nx,turbo,vp,node}"
+BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,pnpm11,pacquet,vlt,bun,deno,aube,nx,turbo,vp,node}"
 BENCH_WARMUP="${BENCH_WARMUP:=2}"
 BENCH_RUNS="${BENCH_RUNS:=5}"
 # Per-command timeout in seconds (default: 5 minutes).
 # If a single install exceeds this, it is killed. hyperfine --ignore-failure
 # lets the suite continue; the timed-out run records as a failure.
 BENCH_TIMEOUT="${BENCH_TIMEOUT:=300}"
-for pm in npm yarn berry zpm pnpm pnpm11 vlt bun deno aube nx turbo vp node; do
+for pm in npm yarn berry zpm pnpm pnpm11 pacquet vlt bun deno aube nx turbo vp node; do
   CHOICE=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
   if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
     # Only allow nx, turbo, vp, node for task-runner variations (run, build, build-cache)
@@ -72,6 +72,7 @@ BENCH_SETUP_BERRY="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml"
 BENCH_SETUP_ZPM="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; { echo '[zpm prepare]'; echo 'cwd:'; pwd; echo 'package.json:'; ls -la package.json || true; echo 'yarn path:'; command -v yarn || true; echo 'yarn version:'; yarn -v || true; echo 'canary version:'; echo \"$BENCH_ZPM_VERSION\"; echo 'packageManager (before):'; npm pkg get packageManager || true; echo 'set packageManager=yarn@'"$BENCH_ZPM_VERSION"':' ; npm pkg set packageManager=\"yarn@$BENCH_ZPM_VERSION\" || true; echo 'packageManager (after):'; npm pkg get packageManager || true; } >> $BENCH_OUTPUT_FOLDER/zpm-prepare.log 2>&1"
 BENCH_SETUP_PNPM=""
 BENCH_SETUP_PNPM11=""
+BENCH_SETUP_PACQUET=""
 BENCH_SETUP_VLT="node $BENCH_SCRIPTS/add-workspace-protocol.js . >> $BENCH_OUTPUT_FOLDER/vlt-prepare.log 2>&1"
 BENCH_SETUP_BUN=""
 BENCH_SETUP_DENO=""
@@ -98,6 +99,7 @@ BENCH_INSTALL_BERRY="corepack yarn@latest install"
 BENCH_INSTALL_ZPM="yarn install --silent"
 BENCH_INSTALL_PNPM="corepack pnpm@latest install --silent"
 BENCH_INSTALL_PNPM11="corepack pnpm@next-11 install --ignore-scripts --silent"
+BENCH_INSTALL_PACQUET="pacquet install"
 BENCH_INSTALL_VLT="vlt install --view=silent"
 BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
 BENCH_INSTALL_DENO="deno install --quiet"
@@ -109,6 +111,7 @@ BENCH_COMMAND_BERRY="timeout $BENCH_TIMEOUT $BENCH_INSTALL_BERRY > $BENCH_OUTPUT
 BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT $BENCH_INSTALL_ZPM > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT $BENCH_INSTALL_PNPM > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_PNPM11="timeout $BENCH_TIMEOUT $BENCH_INSTALL_PNPM11 > $BENCH_OUTPUT_FOLDER/pnpm11-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_PACQUET="timeout $BENCH_TIMEOUT $BENCH_INSTALL_PACQUET > $BENCH_OUTPUT_FOLDER/pacquet-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT $BENCH_INSTALL_VLT > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT $BENCH_INSTALL_BUN > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT $BENCH_INSTALL_DENO > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
@@ -145,7 +148,7 @@ collect_package_count() {
   ls -la "$BENCH_OUTPUT_FOLDER"
 
   # Prints the output of each install
-  for pm in npm yarn berry zpm pnpm pnpm11 vlt bun deno aube nx turbo vp node; do
+  for pm in npm yarn berry zpm pnpm pnpm11 pacquet vlt bun deno aube nx turbo vp node; do
     if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
       for i in {0..9}; do
         echo "-- Reading output of $pm install $i ---"
@@ -183,6 +186,7 @@ collect_process_count() {
     [zpm]="$BENCH_SETUP_ZPM"
     [pnpm]="$BENCH_SETUP_PNPM"
     [pnpm11]="$BENCH_SETUP_PNPM11"
+    [pacquet]="$BENCH_SETUP_PACQUET"
     [vlt]="$BENCH_SETUP_VLT"
     [bun]="$BENCH_SETUP_BUN"
     [deno]="$BENCH_SETUP_DENO"
@@ -195,6 +199,7 @@ collect_process_count() {
     [zpm]="$BENCH_INSTALL_ZPM"
     [pnpm]="$BENCH_INSTALL_PNPM"
     [pnpm11]="$BENCH_INSTALL_PNPM11"
+    [pacquet]="$BENCH_INSTALL_PACQUET"
     [vlt]="$BENCH_INSTALL_VLT"
     [bun]="$BENCH_INSTALL_BUN"
     [deno]="$BENCH_INSTALL_DENO"
@@ -207,13 +212,14 @@ collect_process_count() {
     [zpm]="$BENCH_INCLUDE_ZPM"
     [pnpm]="$BENCH_INCLUDE_PNPM"
     [pnpm11]="$BENCH_INCLUDE_PNPM11"
+    [pacquet]="$BENCH_INCLUDE_PACQUET"
     [vlt]="$BENCH_INCLUDE_VLT"
     [bun]="$BENCH_INCLUDE_BUN"
     [deno]="$BENCH_INCLUDE_DENO"
     [aube]="$BENCH_INCLUDE_AUBE"
   )
 
-  for pm in npm yarn berry zpm pnpm pnpm11 vlt bun deno aube; do
+  for pm in npm yarn berry zpm pnpm pnpm11 pacquet vlt bun deno aube; do
     if [ -n "${PM_INCLUDE[$pm]:-}" ]; then
       local prepare_cmd="$BENCH_PREPARE_BASE"
       local setup="${PM_SETUP[$pm]:-}"

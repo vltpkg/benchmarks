@@ -48,6 +48,17 @@ clean_pnpm_cache() {
   safe_remove "$HOME/.local/share/pnpm/store"
 }
 
+# Function to safely clean pacquet cache
+# pacquet shares pnpm's content-addressable store layout
+clean_pacquet_cache() {
+  if command -v pacquet &> /dev/null; then
+    # pacquet uses the same store path as pnpm; the parent dirs are cleaned
+    # by clean_pnpm_cache, but if called in isolation we still handle them.
+    safe_remove "$HOME/.cache/pnpm"
+    safe_remove "$HOME/.local/share/pnpm/store"
+  fi
+}
+
 # Function to safely clean pnpm 11 cache
 clean_pnpm11_cache() {
   if command -v corepack &> /dev/null; then
@@ -183,6 +194,7 @@ clean_all_cache() {
   clean_zpm_cache
   clean_pnpm_cache
   clean_pnpm11_cache
+  clean_pacquet_cache
   clean_vlt_cache
   clean_bun_cache
   clean_nx_cache
@@ -239,6 +251,7 @@ show_help() {
   echo "  clean_zpm_cache"
   echo "  clean_pnpm_cache"
   echo "  clean_pnpm11_cache"
+  echo "  clean_pacquet_cache"
   echo "  clean_vlt_cache"
   echo "  clean_bun_cache"
   echo "  clean_nx_cache"
@@ -280,6 +293,9 @@ else
         ;;
       clean_pnpm11_cache)
         clean_pnpm11_cache
+        ;;
+      clean_pacquet_cache)
+        clean_pacquet_cache
         ;;
       clean_vlt_cache)
         clean_vlt_cache
