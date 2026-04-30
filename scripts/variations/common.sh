@@ -41,9 +41,9 @@ BENCH_TIMEOUT="${BENCH_TIMEOUT:=300}"
 for pm in npm yarn berry zpm pnpm pnpm11 vlt bun deno aube nx turbo vp node; do
   CHOICE=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
   if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
-    # Only allow nx, turbo, vp, node if BENCH_VARIATION is "run"
+    # Only allow nx, turbo, vp, node for task-runner variations (run, build, build-cache)
     if [[ "$pm" == "nx" || "$pm" == "turbo" || "$pm" == "vp" || "$pm" == "node" ]]; then
-      if [ "$BENCH_VARIATION" = "run" ]; then
+      if [[ "$BENCH_VARIATION" = "run" || "$BENCH_VARIATION" = "build" || "$BENCH_VARIATION" = "build-cache" ]]; then
         eval "BENCH_INCLUDE_${CHOICE}=1"
       else
         eval "BENCH_INCLUDE_${CHOICE}="

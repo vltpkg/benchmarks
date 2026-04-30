@@ -19,7 +19,7 @@ interface VariationCategory {
 }
 
 export const isTaskExecutionVariation = (variation: string): boolean => {
-  const taskExecutionVariations = ["run"];
+  const taskExecutionVariations = ["build", "build-cache", "run"];
   return taskExecutionVariations.includes(variation);
 };
 
@@ -154,7 +154,7 @@ export const getVariationCategories = (
     "lockfile+node_modules",
   ].filter((v) => variations.includes(v as Variation)) as Variation[];
 
-  const taskExecutionVariations = ["run"].filter((v) =>
+  const taskExecutionVariations = ["build", "build-cache", "run"].filter((v) =>
     variations.includes(v as Variation),
   ) as Variation[];
 
@@ -398,6 +398,8 @@ export function sortVariations(variations: Variation[]): Variation[] {
     "cache+lockfile+node_modules",
     "lockfile",
     "lockfile+node_modules",
+    "build",
+    "build-cache",
     "run",
     "registry-clean",
     "registry-lockfile",

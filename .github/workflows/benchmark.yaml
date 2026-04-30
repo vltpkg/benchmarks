@@ -8,7 +8,7 @@ on:
         default: '["next", "astro", "vue", "svelte", "large", "babylon"]'
       variations:
         description: "The benchmark variations to run"
-        default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]'
+        default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "build", "build-cache", "registry-clean", "registry-lockfile"]'
       binaries:
         description: "The binaries to run the benchmarks on"
         default: '"npm,yarn,berry,zpm,pnpm,pnpm11,vlt,bun,deno,aube,nx,turbo,vp,node"'
@@ -91,6 +91,10 @@ jobs:
         fixture: ${{ fromJson((github.event_name == 'push' && github.ref != 'refs/heads/main') && '["next", "astro", "vue", "svelte"]' || (inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "babylon"]')) }}
         variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]') }}
         include:
+          - variation: "build"
+            fixture: "next"
+          - variation: "build-cache"
+            fixture: "next"
           - variation: "run"
             fixture: "run"
     permissions:

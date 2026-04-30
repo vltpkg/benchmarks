@@ -16,6 +16,8 @@ AVAILABLE_VARIATIONS=(
   lockfile
   lockfile+node_modules
   node_modules
+  build
+  build-cache
   run
   registry-clean
   registry-lockfile
