@@ -184,7 +184,8 @@ export const getVariationCategories = (
   if (registryVariations.length > 0) {
     categories.push({
       title: "Registries",
-      description: "npm install times across different registries",
+      description:
+        "npm install times across different registries (npm registry serves as baseline)",
       variations: sortVariations(registryVariations),
     });
   }
@@ -490,6 +491,13 @@ export function getFixtureDisplayName(fixture: Fixture): string {
     default:
       return fixture;
   }
+}
+
+export function isBaselinePackageManager(
+  packageManager: PackageManager,
+  isRegistryVariation?: boolean,
+): boolean {
+  return isRegistryVariation === true && packageManager === "npm";
 }
 
 export function getPackageManagerDisplayName(

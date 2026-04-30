@@ -22,6 +22,7 @@ import {
   createSectionId,
   isRegistryVariation,
   isTaskExecutionVariation,
+  isBaselinePackageManager,
 } from "@/lib/utils";
 import { resolveTheme, useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
@@ -124,6 +125,8 @@ const HorizontalBarTooltipContent = ({
               item.fill ||
               item.color;
 
+          const isBaseline = item.payload?.isBaseline === true;
+
           return (
             <div key={index} className="flex items-center gap-2">
               <div
@@ -131,12 +134,17 @@ const HorizontalBarTooltipContent = ({
                 style={
                   isDnf && color
                     ? { background: getDnfGradient(color) }
-                    : { backgroundColor: color }
+                    : { backgroundColor: color, opacity: isBaseline ? 0.6 : 1 }
                 }
               />
               <div className="flex flex-1 justify-between items-center gap-4">
                 <span className="text-muted-foreground">
                   {item.name ?? item.dataKey}
+                  {isBaseline && (
+                    <span className="ml-1 text-[10px] italic opacity-70">
+                      baseline
+                    </span>
+                  )}
                 </span>
                 <span className="text-foreground font-mono font-medium tabular-nums">
                   {isDnf
@@ -478,6 +486,7 @@ export const VariationChart = ({
                     : getColor(pm),
                   dnf: isDnf,
                   dnfColor: getColor(pm),
+                  isBaseline: isBaselinePackageManager(pm, isRegistry),
                 };
               })
               .filter(Boolean)
@@ -540,14 +549,55 @@ export const VariationChart = ({
                         type="category"
                         dataKey="name"
                         width={isMobile ? 70 : 120}
-                        tick={{
+                        tick={isRegistry ? ((props: Record<string, unknown>) => {
+                          const x = Number(props.x) || 0;
+                          const y = Number(props.y) || 0;
+                          const payload = props.payload as { value: string; index: number } | undefined;
+                          const index = payload?.index ?? 0;
+                          const entry = barData[index];
+                          const isBaselineEntry = entry?.isBaseline === true;
+                          let label = payload?.value ?? "";
+                          if (isMobile) {
+                            const parts = label.split(" v");
+                            label = parts[0] ?? label;
+                          } else {
+                            label = normalizeTickLabel(label);
+                          }
+                          return (
+                            <g transform={`translate(${x},${y})`}>
+                              <text
+                                x={0}
+                                y={0}
+                                dy={4}
+                                textAnchor="end"
+                                fontSize={isMobile ? 10 : 12}
+                                fill={resolvedTheme === "dark" ? "white" : "currentColor"}
+                              >
+                                {label}
+                              </text>
+                              {isBaselineEntry && (
+                                <text
+                                  x={0}
+                                  y={0}
+                                  dy={isMobile ? 16 : 18}
+                                  textAnchor="end"
+                                  fontSize={isMobile ? 8 : 9}
+                                  fill={resolvedTheme === "dark" ? "#a1a1aa" : "#71717a"}
+                                  fontStyle="italic"
+                                >
+                                  baseline
+                                </text>
+                              )}
+                            </g>
+                          );
+                        }) as unknown as undefined : {
                           fontSize: isMobile ? 10 : 12,
                           fill:
                             resolvedTheme === "dark"
                               ? "white"
                               : "currentColor",
                         }}
-                        tickFormatter={(label: string) => {
+                        tickFormatter={isRegistry ? undefined : (label: string) => {
                           if (isMobile) {
                             const parts = label.split(" v");
                             return parts[0] ?? label;
@@ -559,9 +609,19 @@ export const VariationChart = ({
                         content={<HorizontalBarTooltipContent />}
                       />
                       <Bar dataKey="value" maxBarSize={32}>
-                        {barData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry?.fill} />
-                        ))}
+                        {barData.map((entry, index) => {
+                          const isBaseline = entry?.isBaseline === true;
+                          return (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={entry?.fill}
+                              opacity={isBaseline ? 0.6 : 1}
+                              strokeDasharray={isBaseline ? "4 2" : undefined}
+                              stroke={isBaseline ? entry?.dnfColor || entry?.fill : undefined}
+                              strokeWidth={isBaseline ? 1.5 : 0}
+                            />
+                          );
+                        })}
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
@@ -570,6 +630,16 @@ export const VariationChart = ({
             );
           })}
         </div>
+
+        {/* Baseline footnote for registry variations */}
+        {isRegistry && (
+          <p className="text-xs text-muted-foreground italic px-1">
+            * registry.npmjs.org is included as the baseline reference — it
+            represents the standard npm registry that package-manager benchmarks
+            already test against, providing context for comparing alternative
+            registry speeds.
+          </p>
+        )}
       </div>
     );
   }

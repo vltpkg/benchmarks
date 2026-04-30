@@ -23,6 +23,7 @@ import {
   sortFixtures,
   createSectionId,
   isRegistryVariation,
+  isBaselinePackageManager,
 } from "@/lib/utils";
 import { ShareButton } from "@/components/share-button";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
@@ -123,14 +124,29 @@ export const VariationTable = ({
           const displayName = getPackageManagerDisplayName(packageManager, {
             isRegistryVariation: isRegistry,
           });
+          const isBaseline = isBaselinePackageManager(packageManager, isRegistry);
 
           return version ? (
             <div className="text-left">
-              <div className="font-bold">{displayName}</div>
+              <div className="font-bold flex items-center gap-1.5">
+                {displayName}
+                {isBaseline && (
+                  <span className="text-[10px] font-normal italic text-muted-foreground">
+                    baseline
+                  </span>
+                )}
+              </div>
               <div className="text-xs text-muted-foreground">{version}</div>
             </div>
           ) : (
-            <span className="font-bold">{displayName}</span>
+            <div className="text-left">
+              <span className="font-bold">{displayName}</span>
+              {isBaseline && (
+                <span className="ml-1.5 text-[10px] font-normal italic text-muted-foreground">
+                  baseline
+                </span>
+              )}
+            </div>
           );
         },
         enableSorting: true,

@@ -187,6 +187,19 @@ export const VariationPage = () => {
 
   return (
     <div className="space-y-12">
+      {/* Registry baseline context note */}
+      {isRegistry && (
+        <div className="rounded-lg border border-border bg-card/50 px-4 py-3 text-sm text-muted-foreground">
+          <strong className="text-foreground">About this benchmark:</strong>{" "}
+          These tests measure <code className="text-xs bg-muted px-1 py-0.5 rounded">npm install</code> times
+          across different registries using the same npm client. The{" "}
+          <em>registry.npmjs.org</em> result is included as the{" "}
+          <strong className="text-foreground">baseline reference</strong> — it
+          represents the default npm registry and provides context for comparing
+          alternative registry performance.
+        </div>
+      )}
+
       {/* History chart - performance over time */}
       {historyData && (
         <HistoryChart
