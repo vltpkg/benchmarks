@@ -1,0 +1,8 @@
+Error:   × Main thread panicked.
+  ├─▶ at crates/registry/src/package.rs:55:63
+  ╰─▶ called `Result::unwrap()` on an `Err` value: SemverError { input:
+      "npm:string-width@^4.2.0", span: SourceSpan { offset: SourceOffset(0),
+      length: 0 }, kind: NoValidRanges }
+  help: set the `RUST_BACKTRACE=1` environment variable to display a
+        backtrace.
+

@@ -17,6 +17,9 @@
   "pnpm11": {
     "count": 4
   },
+  "pacquet": {
+    "count": 5
+  },
   "vlt": {
     "count": 6
   },
@@ -27,6 +30,6 @@
     "count": 2
   },
   "aube": {
-    "count": 4
+    "count": 2
   }
 }
