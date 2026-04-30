@@ -104,6 +104,8 @@ function generateChartData(option = {}) {
     "lockfile",
     "lockfile+node_modules",
     "node_modules",
+    "build",
+    "build-cache",
     "run",
   ];
   const result = {};

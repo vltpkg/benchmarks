@@ -17,7 +17,7 @@ const packageManagerRoutes: RouteObject = {
 const taskRunnerRoutes: RouteObject = {
   path: "task-runners",
   children: [
-    { index: true, element: <Navigate to="run" replace={true} /> },
+    { index: true, element: <Navigate to="build" replace={true} /> },
     { path: ":variation", element: <VariationPage /> },
     { path: ":variation/:section", element: <VariationPage /> },
     { path: ":variation/:section/:fixture", element: <VariationPage /> },

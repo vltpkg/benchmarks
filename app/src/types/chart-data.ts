@@ -36,6 +36,8 @@ export type Variation =
   | "lockfile"
   | "lockfile+node_modules"
   | "node_modules"
+  | "build"
+  | "build-cache"
   | "run"
   | "registry-clean"
   | "registry-lockfile";
@@ -261,6 +263,8 @@ export function isValidVariation(variation: string): variation is Variation {
     "lockfile",
     "lockfile+node_modules",
     "node_modules",
+    "build",
+    "build-cache",
     "run",
     "registry-clean",
     "registry-lockfile",

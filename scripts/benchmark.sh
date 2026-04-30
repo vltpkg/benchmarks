@@ -44,6 +44,12 @@ case "$2" in
     clean)
         bash ../../scripts/variations/clean.sh "../../scripts" "../../results" "$1" "$2"
         ;;
+    build)
+        bash ../../scripts/variations/build.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
+    build-cache)
+        bash ../../scripts/variations/build-cache.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
     run)
         bash ../../scripts/variations/run.sh "../../scripts" "../../results" "run" "run"
         ;;

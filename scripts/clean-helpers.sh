@@ -198,6 +198,11 @@ clean_build_files() {
   safe_remove ".cache"
 }
 
+clean_build_output() {
+  echo "Cleaning framework build output..."
+  safe_remove ".next"
+}
+
 clean_git() {
   echo "Cleaning git changes..."
   if command -v git &> /dev/null; then
@@ -221,6 +226,7 @@ clean_all() {
   clean_workspace_protocol
   clean_all_cache
   clean_build_files
+  clean_build_output
   echo "Cleanup completed successfully!"
 }
 
@@ -246,6 +252,7 @@ show_help() {
   echo "  clean_node_modules"
   echo "  clean_all_cache"
   echo "  clean_build_files"
+  echo "  clean_build_output"
   echo "  clean_git"
   echo "  clean_all"
   echo ""
@@ -315,6 +322,9 @@ else
         ;;
       clean_build_files)
         clean_build_files
+        ;;
+      clean_build_output)
+        clean_build_output
         ;;
       clean_workspace_protocol)
         clean_workspace_protocol

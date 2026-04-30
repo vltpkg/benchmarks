@@ -101,7 +101,7 @@ echo "Processing results..."
 
 # Process variations results
 for fixture in next astro svelte vue large babylon; do
-    for variation in cache cache+lockfile cache+lockfile+node_modules cache+node_modules clean lockfile lockfile+node_modules node_modules run; do
+    for variation in cache cache+lockfile cache+lockfile+node_modules cache+node_modules clean lockfile lockfile+node_modules node_modules build build-cache run; do
         if benchmark_file=$(resolve_result_path "$fixture" "$variation" "benchmarks.json"); then
             print_summary "$benchmark_file" "$fixture" "$variation"
             cp "$benchmark_file" "results/$DATE/$fixture-$variation.json"
