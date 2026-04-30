@@ -91,8 +91,8 @@ Examples:
 # Run only aws registry benchmarks (requires token)
 CODEARTIFACT_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=aws
 
-# Run isolated VSR registry benchmarks through toxiproxy with a bandwidth cap
-VLT_REGISTRY_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=vlt --network-profile=registry-bandwidth --network-rate-kbps=8192
+# Run isolated VSR registry benchmarks through toxiproxy with a bandwidth cap and fixed latency
+VLT_REGISTRY_AUTH_TOKEN=<token> ./bench run --variation=registry-clean --fixtures=next --registries=vlt --network-profile=registry-bandwidth --network-rate-kbps=8192 --network-latency-ms=50
 ```
 
 Auth notes:
@@ -104,9 +104,10 @@ Auth notes:
 Registry benchmarks default to a local `toxiproxy` path so benchmark traffic uses a controlled network path instead of the host's default connection.
 
 - `registry-bandwidth` proxies each included registry through a dedicated local toxiproxy listener.
-- This rewrites registry hosts to local listeners, then proxies TLS traffic to the real upstream registries with symmetric bandwidth limits.
+- This rewrites registry hosts to local listeners, then proxies TLS traffic to the real upstream registries with symmetric bandwidth limits and fixed downstream latency.
 - Use `--network-profile=none` to bypass the proxy path.
 - `--network-rate-kbps` controls both upstream and downstream bandwidth in KB/s.
+- `--network-latency-ms` controls fixed downstream latency in milliseconds.
 - The helper temporarily edits `/etc/hosts`, so local runs require `sudo` access.
 
 ## Testing Script Execution

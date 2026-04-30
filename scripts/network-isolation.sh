@@ -7,6 +7,7 @@ BENCH_TOXIPROXY_API_PORT="${BENCH_TOXIPROXY_API_PORT:-8474}"
 BENCH_TOXIPROXY_LISTEN_HOST="${BENCH_TOXIPROXY_LISTEN_HOST:-127.0.0.1}"
 BENCH_TOXIPROXY_LISTEN_PORT="${BENCH_TOXIPROXY_LISTEN_PORT:-7443}"
 BENCH_TOXIPROXY_RATE_KBPS="${BENCH_TOXIPROXY_RATE_KBPS:-8192}"
+BENCH_TOXIPROXY_LATENCY_MS="${BENCH_TOXIPROXY_LATENCY_MS:-50}"
 BENCH_TOXIPROXY_PID_FILE="${BENCH_TOXIPROXY_PID_FILE:-/tmp/vlt-benchmarks-toxiproxy.pid}"
 BENCH_TOXIPROXY_LOG_FILE="${BENCH_TOXIPROXY_LOG_FILE:-/tmp/vlt-benchmarks-toxiproxy.log}"
 BENCH_TOXIPROXY_HOSTS_START="# >>> vlt-benchmarks toxiproxy >>>"
@@ -119,6 +120,7 @@ create_toxiproxy_proxy() {
   local upstream_port="$4"
   local listen_port="$5"
   local rate_kbps="$6"
+  local latency_ms="$7"
 
   curl -fsS -X POST "$(toxiproxy_api_url)/proxies" \
     -H 'Content-Type: application/json' \
@@ -135,7 +137,12 @@ create_toxiproxy_proxy() {
     -d "{\"name\":\"bandwidth_downstream\",\"type\":\"bandwidth\",\"stream\":\"downstream\",\"attributes\":{\"rate\":${rate_kbps}}}" \
     >/dev/null
 
-  echo "Toxiproxy configured for ${upstream_host} at ${BENCH_TOXIPROXY_LISTEN_HOST}:${listen_port} (${rate_kbps} KB/s)" >&2
+  curl -fsS -X POST "$(toxiproxy_api_url)/proxies/${proxy_name}/toxics" \
+    -H 'Content-Type: application/json' \
+    -d "{\"name\":\"latency_downstream\",\"type\":\"latency\",\"stream\":\"downstream\",\"attributes\":{\"latency\":${latency_ms},\"jitter\":0}}" \
+    >/dev/null
+
+  echo "Toxiproxy configured for ${upstream_host} at ${BENCH_TOXIPROXY_LISTEN_HOST}:${listen_port} (${rate_kbps} KB/s, ${latency_ms}ms latency)" >&2
 }
 
 url_field() {
@@ -168,7 +175,7 @@ setup_registry_bandwidth_proxy() {
   upstream_port="$(url_field "$registry_url" port)"
   upstream_ip="$(resolve_ipv4 "$upstream_host")"
 
-  create_toxiproxy_proxy "$proxy_name" "$upstream_host" "$upstream_ip" "$upstream_port" "$listen_port" "$BENCH_TOXIPROXY_RATE_KBPS"
+  create_toxiproxy_proxy "$proxy_name" "$upstream_host" "$upstream_ip" "$upstream_port" "$listen_port" "$BENCH_TOXIPROXY_RATE_KBPS" "$BENCH_TOXIPROXY_LATENCY_MS"
   append_hosts_mapping "$upstream_host"
 
   echo "${upstream_protocol}//${upstream_host}:${listen_port}${upstream_path}"

@@ -182,7 +182,7 @@ fi
 
 echo "Registry benchmarks will run: $BENCH_INCLUDE_REGISTRY"
 if [ -n "$BENCH_NETWORK_PROFILE" ] && [ "$BENCH_NETWORK_PROFILE" != "none" ]; then
-  echo "Network isolation profile: $BENCH_NETWORK_PROFILE (${BENCH_TOXIPROXY_RATE_KBPS} KB/s)"
+  echo "Network isolation profile: $BENCH_NETWORK_PROFILE (${BENCH_TOXIPROXY_RATE_KBPS} KB/s, ${BENCH_TOXIPROXY_LATENCY_MS:-50}ms latency)"
 fi
 
 # Registry setup commands run in hyperfine --prepare (untimed, before each run).

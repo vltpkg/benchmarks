@@ -24,6 +24,9 @@ on:
       network_rate_kbps:
         description: "Bandwidth cap in KB/s for supported network profiles"
         default: "8192"
+      network_latency_ms:
+        description: "Fixed latency in milliseconds for supported network profiles"
+        default: "50"
   schedule:
     # GitHub Actions cron uses UTC. 10:17 UTC ~= 2:17 AM Pacific (PST).
     - cron: "17 10 * * *"
@@ -112,6 +115,7 @@ jobs:
       BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '5') }}
       BENCH_NETWORK_PROFILE: ${{ inputs.network_profile || 'registry-bandwidth' }}
       BENCH_TOXIPROXY_RATE_KBPS: ${{ inputs.network_rate_kbps || '8192' }}
+      BENCH_TOXIPROXY_LATENCY_MS: ${{ inputs.network_latency_ms || '50' }}
     steps:
       - uses: actions/checkout@v6
       - name: Install Node
