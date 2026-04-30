@@ -1,0 +1,12 @@
+
+[7m[1m[36m NX [39m[22m[27m  The current directory isn't part of an Nx workspace.
+
+To create a workspace run:
+[1m[37mnpx create-nx-workspace@latest <workspace name>[39m[22m
+
+To add Nx to an existing workspace with a workspace-specific nx.json, run:
+[1m[37mnpx nx@latest init[39m[22m
+
+
+[7m[1m[38;5;214m NX [39m[22m[27m  [38;5;214mFor more information please visit https://nx.dev/[39m
+
