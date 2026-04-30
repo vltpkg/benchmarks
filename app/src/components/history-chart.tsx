@@ -34,6 +34,14 @@ const RANGE_OPTIONS = [
   { label: "All", days: Infinity },
 ] as const;
 
+/**
+ * Fallback colors for package managers that may only exist in historical data
+ * (e.g. cloudsmith was removed from active benchmarks but old results remain).
+ */
+const HISTORY_FALLBACK_COLORS: Partial<Record<PackageManager, string>> = {
+  cloudsmith: "#2C5BB4",
+};
+
 interface HistoryChartProps {
   historyData: HistoryData;
   currentVariation: string;
@@ -62,9 +70,35 @@ export const HistoryChart = ({
 
   const variationData = historyData.variations[currentVariation];
 
+  // Merge PMs from the current chart data with PMs that only exist in
+  // historical data (e.g. cloudsmith).  This ensures discontinued PMs
+  // still appear in the history chart even though they're absent from
+  // today's benchmark results.
+  const allHistoryPMs = useMemo((): PackageManager[] => {
+    if (!variationData) return packageManagers;
+    const currentSet = new Set<PackageManager>(packageManagers);
+    const ordered = [...packageManagers];
+    for (const pm of Object.keys(variationData) as PackageManager[]) {
+      if (
+        !currentSet.has(pm) &&
+        variationData[pm]?.some((v) => v !== null && v !== undefined)
+      ) {
+        ordered.push(pm);
+        currentSet.add(pm);
+      }
+    }
+    return ordered;
+  }, [packageManagers, variationData]);
+
   const filteredPMs = useMemo(
-    () => packageManagers.filter((pm) => enabledPackageManagers.has(pm)),
-    [packageManagers, enabledPackageManagers],
+    () =>
+      allHistoryPMs.filter(
+        (pm) =>
+          // Include if globally enabled OR if it only exists in history
+          // (not in the global filter's initial set — it won't be togglable)
+          enabledPackageManagers.has(pm) || !packageManagers.includes(pm),
+      ),
+    [allHistoryPMs, enabledPackageManagers, packageManagers],
   );
 
   const [selectedPMs, setSelectedPMs] = useState<Set<string>>(
@@ -77,7 +111,9 @@ export const HistoryChart = ({
   }, [filteredPMs]);
 
   const getColor = (pm: PackageManager) =>
-    pm === "vlt" && resolvedTheme === "dark" ? "white" : colors[pm];
+    pm === "vlt" && resolvedTheme === "dark"
+      ? "white"
+      : colors[pm] ?? HISTORY_FALLBACK_COLORS[pm] ?? "#888888";
 
   const handleLegendClick = (pm: string) => {
     setSelectedPMs((prev) => {
