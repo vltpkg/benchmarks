@@ -13,6 +13,7 @@ import {
   getAvailablePackageManagers,
   getVariationCategories,
   getPackageManagerDisplayName,
+  isBaselinePackageManager,
   sortVariations,
 } from "@/lib/utils";
 import type { LeaderboardRoute } from "@/lib/utils";
@@ -287,6 +288,7 @@ interface LeaderBoardItemProps {
   averageTime: number;
   idx: number;
   unit?: string;
+  isBaseline?: boolean;
 }
 
 const LeaderBoardItem = ({
@@ -294,6 +296,7 @@ const LeaderBoardItem = ({
   averageTime,
   idx,
   unit = "ms/pkg",
+  isBaseline = false,
 }: LeaderBoardItemProps) => {
   const Icon = getPackageManagerIcon(packageManager);
   const rank = idx + 1;
@@ -306,7 +309,10 @@ const LeaderBoardItem = ({
       : `${averageTime.toFixed(2)}s`;
 
   return (
-    <div className="relative flex bg-card items-center gap-2.5 px-3 py-2 rounded-lg border border-border/50 flex-shrink-0 whitespace-nowrap min-w-[120px]">
+    <div className={cn(
+      "relative flex bg-card items-center gap-2.5 px-3 py-2 rounded-lg border flex-shrink-0 whitespace-nowrap min-w-[120px]",
+      isBaseline ? "border-dashed border-border" : "border-border/50",
+    )}>
       <div className="text-lg text-muted-foreground font-mono font-medium flex-shrink-0">
         {rank}
       </div>
@@ -321,7 +327,14 @@ const LeaderBoardItem = ({
           )}
         </div>
         <div className="flex flex-col">
-          <p className="text-xs font-medium">{displayName}</p>
+          <p className="text-xs font-medium">
+            {displayName}
+            {isBaseline && (
+              <span className="ml-1 text-[10px] font-normal italic text-muted-foreground">
+                baseline
+              </span>
+            )}
+          </p>
           <p className="text-[10px] text-muted-foreground">{formattedTime}</p>
         </div>
       </div>
@@ -336,6 +349,7 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
     const { chartData, location, currentVariation } = useHeaderContext();
 
     const baseRoute = location.pathname.split("/")[1] as LeaderboardRoute;
+    const isRegistryRoute = baseRoute === "registries";
 
     // Determine the unit label based on route
     const unit =
@@ -368,6 +382,7 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
                 averageTime={item.averageTime}
                 packageManager={item.packageManager}
                 unit={unit}
+                isBaseline={isBaselinePackageManager(item.packageManager, isRegistryRoute)}
               />
             ))}
         </div>
