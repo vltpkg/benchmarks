@@ -26,6 +26,7 @@ const countFiles = [
   { filename: 'zpm-count.txt', pmName: 'zpm' },
   { filename: 'pnpm-count.txt', pmName: 'pnpm' },
   { filename: 'pnpm11-count.txt', pmName: 'pnpm11' },
+  { filename: 'pacquet-count.txt', pmName: 'pacquet' },
   { filename: 'vlt-count.txt', pmName: 'vlt' },
   { filename: 'bun-count.txt', pmName: 'bun' },
   { filename: 'deno-count.txt', pmName: 'deno' },

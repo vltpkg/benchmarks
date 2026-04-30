@@ -12,6 +12,7 @@ const PACKAGE_MANAGERS = [
   "yarn",
   "pnpm",
   "pnpm11",
+  "pacquet",
   "berry",
   "zpm",
   "deno",

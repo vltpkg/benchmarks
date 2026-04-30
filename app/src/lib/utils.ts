@@ -231,6 +231,7 @@ export const calculateLeaderboard = (
               "npm",
               "pnpm",
               "pnpm11",
+              "pacquet",
               "yarn",
               "zpm",
               "berry",
@@ -514,6 +515,9 @@ export function getPackageManagerDisplayName(
     if (packageManager === "cloudsmith") return "npm.cloudsmith.io";
     if (packageManager === "github") return "npm.pkg.github.com";
   }
+  if (packageManager === "pnpm") return "pnpm (v10)";
+  if (packageManager === "pnpm11") return "pnpm (v11)";
+  if (packageManager === "pacquet") return "pnpm (pacquet)";
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
   if (packageManager === "turbo") return "turborepo";

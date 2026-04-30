@@ -28,6 +28,7 @@ const COLORS = {
   yarn: "#117cad",
   pnpm: "#f9ad00",
   pnpm11: "#e68a00",
+  pacquet: "#d4740a",
   berry: "#9555bb",
   zpm: "#7388ff",
   deno: "#70ffaf",

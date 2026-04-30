@@ -30,6 +30,7 @@ AVAILABLE_PMS=(
   zpm
   pnpm
   pnpm11
+  pacquet
   vlt
   bun
   deno
