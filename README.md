@@ -74,7 +74,7 @@ The installation tests we run today mimic a matrix of different variations (cold
 Registry benchmarking is available in the `registry-clean` and `registry-lockfile` variations.
 
 - `npm` (`https://registry.npmjs.org/`)
-- `vlt` (`https://registry.vlt.io/npm/`)
+- `vlt` (`https://registry.vlt.io/vlt/npm/`)
 - `aws` (CodeArtifact benchmark registry)
 
 Defaults:
