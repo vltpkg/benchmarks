@@ -1,2 +1,2 @@
-$ echo "benchmarking script execution..."
-benchmarking script execution...
+[ERROR] This project is configured to use yarn
+For help, run: pnpm help run
