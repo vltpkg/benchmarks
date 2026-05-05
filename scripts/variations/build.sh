@@ -68,7 +68,7 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_ZPM:+--command-name="zpm" "$BENCH_COMMAND_ZPM"} \
   ${BENCH_INCLUDE_PNPM:+--prepare="$BENCH_INSTALL_PREPARE_PNPM; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_PNPM:+--command-name="pnpm" "$BENCH_COMMAND_PNPM"} \
-  ${BENCH_INCLUDE_PNPM11:+--prepare="$BENCH_INSTALL_PREPARE_PNPM11; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
+  ${BENCH_INCLUDE_PNPM11:+--prepare="$BENCH_INSTALL_PREPARE_PNPM11 || true; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_PNPM11:+--command-name="pnpm11" "$BENCH_COMMAND_PNPM11"} \
   ${BENCH_INCLUDE_VLT:+--prepare="$BENCH_INSTALL_PREPARE_VLT; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_VLT:+--command-name="vlt" "$BENCH_COMMAND_VLT"} \
