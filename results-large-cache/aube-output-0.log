@@ -1,0 +1,7 @@
+ERR_AUBE_NO_MATCHING_VERSION
+
+  × failed to resolve dependencies
+  ╰─▶ no version of eslint-plugin-react-hooks matches range `^4.3.0`
+  help: chain: eslint-config-airbnb@19.0.4 > eslint-plugin-react-hooks
+        available versions: 7.1.1, 7.1.0, 7.0.1, 7.0.0, 6.1.1
+

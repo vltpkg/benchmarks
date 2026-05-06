@@ -1,0 +1,6 @@
+ERR_AUBE_NO_MATCHING_VERSION
+
+  × failed to resolve dependencies
+  ╰─▶ no version of react matches range `^18.2.0`
+  help: available versions: 19.2.5, 19.2.4, 19.2.3, 19.2.2, 19.2.1
+

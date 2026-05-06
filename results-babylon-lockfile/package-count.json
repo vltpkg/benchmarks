@@ -16,12 +16,9 @@
     "maxCount": 1537
   },
   "bun": {
-    "count": 1606
+    "count": 1605
   },
   "deno": {
     "count": 1481
-  },
-  "aube": {
-    "count": 1338
   }
 }
