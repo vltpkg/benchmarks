@@ -59,18 +59,6 @@ clean_pacquet_cache() {
   fi
 }
 
-# Function to safely clean pnpm 11 cache
-clean_pnpm11_cache() {
-  if command -v corepack &> /dev/null; then
-    corepack pnpm@next-11 cache delete '*' --silent || true
-    safe_remove "$(corepack pnpm@next-11 store path 2>/dev/null | xargs)"
-  fi
-  # The parent directories are already cleaned by clean_pnpm_cache above,
-  # but if clean_pnpm11_cache is called in isolation we still need them.
-  safe_remove "$HOME/.cache/pnpm"
-  safe_remove "$HOME/.local/share/pnpm/store"
-}
-
 # Function to safely clean vlt cache
 clean_vlt_cache() {
   if command -v vlt &> /dev/null; then
@@ -193,7 +181,6 @@ clean_all_cache() {
   clean_berry_cache
   clean_zpm_cache
   clean_pnpm_cache
-  clean_pnpm11_cache
   clean_pacquet_cache
   clean_vlt_cache
   clean_bun_cache
@@ -250,7 +237,6 @@ show_help() {
   echo "  clean_berry_cache"
   echo "  clean_zpm_cache"
   echo "  clean_pnpm_cache"
-  echo "  clean_pnpm11_cache"
   echo "  clean_pacquet_cache"
   echo "  clean_vlt_cache"
   echo "  clean_bun_cache"
@@ -290,9 +276,6 @@ else
         ;;
       clean_pnpm_cache)
         clean_pnpm_cache
-        ;;
-      clean_pnpm11_cache)
-        clean_pnpm11_cache
         ;;
       clean_pacquet_cache)
         clean_pacquet_cache

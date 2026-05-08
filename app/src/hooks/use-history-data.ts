@@ -11,7 +11,6 @@ const PACKAGE_MANAGERS = [
   "npm",
   "yarn",
   "pnpm",
-  "pnpm11",
   "pacquet",
   "berry",
   "zpm",
