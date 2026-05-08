@@ -1,12 +1,12 @@
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@fontsource%2ffira-mono 71ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@neoconfetti%2fsvelte 70ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@sveltejs%2fadapter-auto 38ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@sveltejs%2fkit 45ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@sveltejs%2fvite-plugin-svelte 78ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/svelte 52ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/svelte-check 39ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/typescript 44ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/vite 43ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@fontsource%2ffira-mono 143ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@neoconfetti%2fsvelte 319ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@sveltejs%2fadapter-auto 201ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@sveltejs%2fkit 331ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@sveltejs%2fvite-plugin-svelte 336ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/svelte 201ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/svelte-check 200ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/typescript 204ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/vite 198ms (cache skip)
 npm error code E404
 npm error 404 Not Found - GET https://registry.vlt.io/vlt/npm/@fontsource%2ffira-mono - Package not found
 npm error 404
@@ -14,4 +14,4 @@ npm error 404  The requested resource '@fontsource/fira-mono@^5.0.0' could not b
 npm error 404
 npm error 404 Note that you can also install from a
 npm error 404 tarball, folder, http url, or git url.
-npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-05-08T07_25_00_895Z-debug-0.log
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-05-08T10_51_40_084Z-debug-0.log

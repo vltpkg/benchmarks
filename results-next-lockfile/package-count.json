@@ -23,6 +23,8 @@
     "count": 331
   },
   "aube": {
-    "count": 314
+    "count": 277,
+    "minCount": 58,
+    "maxCount": 314
   }
 }

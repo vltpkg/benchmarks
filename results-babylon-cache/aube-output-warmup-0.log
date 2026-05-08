@@ -1,4 +1,2 @@
-  × failed to fetch @types/puppeteer@5.4.7: HTTP error: error sending request
-  │ for url (https://registry.npmjs.org/@types/puppeteer/-/puppeteer-
-  │ 5.4.7.tgz)
-
+The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
+Read more here - https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking
