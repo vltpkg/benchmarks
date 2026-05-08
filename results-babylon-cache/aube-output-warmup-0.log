@@ -1,7 +1,4 @@
-ERR_AUBE_NO_MATCHING_VERSION
-
-  × failed to resolve dependencies
-  ╰─▶ no version of react matches range `^18.2.0`
-  help: importer: packages/dev/inspector
-        available versions: 19.2.5, 19.2.4, 19.2.3, 19.2.2, 19.2.1
+  × failed to fetch @types/puppeteer@5.4.7: HTTP error: error sending request
+  │ for url (https://registry.npmjs.org/@types/puppeteer/-/puppeteer-
+  │ 5.4.7.tgz)
 

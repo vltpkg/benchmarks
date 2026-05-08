@@ -1,7 +1,4 @@
-
-> nextjs@0.1.0 build /home/runner/work/benchmarks/benchmarks/fixtures/next
-> next build
-
+$ next build
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.

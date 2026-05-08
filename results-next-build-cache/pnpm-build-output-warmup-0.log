@@ -1,7 +1,4 @@
-
-> nextjs@0.1.0 build /home/runner/work/benchmarks/benchmarks/fixtures/next
-> next build
-
+$ next build
    ▲ Next.js 15.0.3
 
    Creating an optimized production build ...

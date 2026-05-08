@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7944 May  6 11:08 package.json
+-rw-r--r-- 1 runner runner 7943 May  8 07:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -12,7 +12,7 @@ Error: Yarn cannot be used on project configured for use with yarn
 canary version:
 6.0.0-rc.18
 packageManager (before):
-"pnpm@10.33.3"
+"pnpm@11.0.8"
 set packageManager=yarn@6.0.0-rc.18:
 packageManager (after):
 "yarn@6.0.0-rc.18"
@@ -20,7 +20,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7909 May  6 11:09 package.json
+-rw-r--r-- 1 runner runner 7909 May  8 07:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -36,7 +36,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7909 May  6 11:09 package.json
+-rw-r--r-- 1 runner runner 7909 May  8 07:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -52,7 +52,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7909 May  6 11:09 package.json
+-rw-r--r-- 1 runner runner 7909 May  8 07:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -68,7 +68,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 7945 May  6 11:23 package.json
+-rw-r--r-- 1 runner runner 7944 May  8 07:49 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -78,7 +78,7 @@ Error: Yarn cannot be used on project configured for use with yarn
 canary version:
 6.0.0-rc.18
 packageManager (before):
-"pnpm@10.33.3"
+"pnpm@11.0.8"
 set packageManager=yarn@6.0.0-rc.18:
 packageManager (after):
 "yarn@6.0.0-rc.18"
