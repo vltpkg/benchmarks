@@ -70,7 +70,7 @@ BENCH_SETUP_NPM=""
 BENCH_SETUP_YARN=""
 BENCH_SETUP_BERRY="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml"
 BENCH_SETUP_ZPM="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; { echo '[zpm prepare]'; echo 'cwd:'; pwd; echo 'package.json:'; ls -la package.json || true; echo 'yarn path:'; command -v yarn || true; echo 'yarn version:'; yarn -v || true; echo 'canary version:'; echo \"$BENCH_ZPM_VERSION\"; echo 'packageManager (before):'; npm pkg get packageManager || true; echo 'set packageManager=yarn@'"$BENCH_ZPM_VERSION"':' ; npm pkg set packageManager=\"yarn@$BENCH_ZPM_VERSION\" || true; echo 'packageManager (after):'; npm pkg get packageManager || true; } >> $BENCH_OUTPUT_FOLDER/zpm-prepare.log 2>&1"
-BENCH_SETUP_PNPM=""
+BENCH_SETUP_PNPM="npm pkg delete packageManager >/dev/null 2>&1 || true"
 
 BENCH_SETUP_PACQUET="npm pkg delete packageManager >/dev/null 2>&1 || true"
 BENCH_SETUP_VLT="node $BENCH_SCRIPTS/add-workspace-protocol.js . >> $BENCH_OUTPUT_FOLDER/vlt-prepare.log 2>&1"
@@ -86,7 +86,8 @@ BENCH_SETUP_NODE=""
 # Install scripts are disabled where the PM runs them by default, so benchmarks
 # measure dependency resolution + linking only (not arbitrary postinstall work).
 #   npm, yarn classic, bun: run scripts by default → --ignore-scripts
-#   berry, zpm, pnpm v10+, vlt: don't run scripts by default → no flag needed
+#   pnpm v11+: errors on ignored build scripts (ERR_PNPM_IGNORED_BUILDS) → --ignore-scripts
+#   berry, zpm, vlt: don't run scripts by default → no flag needed
 #   deno: doesn't run scripts by default → removed --allow-scripts
 BENCH_INSTALL_NPM="npm install --no-audit --no-fund --ignore-scripts --silent"
 # npm ERESOLVE: medium-draft@0.5.18 requires react@^15||^16 but large has react@^18
