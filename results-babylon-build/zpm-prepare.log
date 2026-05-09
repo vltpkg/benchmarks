@@ -1,0 +1,66 @@
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/babylon
+package.json:
+-rw-r--r-- 1 runner runner 7943 May  9 16:23 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+Error: Yarn cannot be used on project configured for use with yarn
+
+› yarn […ARGSN]
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"pnpm@11.0.9"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/babylon
+package.json:
+-rw-r--r-- 1 runner runner 7949 May  9 16:23 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.18.local
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@6.0.0-rc.18"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/babylon
+package.json:
+-rw-r--r-- 1 runner runner 7949 May  9 16:23 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.18.local
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@6.0.0-rc.18"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/babylon
+package.json:
+-rw-r--r-- 1 runner runner 7949 May  9 16:23 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.18.local
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@6.0.0-rc.18"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"

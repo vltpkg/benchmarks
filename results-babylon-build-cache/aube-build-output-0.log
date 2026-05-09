@@ -1,0 +1,16 @@
+  × script not found: build
+  │   available scripts: build:assets, build:assets:smart-filters,
+  │ build:assets:smart-filters:prerequisites, build:babylonjs, build:dev,
+  │ build:es6, build:es6:libs, build:es6:tools, build:lts, build:shaders,
+  │ build:source, build:source:lts, build:source:smart-filters, build:test-
+  │ tools, build:tools, build:umd, build:umd:libs, build:umd:tools, clean,
+  │ format, format:check, format:fix, lint, lint:check, lint:check-ci,
+  │ lint:check:changed, prepare-snapshot, prepare:__disabled_for_now__, start,
+  │ start:devhost, test, test:audioV2, test:docs, test:escheck,
+  │ test:integration, test:interactions, test:performance, test:unit,
+  │ test:visualization, test:visualization:devhost,
+  │ test:visualization:devhost:ui, test:visualization:ui, update-all-
+  │ dependencies, watch-lts, watch:assets, watch:assets:smart-filters,
+  │ watch:dev, watch:dev:skip-compile, watch:shaders, watch:source:dev,
+  │ watch:source:lts, watch:source:smart-filters
+

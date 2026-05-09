@@ -1,7 +1,10 @@
 {
   "npm": {
-    "count": 1785,
+    "count": 1786,
     "minCount": 1784,
-    "maxCount": 1787
+    "maxCount": 1788
+  },
+  "github": {
+    "count": 1786
   }
 }

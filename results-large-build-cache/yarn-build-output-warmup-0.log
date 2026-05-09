@@ -1,0 +1,4 @@
+yarn run v1.22.22
+warning package.json: No license field
+error Command "build" not found.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

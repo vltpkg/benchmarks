@@ -1,0 +1,13 @@
+file:///home/runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.vlt/%7Enpm%7Evite@6.4.2/node_modules/vite/dist/node/cli.js:448
+          throw new CACError(`Unknown option \`${name.length > 1 ? `--${name}` : `-${name}`}\``);
+                ^
+
+CACError: Unknown option `--view`
+    at Command.checkUnknownOptions [90m(file:///home/runner/work/benchmarks/benchmarks/fixtures/svelte/[39mnode_modules/[4m.vlt[24m/%7Enpm%7Evite@6.4.2/node_modules/[4mvite[24m/dist/node/cli.js:448:17[90m)[39m
+    at CAC.runMatchedCommand [90m(file:///home/runner/work/benchmarks/benchmarks/fixtures/svelte/[39mnode_modules/[4m.vlt[24m/%7Enpm%7Evite@6.4.2/node_modules/[4mvite[24m/dist/node/cli.js:646:13[90m)[39m
+    at CAC.parse [90m(file:///home/runner/work/benchmarks/benchmarks/fixtures/svelte/[39mnode_modules/[4m.vlt[24m/%7Enpm%7Evite@6.4.2/node_modules/[4mvite[24m/dist/node/cli.js:585:12[90m)[39m
+    at [90mfile:///home/runner/work/benchmarks/benchmarks/fixtures/svelte/[39mnode_modules/[4m.vlt[24m/%7Enpm%7Evite@6.4.2/node_modules/[4mvite[24m/dist/node/cli.js:947:5
+[90m    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)[39m
+    at async node:internal/modules/esm/loader:639:26
+
+Node.js v24.15.0

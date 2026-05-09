@@ -1,0 +1,5 @@
+  × failed to fetch brace-expansion@1.1.14: HTTP error: error sending request
+  │ for url (https://registry.npmjs.org/brace-expansion/-/brace-expansion-
+  │ 1.1.14.tgz)
+  │ chain: eslint@8.57.1 > minimatch@3.1.5 > brace-expansion@1.1.14
+

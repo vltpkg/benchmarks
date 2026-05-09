@@ -1,5 +1,0 @@
-  × failed to fetch @nodelib/fs.stat@2.0.5: HTTP error: error sending request
-  │ for url (https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-2.0.5.tgz)
-  │ chain: @vue/eslint-config-typescript@14.7.0 > fast-glob@3.3.3 > @nodelib/
-  │ fs.stat@2.0.5
-

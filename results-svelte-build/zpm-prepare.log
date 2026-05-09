@@ -1,0 +1,112 @@
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/svelte
+package.json:
+-rw-r--r-- 1 runner runner 685 May  9 16:20 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+4.14.1
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@4.14.1"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/svelte
+package.json:
+-rw-r--r-- 1 runner runner 691 May  9 16:20 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.18.local
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@6.0.0-rc.18"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/svelte
+package.json:
+-rw-r--r-- 1 runner runner 691 May  9 16:20 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.18.local
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@6.0.0-rc.18"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/svelte
+package.json:
+-rw-r--r-- 1 runner runner 691 May  9 16:20 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.18.local
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@6.0.0-rc.18"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/svelte
+package.json:
+-rw-r--r-- 1 runner runner 691 May  9 16:20 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.18.local
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@6.0.0-rc.18"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/svelte
+package.json:
+-rw-r--r-- 1 runner runner 691 May  9 16:20 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.18.local
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@6.0.0-rc.18"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/svelte
+package.json:
+-rw-r--r-- 1 runner runner 691 May  9 16:20 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.18.local
+canary version:
+6.0.0-rc.18
+packageManager (before):
+"yarn@6.0.0-rc.18"
+set packageManager=yarn@6.0.0-rc.18:
+packageManager (after):
+"yarn@6.0.0-rc.18"

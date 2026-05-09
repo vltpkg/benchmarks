@@ -1,0 +1,17 @@
+ WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
+
+Attention:
+Turborepo now collects completely anonymous telemetry regarding usage.
+This information is used to shape the Turborepo roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://turborepo.dev/docs/telemetry
+
+ WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.9.12). Using a specified version in your repository will result in more predictable behavior.
+ WARNING  An issue occurred while attempting to parse /home/runner/work/benchmarks/benchmarks/fixtures/babylon/pnpm-lock.yaml. Turborepo will still function, but some features may not be available:
+   x Could not resolve workspaces.
+  `-> Lockfile not found at /home/runner/work/benchmarks/benchmarks/fixtures/
+      babylon/pnpm-lock.yaml
+
+  x Could not find turbo.json or turbo.jsonc.
+  | Follow directions at https://turborepo.dev/docs to create one.
+
