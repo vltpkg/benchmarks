@@ -1,4 +1,4 @@
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/astro 2992ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/astro 337ms (cache skip)
 npm error code E404
 npm error 404 Not Found - GET https://registry.vlt.io/vlt/npm/astro - Package not found
 npm error 404
@@ -6,4 +6,4 @@ npm error 404  The requested resource 'astro@^5.0.1' could not be found or you d
 npm error 404
 npm error 404 Note that you can also install from a
 npm error 404 tarball, folder, http url, or git url.
-npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-05-09T16_20_43_860Z-debug-0.log
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-05-10T10_45_23_145Z-debug-0.log
