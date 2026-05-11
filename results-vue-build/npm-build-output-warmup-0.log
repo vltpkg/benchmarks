@@ -9,4 +9,4 @@ computing gzip size...
 [2mdist/[22m[2massets/[22m[35mindex-DVB8kM4A.css      [39m[1m[2m  4.20 kB[22m[1m[22m[2m │ gzip:  1.29 kB[22m
 [2mdist/[22m[2massets/[22m[36mAboutView-CQTWnruS.js   [39m[1m[2m  0.23 kB[22m[1m[22m[2m │ gzip:  0.21 kB[22m
 [2mdist/[22m[2massets/[22m[36mindex-BhrGWBnK.js       [39m[1m[2m101.12 kB[22m[1m[22m[2m │ gzip: 39.20 kB[22m
-[32m✓ built in 844ms[39m
+[32m✓ built in 833ms[39m
