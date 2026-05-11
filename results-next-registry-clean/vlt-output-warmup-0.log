@@ -1,14 +1,14 @@
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/next 2775ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/react 92ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/react-dom 92ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@types%2fnode 120ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@types%2freact 175ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@types%2freact-dom 143ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/eslint 2290ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/eslint-config-next 81ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/postcss 95ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/tailwindcss 166ms (cache skip)
-npm http fetch GET 404 https://registry.vlt.io/vlt/npm/typescript 93ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/next 621ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/react 494ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/react-dom 329ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@types%2fnode 222ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@types%2freact 327ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/@types%2freact-dom 219ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/eslint 329ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/eslint-config-next 327ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/postcss 206ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/tailwindcss 202ms (cache skip)
+npm http fetch GET 404 https://registry.vlt.io/vlt/npm/typescript 199ms (cache skip)
 npm error code E404
 npm error 404 Not Found - GET https://registry.vlt.io/vlt/npm/@types%2fnode - Package not found
 npm error 404
@@ -16,4 +16,4 @@ npm error 404  The requested resource '@types/node@^20' could not be found or yo
 npm error 404
 npm error 404 Note that you can also install from a
 npm error 404 tarball, folder, http url, or git url.
-npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-05-10T10_46_51_578Z-debug-0.log
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-05-11T11_29_53_521Z-debug-0.log
