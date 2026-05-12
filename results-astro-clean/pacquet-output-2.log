@@ -1,8 +1,33 @@
-Error:   × Main thread panicked.
-  ├─▶ at crates/registry/src/package.rs:55:63
-  ╰─▶ called `Result::unwrap()` on an `Err` value: SemverError { input:
-      "npm:wrap-ansi@^7.0.0", span: SourceSpan { offset: SourceOffset(0),
-      length: 0 }, kind: NoValidRanges }
-  help: set the `RUST_BACKTRACE=1` environment variable to display a
-        backtrace.
+Error:   × installing dependencies
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/0b/
+  │   ccd9f0d6f2d236be76aa4880980292db16aa2db1c7d63931b9e908f3e21994a70bcf47f4
+  │   5730074f8dd9a179c81997067f60730fe7ea70ad12e1896e2b324b" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/astro/node_modules/.pnpm/
+  │   istanbul-lib-report@3.0.1/node_modules/istanbul-lib-report/LICENSE": No
+  │   such file or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/0b/
+  │   ccd9f0d6f2d236be76aa4880980292db16aa2db1c7d63931b9e908f3e21994a70bcf47f4
+  │   5730074f8dd9a179c81997067f60730fe7ea70ad12e1896e2b324b" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/astro/node_modules/.pnpm/
+  │   istanbul-lib-report@3.0.1/node_modules/istanbul-lib-report/LICENSE": No
+  │   such file or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/0b/
+  │   ccd9f0d6f2d236be76aa4880980292db16aa2db1c7d63931b9e908f3e21994a70bcf47f4
+  │   5730074f8dd9a179c81997067f60730fe7ea70ad12e1896e2b324b" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/astro/node_modules/.pnpm/
+  │   istanbul-lib-report@3.0.1/node_modules/istanbul-lib-report/LICENSE": No
+  │   such file or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/0b/
+  │   ccd9f0d6f2d236be76aa4880980292db16aa2db1c7d63931b9e908f3e21994a70bcf47f4
+  │   5730074f8dd9a179c81997067f60730fe7ea70ad12e1896e2b324b" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/astro/node_modules/.pnpm/
+  │   istanbul-lib-report@3.0.1/node_modules/istanbul-lib-report/LICENSE": No
+  │   such file or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/0b/
+  │   ccd9f0d6f2d236be76aa4880980292db16aa2db1c7d63931b9e908f3e21994a70bcf47f4
+  │   5730074f8dd9a179c81997067f60730fe7ea70ad12e1896e2b324b" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/astro/node_modules/.pnpm/
+  │   istanbul-lib-report@3.0.1/node_modules/istanbul-lib-report/LICENSE": No
+  │   such file or directory (os error 2)
+  ╰─▶ No such file or directory (os error 2)
 

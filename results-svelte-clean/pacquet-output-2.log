@@ -1,8 +1,33 @@
-Error:   × Main thread panicked.
-  ├─▶ at crates/registry/src/package.rs:55:63
-  ╰─▶ called `Result::unwrap()` on an `Err` value: SemverError { input:
-      "npm:wrap-ansi@^7.0.0", span: SourceSpan { offset: SourceOffset(0),
-      length: 0 }, kind: NoValidRanges }
-  help: set the `RUST_BACKTRACE=1` environment variable to display a
-        backtrace.
+Error:   × installing dependencies
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/
+  │   b4/660e31bfe28038c91f7b97073723e7ecde479d0d962afd23875d66173668275f02cdc
+  │   45b91b835fc84104b7faf8e5139c8535f9d0486ef8cec3e9a36f1051d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/
+  │   @tsconfig+node10@1.0.12/node_modules/@tsconfig/node10/LICENSE": No such
+  │   file or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/
+  │   b4/660e31bfe28038c91f7b97073723e7ecde479d0d962afd23875d66173668275f02cdc
+  │   45b91b835fc84104b7faf8e5139c8535f9d0486ef8cec3e9a36f1051d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/
+  │   @tsconfig+node10@1.0.12/node_modules/@tsconfig/node10/LICENSE": No such
+  │   file or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/
+  │   b4/660e31bfe28038c91f7b97073723e7ecde479d0d962afd23875d66173668275f02cdc
+  │   45b91b835fc84104b7faf8e5139c8535f9d0486ef8cec3e9a36f1051d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/
+  │   @tsconfig+node10@1.0.12/node_modules/@tsconfig/node10/LICENSE": No such
+  │   file or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/
+  │   b4/660e31bfe28038c91f7b97073723e7ecde479d0d962afd23875d66173668275f02cdc
+  │   45b91b835fc84104b7faf8e5139c8535f9d0486ef8cec3e9a36f1051d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/
+  │   @tsconfig+node10@1.0.12/node_modules/@tsconfig/node10/LICENSE": No such
+  │   file or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/
+  │   b4/660e31bfe28038c91f7b97073723e7ecde479d0d962afd23875d66173668275f02cdc
+  │   45b91b835fc84104b7faf8e5139c8535f9d0486ef8cec3e9a36f1051d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/
+  │   @tsconfig+node10@1.0.12/node_modules/@tsconfig/node10/LICENSE": No such
+  │   file or directory (os error 2)
+  ╰─▶ No such file or directory (os error 2)
 

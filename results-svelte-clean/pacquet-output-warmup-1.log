@@ -1,8 +1,33 @@
-Error:   × Main thread panicked.
-  ├─▶ at crates/registry/src/package.rs:55:63
-  ╰─▶ called `Result::unwrap()` on an `Err` value: SemverError { input:
-      "npm:strip-ansi@^6.0.1", span: SourceSpan { offset: SourceOffset(0),
-      length: 0 }, kind: NoValidRanges }
-  help: set the `RUST_BACKTRACE=1` environment variable to display a
-        backtrace.
+Error:   × installing dependencies
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/50/
+  │   e3b69c79fd0c09a3cb3a70c15d1272eff48decc192a18ba0a64d5490a7ed957e97b02962
+  │   1a03388fce9428764d1eadab0b6b10f07feda8518aea651099cc5d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/is-
+  │   plain-object@2.0.4/node_modules/is-plain-object/LICENSE": No such file
+  │   or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/50/
+  │   e3b69c79fd0c09a3cb3a70c15d1272eff48decc192a18ba0a64d5490a7ed957e97b02962
+  │   1a03388fce9428764d1eadab0b6b10f07feda8518aea651099cc5d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/is-
+  │   plain-object@2.0.4/node_modules/is-plain-object/LICENSE": No such file
+  │   or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/50/
+  │   e3b69c79fd0c09a3cb3a70c15d1272eff48decc192a18ba0a64d5490a7ed957e97b02962
+  │   1a03388fce9428764d1eadab0b6b10f07feda8518aea651099cc5d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/is-
+  │   plain-object@2.0.4/node_modules/is-plain-object/LICENSE": No such file
+  │   or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/50/
+  │   e3b69c79fd0c09a3cb3a70c15d1272eff48decc192a18ba0a64d5490a7ed957e97b02962
+  │   1a03388fce9428764d1eadab0b6b10f07feda8518aea651099cc5d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/is-
+  │   plain-object@2.0.4/node_modules/is-plain-object/LICENSE": No such file
+  │   or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/files/50/
+  │   e3b69c79fd0c09a3cb3a70c15d1272eff48decc192a18ba0a64d5490a7ed957e97b02962
+  │   1a03388fce9428764d1eadab0b6b10f07feda8518aea651099cc5d" to "/home/
+  │   runner/work/benchmarks/benchmarks/fixtures/svelte/node_modules/.pnpm/is-
+  │   plain-object@2.0.4/node_modules/is-plain-object/LICENSE": No such file
+  │   or directory (os error 2)
+  ╰─▶ No such file or directory (os error 2)
 

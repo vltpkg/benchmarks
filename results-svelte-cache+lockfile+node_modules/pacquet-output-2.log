@@ -1,8 +1,0 @@
-Error:   × Main thread panicked.
-  ├─▶ at crates/registry/src/package.rs:55:63
-  ╰─▶ called `Result::unwrap()` on an `Err` value: SemverError { input:
-      "npm:strip-ansi@^6.0.1", span: SourceSpan { offset: SourceOffset(0),
-      length: 0 }, kind: NoValidRanges }
-  help: set the `RUST_BACKTRACE=1` environment variable to display a
-        backtrace.
-
