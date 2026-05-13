@@ -3,7 +3,7 @@ import { useLocation, NavLink } from "react-router";
 import { PackageManagerFilter } from "@/components/package-manager-filter";
 import { FixtureFilter } from "@/components/fixture-filter";
 import { VariationDropdown } from "@/components/variation-dropdown";
-import { Benchmarks, Package, StopWatch, Database } from "@/components/icons";
+import { Benchmarks, Github, Package, StopWatch, Database } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import {
@@ -247,6 +247,15 @@ const HeaderLogo = forwardRef<HTMLDivElement, ComponentProps<"div">>(
             )}
           </span>
         )}
+        <a
+          href="https://github.com/vltpkg/benchmarks"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-muted-foreground hover:text-foreground transition-colors ml-1"
+          title="View source on GitHub"
+        >
+          <Github className="size-5" />
+        </a>
       </div>
     );
   },
