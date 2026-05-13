@@ -1,0 +1,33 @@
+Error:   × installing dependencies
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/
+  │   files/6a/00e52aff992d0107cedb43eb66b39913910281525734dad700f2060408910d2
+  │   940eb7fe32aadccc50f5c139112493d9811d86cd0a22d4d87312c2634a5a9e4" to "/
+  │   home/runner/work/benchmarks/benchmarks/fixtures/vue/node_modules/.pnpm/
+  │   postgres-bytea@1.0.1/node_modules/postgres-bytea/license": No such file
+  │   or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/
+  │   files/6a/00e52aff992d0107cedb43eb66b39913910281525734dad700f2060408910d2
+  │   940eb7fe32aadccc50f5c139112493d9811d86cd0a22d4d87312c2634a5a9e4" to "/
+  │   home/runner/work/benchmarks/benchmarks/fixtures/vue/node_modules/.pnpm/
+  │   postgres-bytea@1.0.1/node_modules/postgres-bytea/license": No such file
+  │   or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/
+  │   files/6a/00e52aff992d0107cedb43eb66b39913910281525734dad700f2060408910d2
+  │   940eb7fe32aadccc50f5c139112493d9811d86cd0a22d4d87312c2634a5a9e4" to "/
+  │   home/runner/work/benchmarks/benchmarks/fixtures/vue/node_modules/.pnpm/
+  │   postgres-bytea@1.0.1/node_modules/postgres-bytea/license": No such file
+  │   or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/
+  │   files/6a/00e52aff992d0107cedb43eb66b39913910281525734dad700f2060408910d2
+  │   940eb7fe32aadccc50f5c139112493d9811d86cd0a22d4d87312c2634a5a9e4" to "/
+  │   home/runner/work/benchmarks/benchmarks/fixtures/vue/node_modules/.pnpm/
+  │   postgres-bytea@1.0.1/node_modules/postgres-bytea/license": No such file
+  │   or directory (os error 2)
+  ├─▶ failed to import "/home/runner/.local/share/pnpm/store/v11/
+  │   files/6a/00e52aff992d0107cedb43eb66b39913910281525734dad700f2060408910d2
+  │   940eb7fe32aadccc50f5c139112493d9811d86cd0a22d4d87312c2634a5a9e4" to "/
+  │   home/runner/work/benchmarks/benchmarks/fixtures/vue/node_modules/.pnpm/
+  │   postgres-bytea@1.0.1/node_modules/postgres-bytea/license": No such file
+  │   or directory (os error 2)
+  ╰─▶ No such file or directory (os error 2)
+

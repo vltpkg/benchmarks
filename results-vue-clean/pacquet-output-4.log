@@ -1,0 +1,14 @@
+Error:   × installing dependencies
+  ├─▶ Failed to request https://registry.npmjs.org/@prisma/debug/7.2.0: error
+  │   decoding response body
+  ├─▶ Failed to request https://registry.npmjs.org/@prisma/debug/7.2.0: error
+  │   decoding response body
+  ├─▶ Failed to request https://registry.npmjs.org/@prisma/debug/7.2.0: error
+  │   decoding response body
+  ├─▶ Failed to request https://registry.npmjs.org/@prisma/debug/7.2.0: error
+  │   decoding response body
+  ├─▶ Failed to request https://registry.npmjs.org/@prisma/debug/7.2.0: error
+  │   decoding response body
+  ├─▶ error decoding response body
+  ╰─▶ missing field `name` at line 1 column 880
+
