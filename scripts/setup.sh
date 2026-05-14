@@ -50,8 +50,12 @@ npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@l
 # Install Vite+ (vp) via npm (available as the `vite-plus` package)
 npm install -g vite-plus@latest
 
-# Install aube via npm (available as the `@endevco/aube` package)
-npm install -g @endevco/aube@latest
+# Install aube via npm (available as the `@endevco/aube` package).
+# Non-fatal: aube may not have a working binary for all platforms (e.g. arm64).
+# If it fails to install, the benchmark suite continues without aube.
+if ! npm install -g @endevco/aube@latest 2>/dev/null; then
+  echo "Warning: aube installation failed (may not support this platform) — skipping aube benchmarks"
+fi
 
 # Configure Package Managers
 echo "Configuring package managers..."
