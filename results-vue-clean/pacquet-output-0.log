@@ -1,0 +1,16 @@
+Error:   × installing dependencies
+  ├─▶ Failed to request https://registry.npmjs.org/lz-string: error sending
+  │   request for url (https://registry.npmjs.org/lz-string)
+  ├─▶ Failed to request https://registry.npmjs.org/lz-string: error sending
+  │   request for url (https://registry.npmjs.org/lz-string)
+  ├─▶ Failed to request https://registry.npmjs.org/lz-string: error sending
+  │   request for url (https://registry.npmjs.org/lz-string)
+  ├─▶ Failed to request https://registry.npmjs.org/lz-string: error sending
+  │   request for url (https://registry.npmjs.org/lz-string)
+  ├─▶ Failed to request https://registry.npmjs.org/lz-string: error sending
+  │   request for url (https://registry.npmjs.org/lz-string)
+  ├─▶ error sending request for url (https://registry.npmjs.org/lz-string)
+  ├─▶ client error (SendRequest)
+  ├─▶ connection error
+  ╰─▶ Connection reset by peer (os error 104)
+
