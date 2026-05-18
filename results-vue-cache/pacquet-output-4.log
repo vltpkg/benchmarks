@@ -1,0 +1,16 @@
+Error:   × installing dependencies
+  ├─▶ Failed to request https://registry.npmjs.org/onetime: error sending
+  │   request for url (https://registry.npmjs.org/onetime)
+  ├─▶ Failed to request https://registry.npmjs.org/onetime: error sending
+  │   request for url (https://registry.npmjs.org/onetime)
+  ├─▶ Failed to request https://registry.npmjs.org/onetime: error sending
+  │   request for url (https://registry.npmjs.org/onetime)
+  ├─▶ Failed to request https://registry.npmjs.org/onetime: error sending
+  │   request for url (https://registry.npmjs.org/onetime)
+  ├─▶ Failed to request https://registry.npmjs.org/onetime: error sending
+  │   request for url (https://registry.npmjs.org/onetime)
+  ├─▶ error sending request for url (https://registry.npmjs.org/onetime)
+  ├─▶ client error (SendRequest)
+  ├─▶ connection error
+  ╰─▶ Connection timed out (os error 110)
+
