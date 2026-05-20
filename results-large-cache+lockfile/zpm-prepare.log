@@ -2,15 +2,15 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3660 May 19 11:30 package.json
+-rw-r--r-- 1 runner runner 3660 May 20 11:25 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-4.14.1
+4.15.0
 canary version:
 6.0.0-rc.18
 packageManager (before):
-"yarn@4.14.1"
+"yarn@4.15.0"
 set packageManager=yarn@6.0.0-rc.18:
 packageManager (after):
 "yarn@6.0.0-rc.18"
@@ -18,7 +18,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3626 May 19 11:30 package.json
+-rw-r--r-- 1 runner runner 3626 May 20 11:25 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -34,7 +34,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3626 May 19 11:30 package.json
+-rw-r--r-- 1 runner runner 3626 May 20 11:25 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -50,7 +50,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3626 May 19 11:30 package.json
+-rw-r--r-- 1 runner runner 3626 May 20 11:25 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -66,15 +66,15 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3661 May 19 11:37 package.json
+-rw-r--r-- 1 runner runner 3661 May 20 11:31 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-4.14.1
+4.15.0
 canary version:
 6.0.0-rc.18
 packageManager (before):
-"yarn@4.14.1"
+"yarn@4.15.0"
 set packageManager=yarn@6.0.0-rc.18:
 packageManager (after):
 "yarn@6.0.0-rc.18"
