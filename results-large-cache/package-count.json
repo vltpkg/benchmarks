@@ -12,20 +12,20 @@
     "count": 1505
   },
   "pnpm": {
-    "count": 1287
+    "count": 1285
   },
   "vlt": {
     "count": 1291
   },
   "bun": {
-    "count": 1552,
-    "minCount": 1551,
-    "maxCount": 1553
+    "count": 1549,
+    "minCount": 1541,
+    "maxCount": 1551
   },
   "deno": {
     "count": 1280
   },
   "aube": {
-    "count": 1090
+    "count": 1088
   }
 }

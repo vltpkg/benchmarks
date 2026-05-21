@@ -1,14 +1,12 @@
-Error:   × installing dependencies
-  ├─▶ Failed to request https://registry.npmjs.org/@dev/build-tools: error
-  │   decoding response body
-  ├─▶ Failed to request https://registry.npmjs.org/@dev/build-tools: error
-  │   decoding response body
-  ├─▶ Failed to request https://registry.npmjs.org/@dev/build-tools: error
-  │   decoding response body
-  ├─▶ Failed to request https://registry.npmjs.org/@dev/build-tools: error
-  │   decoding response body
-  ├─▶ Failed to request https://registry.npmjs.org/@dev/build-tools: error
-  │   decoding response body
-  ├─▶ error decoding response body
-  ╰─▶ missing field `name` at line 1 column 21
+Error: pacquet_package_manager::resolve_importer
+
+  × installing dependencies
+  ├─▶ Failed to resolve importer: Failed to resolve dependency: Failed to
+  │   fetch metadata from https://registry.npmjs.org/@dev%2Fbuild-tools: HTTP
+  │   status client error (404 Not Found) for url (https://registry.npmjs.org/
+  │   @dev%2Fbuild-tools)
+  ╰─▶ Failed to resolve importer: Failed to resolve dependency: Failed to
+      fetch metadata from https://registry.npmjs.org/@dev%2Fbuild-tools: HTTP
+      status client error (404 Not Found) for url (https://registry.npmjs.org/
+      @dev%2Fbuild-tools)
 

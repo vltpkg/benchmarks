@@ -5,18 +5,18 @@
     "maxCount": 1785
   },
   "berry": {
-    "count": 1742,
+    "count": 1741,
     "minCount": 1718,
-    "maxCount": 1765
+    "maxCount": 1764
   },
   "pnpm": {
-    "count": 1522
+    "count": 1521
   },
   "vlt": {
     "count": 1519
   },
   "bun": {
-    "count": 1641,
+    "count": 1640,
     "minCount": 1640,
     "maxCount": 1641
   },
@@ -24,6 +24,6 @@
     "count": 1479
   },
   "aube": {
-    "count": 1340
+    "count": 1339
   }
 }
