@@ -1,21 +1,21 @@
 Error: Script not defined in package.json
 
-Full details written to: /home/runner/.local/share/vlt/error-logs/error-5236.log
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-5356.log
 
 Full details:
 Error: Script not defined in package.json
-    at runImpl (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-DJBBJDHI.js:5306:11)
-    at RunCommand.runFG [as fg] (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-DJBBJDHI.js:5258:32)
-    at RunCommand.run (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-6YTJVEK2.js:1091:33)
-    at command (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/run-CAX4Z2SC.js:103:58)
-    at outputCommand (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-P2HZ4ISK.js:445:39)
-    at Module.run (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/src-SDJWTPCU.js:122:9)
-    at async run (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-QWWYZ3TT.js:21:3)
+    at runImpl (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-E76YOTJF.js:5310:11)
+    at RunCommand.runFG [as fg] (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-E76YOTJF.js:5262:32)
+    at RunCommand.run (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-FXFN5J74.js:1091:33)
+    at command (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/run-GM2E5WHJ.js:101:58)
+    at outputCommand (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-LPLXAVG7.js:455:39)
+    at Module.run (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/src-QQVS7FWK.js:120:9)
+    at async run (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-YXHBZAYO.js:21:3)
     at async file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/vlt.js:19:1 {
   [cause]: {
     name: 'build',
     cwd: '/home/runner/work/benchmarks/benchmarks/fixtures/large',
-    args: [ '--view=human' ],
+    args: [],
     path: '/home/runner/work/benchmarks/benchmarks/fixtures/large/package.json',
     manifest: {
       name: 'alotta-modules',
@@ -132,7 +132,7 @@ Error: Script not defined in package.json
         'whatwg-fetch': '^3.6.20'
       },
       devDependencies: { 'nan-as': '^1.6.1' },
-      packageManager: 'yarn@4.14.1',
+      packageManager: 'yarn@4.15.0',
       Symbol(newline): '\n',
       Symbol(indent): '  '
     }

@@ -8,5 +8,4 @@ node_modules/@tsconfig/node22/tsconfig.json(6,13): error TS6046: Argument for '-
 [32m✓[39m 49 modules transformed.
 error Command failed with exit code 1.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-rendering chunks...
 ERROR: "type-check" exited with 1.
