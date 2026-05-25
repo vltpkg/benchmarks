@@ -1,0 +1,13 @@
+ERR_AUBE_TRUST_DOWNGRADE
+
+  × failed to resolve dependencies
+  ╰─▶ trust downgrade for tinyexec@1.2.2 (trustPolicy=no-downgrade): earlier
+      published version 1.0.2 had trusted publisher but this version has
+      provenance attestation
+  help: a trust downgrade may indicate a supply-chain incident — the
+        publisher's previous releases carried trusted publisher but
+        tinyexec@1.2.2 does not.
+        to bypass: pin a version that retains evidence, set `trustPolicy =
+        off` in .npmrc / pnpm-workspace.yaml, or add `tinyexec` (or
+        `tinyexec@1.2.2`) to `trustPolicyExclude`.
+
