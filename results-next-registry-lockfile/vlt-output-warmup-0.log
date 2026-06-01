@@ -1,14 +1,14 @@
 npm http fetch GET https://registry.vlt.io/vlt/npm/next attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/next attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/next attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/next 92027ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/next 91679ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/react attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/react attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/react attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/react 91348ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/react 91353ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/react-dom attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/react-dom attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/react-dom attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/react-dom 91388ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/react-dom 91400ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/@types%2fnode attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@types%2fnode attempt 2 failed with 503

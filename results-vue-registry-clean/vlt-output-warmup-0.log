@@ -1,14 +1,14 @@
 npm http fetch GET https://registry.vlt.io/vlt/npm/pinia attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/pinia attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/pinia attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/pinia 91414ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/pinia 91853ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/vue attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/vue attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/vue attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/vue 91373ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/vue 91383ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/vue-router attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/vue-router attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/vue-router attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/vue-router 91389ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/vue-router 91460ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/@playwright%2ftest attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@playwright%2ftest attempt 2 failed with 503

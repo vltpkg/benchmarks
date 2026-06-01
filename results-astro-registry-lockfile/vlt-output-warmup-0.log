@@ -1,7 +1,7 @@
 npm http fetch GET https://registry.vlt.io/vlt/npm/astro attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/astro attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/astro attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/astro 92072ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/astro 91809ms attempt #3 (cache skip)
 npm error code E503
 npm error 503 Service Temporarily Unavailable - GET https://registry.vlt.io/vlt/npm/astro
-npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-05-31T10_58_37_396Z-debug-0.log
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-06-01T12_16_25_209Z-debug-0.log

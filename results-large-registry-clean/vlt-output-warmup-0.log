@@ -2,14 +2,14 @@ npm warn using --force Recommended protections disabled.
 npm http fetch GET https://registry.vlt.io/vlt/npm/animate.less attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/animate.less attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/animate.less attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/animate.less 91516ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/animate.less 91574ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/autoprefixer attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/autoprefixer attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/autoprefixer attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/autoprefixer 91386ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/autoprefixer 91422ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/babel-core attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/babel-core attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/babel-core attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/babel-core 91494ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/babel-core 91493ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/babel-eslint attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/babel-eslint attempt 2 failed with 503

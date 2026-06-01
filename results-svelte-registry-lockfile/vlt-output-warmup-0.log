@@ -1,14 +1,14 @@
 npm http fetch GET https://registry.vlt.io/vlt/npm/@fontsource%2ffira-mono attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@fontsource%2ffira-mono attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@fontsource%2ffira-mono attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@fontsource%2ffira-mono 91702ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@fontsource%2ffira-mono 91643ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/@neoconfetti%2fsvelte attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@neoconfetti%2fsvelte attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@neoconfetti%2fsvelte attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@neoconfetti%2fsvelte 91372ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@neoconfetti%2fsvelte 91417ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/@sveltejs%2fadapter-auto attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@sveltejs%2fadapter-auto attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@sveltejs%2fadapter-auto attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@sveltejs%2fadapter-auto 91436ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@sveltejs%2fadapter-auto 91414ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/@sveltejs%2fkit attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@sveltejs%2fkit attempt 2 failed with 503

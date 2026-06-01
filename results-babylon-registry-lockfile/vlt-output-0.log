@@ -1,14 +1,14 @@
 npm http fetch GET https://registry.vlt.io/vlt/npm/canvas attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/canvas attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/canvas attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/canvas 91627ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/canvas 91408ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/@alex_neo%2fjest-expect-message attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@alex_neo%2fjest-expect-message attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@alex_neo%2fjest-expect-message attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@alex_neo%2fjest-expect-message 91346ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@alex_neo%2fjest-expect-message 91392ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/@eslint%2fjs attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@eslint%2fjs attempt 2 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@eslint%2fjs attempt 3 failed with 503
-npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@eslint%2fjs 91364ms attempt #3 (cache skip)
+npm http fetch GET 503 https://registry.vlt.io/vlt/npm/@eslint%2fjs 91410ms attempt #3 (cache skip)
 npm http fetch GET https://registry.vlt.io/vlt/npm/@nrwl%2ftao attempt 1 failed with 503
 npm http fetch GET https://registry.vlt.io/vlt/npm/@nrwl%2ftao attempt 2 failed with 503

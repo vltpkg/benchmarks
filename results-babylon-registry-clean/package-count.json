@@ -1,13 +1,13 @@
 {
   "npm": {
-    "count": 1782,
-    "minCount": 1780,
-    "maxCount": 1784
+    "count": 1781,
+    "minCount": 1779,
+    "maxCount": 1783
+  },
+  "vlt": {
+    "count": 1781
   },
   "aws": {
-    "count": 1782
-  },
-  "github": {
-    "count": 1782
+    "count": 1781
   }
 }
