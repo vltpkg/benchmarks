@@ -6,15 +6,15 @@
     "count": 60
   },
   "berry": {
-    "count": 58
+    "count": 59
   },
   "zpm": {
     "count": 61
   },
   "pnpm": {
-    "count": 83,
-    "minCount": 58,
-    "maxCount": 108
+    "count": 84,
+    "minCount": 59,
+    "maxCount": 109
   },
   "vlt": {
     "count": 59
@@ -26,6 +26,6 @@
     "count": 60
   },
   "aube": {
-    "count": 58
+    "count": 59
   }
 }
