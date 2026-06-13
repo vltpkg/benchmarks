@@ -5,12 +5,12 @@
     "maxCount": 1784
   },
   "berry": {
-    "count": 1739,
-    "minCount": 1715,
+    "count": 1741,
+    "minCount": 1719,
     "maxCount": 1762
   },
   "pnpm": {
-    "count": 1580,
+    "count": 1579,
     "minCount": 1518,
     "maxCount": 1641
   },
