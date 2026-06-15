@@ -6,7 +6,7 @@
     "count": 1322
   },
   "berry": {
-    "count": 1325
+    "count": 1323
   },
   "zpm": {
     "count": 1504
@@ -20,7 +20,9 @@
     "count": 1291
   },
   "bun": {
-    "count": 1550
+    "count": 1548,
+    "minCount": 1540,
+    "maxCount": 1550
   },
   "deno": {
     "count": 1280
