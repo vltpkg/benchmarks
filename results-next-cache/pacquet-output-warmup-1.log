@@ -1,0 +1,32 @@
+Progress: resolved 0, reused 1, downloaded 0, added 0
+Packages: +406
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages: +406
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 406, reused 406, downloaded 0, added 406, done
+
+dependencies:
++ next 15.0.3
++ react 19.0.0-rc-66855b96-20241106
++ react-dom 19.0.0-rc-66855b96-20241106
+
+devDependencies:
++ @types/node 20.19.43
++ @types/react 18.3.31
++ @types/react-dom 18.3.7
++ eslint 8.57.1
++ eslint-config-next 15.0.3
++ postcss 8.5.15
++ tailwindcss 3.4.19
++ typescript 5.9.3
+
+Error: ERR_PNPM_IGNORED_BUILDS
+
+  × installing dependencies
+  ╰─▶ Ignored build scripts: sharp@0.33.5, unrs-resolver@1.12.2
+  help: Run "pnpm approve-builds" to pick which dependencies should be allowed
+        to run scripts.
+

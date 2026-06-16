@@ -1,14 +1,14 @@
 {
   "npm": {
-    "count": 335
+    "count": 336
   },
   "berry": {
-    "count": 336,
+    "count": 337,
     "minCount": 335,
-    "maxCount": 337
+    "maxCount": 338
   },
   "zpm": {
-    "count": 342
+    "count": 343
   },
   "pnpm": {
     "count": 333,
@@ -16,13 +16,13 @@
     "maxCount": 379
   },
   "vlt": {
-    "count": 327
+    "count": 328
   },
   "bun": {
-    "count": 339
+    "count": 340
   },
   "deno": {
-    "count": 331
+    "count": 332
   },
   "aube": {
     "count": 314

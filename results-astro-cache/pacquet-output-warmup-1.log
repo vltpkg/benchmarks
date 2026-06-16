@@ -1,0 +1,20 @@
+Progress: resolved 0, reused 1, downloaded 0, added 0
+Packages: +376
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages: +376
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 376, reused 376, downloaded 0, added 376, done
+
+dependencies:
++ astro 5.18.2
+
+Error: ERR_PNPM_IGNORED_BUILDS
+
+  × installing dependencies
+  ╰─▶ Ignored build scripts: esbuild@0.25.12, esbuild@0.27.7, sharp@0.34.5
+  help: Run "pnpm approve-builds" to pick which dependencies should be allowed
+        to run scripts.
+

@@ -1,0 +1,82 @@
+Progress: resolved 0, reused 1, downloaded 0, added 0
+Progress: resolved 0, reused 1037, downloaded 0, added 0
+Progress: resolved 0, reused 1111, downloaded 0, added 0
+Progress: resolved 0, reused 1542, downloaded 0, added 0
+Progress: resolved 0, reused 1666, downloaded 0, added 0
+Packages: +1664
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages: +1664
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 800, reused 1667, downloaded 0, added 793
+Progress: resolved 1568, reused 1667, downloaded 0, added 1565
+Progress: resolved 1664, reused 1667, downloaded 0, added 1664, done
+packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
+packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
+packages/public/umd/babylonjs postinstall: Read more here - https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking
+packages/public/umd/babylonjs postinstall: Done
+packages/tools/babylonServer prepare$ node ./scripts/generateScripts.js
+packages/tools/babylonServer prepare: Done
+
+optionalDependencies:
++ canvas 3.2.3
+
+devDependencies:
++ @alex_neo/jest-expect-message 1.0.5
++ @dev/build-tools link:packages/dev/buildTools
++ @eslint/js 9.39.4
++ @nrwl/tao 19.8.4
++ @nrwl/workspace 19.8.4
++ @playwright/test 1.57.0
++ @types/expect-puppeteer 5.0.6
++ @types/fs-extra 9.0.13
++ @types/jest 27.4.1
++ @types/jest-environment-puppeteer 5.0.6
++ @types/jest-expect-message 1.0.4
++ @types/puppeteer 5.4.7
++ @typescript-eslint/eslint-plugin 8.61.0
++ @typescript-eslint/parser 8.61.0
++ ajv 8.12.0
++ chokidar 3.6.0
++ dotenv 16.0.3
++ es-check 7.2.1
++ eslint 9.39.4
++ eslint-config-prettier 9.0.0
++ eslint-formatter-azure-devops 1.2.1
++ eslint-plugin-github 6.0.0
++ eslint-plugin-import 2.32.0
++ eslint-plugin-jest 28.11.2
++ eslint-plugin-jsdoc 50.8.0
++ eslint-plugin-prettier 5.0.1
++ eslint-plugin-tsdoc 0.5.2
++ fs-extra 10.1.0
++ glob 12.0.0
++ globals 16.5.0
++ jest 29.7.0
++ jest-environment-jsdom 30.4.1
++ jest-junit 13.2.0
++ mini-css-extract-plugin 2.6.1
++ nx 22.7.5
++ prettier 3.8.4
++ rimraf 6.0.1
++ ts-jest 29.1.5
++ ts-node 10.9.2
++ ts-patch 3.3.0
++ tslib 2.8.1
++ typedoc 0.28.19
++ typescript 5.9.3
++ webpack 5.107.2
++ webpack-cli 6.0.1
+
+Error: ERR_PNPM_IGNORED_BUILDS
+
+  × installing dependencies
+  ╰─▶ Ignored build scripts: @memlab/cli@1.0.45, @parcel/watcher@2.5.6,
+      bufferutil@4.1.0, canvas@3.2.3, core-js-pure@3.49.0, esbuild@0.25.12,
+      memlab@1.1.60, nx@19.8.4, nx@22.7.5, puppeteer@22.15.0, sleep@6.1.0,
+      utf-8-validate@5.0.10
+  help: Run "pnpm approve-builds" to pick which dependencies should be allowed
+        to run scripts.
+

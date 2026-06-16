@@ -1,0 +1,33 @@
+Progress: resolved 0, reused 0, downloaded 1, added 0
+Downloading @img/sharp-libvips-linuxmusl-arm64@1.2.4: 0 B/7.92 MB
+Downloading @img/sharp-win32-arm64@0.34.5: 0 B/7.89 MB
+Downloading @img/sharp-libvips-linuxmusl-x64@1.2.4: 0 B/7.65 MB
+Downloading @img/sharp-win32-x64@0.34.5: 0 B/8.69 MB
+Downloading @img/sharp-win32-ia32@0.34.5: 0 B/8.61 MB
+Downloading @img/sharp-libvips-linux-ppc64@1.2.4: 0 B/7.78 MB
+Downloading @img/sharp-libvips-linux-s390x@1.2.4: 0 B/6.89 MB
+Downloading @img/sharp-libvips-darwin-arm64@1.2.4: 0 B/7.65 MB
+Downloading @img/sharp-libvips-linux-riscv64@1.2.4: 0 B/7.15 MB
+Downloading @img/sharp-libvips-linux-arm64@1.2.4: 0 B/7.77 MB
+Downloading @img/sharp-libvips-linux-arm@1.2.4: 0 B/6.66 MB
+Downloading @img/sharp-libvips-darwin-x64@1.2.4: 0 B/8.27 MB
+Downloading @img/sharp-libvips-linux-x64@1.2.4: 0 B/7.53 MB
+Packages: +376
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages: +376
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 376, reused 0, downloaded 376, added 376, done
+
+dependencies:
++ astro 5.18.2
+
+Error: ERR_PNPM_IGNORED_BUILDS
+
+  × installing dependencies
+  ╰─▶ Ignored build scripts: esbuild@0.25.12, esbuild@0.27.7, sharp@0.34.5
+  help: Run "pnpm approve-builds" to pick which dependencies should be allowed
+        to run scripts.
+

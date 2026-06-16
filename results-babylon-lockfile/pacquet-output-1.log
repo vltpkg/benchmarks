@@ -1,0 +1,169 @@
+[WARN] Skipping optional dependency @esbuild/freebsd-x64@0.25.12
+[WARN] Skipping optional dependency @nx/nx-darwin-arm64@19.8.4
+[WARN] Skipping optional dependency @nx/nx-linux-arm64-musl@19.8.4
+[WARN] Skipping optional dependency @esbuild/linux-arm@0.25.12
+[WARN] Skipping optional dependency @rollup/rollup-android-arm64@4.62.0
+[WARN] Skipping optional dependency @parcel/watcher-win32-ia32@2.5.6
+[WARN] Skipping optional dependency @parcel/watcher-linux-x64-musl@2.5.6
+[WARN] Skipping optional dependency @rollup/rollup-linux-x64-musl@4.62.0
+[WARN] Skipping optional dependency fsevents@2.3.2
+[WARN] Skipping optional dependency @nx/nx-linux-x64-musl@22.7.5
+[WARN] Skipping optional dependency @nx/nx-darwin-x64@22.7.5
+[WARN] Skipping optional dependency @esbuild/linux-s390x@0.25.12
+[WARN] Skipping optional dependency @esbuild/win32-ia32@0.25.12
+[WARN] Skipping optional dependency @rollup/rollup-linux-loong64-gnu@4.62.0
+[WARN] Skipping optional dependency @rollup/rollup-win32-ia32-msvc@4.62.0
+[WARN] Skipping optional dependency @rollup/rollup-android-arm-eabi@4.62.0
+[WARN] Skipping optional dependency @nx/nx-linux-x64-musl@19.8.4
+[WARN] Skipping optional dependency @nx/nx-linux-x64-gnu@19.8.4
+[WARN] Skipping optional dependency @parcel/watcher-android-arm64@2.5.6
+[WARN] Skipping optional dependency @rollup/rollup-linux-s390x-gnu@4.62.0
+[WARN] Skipping optional dependency @esbuild/linux-ppc64@0.25.12
+[WARN] Skipping optional dependency @parcel/watcher-win32-x64@2.5.6
+[WARN] Skipping optional dependency @esbuild/android-arm64@0.25.12
+[WARN] Skipping optional dependency @rollup/rollup-linux-riscv64-gnu@4.62.0
+[WARN] Skipping optional dependency @parcel/watcher-linux-x64-glibc@2.5.6
+[WARN] Skipping optional dependency @rollup/rollup-linux-arm64-musl@4.62.0
+[WARN] Skipping optional dependency @esbuild/linux-x64@0.25.12
+[WARN] Skipping optional dependency @esbuild/linux-ia32@0.25.12
+[WARN] Skipping optional dependency @esbuild/win32-x64@0.25.12
+[WARN] Skipping optional dependency @nx/nx-freebsd-x64@19.8.4
+[WARN] Skipping optional dependency @parcel/watcher-linux-arm-musl@2.5.6
+[WARN] Skipping optional dependency @rollup/rollup-linux-arm-musleabihf@4.62.0
+[WARN] Skipping optional dependency @esbuild/aix-ppc64@0.25.12
+[WARN] Skipping optional dependency @nx/nx-win32-x64-msvc@22.7.5
+[WARN] Skipping optional dependency @esbuild/win32-arm64@0.25.12
+[WARN] Skipping optional dependency @parcel/watcher-darwin-x64@2.5.6
+[WARN] Skipping optional dependency @rollup/rollup-win32-x64-gnu@4.62.0
+[WARN] Skipping optional dependency @nx/nx-win32-x64-msvc@19.8.4
+[WARN] Skipping optional dependency fsevents@2.3.3
+[WARN] Skipping optional dependency @rollup/rollup-freebsd-x64@4.62.0
+[WARN] Skipping optional dependency @rollup/rollup-linux-ppc64-musl@4.62.0
+[WARN] Skipping optional dependency @esbuild/netbsd-arm64@0.25.12
+[WARN] Skipping optional dependency @esbuild/netbsd-x64@0.25.12
+[WARN] Skipping optional dependency @nx/nx-darwin-x64@19.8.4
+[WARN] Skipping optional dependency @esbuild/freebsd-arm64@0.25.12
+[WARN] Skipping optional dependency @parcel/watcher-darwin-arm64@2.5.6
+[WARN] Skipping optional dependency @rollup/rollup-darwin-x64@4.62.0
+[WARN] Skipping optional dependency @esbuild/android-x64@0.25.12
+[WARN] Skipping optional dependency @esbuild/darwin-x64@0.25.12
+[WARN] Skipping optional dependency @rollup/rollup-linux-arm-gnueabihf@4.62.0
+[WARN] Skipping optional dependency @esbuild/android-arm@0.25.12
+[WARN] Skipping optional dependency @parcel/watcher-linux-arm64-musl@2.5.6
+[WARN] Skipping optional dependency @nx/nx-linux-arm-gnueabihf@22.7.5
+[WARN] Skipping optional dependency @nx/nx-win32-arm64-msvc@19.8.4
+[WARN] Skipping optional dependency @esbuild/openbsd-arm64@0.25.12
+[WARN] Skipping optional dependency @nx/nx-linux-arm64-musl@22.7.5
+[WARN] Skipping optional dependency @parcel/watcher-win32-arm64@2.5.6
+[WARN] Skipping optional dependency @rollup/rollup-win32-arm64-msvc@4.62.0
+[WARN] Skipping optional dependency @nx/nx-linux-arm-gnueabihf@19.8.4
+[WARN] Skipping optional dependency @rollup/rollup-darwin-arm64@4.62.0
+[WARN] Skipping optional dependency @nx/nx-win32-arm64-msvc@22.7.5
+[WARN] Skipping optional dependency @rollup/rollup-linux-riscv64-musl@4.62.0
+[WARN] Skipping optional dependency @esbuild/darwin-arm64@0.25.12
+[WARN] Skipping optional dependency @nx/nx-freebsd-x64@22.7.5
+[WARN] Skipping optional dependency @esbuild/sunos-x64@0.25.12
+[WARN] Skipping optional dependency @esbuild/linux-loong64@0.25.12
+[WARN] Skipping optional dependency @nx/nx-darwin-arm64@22.7.5
+[WARN] Skipping optional dependency @rollup/rollup-linux-loong64-musl@4.62.0
+[WARN] Skipping optional dependency @rollup/rollup-freebsd-arm64@4.62.0
+[WARN] Skipping optional dependency @rollup/rollup-linux-ppc64-gnu@4.62.0
+[WARN] Skipping optional dependency @esbuild/linux-mips64el@0.25.12
+[WARN] Skipping optional dependency @nx/nx-linux-x64-gnu@22.7.5
+[WARN] Skipping optional dependency @rollup/rollup-linux-x64-gnu@4.62.0
+[WARN] Skipping optional dependency @esbuild/linux-riscv64@0.25.12
+[WARN] Skipping optional dependency @rollup/rollup-openharmony-arm64@4.62.0
+[WARN] Skipping optional dependency @esbuild/openbsd-x64@0.25.12
+[WARN] Skipping optional dependency @parcel/watcher-linux-arm-glibc@2.5.6
+[WARN] Skipping optional dependency @rollup/rollup-openbsd-x64@4.62.0
+[WARN] Skipping optional dependency @rollup/rollup-win32-x64-msvc@4.62.0
+[WARN] Skipping optional dependency @esbuild/openharmony-arm64@0.25.12
+[WARN] Skipping optional dependency @parcel/watcher-freebsd-x64@2.5.6
+? Verifying lockfile against supply-chain policies (1659 entries)...
+Packages: +1583
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages: +1583
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 1583, reused 0, downloaded 208, added 0
+Progress: resolved 1583, reused 0, downloaded 439, added 0
+Downloading @nx/nx-linux-arm64-gnu@22.7.5: 0 B/9.12 MB
+Downloading typescript@4.9.5: 0 B/11.62 MB
+Downloading @fluentui/react-icons@2.0.330: 0 B/26.55 MB
+Downloading monaco-editor@0.55.1: 0 B/13.68 MB
+Progress: resolved 1583, reused 0, downloaded 1552, added 0
+✓ Lockfile passes supply-chain policies (1659 entries in 6.2s)
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 1583, reused 0, downloaded 1578, added 571
+Progress: resolved 1583, reused 0, downloaded 1578, added 849
+Progress: resolved 1583, reused 0, downloaded 1578, added 1053
+Progress: resolved 1583, reused 0, downloaded 1578, added 1353
+Progress: resolved 1583, reused 0, downloaded 1578, added 1583, done
+packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
+packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
+packages/public/umd/babylonjs postinstall: Read more here - https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking
+packages/public/umd/babylonjs postinstall: Done
+packages/tools/babylonServer prepare$ node ./scripts/generateScripts.js
+packages/tools/babylonServer prepare: Done
+
+optionalDependencies:
++ canvas 3.2.3
+
+devDependencies:
++ @alex_neo/jest-expect-message 1.0.5
++ @dev/build-tools link:packages/dev/buildTools
++ @eslint/js 9.39.4
++ @nrwl/tao 19.8.4
++ @nrwl/workspace 19.8.4
++ @playwright/test 1.57.0
++ @types/expect-puppeteer 5.0.6
++ @types/fs-extra 9.0.13
++ @types/jest 27.4.1
++ @types/jest-environment-puppeteer 5.0.6
++ @types/jest-expect-message 1.0.4
++ @types/puppeteer 5.4.7
++ @typescript-eslint/eslint-plugin 8.61.0
++ @typescript-eslint/parser 8.61.0
++ ajv 8.12.0
++ chokidar 3.6.0
++ dotenv 16.0.3
++ es-check 7.2.1
++ eslint 9.39.4
++ eslint-config-prettier 9.0.0
++ eslint-formatter-azure-devops 1.2.1
++ eslint-plugin-github 6.0.0
++ eslint-plugin-import 2.32.0
++ eslint-plugin-jest 28.11.2
++ eslint-plugin-jsdoc 50.8.0
++ eslint-plugin-prettier 5.0.1
++ eslint-plugin-tsdoc 0.5.2
++ fs-extra 10.1.0
++ glob 12.0.0
++ globals 16.5.0
++ jest 29.7.0
++ jest-environment-jsdom 30.4.1
++ jest-junit 13.2.0
++ mini-css-extract-plugin 2.6.1
++ nx 22.7.5
++ prettier 3.8.4
++ rimraf 6.0.1
++ ts-jest 29.1.5
++ ts-node 10.9.2
++ ts-patch 3.3.0
++ tslib 2.8.1
++ typedoc 0.28.19
++ typescript 5.9.3
++ webpack 5.107.2
++ webpack-cli 6.0.1
+
+Error: ERR_PNPM_IGNORED_BUILDS
+
+  × installing dependencies
+  ╰─▶ Ignored build scripts: @memlab/cli@1.0.45, @parcel/watcher@2.5.6,
+      bufferutil@4.1.0, canvas@3.2.3, core-js-pure@3.49.0, esbuild@0.25.12,
+      memlab@1.1.60, nx@19.8.4, nx@22.7.5, puppeteer@22.15.0, sleep@6.1.0,
+      utf-8-validate@5.0.10
+  help: Run "pnpm approve-builds" to pick which dependencies should be allowed
+        to run scripts.
+

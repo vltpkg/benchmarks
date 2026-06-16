@@ -1,15 +1,15 @@
 {
   "npm": {
-    "count": 1392
+    "count": 1393
   },
   "yarn": {
-    "count": 1322
+    "count": 1323
   },
   "berry": {
     "count": 1323
   },
   "zpm": {
-    "count": 1504
+    "count": 1505
   },
   "pnpm": {
     "count": 1266,
@@ -17,13 +17,13 @@
     "maxCount": 1285
   },
   "vlt": {
-    "count": 1291
+    "count": 1292
   },
   "bun": {
-    "count": 1550
+    "count": 1541
   },
   "deno": {
-    "count": 1280
+    "count": 1281
   },
   "aube": {
     "count": 1086,

@@ -1,0 +1,29 @@
+Progress: resolved 0, reused 0, downloaded 1, added 0
+Progress: resolved 0, reused 0, downloaded 49, added 0
+Packages: +109
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages: +109
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 109, reused 0, downloaded 109, added 109, done
+
+devDependencies:
++ @fontsource/fira-mono 5.2.7
++ @neoconfetti/svelte 2.2.2
++ @sveltejs/adapter-auto 3.3.1
++ @sveltejs/kit 2.65.1
++ @sveltejs/vite-plugin-svelte 5.1.1
++ svelte 5.56.3
++ svelte-check 4.6.0
++ typescript 5.9.3
++ vite 6.4.3
+
+Error: ERR_PNPM_IGNORED_BUILDS
+
+  × installing dependencies
+  ╰─▶ Ignored build scripts: esbuild@0.25.12
+  help: Run "pnpm approve-builds" to pick which dependencies should be allowed
+        to run scripts.
+
