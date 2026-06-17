@@ -1,13 +1,13 @@
 [WARN] Skipping optional dependency fsevents@1.2.13
 ✓ Lockfile passes supply-chain policies (previously verified)
-Packages: +1308
+Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Packages: +1308
+Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 1308, reused 1308, downloaded 0, added 1308, done
+Progress: resolved 1309, reused 1309, downloaded 0, added 1309, done
 
 dependencies:
 + animate.less 2.2.0

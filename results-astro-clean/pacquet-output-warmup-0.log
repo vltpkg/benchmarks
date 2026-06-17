@@ -1,17 +1,17 @@
 Progress: resolved 0, reused 0, downloaded 1, added 0
-Downloading @img/sharp-libvips-linux-s390x@1.2.4: 0 B/6.89 MB
-Downloading @img/sharp-libvips-linux-arm64@1.2.4: 0 B/7.77 MB
-Downloading @img/sharp-libvips-linux-riscv64@1.2.4: 0 B/7.15 MB
-Downloading @img/sharp-libvips-linuxmusl-arm64@1.2.4: 0 B/7.92 MB
-Downloading @img/sharp-libvips-linuxmusl-x64@1.2.4: 0 B/7.65 MB
-Downloading @img/sharp-libvips-darwin-arm64@1.2.4: 0 B/7.65 MB
-Downloading @img/sharp-win32-arm64@0.34.5: 0 B/7.89 MB
-Downloading @img/sharp-win32-x64@0.34.5: 0 B/8.69 MB
+Downloading @img/sharp-win32-ia32@0.34.5: 0 B/8.61 MB
 Downloading @img/sharp-libvips-linux-arm@1.2.4: 0 B/6.66 MB
-Downloading @img/sharp-libvips-linux-x64@1.2.4: 0 B/7.53 MB
 Downloading @img/sharp-libvips-linux-ppc64@1.2.4: 0 B/7.78 MB
 Downloading @img/sharp-libvips-darwin-x64@1.2.4: 0 B/8.27 MB
-Downloading @img/sharp-win32-ia32@0.34.5: 0 B/8.61 MB
+Downloading @img/sharp-libvips-linux-x64@1.2.4: 0 B/7.53 MB
+Downloading @img/sharp-libvips-darwin-arm64@1.2.4: 0 B/7.65 MB
+Downloading @img/sharp-win32-arm64@0.34.5: 0 B/7.89 MB
+Downloading @img/sharp-libvips-linux-s390x@1.2.4: 0 B/6.89 MB
+Downloading @img/sharp-libvips-linux-arm64@1.2.4: 0 B/7.77 MB
+Downloading @img/sharp-win32-x64@0.34.5: 0 B/8.69 MB
+Downloading @img/sharp-libvips-linuxmusl-x64@1.2.4: 0 B/7.65 MB
+Downloading @img/sharp-libvips-linux-riscv64@1.2.4: 0 B/7.15 MB
+Downloading @img/sharp-libvips-linuxmusl-arm64@1.2.4: 0 B/7.92 MB
 Packages: +376
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages: +376

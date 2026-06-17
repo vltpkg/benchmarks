@@ -1,17 +1,15 @@
 Progress: resolved 0, reused 0, downloaded 1, added 0
 Downloading highcharts@11.4.8: 0 B/9.48 MB
 Downloading highcharts@6.2.0: 0 B/9.70 MB
-Progress: resolved 0, reused 0, downloaded 477, added 0
-Progress: resolved 0, reused 0, downloaded 1305, added 0
-Packages: +1309
+Progress: resolved 0, reused 0, downloaded 553, added 0
+Packages: +1310
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Packages: +1309
+Packages: +1310
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 1301, reused 0, downloaded 1309, added 1301
-Progress: resolved 1309, reused 0, downloaded 1309, added 1309, done
+Progress: resolved 1310, reused 0, downloaded 1310, added 1310, done
 
 dependencies:
 + animate.less 2.2.0

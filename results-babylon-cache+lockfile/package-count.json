@@ -3,14 +3,14 @@
     "count": 1781
   },
   "berry": {
-    "count": 1743,
+    "count": 1744,
     "minCount": 1720,
-    "maxCount": 1766
+    "maxCount": 1767
   },
   "pnpm": {
-    "count": 1529,
-    "minCount": 1519,
-    "maxCount": 1600
+    "count": 1530,
+    "minCount": 1520,
+    "maxCount": 1601
   },
   "vlt": {
     "count": 1532,
@@ -24,6 +24,6 @@
     "count": 1480
   },
   "aube": {
-    "count": 1339
+    "count": 1340
   }
 }

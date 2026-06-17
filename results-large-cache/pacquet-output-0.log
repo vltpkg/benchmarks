@@ -1,12 +1,12 @@
 Progress: resolved 0, reused 1, downloaded 0, added 0
-Packages: +1309
+Packages: +1310
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Packages: +1309
+Packages: +1310
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 1309, reused 1309, downloaded 0, added 1309, done
+Progress: resolved 1310, reused 1310, downloaded 0, added 1310, done
 
 dependencies:
 + animate.less 2.2.0
