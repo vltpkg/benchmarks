@@ -6,7 +6,6 @@ Packages: +407
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 405, reused 407, downloaded 0, added 399
 Progress: resolved 407, reused 407, downloaded 0, added 407, done
 
 dependencies:
@@ -20,7 +19,7 @@ devDependencies:
 + @types/react-dom 18.3.7
 + eslint 8.57.1
 + eslint-config-next 15.0.3
-+ postcss 8.5.15
++ postcss 8.5.16
 + tailwindcss 3.4.19
 + typescript 5.9.3
 

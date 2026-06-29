@@ -2,127 +2,127 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 685 Jun 17 11:57 package.json
-yarn path:
-/home/runner/.yarn/switch/bin/yarn
-yarn version:
-4.17.0
-canary version:
-6.0.0-rc.18
-packageManager (before):
-"yarn@4.17.0"
-set packageManager=yarn@6.0.0-rc.18:
-packageManager (after):
-"yarn@6.0.0-rc.18"
-[zpm prepare]
-cwd:
-/home/runner/work/benchmarks/benchmarks/fixtures/svelte
-package.json:
--rw-r--r-- 1 runner runner 651 Jun 17 11:57 package.json
+-rw-r--r-- 1 runner runner 635 Jun 29 22:32 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.18
+6.0.0-rc.19
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.18:
+set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.18"
+"yarn@6.0.0-rc.19"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Jun 17 11:57 package.json
+-rw-r--r-- 1 runner runner 635 Jun 29 22:32 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.18
+6.0.0-rc.19
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.18:
+set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.18"
+"yarn@6.0.0-rc.19"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Jun 17 11:57 package.json
+-rw-r--r-- 1 runner runner 635 Jun 29 22:32 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.18
+6.0.0-rc.19
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.18:
+set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.18"
+"yarn@6.0.0-rc.19"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Jun 17 11:57 package.json
+-rw-r--r-- 1 runner runner 635 Jun 29 22:32 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.18
+6.0.0-rc.19
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.18:
+set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.18"
+"yarn@6.0.0-rc.19"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Jun 17 11:58 package.json
+-rw-r--r-- 1 runner runner 635 Jun 29 22:32 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.18
+6.0.0-rc.19
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.18:
+set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.18"
+"yarn@6.0.0-rc.19"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 651 Jun 17 11:58 package.json
+-rw-r--r-- 1 runner runner 635 Jun 29 22:32 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
 1.22.22
 canary version:
-6.0.0-rc.18
+6.0.0-rc.19
 packageManager (before):
 {}
-set packageManager=yarn@6.0.0-rc.18:
+set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.18"
+"yarn@6.0.0-rc.19"
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 686 Jun 17 12:01 package.json
+-rw-r--r-- 1 runner runner 635 Jun 29 22:32 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-4.17.0
+1.22.22
 canary version:
-6.0.0-rc.18
+6.0.0-rc.19
 packageManager (before):
-"yarn@4.17.0"
-set packageManager=yarn@6.0.0-rc.18:
+{}
+set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.18"
+"yarn@6.0.0-rc.19"
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/svelte
+package.json:
+-rw-r--r-- 1 runner runner 635 Jun 29 22:35 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.19
+packageManager (before):
+{}
+set packageManager=yarn@6.0.0-rc.19:
+packageManager (after):
+"yarn@6.0.0-rc.19"

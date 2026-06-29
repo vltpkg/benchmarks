@@ -14,20 +14,20 @@
   "pnpm": {
     "count": 1267,
     "minCount": 1248,
-    "maxCount": 1286
+    "maxCount": 1285
   },
   "vlt": {
-    "count": 1292
+    "count": 1291
   },
   "bun": {
-    "count": 1551
+    "count": 1552
   },
   "deno": {
-    "count": 1281
+    "count": 1280
   },
   "aube": {
-    "count": 1087,
-    "minCount": 1086,
-    "maxCount": 1089
+    "count": 1086,
+    "minCount": 1085,
+    "maxCount": 1088
   }
 }

@@ -4,20 +4,17 @@ Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Downloading highcharts@6.2.0: 0 B/9.70 MB
 Downloading highcharts@11.4.8: 0 B/9.48 MB
-[WARN] GET https://registry.npmjs.org/locate-path/-/locate-path-3.0.0.tgz error (Failed to fetch https://registry.npmjs.org/locate-path/-/locate-path-3.0.0.tgz: error decoding response body: request or response body error: error reading a body from connection: end of file before message length reached) — 1
-Will retry in 10s. 1 retries left.
-✓ Lockfile passes supply-chain policies (1310 entries in 1.3s)
-Progress: resolved 1309, reused 0, downloaded 1309, added 0
+Downloading highcharts@6.2.0: 0 B/9.70 MB
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
+✓ Lockfile passes supply-chain policies (1310 entries in 1.7s)
 Progress: resolved 1309, reused 0, downloaded 1309, added 1309, done
 
 dependencies:
 + animate.less 2.2.0
-+ autoprefixer 10.5.0
++ autoprefixer 10.5.2
 + babel-core 6.26.3
 + babel-eslint 10.1.0
 + babel-loader 9.2.1
@@ -72,7 +69,7 @@ dependencies:
 + js-cookie 3.0.8
 + json-loader 0.5.7
 + leftpad 0.0.1
-+ less 4.6.6
++ less 4.6.7
 + lesshat 4.1.0
 + lodash 4.18.1
 + medium-draft 0.5.18
@@ -84,7 +81,7 @@ dependencies:
 + password-policy 0.0.3
 + postcss-reporter 7.1.0
 + progress 2.0.3
-+ qs 6.15.2
++ qs 6.15.3
 + raw-loader 4.0.2
 + rc-slider 10.6.2
 + react 18.3.1

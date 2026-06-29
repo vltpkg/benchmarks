@@ -1,24 +1,25 @@
 Progress: resolved 0, reused 0, downloaded 1, added 0
+Progress: resolved 0, reused 0, downloaded 81, added 0
 Downloading next@15.0.3: 0 B/24.75 MB
-Downloading @next/swc-linux-arm64-musl@15.0.3: 0 B/51.29 MB
-Downloading @next/swc-linux-x64-musl@15.0.3: 0 B/55.51 MB
-Downloading @next/swc-linux-arm64-gnu@15.0.3: 0 B/41.91 MB
 Downloading @next/swc-win32-x64-msvc@15.0.3: 0 B/56.62 MB
 Downloading @next/swc-linux-x64-gnu@15.0.3: 0 B/45.67 MB
 Downloading @next/swc-darwin-arm64@15.0.3: 0 B/40.68 MB
-Downloading @next/swc-darwin-x64@15.0.3: 0 B/42.13 MB
 Downloading @next/swc-win32-arm64-msvc@15.0.3: 0 B/35.43 MB
-Downloading @img/sharp-libvips-linuxmusl-arm64@1.0.4: 0 B/7.13 MB
-Downloading @img/sharp-win32-ia32@0.33.5: 0 B/8.12 MB
-Downloading @img/sharp-libvips-darwin-x64@1.0.4: 0 B/7.98 MB
-Downloading @img/sharp-libvips-linux-s390x@1.0.4: 0 B/6.44 MB
+Downloading @next/swc-darwin-x64@15.0.3: 0 B/42.13 MB
+Downloading @next/swc-linux-arm64-musl@15.0.3: 0 B/51.29 MB
+Downloading @next/swc-linux-arm64-gnu@15.0.3: 0 B/41.91 MB
+Downloading @next/swc-linux-x64-musl@15.0.3: 0 B/55.51 MB
 Downloading @img/sharp-libvips-linux-arm@1.0.5: 0 B/6.23 MB
-Downloading @img/sharp-libvips-linux-arm64@1.0.4: 0 B/7.10 MB
-Downloading @img/sharp-libvips-linuxmusl-x64@1.0.4: 0 B/7.20 MB
+Downloading @img/sharp-libvips-linux-s390x@1.0.4: 0 B/6.44 MB
+Downloading @img/sharp-win32-ia32@0.33.5: 0 B/8.12 MB
 Downloading @img/sharp-libvips-linux-x64@1.0.4: 0 B/7.06 MB
+Downloading @img/sharp-libvips-linuxmusl-x64@1.0.4: 0 B/7.20 MB
+Downloading @img/sharp-libvips-linux-arm64@1.0.4: 0 B/7.10 MB
 Downloading @img/sharp-libvips-darwin-arm64@1.0.4: 0 B/7.10 MB
+Downloading @img/sharp-libvips-linuxmusl-arm64@1.0.4: 0 B/7.13 MB
 Downloading @img/sharp-win32-x64@0.33.5: 0 B/8.18 MB
-Progress: resolved 0, reused 0, downloaded 348, added 0
+Downloading @img/sharp-libvips-darwin-x64@1.0.4: 0 B/7.98 MB
+Progress: resolved 0, reused 0, downloaded 273, added 0
 Packages: +407
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages: +407
@@ -39,7 +40,7 @@ devDependencies:
 + @types/react-dom 18.3.7
 + eslint 8.57.1
 + eslint-config-next 15.0.3
-+ postcss 8.5.15
++ postcss 8.5.16
 + tailwindcss 3.4.19
 + typescript 5.9.3
 

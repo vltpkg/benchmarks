@@ -1,28 +1,39 @@
  WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
- WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.9.18). Using a specified version in your repository will result in more predictable behavior.
+ WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.1). Using a specified version in your repository will result in more predictable behavior.
 
    • Running build
    • Remote caching disabled
 
-[;31mbuild[;0m
-cache bypass, force executing 5d92b794f214e393
-[31m[1mInternal Error[22m[39m: [38;5;173mnextjs[39m[38;5;37m@[39m[38;5;37mworkspace:.[39m: This package doesn't seem to be present in your lockfile; run "yarn install" to update the lockfile
-    at QR.getCandidates (/home/runner/.yarn/switch/cache/1fcf5036ceb019417d1092cb903e1a38/bin.js:204:4597)
-    at nm.getCandidates (/home/runner/.yarn/switch/cache/1fcf5036ceb019417d1092cb903e1a38/bin.js:141:1311)
-    at /home/runner/.yarn/switch/cache/1fcf5036ceb019417d1092cb903e1a38/bin.js:209:8416
-    at JE (/home/runner/.yarn/switch/cache/1fcf5036ceb019417d1092cb903e1a38/bin.js:140:45030)
-    at it (/home/runner/.yarn/switch/cache/1fcf5036ceb019417d1092cb903e1a38/bin.js:209:8396)
-    at async Promise.allSettled (index 0)
-    at async Mu (/home/runner/.yarn/switch/cache/1fcf5036ceb019417d1092cb903e1a38/bin.js:140:44358)
-    at async /home/runner/.yarn/switch/cache/1fcf5036ceb019417d1092cb903e1a38/bin.js:209:9158
-    at async Qi.startProgressPromise (/home/runner/.yarn/switch/cache/1fcf5036ceb019417d1092cb903e1a38/bin.js:140:130194)
-    at async e.resolveEverything (/home/runner/.yarn/switch/cache/1fcf5036ceb019417d1092cb903e1a38/bin.js:209:7135)
-::error::build: command (/home/runner/work/benchmarks/benchmarks/fixtures/next/) /home/runner/.yarn/switch/bin/yarn run build exited (1)
- ERROR  build: command (/home/runner/work/benchmarks/benchmarks/fixtures/next/) /home/runner/.yarn/switch/bin/yarn run build exited (1)
+::group::build
+cache miss, executing 6a0bcadcc2141f70
+   ▲ Next.js 15.0.3
 
- Tasks:    0 successful, 1 total
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/5) ...
+   Generating static pages (1/5) 
+   Generating static pages (2/5) 
+   Generating static pages (3/5) 
+ ✓ Generating static pages (5/5)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    5.46 kB         105 kB
+└ ○ /_not-found                          896 B           101 kB
++ First Load JS shared by all            99.9 kB
+  ├ chunks/4bd1b696-80bcaf75e1b4285e.js  52.5 kB
+  ├ chunks/517-d083b552e04dead1.js       45.5 kB
+  └ other shared chunks (total)          1.88 kB
+
+
+○  (Static)  prerendered as static content
+
+::endgroup::
+
+ Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    325ms 
-Failed:    //#build
+  Time:    12.374s 
 
- ERROR  run failed: command  exited (1)
