@@ -136,9 +136,16 @@ clean_lockfiles() {
 
 # Function to clean package manager field from package.json
 clean_package_manager_field() {
-  echo "Removing packageManager field from package.json..."
+  echo "Removing packageManager / devEngines.packageManager from package.json..."
   if command -v vlt &> /dev/null; then
     vlt pkg rm packageManager
+    # Recent corepack/yarn auto-pin a devEngines.packageManager entry (e.g.
+    # yarn) into package.json. npm and pnpm enforce devEngines and refuse to
+    # run any command when it doesn't match (EBADDEVENGINES), which breaks
+    # every benchmark that isn't that package manager. Strip it so each PM can
+    # run. vlt is used because it doesn't enforce devEngines, whereas npm/pnpm
+    # would themselves fail on the field we're trying to remove.
+    vlt pkg rm devEngines.packageManager
   fi
 }
 
@@ -213,17 +220,25 @@ clean_git() {
 clean_workspace_protocol() {
   echo "Restoring package.json files (undo workspace: protocol changes)..."
   if command -v git &> /dev/null && git rev-parse --git-dir > /dev/null 2>&1; then
-    git checkout -- packages/ package.json 2>/dev/null || true
+    # Restore each path independently. A single `git checkout -- packages/
+    # package.json` fails as a whole when `packages/` does not exist (most
+    # fixtures are not monorepos), leaving package.json un-restored.
+    git checkout -- package.json 2>/dev/null || true
+    [ -e packages ] && git checkout -- packages/ 2>/dev/null || true
   fi
 }
 
 clean_all() {
   clean_node_modules
   clean_lockfiles
-  clean_package_manager_field
   clean_package_manager_files
   clean_workspace_protocol
   clean_all_cache
+  # Strip packageManager / devEngines.packageManager AFTER the cache cleans:
+  # the corepack-based cache cleans in clean_all_cache can re-pin a
+  # devEngines.packageManager entry into package.json, so this must run last
+  # to guarantee a neutral manifest before the next benchmark.
+  clean_package_manager_field
   clean_build_files
   clean_build_output
   echo "Cleanup completed successfully!"
