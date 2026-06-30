@@ -1,41 +1,41 @@
 Progress: resolved 0, reused 0, downloaded 1, added 0
 Downloading @nx/nx-darwin-arm64@22.7.6: 0 B/7.82 MB
+Downloading @nx/nx-win32-x64-msvc@22.7.6: 0 B/7.19 MB
 Downloading @nx/nx-linux-x64-musl@22.7.6: 0 B/8.88 MB
-Downloading @nx/nx-freebsd-x64@22.7.6: 0 B/8.51 MB
 Downloading @nx/nx-linux-x64-gnu@22.7.6: 0 B/9.23 MB
 Downloading @nx/nx-linux-arm64-musl@22.7.6: 0 B/8.73 MB
-Downloading @nx/nx-linux-arm64-gnu@22.7.6: 0 B/9.12 MB
-Downloading @nx/nx-win32-arm64-msvc@22.7.6: 0 B/6.78 MB
 Downloading @nx/nx-linux-arm-gnueabihf@22.7.6: 0 B/8.76 MB
 Downloading @nx/nx-darwin-x64@22.7.6: 0 B/8.10 MB
-Downloading @nx/nx-win32-x64-msvc@22.7.6: 0 B/7.19 MB
-Progress: resolved 0, reused 0, downloaded 339, added 0
-Progress: resolved 0, reused 0, downloaded 873, added 0
-Progress: resolved 0, reused 0, downloaded 918, added 0
+Downloading @nx/nx-win32-arm64-msvc@22.7.6: 0 B/6.78 MB
+Downloading @nx/nx-linux-arm64-gnu@22.7.6: 0 B/9.12 MB
+Downloading @nx/nx-freebsd-x64@22.7.6: 0 B/8.51 MB
+Progress: resolved 0, reused 0, downloaded 488, added 0
+Progress: resolved 0, reused 0, downloaded 897, added 0
 Downloading @fluentui/react-icons@2.0.331: 0 B/27.21 MB
-Progress: resolved 0, reused 0, downloaded 958, added 0
-Progress: resolved 0, reused 0, downloaded 1006, added 0
+Progress: resolved 0, reused 0, downloaded 972, added 0
+Progress: resolved 0, reused 0, downloaded 1011, added 0
 Progress: resolved 0, reused 0, downloaded 1072, added 0
-Progress: resolved 0, reused 0, downloaded 1117, added 0
-Progress: resolved 0, reused 0, downloaded 1167, added 0
+Progress: resolved 0, reused 0, downloaded 1090, added 0
+Progress: resolved 0, reused 0, downloaded 1140, added 0
+Progress: resolved 0, reused 0, downloaded 1151, added 0
+Progress: resolved 0, reused 0, downloaded 1207, added 0
 Downloading typescript@4.9.5: 0 B/11.62 MB
-[WARN] GET https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz error (Failed to fetch https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz: error decoding response body: request or response body error: error reading a body from connection: end of file before message length reached) — 1
-Will retry in 10s. 1 retries left.
-Progress: resolved 0, reused 0, downloaded 1289, added 0
-Progress: resolved 0, reused 0, downloaded 1565, added 0
+Progress: resolved 0, reused 0, downloaded 1269, added 0
+Progress: resolved 0, reused 0, downloaded 1531, added 0
+Progress: resolved 0, reused 0, downloaded 1571, added 0
 Downloading monaco-editor@0.55.1: 0 B/13.68 MB
-Progress: resolved 0, reused 0, downloaded 1581, added 0
-Progress: resolved 0, reused 0, downloaded 1621, added 0
-Progress: resolved 0, reused 0, downloaded 1663, added 0
-Packages: +1663
+Progress: resolved 0, reused 0, downloaded 1617, added 0
+Progress: resolved 0, reused 0, downloaded 1665, added 0
+Packages: +1665
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Packages: +1663
+Packages: +1665
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Downloading typescript@4.9.5: 15.94 kB/11.62 MB
-Progress: resolved 1663, reused 0, downloaded 1665, added 1663, done
+Progress: resolved 469, reused 0, downloaded 1666, added 462
+Progress: resolved 1148, reused 0, downloaded 1666, added 1141
+Progress: resolved 1665, reused 0, downloaded 1666, added 1665, done
 packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
 packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
 packages/public/umd/babylonjs postinstall: Read more here - https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking
@@ -82,7 +82,7 @@ devDependencies:
 + jest-junit 13.2.0
 + mini-css-extract-plugin 2.6.1
 + nx 22.7.6
-+ prettier 3.9.1
++ prettier 3.9.3
 + rimraf 6.0.1
 + ts-jest 29.1.5
 + ts-node 10.9.2

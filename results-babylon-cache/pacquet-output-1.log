@@ -1,17 +1,17 @@
 Progress: resolved 0, reused 1, downloaded 0, added 0
-Progress: resolved 0, reused 1032, downloaded 0, added 0
-Progress: resolved 0, reused 1109, downloaded 0, added 0
-Progress: resolved 0, reused 1269, downloaded 0, added 0
-Progress: resolved 0, reused 1665, downloaded 0, added 0
-Packages: +1663
+Progress: resolved 0, reused 1036, downloaded 0, added 0
+Progress: resolved 0, reused 1110, downloaded 0, added 0
+Progress: resolved 0, reused 1572, downloaded 0, added 0
+Progress: resolved 0, reused 1666, downloaded 0, added 0
+Packages: +1665
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Packages: +1663
+Packages: +1665
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 1345, reused 1666, downloaded 0, added 1338
-Progress: resolved 1663, reused 1666, downloaded 0, added 1663, done
+Progress: resolved 1159, reused 1667, downloaded 0, added 1152
+Progress: resolved 1665, reused 1667, downloaded 0, added 1665, done
 packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
 packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
 packages/public/umd/babylonjs postinstall: Read more here - https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking
@@ -58,7 +58,7 @@ devDependencies:
 + jest-junit 13.2.0
 + mini-css-extract-plugin 2.6.1
 + nx 22.7.6
-+ prettier 3.9.1
++ prettier 3.9.2
 + rimraf 6.0.1
 + ts-jest 29.1.5
 + ts-node 10.9.2
