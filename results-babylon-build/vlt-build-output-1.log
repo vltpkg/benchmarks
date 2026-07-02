@@ -1,17 +1,17 @@
 Error: Script not defined in package.json
 
-Full details written to: /home/runner/.local/share/vlt/error-logs/error-5389.log
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-5344.log
 
 Full details:
 Error: Script not defined in package.json
-    at runImpl (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-E76YOTJF.js:5310:11)
-    at RunCommand.runFG [as fg] (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-E76YOTJF.js:5262:32)
-    at RunCommand.run (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-FXFN5J74.js:1091:33)
-    at command (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/run-GM2E5WHJ.js:101:58)
-    at outputCommand (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-LPLXAVG7.js:455:39)
-    at Module.run (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/src-QQVS7FWK.js:120:9)
-    at async run (file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/chunk-YXHBZAYO.js:21:3)
-    at async file:///opt/hostedtoolcache/node/24.15.0/arm64/lib/node_modules/vlt/vlt.js:19:1 {
+    at runImpl (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-YQXDHMHG.js:5311:11)
+    at RunCommand.runFG [as fg] (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-YQXDHMHG.js:5263:32)
+    at RunCommand.run (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-SDBTQF2Y.js:1091:33)
+    at command (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/run-ZNJJYEJF.js:101:58)
+    at outputCommand (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-5UXEBLLT.js:455:39)
+    at Module.run (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/src-M3WI7TSB.js:120:9)
+    at async run (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-M2WD7IBO.js:21:3)
+    at async file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/vlt.js:19:1 {
   [cause]: {
     name: 'build',
     cwd: '/home/runner/work/benchmarks/benchmarks/fixtures/babylon',
@@ -131,9 +131,9 @@ Error: Script not defined in package.json
         feature: 'New Feature'
       },
       nx: {},
-      packageManager: 'pnpm@11.2.2',
+      devEngines: {},
       Symbol(newline): '\n',
-      Symbol(indent): '  '
+      Symbol(indent): '    '
     }
   }
 }
