@@ -4,9 +4,9 @@ Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Progress: resolved 1309, reused 0, downloaded 821, added 0
-Downloading highcharts@11.4.8: 0 B/9.48 MB
+Progress: resolved 1309, reused 0, downloaded 771, added 0
 Downloading highcharts@6.2.0: 0 B/9.70 MB
+Downloading highcharts@11.4.8: 0 B/9.48 MB
 ✓ Lockfile passes supply-chain policies (1310 entries in 1.5s)
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11

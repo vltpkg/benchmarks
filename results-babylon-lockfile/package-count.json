@@ -1,6 +1,6 @@
 {
   "berry": {
-    "count": 1740,
+    "count": 1732,
     "minCount": 1717,
     "maxCount": 1763
   },
@@ -15,7 +15,7 @@
     "maxCount": 1534
   },
   "bun": {
-    "count": 1639
+    "count": 1640
   },
   "deno": {
     "count": 1478
