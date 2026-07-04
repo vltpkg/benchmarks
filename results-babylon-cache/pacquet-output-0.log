@@ -1,7 +1,7 @@
 Progress: resolved 0, reused 1, downloaded 0, added 0
 Progress: resolved 0, reused 1065, downloaded 1, added 0
-Progress: resolved 0, reused 1258, downloaded 1, added 0
-Progress: resolved 0, reused 1586, downloaded 1, added 0
+Progress: resolved 0, reused 1109, downloaded 1, added 0
+Progress: resolved 0, reused 1456, downloaded 1, added 0
 Progress: resolved 0, reused 1665, downloaded 1, added 0
 Packages: +1665
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -10,8 +10,7 @@ Packages: +1665
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 782, reused 1666, downloaded 1, added 775
-Progress: resolved 1472, reused 1666, downloaded 1, added 1464
+Progress: resolved 1225, reused 1666, downloaded 1, added 1218
 Progress: resolved 1665, reused 1666, downloaded 1, added 1665, done
 packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
 packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
