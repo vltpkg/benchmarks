@@ -1,6 +1,7 @@
 Progress: resolved 0, reused 1, downloaded 0, added 0
-Progress: resolved 0, reused 1073, downloaded 1, added 0
-Progress: resolved 0, reused 1508, downloaded 1, added 0
+Progress: resolved 0, reused 1055, downloaded 1, added 0
+Progress: resolved 0, reused 1210, downloaded 1, added 0
+Progress: resolved 0, reused 1588, downloaded 1, added 0
 Progress: resolved 0, reused 1665, downloaded 1, added 0
 Packages: +1665
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -9,7 +10,7 @@ Packages: +1665
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 1141, reused 1666, downloaded 1, added 1134
+Progress: resolved 1198, reused 1666, downloaded 1, added 1191
 Progress: resolved 1665, reused 1666, downloaded 1, added 1665, done
 packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
 packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
@@ -65,7 +66,7 @@ devDependencies:
 + tslib 2.8.1
 + typedoc 0.28.19
 + typescript 5.9.3
-+ webpack 5.108.3
++ webpack 5.108.4
 + webpack-cli 6.0.1
 
 Error: ERR_PNPM_IGNORED_BUILDS
