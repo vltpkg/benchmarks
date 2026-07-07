@@ -1,11 +1,11 @@
  WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
- WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.3). Using a specified version in your repository will result in more predictable behavior.
+ WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.4). Using a specified version in your repository will result in more predictable behavior.
 
    • Running build
    • Remote caching disabled
 
 ::group::build
-cache miss, executing 357ae7441e6acc5d
+cache miss, executing a5b7b94b4e0713a7
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -41,5 +41,5 @@ Route (app)                              Size     First Load JS
 
  Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    16.555s 
+  Time:    17.085s 
 

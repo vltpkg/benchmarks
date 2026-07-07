@@ -1,24 +1,24 @@
 Progress: resolved 0, reused 0, downloaded 1, added 0
-Downloading @nx/nx-win32-arm64-msvc@22.7.6: 0 B/6.78 MB
 Downloading @nx/nx-linux-arm64-gnu@22.7.6: 0 B/9.12 MB
 Downloading @nx/nx-freebsd-x64@22.7.6: 0 B/8.51 MB
+Downloading @nx/nx-win32-arm64-msvc@22.7.6: 0 B/6.78 MB
+Downloading @nx/nx-linux-arm-gnueabihf@22.7.6: 0 B/8.76 MB
 Downloading @nx/nx-win32-x64-msvc@22.7.6: 0 B/7.19 MB
-Downloading @nx/nx-linux-x64-musl@22.7.6: 0 B/8.88 MB
+Downloading @nx/nx-linux-arm64-musl@22.7.6: 0 B/8.73 MB
 Downloading @nx/nx-darwin-x64@22.7.6: 0 B/8.10 MB
+Downloading @nx/nx-linux-x64-musl@22.7.6: 0 B/8.88 MB
 Downloading @nx/nx-linux-x64-gnu@22.7.6: 0 B/9.23 MB
 Downloading @nx/nx-darwin-arm64@22.7.6: 0 B/7.82 MB
-Downloading @nx/nx-linux-arm64-musl@22.7.6: 0 B/8.73 MB
-Downloading @nx/nx-linux-arm-gnueabihf@22.7.6: 0 B/8.76 MB
-Progress: resolved 0, reused 0, downloaded 338, added 0
+Progress: resolved 0, reused 0, downloaded 349, added 0
 Progress: resolved 0, reused 0, downloaded 887, added 0
+Progress: resolved 0, reused 0, downloaded 923, added 0
 Downloading @fluentui/react-icons@2.0.331: 0 B/27.21 MB
-Progress: resolved 0, reused 0, downloaded 984, added 0
-Progress: resolved 0, reused 0, downloaded 1018, added 0
+Progress: resolved 0, reused 0, downloaded 1049, added 0
 Progress: resolved 0, reused 0, downloaded 1073, added 0
-Progress: resolved 0, reused 0, downloaded 1117, added 0
+Progress: resolved 0, reused 0, downloaded 1112, added 0
 Downloading typescript@4.9.5: 0 B/11.62 MB
-Progress: resolved 0, reused 0, downloaded 1367, added 0
-Progress: resolved 0, reused 0, downloaded 1435, added 0
+Progress: resolved 0, reused 0, downloaded 1276, added 0
+Progress: resolved 0, reused 0, downloaded 1453, added 0
 Downloading monaco-editor@0.55.1: 0 B/13.68 MB
 Progress: resolved 0, reused 0, downloaded 1662, added 0
 Progress: resolved 0, reused 0, downloaded 1665, added 0
@@ -29,10 +29,9 @@ Packages: +1665
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 380, reused 0, downloaded 1666, added 373
-Progress: resolved 815, reused 0, downloaded 1666, added 808
-Progress: resolved 1164, reused 0, downloaded 1666, added 1157
-Progress: resolved 1651, reused 0, downloaded 1666, added 1647
+Progress: resolved 594, reused 0, downloaded 1666, added 587
+Progress: resolved 1091, reused 0, downloaded 1666, added 1084
+Progress: resolved 1575, reused 0, downloaded 1666, added 1568
 Progress: resolved 1665, reused 0, downloaded 1666, added 1665, done
 packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
 packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
@@ -100,7 +99,7 @@ devDependencies:
 + ts-node 10.9.2
 + ts-patch 3.3.0
 + tslib 2.8.1
-+ typedoc 0.28.19
++ typedoc 0.28.20
 + typescript 5.9.3
 + url-loader 4.1.1
 + webpack 5.108.4
