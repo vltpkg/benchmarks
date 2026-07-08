@@ -6,7 +6,6 @@ Packages: +109
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 109, reused 0, downloaded 109, added 85
 Progress: resolved 109, reused 0, downloaded 109, added 109, done
 
 devDependencies:
@@ -16,7 +15,7 @@ devDependencies:
 + @sveltejs/kit 2.69.1
 + @sveltejs/vite-plugin-svelte 5.1.1
 + svelte 5.56.4
-+ svelte-check 4.7.1
++ svelte-check 4.7.2
 + typescript 5.9.3
 + vite 6.4.3
 
