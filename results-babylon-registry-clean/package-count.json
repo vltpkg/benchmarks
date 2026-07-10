@@ -1,7 +1,10 @@
 {
   "npm": {
-    "count": 1785,
-    "minCount": 1782,
-    "maxCount": 1788
+    "count": 1786,
+    "minCount": 1783,
+    "maxCount": 1789
+  },
+  "aws": {
+    "count": 1787
   }
 }
