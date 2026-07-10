@@ -24,10 +24,5 @@
   },
   "deno": {
     "count": 1280
-  },
-  "aube": {
-    "count": 1086,
-    "minCount": 1085,
-    "maxCount": 1088
   }
 }

@@ -1,6 +1,6 @@
 Progress: resolved 0, reused 0, downloaded 1, added 0
 Progress: resolved 0, reused 0, downloaded 151, added 0
-Progress: resolved 0, reused 0, downloaded 494, added 0
+Progress: resolved 0, reused 0, downloaded 496, added 0
 Packages: +520
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages: +520
@@ -19,7 +19,7 @@ devDependencies:
 + @playwright/test 1.61.1
 + @tsconfig/node22 22.0.5
 + @types/jsdom 21.1.7
-+ @types/node 22.20.0
++ @types/node 22.20.1
 + @vitejs/plugin-vue 5.2.4
 + @vitejs/plugin-vue-jsx 4.2.0
 + @vitest/eslint-plugin 1.1.10

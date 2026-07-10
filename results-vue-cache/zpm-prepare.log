@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul  8 11:02 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 10 11:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -10,15 +10,14 @@ yarn version:
 canary version:
 6.0.0-rc.19
 packageManager (before):
-{}
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.19"
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul  8 11:02 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 10 11:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -26,15 +25,14 @@ yarn version:
 canary version:
 6.0.0-rc.19
 packageManager (before):
-{}
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.19"
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul  8 11:02 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 10 11:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -42,15 +40,14 @@ yarn version:
 canary version:
 6.0.0-rc.19
 packageManager (before):
-{}
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.19"
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul  8 11:02 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 10 11:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -58,15 +55,14 @@ yarn version:
 canary version:
 6.0.0-rc.19
 packageManager (before):
-{}
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.19"
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul  8 11:02 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 10 11:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -74,15 +70,14 @@ yarn version:
 canary version:
 6.0.0-rc.19
 packageManager (before):
-{}
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.19"
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul  8 11:02 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 10 11:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -90,15 +85,14 @@ yarn version:
 canary version:
 6.0.0-rc.19
 packageManager (before):
-{}
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.19"
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul  8 11:02 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 10 11:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -106,15 +100,14 @@ yarn version:
 canary version:
 6.0.0-rc.19
 packageManager (before):
-{}
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.19"
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul  8 11:06 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 10 11:28 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -122,7 +115,6 @@ yarn version:
 canary version:
 6.0.0-rc.19
 packageManager (before):
-{}
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
-"yarn@6.0.0-rc.19"
+yarn@6.0.0-rc.19
