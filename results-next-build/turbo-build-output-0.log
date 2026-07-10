@@ -5,7 +5,7 @@
    • Remote caching disabled
 
 ::group::build
-cache miss, executing c677dd47a66000f1
+cache miss, executing cb8a34a77b2e7791
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -41,5 +41,5 @@ Route (app)                              Size     First Load JS
 
  Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    17.324s 
+  Time:    16.436s 
 

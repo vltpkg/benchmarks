@@ -4,7 +4,13 @@
     "minCount": 1783,
     "maxCount": 1789
   },
+  "vlt": {
+    "count": 1787
+  },
   "aws": {
+    "count": 1787
+  },
+  "github": {
     "count": 1787
   }
 }

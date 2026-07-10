@@ -12,7 +12,7 @@ computing gzip size...
 [2mdist/[22m[2massets/[22m[35mindex-DVB8kM4A.css      [39m[1m[2m  4.20 kB[22m[1m[22m[2m │ gzip:  1.29 kB[22m
 [2mdist/[22m[2massets/[22m[36mAboutView-BToEGdBx.js   [39m[1m[2m  0.23 kB[22m[1m[22m[2m │ gzip:  0.21 kB[22m
 [2mdist/[22m[2massets/[22m[36mindex-UJ3I5Cy4.js       [39m[1m[2m101.42 kB[22m[1m[22m[2m │ gzip: 39.33 kB[22m
-[32m✓ built in 845ms[39m
+[32m✓ built in 859ms[39m
 [ELIFECYCLE] Command failed with exit code 2.
 ERROR: "type-check" exited with 2.
 [ELIFECYCLE] Command failed with exit code 1.
