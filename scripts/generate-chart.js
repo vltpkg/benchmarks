@@ -41,6 +41,43 @@ const COLORS = {
   node: "#84ba64",
 };
 
+// Descriptions for each variation explaining what the benchmark tests
+const VARIATION_DESCRIPTIONS = {
+  // Package manager install variations
+  packageManagers: {
+    clean:
+      "Fresh install with no cache, lockfile, or node_modules",
+    cache:
+      "Cold install with warm OS filesystem cache only — no lockfile, no node_modules",
+    lockfile:
+      "Install with lockfile present — no OS cache, no node_modules",
+    "cache+lockfile":
+      "Install with OS filesystem cache and lockfile present — no node_modules",
+    node_modules:
+      "Install with node_modules present — no OS cache, no lockfile",
+    "cache+node_modules":
+      "Install with OS filesystem cache and node_modules present — no lockfile",
+    "lockfile+node_modules":
+      "Install with lockfile and node_modules present — no OS cache",
+    "cache+lockfile+node_modules":
+      "Install with OS filesystem cache, lockfile, and node_modules present",
+  },
+  taskRunners: {
+    build:
+      "Package manager task runner executing build scripts across workspace packages",
+    "build-cache":
+      "Package manager task runner executing build scripts with cached outputs",
+    run: "Package manager task runner executing run scripts across workspace packages",
+  },
+  // Registry variations
+  registries: {
+    "registry-clean":
+      "npm install from different registries with no cache, lockfile, or node_modules",
+    "registry-lockfile":
+      "npm install from different registries with lockfile present — no cache, no node_modules",
+  }
+};
+
 // Colors for registry benchmarks
 const REGISTRY_COLORS = {
   npm: "#cb0606",
@@ -248,6 +285,7 @@ function generateChartData(option = {}) {
     data: result,
     packageManagers: Object.keys(COLORS),
     colors: COLORS,
+    descriptions: VARIATION_DESCRIPTIONS,
   };
 }
 
@@ -411,6 +449,7 @@ function generateRegistryChartData(option = {}) {
     data: result,
     packageManagers: registries,
     colors: REGISTRY_COLORS,
+    descriptions: VARIATION_DESCRIPTIONS,
   };
 }
 
@@ -452,24 +491,29 @@ const dumpChartData = () => {
       data: chartData.data,
       packageManagers: chartData.packageManagers,
       colors: chartData.colors,
+      descriptions: chartData.descriptions,
     },
     perPackageCountChartData: {
       variations: perPackageCountChartData.variations,
       data: perPackageCountChartData.data,
       packageManagers: perPackageCountChartData.packageManagers,
       colors: perPackageCountChartData.colors,
+      descriptions: perPackageCountChartData.descriptions,
     },
     registryChartData: {
       variations: registryChartData.variations,
       data: registryChartData.data,
       packageManagers: registryChartData.packageManagers,
       colors: registryChartData.colors,
+      descriptions: registryChartData.descriptions,
     },
     registryPerPackageCountChartData: {
       variations: registryPerPackageCountChartData.variations,
       data: registryPerPackageCountChartData.data,
       packageManagers: registryPerPackageCountChartData.packageManagers,
       colors: registryPerPackageCountChartData.colors,
+      descriptions:
+        registryPerPackageCountChartData.descriptions,
     },
     versions,
   };

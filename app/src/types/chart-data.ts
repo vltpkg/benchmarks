@@ -162,11 +162,18 @@ export interface PackageManagerData {
 
 export type FixtureResult = BaseFixtureResult & PackageManagerData;
 
+export interface VariationDescriptions {
+  packageManagers: Record<string, string>;
+  taskRunners: Record<string, string>;
+  registries: Record<string, string>;
+}
+
 export interface ChartDataSet {
   variations: Variation[];
   data: Record<Variation, FixtureResult[]>;
   packageManagers: PackageManager[];
   colors: ColorMap;
+  descriptions?: VariationDescriptions;
 }
 
 export interface BenchmarkChartData {
