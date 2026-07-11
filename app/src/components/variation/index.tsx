@@ -92,8 +92,8 @@ export const VariationPage = () => {
     chartData.perPackageCountChartData.data[variation as Variation];
   const allPackageManagers = chartData.chartData.packageManagers;
   const colors = chartData.chartData.colors;
-  const variationDescription = chartData.chartData.descriptions
-    ? Object.values(chartData.chartData.descriptions).find(
+  const variationDescription = chartData.descriptions
+    ? Object.values(chartData.descriptions).find(
         (cat) => variation in cat,
       )?.[variation]
     : undefined;
@@ -155,30 +155,30 @@ export const VariationPage = () => {
   // Dynamic titles and section IDs based on variation type
   const titles = isTaskExecution
     ? {
-        totalChart: "Task Execution Time by Fixture",
-        totalTable: "Task Execution Time Data",
-        perPackageChart: "Task Execution Time by Fixture",
-        perPackageTable: "Task Execution Time Data",
+      totalChart: "Task Execution Time by Fixture",
+      totalTable: "Task Execution Time Data",
+      perPackageChart: "Task Execution Time by Fixture",
+      perPackageTable: "Task Execution Time Data",
+      packageCountTable: "Package Count Data",
+      processCountTable: "Spawned Processes Data",
+    }
+    : isRegistry
+      ? {
+        totalChart: "Registry Install Time by Fixture",
+        totalTable: "Registry Install Time Data",
+        perPackageChart: "Registry Per Package Install Time by Fixture",
+        perPackageTable: "Registry Per Package Install Time Data",
         packageCountTable: "Package Count Data",
         processCountTable: "Spawned Processes Data",
       }
-    : isRegistry
-      ? {
-          totalChart: "Registry Install Time by Fixture",
-          totalTable: "Registry Install Time Data",
-          perPackageChart: "Registry Per Package Install Time by Fixture",
-          perPackageTable: "Registry Per Package Install Time Data",
-          packageCountTable: "Package Count Data",
-          processCountTable: "Spawned Processes Data",
-        }
       : {
-          totalChart: "Total Install Time by Fixture",
-          totalTable: "Total Install Time Data",
-          perPackageChart: "Per Package Install Time by Fixture",
-          perPackageTable: "Per Package Install Time Data",
-          packageCountTable: "Package Count Data",
-          processCountTable: "Spawned Processes Data",
-        };
+        totalChart: "Total Install Time by Fixture",
+        totalTable: "Total Install Time Data",
+        perPackageChart: "Per Package Install Time by Fixture",
+        perPackageTable: "Per Package Install Time Data",
+        packageCountTable: "Package Count Data",
+        processCountTable: "Spawned Processes Data",
+      };
 
   // Section IDs for deep linking
   const sectionIds = {
@@ -197,7 +197,7 @@ export const VariationPage = () => {
         <div className="rounded-lg border border-border bg-card/50 px-4 py-3 text-sm text-muted-foreground">
           <strong className="text-foreground">
             {isRegistry ? "About this benchmark:" : "What's being tested:"}
-          </strong>{" "}
+          </strong>
           {variationDescription}
           {isRegistry && (
             <>

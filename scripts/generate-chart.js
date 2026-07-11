@@ -285,7 +285,6 @@ function generateChartData(option = {}) {
     data: result,
     packageManagers: Object.keys(COLORS),
     colors: COLORS,
-    descriptions: VARIATION_DESCRIPTIONS,
   };
 }
 
@@ -449,7 +448,6 @@ function generateRegistryChartData(option = {}) {
     data: result,
     packageManagers: registries,
     colors: REGISTRY_COLORS,
-    descriptions: VARIATION_DESCRIPTIONS,
   };
 }
 
@@ -491,30 +489,26 @@ const dumpChartData = () => {
       data: chartData.data,
       packageManagers: chartData.packageManagers,
       colors: chartData.colors,
-      descriptions: chartData.descriptions,
     },
     perPackageCountChartData: {
       variations: perPackageCountChartData.variations,
       data: perPackageCountChartData.data,
       packageManagers: perPackageCountChartData.packageManagers,
       colors: perPackageCountChartData.colors,
-      descriptions: perPackageCountChartData.descriptions,
     },
     registryChartData: {
       variations: registryChartData.variations,
       data: registryChartData.data,
       packageManagers: registryChartData.packageManagers,
       colors: registryChartData.colors,
-      descriptions: registryChartData.descriptions,
     },
     registryPerPackageCountChartData: {
       variations: registryPerPackageCountChartData.variations,
       data: registryPerPackageCountChartData.data,
       packageManagers: registryPerPackageCountChartData.packageManagers,
       colors: registryPerPackageCountChartData.colors,
-      descriptions:
-        registryPerPackageCountChartData.descriptions,
     },
+    descriptions: VARIATION_DESCRIPTIONS,
     versions,
   };
 

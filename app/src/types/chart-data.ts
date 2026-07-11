@@ -173,7 +173,6 @@ export interface ChartDataSet {
   data: Record<Variation, FixtureResult[]>;
   packageManagers: PackageManager[];
   colors: ColorMap;
-  descriptions?: VariationDescriptions;
 }
 
 export interface BenchmarkChartData {
@@ -183,6 +182,7 @@ export interface BenchmarkChartData {
   perPackageCountChartData: ChartDataSet;
   registryChartData?: ChartDataSet;
   registryPerPackageCountChartData?: ChartDataSet;
+  descriptions?: VariationDescriptions;
   versions?: PackageManagerVersions;
 }
 
