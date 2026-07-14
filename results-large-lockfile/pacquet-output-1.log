@@ -4,7 +4,7 @@ Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Progress: resolved 1309, reused 0, downloaded 803, added 0
+Progress: resolved 1309, reused 0, downloaded 711, added 0
 Downloading highcharts@11.4.8: 0 B/9.48 MB
 ✓ Lockfile passes supply-chain policies (1310 entries in 1.2s)
 Downloading highcharts@6.2.0: 0 B/9.70 MB

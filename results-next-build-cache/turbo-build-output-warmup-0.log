@@ -1,11 +1,11 @@
  WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
- WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.4). Using a specified version in your repository will result in more predictable behavior.
+ WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.5). Using a specified version in your repository will result in more predictable behavior.
 
    • Running build
    • Remote caching disabled
 
 ::group::build
-cache miss, executing c8849ff3e72d34d7
+cache miss, executing ea6987f6a9ecf841
    ▲ Next.js 15.0.3
 
    Creating an optimized production build ...
@@ -35,5 +35,5 @@ Route (app)                              Size     First Load JS
 
  Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    12.512s 
+  Time:    12.907s 
 
