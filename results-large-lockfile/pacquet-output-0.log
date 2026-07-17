@@ -5,8 +5,9 @@ Packages: +1309
 Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Downloading highcharts@6.2.0: 0 B/9.70 MB
+Progress: resolved 1309, reused 0, downloaded 830, added 0
 Downloading highcharts@11.4.8: 0 B/9.48 MB
-✓ Lockfile passes supply-chain policies (1310 entries in 1.7s)
+✓ Lockfile passes supply-chain policies (1310 entries in 1.3s)
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
@@ -14,7 +15,7 @@ Progress: resolved 1309, reused 0, downloaded 1309, added 1309, done
 
 dependencies:
 + animate.less 2.2.0
-+ autoprefixer 10.5.3
++ autoprefixer 10.5.4
 + babel-core 6.26.3
 + babel-eslint 10.1.0
 + babel-loader 9.2.1

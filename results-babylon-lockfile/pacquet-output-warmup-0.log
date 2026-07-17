@@ -1,29 +1,25 @@
 Progress: resolved 0, reused 0, downloaded 1, added 0
-Downloading @nx/nx-linux-arm64-gnu@22.7.7: 0 B/9.11 MB
 Downloading @nx/nx-linux-x64-gnu@22.7.7: 0 B/9.21 MB
-Downloading @nx/nx-freebsd-x64@22.7.7: 0 B/8.50 MB
-Downloading @nx/nx-win32-x64-msvc@22.7.7: 0 B/7.20 MB
-Downloading @nx/nx-darwin-x64@22.7.7: 0 B/8.10 MB
-Downloading @nx/nx-darwin-arm64@22.7.7: 0 B/7.81 MB
-Downloading @nx/nx-linux-x64-musl@22.7.7: 0 B/8.87 MB
-Downloading @nx/nx-linux-arm64-musl@22.7.7: 0 B/8.72 MB
-Downloading @nx/nx-win32-arm64-msvc@22.7.7: 0 B/6.76 MB
 Downloading @nx/nx-linux-arm-gnueabihf@22.7.7: 0 B/8.74 MB
-Progress: resolved 0, reused 0, downloaded 506, added 0
+Downloading @nx/nx-linux-arm64-gnu@22.7.7: 0 B/9.11 MB
+Downloading @nx/nx-win32-arm64-msvc@22.7.7: 0 B/6.76 MB
+Downloading @nx/nx-darwin-arm64@22.7.7: 0 B/7.81 MB
+Downloading @nx/nx-darwin-x64@22.7.7: 0 B/8.10 MB
+Downloading @nx/nx-linux-arm64-musl@22.7.7: 0 B/8.72 MB
+Downloading @nx/nx-freebsd-x64@22.7.7: 0 B/8.50 MB
+Downloading @nx/nx-linux-x64-musl@22.7.7: 0 B/8.87 MB
+Downloading @nx/nx-win32-x64-msvc@22.7.7: 0 B/7.20 MB
+Progress: resolved 0, reused 0, downloaded 747, added 0
 Progress: resolved 0, reused 0, downloaded 917, added 0
 Downloading @fluentui/react-icons@2.0.333: 0 B/28.53 MB
-Progress: resolved 0, reused 0, downloaded 962, added 0
-Progress: resolved 0, reused 0, downloaded 968, added 0
-Progress: resolved 0, reused 0, downloaded 1062, added 0
-Progress: resolved 0, reused 0, downloaded 1077, added 0
-Progress: resolved 0, reused 0, downloaded 1121, added 0
-Progress: resolved 0, reused 0, downloaded 1210, added 0
+Progress: resolved 0, reused 0, downloaded 966, added 0
+Progress: resolved 0, reused 0, downloaded 998, added 0
+Progress: resolved 0, reused 0, downloaded 1176, added 0
 Downloading typescript@4.9.5: 0 B/11.62 MB
-Progress: resolved 0, reused 0, downloaded 1272, added 0
-Progress: resolved 0, reused 0, downloaded 1441, added 0
-Progress: resolved 0, reused 0, downloaded 1576, added 0
+Progress: resolved 0, reused 0, downloaded 1276, added 0
+Progress: resolved 0, reused 0, downloaded 1439, added 0
 Downloading monaco-editor@0.55.1: 0 B/13.68 MB
-Progress: resolved 0, reused 0, downloaded 1609, added 0
+Progress: resolved 0, reused 0, downloaded 1663, added 0
 Progress: resolved 0, reused 0, downloaded 1668, added 0
 Packages: +1680
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -32,8 +28,8 @@ Packages: +1680
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 1211, reused 0, downloaded 1669, added 1204
-Progress: resolved 1669, reused 0, downloaded 1669, added 1669
+Progress: resolved 713, reused 0, downloaded 1669, added 706
+Progress: resolved 1233, reused 0, downloaded 1669, added 1226
 Progress: resolved 1680, reused 0, downloaded 1669, added 1680, done
 packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
 packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
@@ -47,7 +43,7 @@ dependencies:
 + @dnd-kit/modifiers 9.0.0
 + @dnd-kit/sortable 10.0.0
 + @fluentui-contrib/react-virtualizer 0.5.4
-+ @fluentui/react-components 9.74.3
++ @fluentui/react-components 9.74.4
 + jest 29.7.0
 + jest-puppeteer 10.1.4
 + memlab 1.1.60
@@ -61,7 +57,7 @@ devDependencies:
 + @dev/build-tools link:packages/dev/buildTools
 + @eslint/js 9.39.5
 + @fluentui-contrib/react-virtualizer 0.5.4
-+ @fluentui/react-components 9.74.3
++ @fluentui/react-components 9.74.4
 + @nrwl/tao 19.8.4
 + @nrwl/workspace 19.8.4
 + @playwright/test 1.57.0

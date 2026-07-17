@@ -10,7 +10,7 @@ Progress: resolved 1310, reused 1310, downloaded 0, added 1310, done
 
 dependencies:
 + animate.less 2.2.0
-+ autoprefixer 10.5.3
++ autoprefixer 10.5.4
 + babel-core 6.26.3
 + babel-eslint 10.1.0
 + babel-loader 9.2.1
