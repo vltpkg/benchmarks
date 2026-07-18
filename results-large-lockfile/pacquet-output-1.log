@@ -6,7 +6,7 @@ Packages: +1309
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Downloading highcharts@11.4.8: 0 B/9.48 MB
 Downloading highcharts@6.2.0: 0 B/9.70 MB
-✓ Lockfile passes supply-chain policies (1310 entries in 1.3s)
+✓ Lockfile passes supply-chain policies (1310 entries in 1.5s)
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
