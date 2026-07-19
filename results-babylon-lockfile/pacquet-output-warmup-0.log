@@ -1,25 +1,27 @@
 Progress: resolved 0, reused 0, downloaded 1, added 0
-Downloading @nx/nx-win32-x64-msvc@22.7.7: 0 B/7.20 MB
-Downloading @nx/nx-linux-arm64-gnu@22.7.7: 0 B/9.11 MB
-Downloading @nx/nx-linux-x64-gnu@22.7.7: 0 B/9.21 MB
 Downloading @nx/nx-linux-x64-musl@22.7.7: 0 B/8.87 MB
-Downloading @nx/nx-win32-arm64-msvc@22.7.7: 0 B/6.76 MB
-Downloading @nx/nx-linux-arm64-musl@22.7.7: 0 B/8.72 MB
+Downloading @nx/nx-linux-x64-gnu@22.7.7: 0 B/9.21 MB
 Downloading @nx/nx-darwin-arm64@22.7.7: 0 B/7.81 MB
+Downloading @nx/nx-linux-arm-gnueabihf@22.7.7: 0 B/8.74 MB
 Downloading @nx/nx-darwin-x64@22.7.7: 0 B/8.10 MB
 Downloading @nx/nx-freebsd-x64@22.7.7: 0 B/8.50 MB
-Downloading @nx/nx-linux-arm-gnueabihf@22.7.7: 0 B/8.74 MB
-Progress: resolved 0, reused 0, downloaded 683, added 0
-Progress: resolved 0, reused 0, downloaded 920, added 0
+Downloading @nx/nx-linux-arm64-musl@22.7.7: 0 B/8.72 MB
+Downloading @nx/nx-win32-x64-msvc@22.7.7: 0 B/7.20 MB
+Downloading @nx/nx-win32-arm64-msvc@22.7.7: 0 B/6.76 MB
+Downloading @nx/nx-linux-arm64-gnu@22.7.7: 0 B/9.11 MB
+Progress: resolved 0, reused 0, downloaded 342, added 0
+Progress: resolved 0, reused 0, downloaded 891, added 0
 Downloading @fluentui/react-icons@2.0.333: 0 B/28.53 MB
-Progress: resolved 0, reused 0, downloaded 963, added 0
-Progress: resolved 0, reused 0, downloaded 981, added 0
-Progress: resolved 0, reused 0, downloaded 1116, added 0
+Progress: resolved 0, reused 0, downloaded 967, added 0
+Progress: resolved 0, reused 0, downloaded 1113, added 0
+Progress: resolved 0, reused 0, downloaded 1195, added 0
 Downloading typescript@4.9.5: 0 B/11.62 MB
-Progress: resolved 0, reused 0, downloaded 1290, added 0
-Progress: resolved 0, reused 0, downloaded 1549, added 0
+Progress: resolved 0, reused 0, downloaded 1272, added 0
+Progress: resolved 0, reused 0, downloaded 1288, added 0
+Progress: resolved 0, reused 0, downloaded 1524, added 0
 Downloading monaco-editor@0.55.1: 0 B/13.68 MB
-Progress: resolved 0, reused 0, downloaded 1596, added 0
+Progress: resolved 0, reused 0, downloaded 1591, added 0
+Progress: resolved 0, reused 0, downloaded 1667, added 0
 Progress: resolved 0, reused 0, downloaded 1668, added 0
 Packages: +1680
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -28,10 +30,7 @@ Packages: +1680
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 745, reused 0, downloaded 1669, added 738
-Progress: resolved 1053, reused 0, downloaded 1669, added 1046
-Progress: resolved 1461, reused 0, downloaded 1669, added 1455
-Progress: resolved 1680, reused 0, downloaded 1669, added 1679
+Progress: resolved 1137, reused 0, downloaded 1669, added 1130
 Progress: resolved 1680, reused 0, downloaded 1669, added 1680, done
 packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
 packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
@@ -46,6 +45,7 @@ dependencies:
 + @dnd-kit/sortable 10.0.0
 + @fluentui-contrib/react-virtualizer 0.5.4
 + @fluentui/react-components 9.74.4
++ eslint 9.39.5
 + jest 29.7.0
 + jest-puppeteer 10.1.4
 + memlab 1.1.60
@@ -56,6 +56,7 @@ optionalDependencies:
 
 devDependencies:
 + @alex_neo/jest-expect-message 1.0.5
++ @babel/core 7.29.7
 + @dev/build-tools link:packages/dev/buildTools
 + @eslint/js 9.39.5
 + @fluentui-contrib/react-virtualizer 0.5.4
@@ -63,6 +64,7 @@ devDependencies:
 + @nrwl/tao 19.8.4
 + @nrwl/workspace 19.8.4
 + @playwright/test 1.57.0
++ @svgr/webpack 7.0.0
 + @types/expect-puppeteer 5.0.6
 + @types/fs-extra 9.0.13
 + @types/jest 27.4.1
@@ -72,6 +74,7 @@ devDependencies:
 + @typescript-eslint/eslint-plugin 8.64.0
 + @typescript-eslint/parser 8.64.0
 + ajv 8.12.0
++ browserstack-local 1.5.13
 + chokidar 3.6.0
 + dotenv 16.0.3
 + es-check 7.2.1
@@ -93,7 +96,9 @@ devDependencies:
 + jest-puppeteer 10.1.4
 + mini-css-extract-plugin 2.6.1
 + nx 22.7.7
++ nyc 17.1.0
 + prettier 3.9.5
++ puppeteer 22.15.0
 + re-resizable 6.11.2
 + rimraf 6.0.1
 + ts-jest 29.1.5
@@ -105,6 +110,7 @@ devDependencies:
 + url-loader 4.1.1
 + webpack 5.108.4
 + webpack-cli 6.0.1
++ webpack-dev-server 5.2.2
 
 Error: ERR_PNPM_IGNORED_BUILDS
 
