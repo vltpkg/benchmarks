@@ -1,17 +1,17 @@
 Progress: resolved 0, reused 1, downloaded 0, added 0
-Progress: resolved 0, reused 1069, downloaded 1, added 0
-Progress: resolved 0, reused 1421, downloaded 1, added 0
-Progress: resolved 0, reused 1668, downloaded 1, added 0
-Packages: +1680
+Progress: resolved 0, reused 1037, downloaded 1, added 0
+Progress: resolved 0, reused 1260, downloaded 1, added 0
+Progress: resolved 0, reused 1622, downloaded 1, added 0
+Progress: resolved 0, reused 1667, downloaded 1, added 0
+Packages: +1679
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Packages: +1680
+Packages: +1679
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 1172, reused 1669, downloaded 1, added 1165
-Progress: resolved 1617, reused 1669, downloaded 1, added 1615
-Progress: resolved 1680, reused 1669, downloaded 1, added 1680, done
+Progress: resolved 1264, reused 1668, downloaded 1, added 1257
+Progress: resolved 1679, reused 1668, downloaded 1, added 1679, done
 packages/public/umd/babylonjs postinstall$ node ./scripts/postinstall.js
 packages/public/umd/babylonjs postinstall: The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
 packages/public/umd/babylonjs postinstall: Read more here - https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking
@@ -72,7 +72,7 @@ devDependencies:
 Error: ERR_PNPM_IGNORED_BUILDS
 
   × installing dependencies
-  ╰─▶ Ignored build scripts: @memlab/cli@1.0.45, @parcel/watcher@2.5.6,
+  ╰─▶ Ignored build scripts: @memlab/cli@1.0.45, @parcel/watcher@2.6.0,
       bufferutil@4.1.0, canvas@3.2.3, core-js-pure@3.49.0, esbuild@0.25.12,
       memlab@1.1.60, nx@19.8.4, nx@22.7.7, puppeteer@22.15.0, sleep@6.1.0,
       utf-8-validate@5.0.10

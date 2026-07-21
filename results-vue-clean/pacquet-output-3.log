@@ -8,7 +8,6 @@ Packages: +520
 Packages are hard linked from the content-addressable store to the virtual store.
   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
   Virtual store is at:             node_modules/.pnpm
-Progress: resolved 520, reused 0, downloaded 520, added 519
 Progress: resolved 520, reused 0, downloaded 520, added 520, done
 
 dependencies:
