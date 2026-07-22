@@ -151,6 +151,7 @@ jobs:
       - name: Run Benchmarks variations
         env:
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
+          VLT_REGISTRY_URL: ${{ secrets.VLT_REGISTRY_URL }}
           VLT_REGISTRY_AUTH_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
           GH_REGISTRY: ${{ secrets.GH_REGISTRY }}
           GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
