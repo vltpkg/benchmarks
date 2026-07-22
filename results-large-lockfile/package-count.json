@@ -3,10 +3,12 @@
     "count": 1397
   },
   "yarn": {
-    "count": 1327
+    "count": 1326
   },
   "berry": {
-    "count": 1327
+    "count": 1327,
+    "minCount": 1326,
+    "maxCount": 1327
   },
   "pnpm": {
     "count": 1250,
@@ -14,7 +16,7 @@
     "maxCount": 1251
   },
   "vlt": {
-    "count": 1294
+    "count": 1293
   },
   "bun": {
     "count": 1546
