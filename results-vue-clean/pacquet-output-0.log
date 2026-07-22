@@ -1,6 +1,7 @@
 Progress: resolved 0, reused 0, downloaded 1, added 0
-Progress: resolved 0, reused 0, downloaded 151, added 0
-Progress: resolved 0, reused 0, downloaded 495, added 0
+Progress: resolved 0, reused 0, downloaded 142, added 0
+Progress: resolved 0, reused 0, downloaded 348, added 0
+Progress: resolved 0, reused 0, downloaded 513, added 0
 Packages: +520
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Packages: +520
@@ -32,7 +33,7 @@ devDependencies:
 + eslint-plugin-vue 9.33.0
 + jsdom 25.0.1
 + npm-run-all2 7.0.2
-+ prettier 3.9.5
++ prettier 3.9.6
 + typescript 5.6.3
 + vite 6.4.3
 + vite-plugin-vue-devtools 7.7.10
