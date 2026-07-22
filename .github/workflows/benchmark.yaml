@@ -153,6 +153,8 @@ jobs:
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
           VLT_REGISTRY_URL: ${{ secrets.VLT_REGISTRY_URL }}
           VLT_REGISTRY_AUTH_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
+          CLOUDSMITH_REGISTRY: ${{ secrets.CLOUDSMITH_REGISTRY }}
+          CLOUDSMITH_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
           GH_REGISTRY: ${{ secrets.GH_REGISTRY }}
           GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
           BENCH_WARMUP: ${{ steps.tune.outputs.warmup }}

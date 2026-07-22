@@ -33,7 +33,7 @@ const countFiles = [
   { filename: 'aube-count.txt', pmName: 'aube' },
   // Registry names (for registry benchmark variations)
   { filename: 'aws-count.txt', pmName: 'aws' },
-
+  { filename: 'cloudsmith-count.txt', pmName: 'cloudsmith' },
   { filename: 'github-count.txt', pmName: 'github' },
 ];
 
