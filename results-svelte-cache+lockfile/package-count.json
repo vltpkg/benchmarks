@@ -12,9 +12,7 @@
     "count": 60
   },
   "pnpm": {
-    "count": 63,
-    "minCount": 59,
-    "maxCount": 109
+    "count": 59
   },
   "vlt": {
     "count": 59

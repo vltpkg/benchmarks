@@ -3,17 +3,15 @@
     "count": 336
   },
   "berry": {
-    "count": 337,
-    "minCount": 336,
+    "count": 338,
+    "minCount": 337,
     "maxCount": 338
   },
   "zpm": {
-    "count": 343
+    "count": 344
   },
   "pnpm": {
-    "count": 334,
-    "minCount": 328,
-    "maxCount": 380
+    "count": 328
   },
   "vlt": {
     "count": 328

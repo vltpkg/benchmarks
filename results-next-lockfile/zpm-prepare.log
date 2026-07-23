@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 693 Jul 22 21:23 package.json
+-rw-r--r-- 1 runner runner 693 Jul 23 11:06 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -16,7 +16,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 693 Jul 22 21:24 package.json
+-rw-r--r-- 1 runner runner 693 Jul 23 11:07 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -30,7 +30,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 693 Jul 22 21:24 package.json
+-rw-r--r-- 1 runner runner 693 Jul 23 11:07 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -44,7 +44,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 693 Jul 22 21:25 package.json
+-rw-r--r-- 1 runner runner 693 Jul 23 11:08 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -58,7 +58,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 693 Jul 22 21:26 package.json
+-rw-r--r-- 1 runner runner 693 Jul 23 11:08 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -72,7 +72,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 693 Jul 22 21:26 package.json
+-rw-r--r-- 1 runner runner 693 Jul 23 11:09 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -86,7 +86,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 693 Jul 22 21:26 package.json
+-rw-r--r-- 1 runner runner 693 Jul 23 11:09 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -100,7 +100,7 @@ packageManager (after):
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 693 Jul 22 21:37 package.json
+-rw-r--r-- 1 runner runner 693 Jul 23 11:19 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:

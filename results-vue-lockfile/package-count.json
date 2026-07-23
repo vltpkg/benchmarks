@@ -7,13 +7,8 @@
   },
   "berry": {
     "count": 464,
-    "minCount": 462,
+    "minCount": 461,
     "maxCount": 466
-  },
-  "pnpm": {
-    "count": 452,
-    "minCount": 442,
-    "maxCount": 515
   },
   "vlt": {
     "count": 442
