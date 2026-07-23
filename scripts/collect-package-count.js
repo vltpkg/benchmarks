@@ -35,6 +35,7 @@ const countFiles = [
   { filename: 'aws-count.txt', pmName: 'aws' },
   { filename: 'cloudsmith-count.txt', pmName: 'cloudsmith' },
   { filename: 'github-count.txt', pmName: 'github' },
+  { filename: 'jfrog-count.txt', pmName: 'jfrog' },
 ];
 
 let pmName = null;

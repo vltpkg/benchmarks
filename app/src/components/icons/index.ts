@@ -19,6 +19,7 @@ export * from "./berry.tsx";
 export * from "./bun.tsx";
 export * from "./cloudsmith.tsx";
 export * from "./deno.tsx";
+export * from "./jfrog.tsx";
 export * from "./next.tsx";
 export * from "./node.tsx";
 export * from "./npm.tsx";

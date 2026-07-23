@@ -25,6 +25,7 @@ const PACKAGE_MANAGERS = [
   "aws",
   "cloudsmith",
   "github",
+  "jfrog",
 ];
 
 interface UseHistoryDataReturn {

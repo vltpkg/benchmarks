@@ -513,6 +513,7 @@ export function getPackageManagerDisplayName(
       return "codeartifact.us-east-1.amazonaws.com";
     if (packageManager === "cloudsmith") return "npm.cloudsmith.io";
     if (packageManager === "github") return "npm.pkg.github.com";
+    if (packageManager === "jfrog") return "jfrog.io";
   }
   if (packageManager === "pnpm") return "pnpm";
   if (packageManager === "pacquet") return "pnpm (pacquet)";
@@ -523,6 +524,7 @@ export function getPackageManagerDisplayName(
   if (packageManager === "aws") return "AWS CodeArtifact";
   if (packageManager === "cloudsmith") return "Cloudsmith";
   if (packageManager === "github") return "GitHub";
+  if (packageManager === "jfrog") return "JFrog";
   return packageManager;
 }
 

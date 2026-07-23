@@ -157,6 +157,8 @@ jobs:
           CLOUDSMITH_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
           GH_REGISTRY: ${{ secrets.GH_REGISTRY }}
           GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
+          JFROG_REGISTRY: ${{ secrets.JFROG_REGISTRY }}
+          JFROG_TOKEN: ${{ secrets.JFROG_TOKEN }}
           BENCH_WARMUP: ${{ steps.tune.outputs.warmup }}
           BENCH_RUNS: ${{ steps.tune.outputs.runs }}
         run: |

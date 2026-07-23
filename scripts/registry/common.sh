@@ -77,6 +77,12 @@ BENCH_REGISTRY_CLOUDSMITH_NPMRC_KEY="${CLOUDSMITH_REGISTRY#//}"
 BENCH_REGISTRY_GITHUB_URL="https:${GH_REGISTRY:-}"
 BENCH_REGISTRY_GITHUB_NPMRC_KEY="${GH_REGISTRY#//}"
 
+# JFrog registry URL is injected without the protocol prefix
+# (e.g. "//example.jfrog.io/..."), so we prepend "https:" for the registry config.
+# The auth .npmrc key uses the URL as-is (without protocol).
+BENCH_REGISTRY_JFROG_URL="https:${JFROG_REGISTRY:-}"
+BENCH_REGISTRY_JFROG_NPMRC_KEY="${JFROG_REGISTRY#//}"
+
 # Registry setup commands run in hyperfine --prepare (untimed, before each run).
 # Auth token is written as a literal placeholder so npm resolves it from env.
 # For vlt registry, a random suffix is appended to the auth token on every
@@ -90,6 +96,7 @@ BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --
 BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\\\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
 BENCH_SETUP_REGISTRY_CLOUDSMITH="npm config set registry \"$BENCH_REGISTRY_CLOUDSMITH_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_CLOUDSMITH_NPMRC_KEY}:_authToken=\\\${CLOUDSMITH_TOKEN}\" --location=project"
 BENCH_SETUP_REGISTRY_GITHUB="npm config set registry \"$BENCH_REGISTRY_GITHUB_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_GITHUB_NPMRC_KEY}:_authToken=\\\${GH_AUTH_TOKEN}\" --location=project"
+BENCH_SETUP_REGISTRY_JFROG="npm config set registry \"$BENCH_REGISTRY_JFROG_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_JFROG_NPMRC_KEY}:_authToken=\\\${JFROG_TOKEN}\" --location=project"
 
 # Registry verification helper runs in hyperfine --conclude (untimed, after each run).
 BENCH_VERIFY_REGISTRY="npm config get registry && ((grep -m3 '\"resolved\"' package-lock.json 2>/dev/null | sed 's/^[[:space:]]*//') || echo 'no lockfile yet') && echo ''"
@@ -101,6 +108,7 @@ BENCH_COLLECT_PKG_COUNT_VLT="bash $BENCH_SCRIPTS/registry-package-count.sh $BENC
 BENCH_COLLECT_PKG_COUNT_AWS="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER aws"
 BENCH_COLLECT_PKG_COUNT_CLOUDSMITH="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER cloudsmith"
 BENCH_COLLECT_PKG_COUNT_GITHUB="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER github"
+BENCH_COLLECT_PKG_COUNT_JFROG="bash $BENCH_SCRIPTS/registry-package-count.sh $BENCH_OUTPUT_FOLDER jfrog"
 # hyperfine does not provide HYPERFINE_ITERATION in conclude hooks, so these
 # write to per-registry verification logs instead of per-iteration logs.
 BENCH_CONCLUDE_NPM="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/npm-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_NPM"
@@ -108,6 +116,7 @@ BENCH_CONCLUDE_VLT_REG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/vlt-
 BENCH_CONCLUDE_AWS="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/aws-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_AWS"
 BENCH_CONCLUDE_CLOUDSMITH="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/cloudsmith-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_CLOUDSMITH"
 BENCH_CONCLUDE_GITHUB="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/github-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_GITHUB"
+BENCH_CONCLUDE_JFROG="{ $BENCH_VERIFY_REGISTRY; } >> $BENCH_OUTPUT_FOLDER/jfrog-verify.log 2>&1; $BENCH_COLLECT_PKG_COUNT_JFROG"
 
 # Registry commands are timed and should only run installs.
 # Each command is wrapped with `timeout` to prevent runaway installs.
@@ -116,11 +125,12 @@ BENCH_COMMAND_VLT_REG="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPU
 BENCH_COMMAND_AWS="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/aws-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_CLOUDSMITH="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/cloudsmith-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_GITHUB="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/github-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_JFROG="timeout $BENCH_TIMEOUT $BENCH_NPM_INSTALL >> $BENCH_OUTPUT_FOLDER/jfrog-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Registry include flags
 # If BENCH_INCLUDE_REGISTRY is not set, default to running all registries.
 if [ -z "${BENCH_INCLUDE_REGISTRY:-}" ]; then
-  BENCH_INCLUDE_REGISTRY="npm,vlt,aws,cloudsmith,github"
+  BENCH_INCLUDE_REGISTRY="npm,vlt,aws,cloudsmith,github,jfrog"
 fi
 
 BENCH_INCLUDE_REG_NPM=""
@@ -128,6 +138,7 @@ BENCH_INCLUDE_REG_VLT=""
 BENCH_INCLUDE_REG_AWS=""
 BENCH_INCLUDE_REG_CLOUDSMITH=""
 BENCH_INCLUDE_REG_GITHUB=""
+BENCH_INCLUDE_REG_JFROG=""
 
 for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
   case "$entry" in
@@ -137,6 +148,7 @@ for entry in $(echo "$BENCH_INCLUDE_REGISTRY" | tr ',' '\n'); do
     aws)          BENCH_INCLUDE_REG_AWS=1 ;;
     cloudsmith)   BENCH_INCLUDE_REG_CLOUDSMITH=1 ;;
     github)       BENCH_INCLUDE_REG_GITHUB=1 ;;
+    jfrog)        BENCH_INCLUDE_REG_JFROG=1 ;;
     *)
       echo "Error: Unknown registry '$entry' in BENCH_INCLUDE_REGISTRY"
       exit 1
@@ -171,6 +183,16 @@ fi
 
 if [ -n "$BENCH_INCLUDE_REG_GITHUB" ] && [ -z "${GH_REGISTRY:-}" ]; then
   echo "Error: 'github' registry was requested, but GH_REGISTRY is not set"
+  exit 1
+fi
+
+if [ -n "$BENCH_INCLUDE_REG_JFROG" ] && [ -z "${JFROG_TOKEN:-}" ]; then
+  echo "Error: 'jfrog' registry was requested, but JFROG_TOKEN is not set"
+  exit 1
+fi
+
+if [ -n "$BENCH_INCLUDE_REG_JFROG" ] && [ -z "${JFROG_REGISTRY:-}" ]; then
+  echo "Error: 'jfrog' registry was requested, but JFROG_REGISTRY is not set"
   exit 1
 fi
 
