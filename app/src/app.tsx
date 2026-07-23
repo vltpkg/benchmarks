@@ -12,7 +12,7 @@ import { YAxisProvider } from "@/contexts/y-axis-context";
 import { Toaster } from "@/components/ui/sonner";
 import { useChartData } from "@/hooks/use-chart-data";
 import { useHistoryData } from "@/hooks/use-history-data";
-import { getAllFixtures, sortVariations } from "@/lib/utils";
+import { getAllFixtures } from "@/lib/utils";
 
 const App = () => {
   const { chartData, loading, error } = useChartData();
@@ -26,11 +26,7 @@ const App = () => {
 
   useEffect(() => {
     if (chartData && location.pathname === "/") {
-      const sortedVariations = sortVariations([
-        ...chartData.chartData.variations,
-      ]);
-      const firstVariation = sortedVariations[0];
-      navigate(`/package-managers/${firstVariation}`, { replace: true });
+      navigate("/registries", { replace: true });
     }
   }, [chartData, location.pathname]);
 

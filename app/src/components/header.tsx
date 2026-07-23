@@ -3,7 +3,13 @@ import { useLocation, NavLink } from "react-router";
 import { PackageManagerFilter } from "@/components/package-manager-filter";
 import { FixtureFilter } from "@/components/fixture-filter";
 import { VariationDropdown } from "@/components/variation-dropdown";
-import { Benchmarks, Github, Package, StopWatch, Database } from "@/components/icons";
+import {
+  Benchmarks,
+  Github,
+  Package,
+  StopWatch,
+  Database,
+} from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import {
@@ -114,6 +120,11 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
 
     const navigationOptions: NavigationOption[] = [
       {
+        label: "Registries",
+        href: "registries",
+        icon: Database,
+      },
+      {
         label: "Package Managers",
         href: "package-managers",
         icon: Package,
@@ -122,11 +133,6 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
         label: "Task Runners",
         href: "task-runners",
         icon: StopWatch,
-      },
-      {
-        label: "Registries",
-        href: "registries",
-        icon: Database,
       },
     ];
 
@@ -176,7 +182,7 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
             <FixtureFilter fixtures={fixtures} />
             <VariationDropdown
               currentVariation={currentVariation ?? "average"}
-              baseRoute={location.pathname.split("/")[1] || "package-managers"}
+              baseRoute={location.pathname.split("/")[1] || "registries"}
               sortedVariations={(() => {
                 const baseRoute = location.pathname.split("/")[1];
                 const categories = getVariationCategories(
@@ -318,10 +324,12 @@ const LeaderBoardItem = ({
       : `${averageTime.toFixed(2)}s`;
 
   return (
-    <div className={cn(
-      "relative flex bg-card items-center gap-2.5 px-3 py-2 rounded-lg border flex-shrink-0 whitespace-nowrap min-w-[120px]",
-      isBaseline ? "border-dashed border-border" : "border-border/50",
-    )}>
+    <div
+      className={cn(
+        "relative flex bg-card items-center gap-2.5 px-3 py-2 rounded-lg border flex-shrink-0 whitespace-nowrap min-w-[120px]",
+        isBaseline ? "border-dashed border-border" : "border-border/50",
+      )}
+    >
       <div className="text-lg text-muted-foreground font-mono font-medium flex-shrink-0">
         {rank}
       </div>
@@ -331,7 +339,10 @@ const LeaderBoardItem = ({
           {Icon && (
             <Icon
               size={28}
-              className={cn((packageManager === "vlt" || packageManager === "github") && "dark:text-white")}
+              className={cn(
+                (packageManager === "vlt" || packageManager === "github") &&
+                  "dark:text-white",
+              )}
             />
           )}
         </div>
@@ -361,8 +372,7 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
     const isRegistryRoute = baseRoute === "registries";
 
     // Determine the unit label based on route
-    const unit =
-      baseRoute === "package-managers" ? "ms/pkg" : "s";
+    const unit = baseRoute === "package-managers" ? "ms/pkg" : "s";
 
     const leaderboard = useMemo(() => {
       if (chartData && currentVariation) {
@@ -376,7 +386,13 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
           enabledPackageManagers.has(item.packageManager),
         );
       }
-    }, [chartData, enabledPackageManagers, enabledFixtures, currentVariation, baseRoute]);
+    }, [
+      chartData,
+      enabledPackageManagers,
+      enabledFixtures,
+      currentVariation,
+      baseRoute,
+    ]);
 
     if (leaderboard && leaderboard.length === 0) return null;
 
@@ -391,7 +407,10 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
                 averageTime={item.averageTime}
                 packageManager={item.packageManager}
                 unit={unit}
-                isBaseline={isBaselinePackageManager(item.packageManager, isRegistryRoute)}
+                isBaseline={isBaselinePackageManager(
+                  item.packageManager,
+                  isRegistryRoute,
+                )}
               />
             ))}
         </div>

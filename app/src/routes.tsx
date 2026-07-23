@@ -41,7 +41,7 @@ export const routes: RouteObject[] = [
   {
     path: "/",
     element: <App />,
-    children: [packageManagerRoutes, taskRunnerRoutes, registryRoutes],
+    children: [registryRoutes, packageManagerRoutes, taskRunnerRoutes],
   },
 ];
 
