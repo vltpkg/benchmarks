@@ -132,22 +132,34 @@ jobs:
             --output text)
           echo "::add-mask::$CODEARTIFACT_AUTH_TOKEN"
           echo "token=$CODEARTIFACT_AUTH_TOKEN" >> "$GITHUB_OUTPUT"
-      - name: Tune settings for heavy fixtures
+      - name: Tune benchmark settings
         id: tune
         run: |
+          # Start with defaults
+          warmup="$BENCH_WARMUP"
+          runs="$BENCH_RUNS"
+
           # Heavy fixtures (large, babylon) get reduced warmup/runs to keep
           # individual jobs under the timeout while still producing useful data.
           case "${{ matrix.fixture }}" in
             large|babylon)
-              echo "warmup=1" >> "$GITHUB_OUTPUT"
-              echo "runs=3" >> "$GITHUB_OUTPUT"
-              echo "Heavy fixture detected — using warmup=1, runs=3"
-              ;;
-            *)
-              echo "warmup=$BENCH_WARMUP" >> "$GITHUB_OUTPUT"
-              echo "runs=$BENCH_RUNS" >> "$GITHUB_OUTPUT"
+              warmup=1
+              runs=3
+              echo "Heavy fixture detected — using warmup=$warmup, runs=$runs"
               ;;
           esac
+
+          # Registry variations also get reduced runs (6 registries × iterations must fit in 90min)
+          case "${{ matrix.variation }}" in
+            registry-*)
+              warmup=1
+              runs=3
+              echo "Registry variation detected — using warmup=$warmup, runs=$runs"
+              ;;
+          esac
+
+          echo "warmup=$warmup" >> "$GITHUB_OUTPUT"
+          echo "runs=$runs" >> "$GITHUB_OUTPUT"
       - name: Run Benchmarks variations
         env:
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
