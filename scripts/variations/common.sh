@@ -98,7 +98,7 @@ BENCH_INSTALL_YARN="corepack yarn@1 install --ignore-scripts --silent"
 BENCH_INSTALL_BERRY="corepack yarn@latest install"
 BENCH_INSTALL_ZPM="yarn install --silent"
 BENCH_INSTALL_PNPM="corepack pnpm@latest install --ignore-scripts --silent"
-BENCH_INSTALL_PACQUET="pacquet install"
+BENCH_INSTALL_PACQUET="/tmp/pnpm12/node_modules/.bin/pnpm install --ignore-scripts --silent"
 # vlt uses its own config (not .npmrc). When vlt registry credentials are
 # available, configure vlt to use the vlt registry via --registry flag and
 # VLT_REGISTRY / VLT_TOKEN env vars.
