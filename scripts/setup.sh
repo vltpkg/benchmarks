@@ -45,16 +45,31 @@ echo "hyperfine: $HYPERFINE_VERSION"
 
 # Install Node.js package managers and tools
 echo "Installing package managers and tools..."
-npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest pacquet@latest
+npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
 
 # Install Vite+ (vp) via npm (available as the `vite-plus` package)
 npm install -g vite-plus@latest
 
+# Install pnpm 12 alpha (pacquet engine) to a dedicated prefix so it doesn't
+# conflict with the corepack-managed pnpm@latest used by the pnpm benchmark.
+npm install pnpm@next-12 --prefix /tmp/pnpm12
+
 # Install aube via npm (available as the `@endevco/aube` package).
 # Non-fatal: aube may not have a working binary for all platforms (e.g. arm64).
 # If it fails to install, the benchmark suite continues without aube.
-if ! npm install -g @endevco/aube@latest 2>/dev/null; then
+if ! npm install -g @endevco/aube@latest; then
   echo "Warning: aube installation failed (may not support this platform) — skipping aube benchmarks"
+fi
+
+# Verify aube binary is actually available (install may succeed but produce no binary)
+if ! command -v aube &>/dev/null; then
+  echo "Warning: aube binary not available after installation — excluding from benchmarks"
+  if [ -n "${GITHUB_ENV:-}" ]; then
+    BENCH_INCLUDE="${BENCH_INCLUDE:-npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,nx,turbo,vp,node}"
+    BENCH_INCLUDE="${BENCH_INCLUDE//,aube/}"
+    BENCH_INCLUDE="${BENCH_INCLUDE//aube,/}"
+    echo "BENCH_INCLUDE=$BENCH_INCLUDE" >> "$GITHUB_ENV"
+  fi
 fi
 
 # Configure Package Managers
@@ -78,7 +93,7 @@ YARN_VERSION="$(corepack yarn@1 -v)"
 BERRY_VERSION="$(corepack yarn@latest -v)"
 ZPM_VERSION="$(curl https://repo.yarnpkg.com/channels/default/canary)"
 PNPM_VERSION="$(corepack pnpm@latest -v)"
-PACQUET_VERSION="$(pacquet --version 2>/dev/null | head -1 | grep -Eo '[0-9]+[.][0-9]+[.][0-9]+([-+][0-9A-Za-z.-]+)?' | head -1 || echo "unknown")"
+PACQUET_VERSION="$(/tmp/pnpm12/node_modules/.bin/pnpm --version 2>/dev/null || echo "unknown")"
 BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"

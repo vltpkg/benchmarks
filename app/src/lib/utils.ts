@@ -220,11 +220,12 @@ export const calculateLeaderboard = (
     effectiveRoute === "task-runners"
       ? allPMs // task runners may include node, nx, turbo, etc.
       : effectiveRoute === "registries"
-        ? allPMs.filter((pm: string) =>
-            // Registry variations use a different set of PMs
-            chartData.registryChartData?.packageManagers?.includes(
-              pm as PackageManager,
-            ) ?? false,
+        ? allPMs.filter(
+            (pm: string) =>
+              // Registry variations use a different set of PMs
+              chartData.registryChartData?.packageManagers?.includes(
+                pm as PackageManager,
+              ) ?? false,
           )
         : allPMs.filter((pm: string) =>
             [
@@ -260,7 +261,8 @@ export const calculateLeaderboard = (
   // Determine which variations and data source to use
   let variationsToUse: Variation[];
   const usePerPackageData =
-    effectiveRoute === "package-managers" && !isRegistryVariation(specificVariation ?? "");
+    effectiveRoute === "package-managers" &&
+    !isRegistryVariation(specificVariation ?? "");
 
   if (specificVariation && specificVariation !== "average") {
     variationsToUse = [specificVariation];
@@ -329,9 +331,7 @@ export const calculateLeaderboard = (
       });
 
       // Determine the winner (lowest time, only among successful PMs)
-      const successfulTimes = times.filter(
-        (t) => !dnfPMs.includes(t.pm),
-      );
+      const successfulTimes = times.filter((t) => !dnfPMs.includes(t.pm));
       successfulTimes.sort((a, b) => a.time - b.time);
       if (successfulTimes.length > 0) {
         const winnerStats = packageManagerStats[successfulTimes[0].pm];
@@ -509,14 +509,13 @@ export function getPackageManagerDisplayName(
   if (options?.isRegistryVariation) {
     if (packageManager === "npm") return "registry.npmjs.org";
     if (packageManager === "vlt") return "registry.vlt.io";
-    if (packageManager === "aws")
-      return "codeartifact.us-east-1.amazonaws.com";
+    if (packageManager === "aws") return "codeartifact.us-east-1.amazonaws.com";
     if (packageManager === "cloudsmith") return "npm.cloudsmith.io";
     if (packageManager === "github") return "npm.pkg.github.com";
     if (packageManager === "jfrog") return "jfrog.io";
   }
   if (packageManager === "pnpm") return "pnpm";
-  if (packageManager === "pacquet") return "pnpm (pacquet)";
+  if (packageManager === "pacquet") return "pnpm (v12)";
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
   if (packageManager === "turbo") return "turborepo";

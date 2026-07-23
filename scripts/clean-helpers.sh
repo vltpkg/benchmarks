@@ -48,11 +48,11 @@ clean_pnpm_cache() {
   safe_remove "$HOME/.local/share/pnpm/store"
 }
 
-# Function to safely clean pacquet cache
-# pacquet shares pnpm's content-addressable store layout
+# Function to safely clean pacquet (pnpm 12) cache
+# pnpm 12 shares pnpm's content-addressable store layout
 clean_pacquet_cache() {
-  if command -v pacquet &> /dev/null; then
-    # pacquet uses the same store path as pnpm; the parent dirs are cleaned
+  if [ -x "/tmp/pnpm12/node_modules/.bin/pnpm" ]; then
+    # pnpm 12 uses the same store path as pnpm; the parent dirs are cleaned
     # by clean_pnpm_cache, but if called in isolation we still handle them.
     safe_remove "$HOME/.cache/pnpm"
     safe_remove "$HOME/.local/share/pnpm/store"
