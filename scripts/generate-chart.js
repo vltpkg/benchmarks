@@ -48,6 +48,7 @@ const REGISTRY_COLORS = {
   aws: "#ff9900",
   cloudsmith: "#2C5BB4",
   github: "#6336b8",
+  jfrog: "#40BE46",
 };
 
 const parseNumeric = (value) => {

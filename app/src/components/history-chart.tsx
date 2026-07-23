@@ -40,6 +40,7 @@ const RANGE_OPTIONS = [
  */
 const HISTORY_FALLBACK_COLORS: Partial<Record<PackageManager, string>> = {
   cloudsmith: "#2C5BB4",
+  jfrog: "#40BE46",
 };
 
 interface HistoryChartProps {

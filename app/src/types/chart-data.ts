@@ -15,7 +15,8 @@ export type PackageManager =
   | "node"
   | "aws"
   | "cloudsmith"
-  | "github";
+  | "github"
+  | "jfrog";
 
 export type Fixture =
   | "next"
@@ -62,6 +63,7 @@ export interface PackageManagerVersions {
   aws?: string;
   cloudsmith?: string;
   github?: string;
+  jfrog?: string;
 }
 
 export interface BaseFixtureResult {
@@ -86,6 +88,7 @@ export interface PackageManagerData {
   aws?: number;
   cloudsmith?: number;
   github?: number;
+  jfrog?: number;
 
   npm_stddev?: number;
   yarn_stddev?: number;
@@ -104,6 +107,7 @@ export interface PackageManagerData {
   aws_stddev?: number;
   cloudsmith_stddev?: number;
   github_stddev?: number;
+  jfrog_stddev?: number;
 
   npm_fill?: string;
   yarn_fill?: string;
@@ -122,6 +126,7 @@ export interface PackageManagerData {
   aws_fill?: string;
   cloudsmith_fill?: string;
   github_fill?: string;
+  jfrog_fill?: string;
 
   npm_count?: number;
   yarn_count?: number;
@@ -140,6 +145,7 @@ export interface PackageManagerData {
   aws_count?: number;
   cloudsmith_count?: number;
   github_count?: number;
+  jfrog_count?: number;
 
   npm_dnf?: boolean;
   yarn_dnf?: boolean;
@@ -158,6 +164,7 @@ export interface PackageManagerData {
   aws_dnf?: boolean;
   cloudsmith_dnf?: boolean;
   github_dnf?: boolean;
+  jfrog_dnf?: boolean;
 }
 
 export type FixtureResult = BaseFixtureResult & PackageManagerData;
@@ -203,6 +210,7 @@ export interface PackageCountData {
   aws?: PackageCountEntry;
   cloudsmith?: PackageCountEntry;
   github?: PackageCountEntry;
+  jfrog?: PackageCountEntry;
 }
 
 export interface PackageCountTableRow {
@@ -229,6 +237,7 @@ export interface ProcessCountData {
   aws?: PackageCountEntry;
   cloudsmith?: PackageCountEntry;
   github?: PackageCountEntry;
+  jfrog?: PackageCountEntry;
 }
 
 export interface ProcessCountTableRow {
