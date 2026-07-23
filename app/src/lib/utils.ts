@@ -212,7 +212,7 @@ export const calculateLeaderboard = (
   enabledFixtures?: Set<Fixture>,
 ): RankingData[] => {
   const categories = getVariationCategories(chartData.chartData.variations);
-  const effectiveRoute = route ?? "package-managers";
+  const effectiveRoute = route ?? "registries";
 
   // Determine which package managers to use based on route
   const allPMs = chartData.chartData.packageManagers;

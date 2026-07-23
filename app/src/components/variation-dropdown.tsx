@@ -28,7 +28,7 @@ export const VariationDropdown = ({
   const navigate = useNavigate();
   const location = useLocation();
   const resolvedRoute =
-    baseRoute || location.pathname.split("/")[1] || "package-managers";
+    baseRoute || location.pathname.split("/")[1] || "registries";
   const dropdownLabel = dropdownLabels[resolvedRoute] || "Fixture";
 
   return (
@@ -58,8 +58,7 @@ export const VariationDropdown = ({
           <DropdownMenuItem
             key={variation}
             onClick={() => {
-              const base =
-                location.pathname.split("/")[1] || "package-managers";
+              const base = location.pathname.split("/")[1] || "registries";
               navigate(`/${base}/${variation}`);
             }}
           >

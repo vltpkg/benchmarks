@@ -56,7 +56,7 @@ export const ShareButton = ({
 
   const handleShare = async () => {
     // Extract the base route (package-managers, task-runners, registries) from the current path
-    const baseRoute = location.pathname.split("/")[1] || "package-managers";
+    const baseRoute = location.pathname.split("/")[1] || "registries";
     const deepLink = createDeepLink(baseRoute, variation, section, fixture);
     const url = `${window.location.origin}${window.location.pathname}#${deepLink}`;
 
