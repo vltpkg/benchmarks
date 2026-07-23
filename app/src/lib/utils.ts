@@ -522,8 +522,8 @@ export function getPackageManagerDisplayName(
   if (packageManager === "vp") return "vite+";
   if (packageManager === "aws") return "AWS CodeArtifact";
   if (packageManager === "cloudsmith") return "Cloudsmith";
-  if (packageManager === "github") return "GitHub";
-  if (packageManager === "jfrog") return "JFrog";
+  if (packageManager === "github") return "GitHub Packages";
+  if (packageManager === "jfrog") return "JFrog Artifactory";
   return packageManager;
 }
 
