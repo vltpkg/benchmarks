@@ -339,10 +339,7 @@ const LeaderBoardItem = ({
           {Icon && (
             <Icon
               size={28}
-              className={cn(
-                (packageManager === "vlt" || packageManager === "github") &&
-                  "dark:text-white",
-              )}
+              className={cn(packageManager === "vlt" && "dark:text-white")}
             />
           )}
         </div>
