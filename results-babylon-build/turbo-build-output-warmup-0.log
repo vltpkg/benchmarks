@@ -6,7 +6,7 @@ This information is used to shape the Turborepo roadmap and prioritize features.
 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
 https://turborepo.dev/docs/telemetry
 
- WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.4). Using a specified version in your repository will result in more predictable behavior.
+ WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.6). Using a specified version in your repository will result in more predictable behavior.
   x Missing tasks in project
   `->   x Could not find task `build` in project
 
