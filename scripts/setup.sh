@@ -52,7 +52,9 @@ npm install -g vite-plus@latest
 
 # Install pnpm 12 alpha (pacquet engine) to a dedicated prefix so it doesn't
 # conflict with the corepack-managed pnpm@latest used by the pnpm benchmark.
-npm install pnpm@next-12 --prefix /tmp/pnpm12
+# npm 12 blocks dependency lifecycle scripts by default, but pnpm's preinstall
+# replaces its placeholder launcher with the platform-specific native binary.
+npm install --global pnpm@next-12 --prefix /tmp/pnpm12 --allow-scripts=pnpm
 
 # Install aube via npm (available as the `@endevco/aube` package).
 # Non-fatal: aube may not have a working binary for all platforms (e.g. arm64).
@@ -93,7 +95,7 @@ YARN_VERSION="$(corepack yarn@1 -v)"
 BERRY_VERSION="$(corepack yarn@latest -v)"
 ZPM_VERSION="$(curl https://repo.yarnpkg.com/channels/default/canary)"
 PNPM_VERSION="$(corepack pnpm@latest -v)"
-PACQUET_VERSION="$(/tmp/pnpm12/node_modules/.bin/pnpm --version 2>/dev/null || echo "unknown")"
+PACQUET_VERSION="$(/tmp/pnpm12/bin/pnpm --version)"
 BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"
