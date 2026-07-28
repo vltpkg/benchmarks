@@ -1,14 +1,17 @@
 {
   "npm": {
-    "count": 1781
+    "count": 1782
   },
   "vlt": {
-    "count": 1787
+    "count": 1788
   },
   "aws": {
-    "count": 1784
+    "count": 1785
+  },
+  "github": {
+    "count": 1786
   },
   "jfrog": {
-    "count": 1785
+    "count": 1786
   }
 }

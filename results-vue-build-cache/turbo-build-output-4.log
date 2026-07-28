@@ -1,11 +1,11 @@
  WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
- WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.6). Using a specified version in your repository will result in more predictable behavior.
+ WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.7). Using a specified version in your repository will result in more predictable behavior.
 
    • Running build
    • Remote caching disabled
 
 [;31mbuild[;0m
-cache bypass, force executing f4a1f1719c27d14e
+cache bypass, force executing 2dc313be46868803
 [36mvite v6.4.3 [32mbuilding for production...[36m[39m
 transforming...
 [32m✓[39m 49 modules transformed.
@@ -16,7 +16,7 @@ build:  ERROR  command (/home/runner/work/benchmarks/benchmarks/fixtures/vue/) /
 
  Tasks:    0 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    1.42s 
+  Time:    1.352s 
 Failed:    //#build
 
  ERROR  run failed: command  exited (1)

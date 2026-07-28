@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3646 Jul 24 02:31 package.json
+-rw-r--r-- 1 runner runner 3646 Jul 28 03:09 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,7 +17,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3686 Jul 24 02:31 package.json
+-rw-r--r-- 1 runner runner 3686 Jul 28 03:09 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -33,7 +33,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3686 Jul 24 02:31 package.json
+-rw-r--r-- 1 runner runner 3686 Jul 28 03:09 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -49,7 +49,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3686 Jul 24 02:31 package.json
+-rw-r--r-- 1 runner runner 3686 Jul 28 03:09 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
