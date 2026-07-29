@@ -45,6 +45,8 @@ interface VariationTableProps {
   chartData: BenchmarkChartData;
   isPerPackage: boolean;
   currentVariation: string;
+  /** Override registry detection (e.g. for "average" variation on registry route) */
+  isRegistryRoute?: boolean;
 }
 
 interface TransposedVariationRow {
@@ -63,10 +65,11 @@ export const VariationTable = ({
   chartData,
   isPerPackage,
   currentVariation,
+  isRegistryRoute,
 }: VariationTableProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const isRegistry = isRegistryVariation(currentVariation);
+  const isRegistry = isRegistryRoute ?? isRegistryVariation(currentVariation);
   const showVersions = !isRegistry;
 
   // Filter package managers based on global filter

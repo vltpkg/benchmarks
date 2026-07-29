@@ -170,6 +170,10 @@ interface VariationChartProps {
   chartData: BenchmarkChartData;
   isPerPackage: boolean;
   currentVariation: string;
+  /** Override registry detection (e.g. for "average" variation on registry route) */
+  isRegistryRoute?: boolean;
+  /** Override task-execution detection (e.g. for "average" variation on task-runner route) */
+  isTaskExecutionRoute?: boolean;
 }
 
 export const VariationChart = ({
@@ -180,11 +184,13 @@ export const VariationChart = ({
   chartData,
   isPerPackage,
   currentVariation,
+  isRegistryRoute,
+  isTaskExecutionRoute,
 }: VariationChartProps) => {
   const { theme } = useTheme();
   const { enabledPackageManagers } = usePackageManagerFilter();
   const { getYAxisDomain } = useYAxis();
-  const isRegistry = isRegistryVariation(currentVariation);
+  const isRegistry = isRegistryRoute ?? isRegistryVariation(currentVariation);
 
   // Filter package managers based on global filter
   const filteredPackageManagers = useMemo(
@@ -275,7 +281,8 @@ export const VariationChart = ({
     resolvedTheme,
   ]);
 
-  const yAxisLabel = isTaskExecutionVariation(currentVariation)
+  const isTaskExecution = isTaskExecutionRoute ?? isTaskExecutionVariation(currentVariation);
+  const yAxisLabel = isTaskExecution
     ? "Time (seconds)"
     : isPerPackage
       ? "Time (ms per package)"
@@ -417,8 +424,7 @@ export const VariationChart = ({
 
   const isMobile = useMediaQuery("(max-width: 767px)");
 
-  const isTaskOrRegistry =
-    isTaskExecutionVariation(currentVariation) || isRegistryVariation(currentVariation);
+  const isTaskOrRegistry = isTaskExecution || isRegistry;
 
   if (!isPerPackage && isTaskOrRegistry) {
     // Task runners & registries: horizontal bar charts per fixture, sorted by speed
