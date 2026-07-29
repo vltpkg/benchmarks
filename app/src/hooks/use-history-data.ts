@@ -246,29 +246,22 @@ export const useHistoryData = (): UseHistoryDataReturn => {
           }
         }
 
-        // Compute synthetic "average" variation from package management variations
-        const PM_VARIATIONS = [
-          "clean",
-          "node_modules",
-          "cache",
-          "cache+node_modules",
-          "cache+lockfile",
-          "cache+lockfile+node_modules",
-          "lockfile",
-          "lockfile+node_modules",
-        ];
-        const presentPmVariations = PM_VARIATIONS.filter(
-          (v) => variations[v],
-        );
+        // Compute synthetic average variations by averaging across
+        // the constituent variations in each category.
+        const computeSyntheticAverage = (
+          key: string,
+          sourceVariations: string[],
+        ) => {
+          const present = sourceVariations.filter((v) => variations[v]);
+          if (present.length === 0) return;
 
-        if (presentPmVariations.length > 0) {
           const avgSeries: HistoryVariation = {};
           for (const pm of PACKAGE_MANAGERS) {
             avgSeries[pm] = [];
             for (let i = 0; i < dates.length; i++) {
               let sum = 0;
               let count = 0;
-              for (const v of presentPmVariations) {
+              for (const v of present) {
                 const val = variations[v][pm]?.[i];
                 if (val !== null && val !== undefined) {
                   sum += val;
@@ -280,8 +273,33 @@ export const useHistoryData = (): UseHistoryDataReturn => {
               );
             }
           }
-          variations["average"] = avgSeries;
-        }
+          variations[key] = avgSeries;
+        };
+
+        // Package management average
+        computeSyntheticAverage("average", [
+          "clean",
+          "node_modules",
+          "cache",
+          "cache+node_modules",
+          "cache+lockfile",
+          "cache+lockfile+node_modules",
+          "lockfile",
+          "lockfile+node_modules",
+        ]);
+
+        // Registry average
+        computeSyntheticAverage("registryAverage", [
+          "registry-clean",
+          "registry-lockfile",
+        ]);
+
+        // Task-runner average
+        computeSyntheticAverage("taskRunnerAverage", [
+          "build",
+          "build-cache",
+          "run",
+        ]);
 
         setHistoryData({ dates, variations });
       } catch (e) {

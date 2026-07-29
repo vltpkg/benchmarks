@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { resolveTheme, useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { formatPackageManagerLabel, isRegistryVariation, isTaskExecutionVariation } from "@/lib/utils";
+import { formatPackageManagerLabel, isAverageVariation, isRegistryVariation, isTaskExecutionVariation } from "@/lib/utils";
 import { TrendingUp } from "lucide-react";
 import { format, parseISO } from "date-fns";
 
@@ -75,7 +75,16 @@ export const HistoryChart = ({
   // registry and task-runner variations still use total time (seconds).
   const isPerPackageVariation = !isRegistry && !isTaskExecution;
 
-  const variationData = historyData.variations[currentVariation];
+  // For the "average" variation, look up the route-specific synthetic
+  // average so registries and task-runners don't show PM averages.
+  const isAverage = isAverageVariation(currentVariation);
+  const variationKey =
+    isAverage && isRegistry
+      ? "registryAverage"
+      : isAverage && isTaskExecution
+        ? "taskRunnerAverage"
+        : currentVariation;
+  const variationData = historyData.variations[variationKey];
 
   // Merge PMs from the current chart data with PMs that only exist in
   // historical data (e.g. cloudsmith).  This ensures discontinued PMs
