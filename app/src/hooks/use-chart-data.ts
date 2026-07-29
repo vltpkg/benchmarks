@@ -141,7 +141,7 @@ export const useChartData = (): UseChartDataReturn => {
 
       const normalizedChartData = applyDnfFallbacks(chartData);
 
-      // Calculate average data for both total and per-package
+      // Calculate average data for both total and per-package (package managers)
       const averageTotalData = calculateAverageVariationData(
         normalizedChartData,
         false,
@@ -150,6 +150,47 @@ export const useChartData = (): UseChartDataReturn => {
         normalizedChartData,
         true,
       );
+
+      // Calculate task runner average
+      const taskRunnerVariationNames = ["build", "build-cache", "run"];
+      const taskRunnerAverageTotalData = calculateAverageVariationData(
+        normalizedChartData,
+        false,
+        { variationNames: taskRunnerVariationNames },
+      );
+      const taskRunnerAveragePerPackageData = calculateAverageVariationData(
+        normalizedChartData,
+        true,
+        { variationNames: taskRunnerVariationNames },
+      );
+
+      // Calculate registry average
+      const registryVariationNames = ["registry-clean", "registry-lockfile"];
+      const registryDataSource = normalizedChartData.registryChartData;
+      const registryPerPackageSource =
+        normalizedChartData.registryPerPackageCountChartData;
+      const registryPackageManagers =
+        registryDataSource?.packageManagers ?? [];
+      const registryAverageTotalData = registryDataSource
+        ? calculateAverageVariationData(normalizedChartData, false, {
+            variationNames: registryVariationNames,
+            dataSource: registryDataSource.data as Record<
+              string,
+              FixtureResult[]
+            >,
+            packageManagers: registryPackageManagers,
+          })
+        : [];
+      const registryAveragePerPackageData = registryPerPackageSource
+        ? calculateAverageVariationData(normalizedChartData, true, {
+            variationNames: registryVariationNames,
+            dataSource: registryPerPackageSource.data as Record<
+              string,
+              FixtureResult[]
+            >,
+            packageManagers: registryPackageManagers,
+          })
+        : registryAverageTotalData;
 
       // Add "average" to variations list if not already present (typesafe)
       const averageVariation: Variation = "average";
@@ -223,6 +264,10 @@ export const useChartData = (): UseChartDataReturn => {
           packageManagers: allPackageManagers,
           colors: allColors,
         },
+        taskRunnerAverageData: taskRunnerAverageTotalData,
+        taskRunnerAveragePerPackageData: taskRunnerAveragePerPackageData,
+        registryAverageData: registryAverageTotalData,
+        registryAveragePerPackageData: registryAveragePerPackageData,
       };
 
       setChartData(combinedData);

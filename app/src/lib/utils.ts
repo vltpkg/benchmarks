@@ -35,6 +35,11 @@ export const isAverageVariation = (variation: string): boolean => {
 export const calculateAverageVariationData = (
   chartData: BenchmarkChartData,
   isPerPackage: boolean = false,
+  options?: {
+    variationNames?: string[];
+    dataSource?: Record<string, FixtureResult[]>;
+    packageManagers?: PackageManager[];
+  },
 ): FixtureResult[] => {
   type FillKey = Extract<keyof PackageManagerData, `${PackageManager}_fill`>;
   type StddevKey = Extract<
@@ -43,26 +48,35 @@ export const calculateAverageVariationData = (
   >;
   type CountKey = Extract<keyof PackageManagerData, `${PackageManager}_count`>;
   type DnfKey = Extract<keyof PackageManagerData, `${PackageManager}_dnf`>;
-  const dataSource = isPerPackage
+
+  const defaultDataSource = isPerPackage
     ? chartData.perPackageCountChartData.data
     : chartData.chartData.data;
+  const dataSource =
+    (options?.dataSource as Record<Variation, FixtureResult[]>) ??
+    defaultDataSource;
 
-  // Get package management variations (excluding "run" and "average")
-  const packageManagementVariations = [
-    "clean",
-    "node_modules",
-    "cache",
-    "cache+node_modules",
-    "cache+lockfile",
-    "cache+lockfile+node_modules",
-    "lockfile",
-    "lockfile+node_modules",
-  ].filter((v) => dataSource[v as Variation]);
+  // Default to package management variations for backward compatibility
+  const variationNames = (
+    options?.variationNames ?? [
+      "clean",
+      "node_modules",
+      "cache",
+      "cache+node_modules",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "lockfile",
+      "lockfile+node_modules",
+    ]
+  ).filter((v) => dataSource[v as Variation]);
+
+  const packageManagers =
+    options?.packageManagers ?? chartData.chartData.packageManagers;
 
   // Group data by fixture
   const fixtureGroups: Record<string, FixtureResult[]> = {};
 
-  packageManagementVariations.forEach((variation) => {
+  variationNames.forEach((variation) => {
     const variationData = dataSource[variation as Variation];
     if (!variationData) return;
 
@@ -79,7 +93,6 @@ export const calculateAverageVariationData = (
   const averagedResults: FixtureResult[] = [];
 
   Object.entries(fixtureGroups).forEach(([fixture, results]) => {
-    const packageManagers = chartData.chartData.packageManagers;
     const averagedResult: FixtureResult = { fixture: fixture as Fixture };
 
     packageManagers.forEach((pm: PackageManager) => {
@@ -154,13 +167,18 @@ export const getVariationCategories = (
     "lockfile+node_modules",
   ].filter((v) => variations.includes(v as Variation)) as Variation[];
 
-  const taskExecutionVariations = ["build", "build-cache", "run"].filter((v) =>
-    variations.includes(v as Variation),
-  ) as Variation[];
+  const taskExecutionVariations = [
+    "average",
+    "build",
+    "build-cache",
+    "run",
+  ].filter((v) => variations.includes(v as Variation)) as Variation[];
 
-  const registryVariations = ["registry-clean", "registry-lockfile"].filter(
-    (v) => variations.includes(v as Variation),
-  ) as Variation[];
+  const registryVariations = [
+    "average",
+    "registry-clean",
+    "registry-lockfile",
+  ].filter((v) => variations.includes(v as Variation)) as Variation[];
 
   const categories: VariationCategory[] = [];
 

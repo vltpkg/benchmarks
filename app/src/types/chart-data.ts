@@ -184,6 +184,10 @@ export interface BenchmarkChartData {
   registryChartData?: ChartDataSet;
   registryPerPackageCountChartData?: ChartDataSet;
   versions?: PackageManagerVersions;
+  taskRunnerAverageData?: FixtureResult[];
+  taskRunnerAveragePerPackageData?: FixtureResult[];
+  registryAverageData?: FixtureResult[];
+  registryAveragePerPackageData?: FixtureResult[];
 }
 
 export interface PackageCountEntry {

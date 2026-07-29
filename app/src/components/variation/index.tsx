@@ -1,4 +1,4 @@
-import { useParams, useOutletContext } from "react-router";
+import { useParams, useOutletContext, useLocation } from "react-router";
 import { useEffect } from "react";
 import { isValidVariation } from "@/types/chart-data";
 import { ERROR_MESSAGES } from "@/constants";
@@ -19,6 +19,7 @@ import {
   getAvailablePackageManagersFromProcessCount,
   isTaskExecutionVariation,
   isRegistryVariation,
+  isAverageVariation,
 } from "@/lib/utils";
 
 import { HistoryChart } from "@/components/history-chart";
@@ -42,6 +43,8 @@ export const VariationPage = () => {
     fixture?: string;
   }>();
   const { chartData, historyData } = useOutletContext<OutletContext>();
+  const location = useLocation();
+  const baseRoute = location.pathname.split("/")[1] || "registries";
 
   // Call hooks before any early returns to comply with Rules of Hooks
   const {
@@ -87,9 +90,20 @@ export const VariationPage = () => {
     );
   }
 
-  const totalVariationData = chartData.chartData.data[variation as Variation];
+  // For "average" variation, use route-specific average data
+  const isAverage = isAverageVariation(variation as string);
+  const totalVariationData =
+    isAverage && baseRoute === "task-runners"
+      ? (chartData.taskRunnerAverageData ?? [])
+      : isAverage && baseRoute === "registries"
+        ? (chartData.registryAverageData ?? [])
+        : chartData.chartData.data[variation as Variation];
   const perPackageVariationData =
-    chartData.perPackageCountChartData.data[variation as Variation];
+    isAverage && baseRoute === "task-runners"
+      ? (chartData.taskRunnerAveragePerPackageData ?? [])
+      : isAverage && baseRoute === "registries"
+        ? (chartData.registryAveragePerPackageData ?? [])
+        : chartData.perPackageCountChartData.data[variation as Variation];
   const allPackageManagers = chartData.chartData.packageManagers;
   const colors = chartData.chartData.colors;
 
@@ -144,8 +158,13 @@ export const VariationPage = () => {
     );
 
   // Check if this is a task execution variation or registry variation
-  const isTaskExecution = isTaskExecutionVariation(variation as string);
-  const isRegistry = isRegistryVariation(variation as string);
+  // For "average", determine from the route context
+  const isTaskExecution =
+    isTaskExecutionVariation(variation as string) ||
+    (isAverage && baseRoute === "task-runners");
+  const isRegistry =
+    isRegistryVariation(variation as string) ||
+    (isAverage && baseRoute === "registries");
 
   // Dynamic titles and section IDs based on variation type
   const titles = isTaskExecution
