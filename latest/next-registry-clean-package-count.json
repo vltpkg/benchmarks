@@ -8,6 +8,9 @@
   "aws": {
     "count": 336
   },
+  "cloudsmith": {
+    "count": 336
+  },
   "github": {
     "count": 336
   },

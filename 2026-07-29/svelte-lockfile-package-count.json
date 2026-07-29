@@ -10,14 +10,13 @@
     "minCount": 59,
     "maxCount": 60
   },
-  "pnpm": {
-    "count": 59
-  },
   "vlt": {
     "count": 59
   },
   "bun": {
-    "count": 60
+    "count": 60,
+    "minCount": 59,
+    "maxCount": 60
   },
   "deno": {
     "count": 60
