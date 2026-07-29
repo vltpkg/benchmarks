@@ -12,13 +12,15 @@
     "count": 1509
   },
   "pnpm": {
-    "count": 1285
+    "count": 1286,
+    "minCount": 1285,
+    "maxCount": 1286
   },
   "vlt": {
     "count": 1291
   },
   "bun": {
-    "count": 1546,
+    "count": 1548,
     "minCount": 1542,
     "maxCount": 1554
   },

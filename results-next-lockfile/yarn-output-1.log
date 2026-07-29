@@ -1,4 +1,4 @@
-(node:8787) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:8805) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning "eslint-config-next > eslint-import-resolver-typescript > unrs-resolver > @unrs/resolver-binding-wasm32-wasi > @napi-rs/wasm-runtime@1.2.0" has incorrect peer dependency "@emnapi/core@^2.0.0-alpha.3".
 warning "eslint-config-next > eslint-import-resolver-typescript > unrs-resolver > @unrs/resolver-binding-wasm32-wasi > @napi-rs/wasm-runtime@1.2.0" has incorrect peer dependency "@emnapi/runtime@^2.0.0-alpha.3".
