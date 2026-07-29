@@ -43,6 +43,8 @@ interface ProcessCountTableProps {
   packageManagers: PackageManager[];
   versions?: PackageManagerVersions;
   currentVariation: string;
+  /** Override registry detection (e.g. for "average" variation on registry route) */
+  isRegistryRoute?: boolean;
 }
 
 interface TransposedProcessCountRow {
@@ -59,10 +61,11 @@ export const ProcessCountTable = ({
   packageManagers,
   versions,
   currentVariation,
+  isRegistryRoute,
 }: ProcessCountTableProps) => {
   const { enabledPackageManagers } = usePackageManagerFilter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const isRegistry = isRegistryVariation(currentVariation);
+  const isRegistry = isRegistryRoute ?? isRegistryVariation(currentVariation);
   const showVersions = !isRegistry;
 
   // Filter package managers based on global filter

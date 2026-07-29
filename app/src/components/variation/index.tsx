@@ -227,6 +227,8 @@ export const VariationPage = () => {
           colors={colors}
           packageManagers={packageManagers}
           chartData={chartData}
+          isRegistryRoute={isRegistry}
+          isTaskExecutionRoute={isTaskExecution}
         />
       )}
 
@@ -240,6 +242,8 @@ export const VariationPage = () => {
           chartData={chartData}
           isPerPackage={false}
           currentVariation={variation}
+          isRegistryRoute={isRegistry}
+          isTaskExecutionRoute={isTaskExecution}
         />
       </div>
 
@@ -254,6 +258,8 @@ export const VariationPage = () => {
             chartData={chartData}
             isPerPackage={true}
             currentVariation={variation as string}
+            isRegistryRoute={isRegistry}
+            isTaskExecutionRoute={isTaskExecution}
           />
         </div>
       ) : null}
@@ -269,6 +275,7 @@ export const VariationPage = () => {
               chartData={chartData}
               isPerPackage={true}
               currentVariation={variation as string}
+              isRegistryRoute={isRegistry}
             />
           </div>
         ) : null}
@@ -291,6 +298,7 @@ export const VariationPage = () => {
               packageManagers={packageCountPackageManagers}
               versions={chartData.versions}
               currentVariation={variation as string}
+              isRegistryRoute={isRegistry}
             />
           </div>
         ) : null}
@@ -313,6 +321,7 @@ export const VariationPage = () => {
               packageManagers={processCountPackageManagers}
               versions={chartData.versions}
               currentVariation={variation as string}
+              isRegistryRoute={isRegistry}
             />
           </div>
         ) : null}
@@ -328,6 +337,7 @@ export const VariationPage = () => {
             chartData={chartData}
             isPerPackage={false}
             currentVariation={variation}
+            isRegistryRoute={isRegistry}
           />
         </div>
       </div>

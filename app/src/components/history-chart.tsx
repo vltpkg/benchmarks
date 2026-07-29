@@ -49,6 +49,10 @@ interface HistoryChartProps {
   colors: ColorMap;
   packageManagers: PackageManager[];
   chartData: BenchmarkChartData;
+  /** Override registry detection (e.g. for "average" variation on registry route) */
+  isRegistryRoute?: boolean;
+  /** Override task-execution detection (e.g. for "average" variation on task-runner route) */
+  isTaskExecutionRoute?: boolean;
 }
 
 export const HistoryChart = ({
@@ -57,14 +61,16 @@ export const HistoryChart = ({
   colors,
   packageManagers,
   chartData,
+  isRegistryRoute,
+  isTaskExecutionRoute,
 }: HistoryChartProps) => {
   const { theme } = useTheme();
   const resolvedTheme = resolveTheme(theme);
   const { enabledPackageManagers } = usePackageManagerFilter();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [range, setRange] = useState<number>(90);
-  const isRegistry = isRegistryVariation(currentVariation);
-  const isTaskExecution = isTaskExecutionVariation(currentVariation);
+  const isRegistry = isRegistryRoute ?? isRegistryVariation(currentVariation);
+  const isTaskExecution = isTaskExecutionRoute ?? isTaskExecutionVariation(currentVariation);
   // Package-management variations now use per-package data (ms/pkg);
   // registry and task-runner variations still use total time (seconds).
   const isPerPackageVariation = !isRegistry && !isTaskExecution;
