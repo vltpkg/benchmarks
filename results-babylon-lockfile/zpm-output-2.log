@@ -1,4 +1,4 @@
-(node:12501) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:12409) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning typedoc@0.28.20: The engine "pnpm" appears to be invalid.
 warning bare-fs@4.7.4: The engine "bare" appears to be invalid.
@@ -44,8 +44,8 @@ warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency
 warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "@fortawesome/react-fontawesome@^0.2.0".
 warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "react@^18.2.0".
 warning " > @tools/smart-filters-editor-control@1.0.0" has unmet peer dependency "react-dom@^18.2.0".
-warning "workspace-aggregator-fea0cb32-783d-4c34-a5a1-fbb54c4d5500 > @dev/inspector > @fluentui-contrib/react-virtualizer@0.5.4" has unmet peer dependency "@fluentui/react-shared-contexts@>=9.7.2 <10.0.0".
-warning "workspace-aggregator-fea0cb32-783d-4c34-a5a1-fbb54c4d5500 > @tools/viewer-configurator > @dnd-kit/modifiers@9.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
-warning "workspace-aggregator-fea0cb32-783d-4c34-a5a1-fbb54c4d5500 > @tools/viewer-configurator > @dnd-kit/sortable@10.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
-warning "workspace-aggregator-fea0cb32-783d-4c34-a5a1-fbb54c4d5500 > @dev/inspector > @fluentui/react-components > @fluentui/react-accordion > @fluentui/react-context-selector@9.2.18" has unmet peer dependency "scheduler@>=0.19.0".
+warning "workspace-aggregator-4a76944f-36b8-41b9-8435-456b1b819078 > @dev/inspector > @fluentui-contrib/react-virtualizer@0.5.4" has unmet peer dependency "@fluentui/react-shared-contexts@>=9.7.2 <10.0.0".
+warning "workspace-aggregator-4a76944f-36b8-41b9-8435-456b1b819078 > @tools/viewer-configurator > @dnd-kit/modifiers@9.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
+warning "workspace-aggregator-4a76944f-36b8-41b9-8435-456b1b819078 > @tools/viewer-configurator > @dnd-kit/sortable@10.0.0" has unmet peer dependency "@dnd-kit/core@^6.3.0".
+warning "workspace-aggregator-4a76944f-36b8-41b9-8435-456b1b819078 > @dev/inspector > @fluentui/react-components > @fluentui/react-accordion > @fluentui/react-context-selector@9.2.18" has unmet peer dependency "scheduler@>=0.19.0".
 warning Workspaces can only be enabled in private projects.

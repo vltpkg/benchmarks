@@ -13,11 +13,11 @@
  [37m[1m [22m[39m Collecting build traces ...
 
 [4mRoute (app)[24m                              [4mSize[24m     [4mFirst Load JS[24m
-┌ ○ /                                    5.47 kB         [37m[1m105 kB[22m[39m
-└ ○ /_not-found                          896 B           [37m[1m101 kB[22m[39m
-+ First Load JS shared by all            [37m[1m100 kB[22m[39m
-  ├ chunks/43-fe59812bd92f613f.js        45.6 kB
-  ├ chunks/d493c72c-15bf0d630bf19cef.js  52.5 kB
+┌ ○ /                                    5.46 kB         [37m[1m105 kB[22m[39m
+└ ○ /_not-found                          894 B           [37m[1m101 kB[22m[39m
++ First Load JS shared by all            [37m[1m99.9 kB[22m[39m
+  ├ chunks/0f35ca68-5342b5d3b69f890d.js  52.5 kB
+  ├ chunks/483-c5c0fa37d45aca33.js       45.6 kB
   └ other shared chunks (total)          1.88 kB
 
 

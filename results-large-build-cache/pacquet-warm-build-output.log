@@ -1,0 +1,5 @@
+Error: ERR_PNPM_NO_SCRIPT
+
+  × Missing script: build
+  help: Command "build" not found.
+
