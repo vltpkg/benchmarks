@@ -8,6 +8,9 @@
   "aws": {
     "count": 1785
   },
+  "cloudsmith": {
+    "count": 1790
+  },
   "jfrog": {
     "count": 1786
   }
