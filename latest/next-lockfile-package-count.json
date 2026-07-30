@@ -1,8 +1,17 @@
 {
+  "npm": {
+    "count": 336
+  },
   "berry": {
     "count": 337,
     "minCount": 336,
     "maxCount": 338
+  },
+  "zpm": {
+    "count": 343
+  },
+  "pnpm": {
+    "count": 328
   },
   "vlt": {
     "count": 328

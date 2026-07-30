@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3755 Jul 30 18:24 package.json
+-rw-r--r-- 1 runner runner 3646 Jul 30 21:33 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -12,11 +12,12 @@ canary version:
 packageManager (before):
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3755 Jul 30 18:25 package.json
+-rw-r--r-- 1 runner runner 3646 Jul 30 21:33 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -26,11 +27,12 @@ canary version:
 packageManager (before):
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3755 Jul 30 18:25 package.json
+-rw-r--r-- 1 runner runner 3646 Jul 30 21:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -40,11 +42,12 @@ canary version:
 packageManager (before):
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3755 Jul 30 18:26 package.json
+-rw-r--r-- 1 runner runner 3646 Jul 30 21:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -54,11 +57,12 @@ canary version:
 packageManager (before):
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
+yarn@6.0.0-rc.19
 [zpm prepare]
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3755 Jul 30 18:31 package.json
+-rw-r--r-- 1 runner runner 3646 Jul 30 21:46 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -68,3 +72,4 @@ canary version:
 packageManager (before):
 set packageManager=yarn@6.0.0-rc.19:
 packageManager (after):
+yarn@6.0.0-rc.19

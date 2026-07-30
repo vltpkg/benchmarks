@@ -184,7 +184,7 @@ Error: failed to fetch packument
             feature: 'New Feature'
           },
           nx: {},
-          devEngines: { packageManager: [Object] },
+          devEngines: {},
           Symbol(newline): '\n',
           Symbol(indent): '    '
         },

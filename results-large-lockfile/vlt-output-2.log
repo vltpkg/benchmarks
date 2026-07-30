@@ -172,7 +172,7 @@ Error: failed to fetch packument
             'whatwg-fetch': '^3.6.20'
           },
           devDependencies: { 'nan-as': '^1.6.1' },
-          devEngines: { packageManager: [Object] },
+          devEngines: {},
           Symbol(newline): '\n',
           Symbol(indent): '  '
         },

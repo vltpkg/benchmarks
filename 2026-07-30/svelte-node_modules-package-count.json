@@ -6,9 +6,13 @@
     "count": 60
   },
   "berry": {
-    "count": 60,
-    "minCount": 59,
-    "maxCount": 60
+    "count": 59
+  },
+  "zpm": {
+    "count": 61
+  },
+  "pnpm": {
+    "count": 59
   },
   "vlt": {
     "count": 59

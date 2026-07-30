@@ -10,9 +10,9 @@
     "maxCount": 1782
   },
   "pnpm": {
-    "count": 1527,
+    "count": 1528,
     "minCount": 1526,
-    "maxCount": 1527
+    "maxCount": 1530
   },
   "bun": {
     "count": 1648,
