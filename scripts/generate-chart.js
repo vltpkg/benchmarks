@@ -46,8 +46,8 @@ const REGISTRY_COLORS = {
   npm: "#cb0606",
   vlt: "#000000",
   aws: "#ff9900",
-  cloudsmith: "#2C5BB4",
-  github: "#6336b8",
+  cloudsmith: "#2a6fe1",
+  github: "#8250DF",
   jfrog: "#40BE46",
 };
 

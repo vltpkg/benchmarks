@@ -39,7 +39,7 @@ const RANGE_OPTIONS = [
  * (e.g. cloudsmith was removed from active benchmarks but old results remain).
  */
 const HISTORY_FALLBACK_COLORS: Partial<Record<PackageManager, string>> = {
-  cloudsmith: "#2C5BB4",
+  cloudsmith: "#2a6fe1",
   jfrog: "#40BE46",
 };
 
