@@ -341,7 +341,7 @@ const LeaderBoardItem = ({
               size={28}
               className={cn(
                 packageManager === "vlt" && "dark:text-white",
-                packageManager === "github" && "text-[#6336b8]",
+                packageManager === "github" && "text-[#8250DF]",
               )}
             />
           )}
