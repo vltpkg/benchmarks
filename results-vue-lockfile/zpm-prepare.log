@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul 30 21:29 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 31 11:16 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,7 +17,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul 30 21:30 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 31 11:16 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -32,7 +32,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul 30 21:30 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 31 11:16 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -47,7 +47,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul 30 21:30 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 31 11:16 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -62,7 +62,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul 30 21:30 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 31 11:16 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -77,7 +77,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul 30 21:30 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 31 11:17 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -92,7 +92,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul 30 21:31 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 31 11:17 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -107,7 +107,7 @@ yarn@6.0.0-rc.19
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1286 Jul 30 21:43 package.json
+-rw-r--r-- 1 runner runner 1286 Jul 31 11:27 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:

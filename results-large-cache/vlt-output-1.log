@@ -56,8 +56,8 @@ Resolve Error: failed to fetch packument
       [ 'content-type', 'application/json' ],
       [ 'transfer-encoding', 'chunked' ],
       [ 'connection', 'keep-alive' ],
-      [ 'date', 'Thu, 30 Jul 2026 21:31:01 GMT' ],
-      [ 'x-request-id', '12b4c362-8813-4746-b5de-5fa116b9caff' ],
+      [ 'date', 'Fri, 31 Jul 2026 11:15:24 GMT' ],
+      [ 'x-request-id', '5f41a8f0-a16c-4c17-ac13-cdc01bf4ead2' ],
       [ 'x-xss-protection', '0' ],
       [ 'content-encoding', 'identity' ],
       [ 'cross-origin-opener-policy', 'same-origin' ],
@@ -77,29 +77,28 @@ Resolve Error: failed to fetch packument
       [ 'x-cache', 'Error from cloudfront' ],
       [
         'via',
-        '1.1 2bb4560ed08e22695c5989511be7b43e.cloudfront.net (CloudFront)'
+        '1.1 caca3796a9753caf000b1d1a5f744530.cloudfront.net (CloudFront)'
       ],
-      [ 'x-amz-cf-pop', 'ORD58-P3' ],
+      [ 'x-amz-cf-pop', 'HIO52-P4' ],
       [
         'x-amz-cf-id',
-        '5Z4IBywyM7ln-OrnWKapYd0Zz3rXLHthEDYmETZcfjVyy578yF1jQQ=='
+        'FNvrBoeKCbppAs63-AK_msBbyupIDG-RxXkYErZWNCxgoxIqDvXKnQ=='
       ],
-      [ 'age', '7' ],
       [ 'content-length', '29' ]
     ],
     contentType: 'application/json',
-    date: 2026-07-30T21:31:01.000Z,
-    expires: 2026-07-30T21:36:01.000Z,
+    date: 2026-07-31T11:15:24.000Z,
+    expires: 2026-07-31T11:20:24.000Z,
     cacheControl: {},
     valid: true,
     staleWhileRevalidate: true,
-    age: 7,
+    age: 0,
     maxAge: 300,
     isGzip: false,
     isJSON: true
   }
 
-Full details written to: /home/runner/.local/share/vlt/error-logs/error-9373.log
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-8484.log
 
 Full details:
 Error: failed to fetch packument
@@ -185,8 +184,8 @@ Error: failed to fetch packument
         [ 'content-type', 'application/json' ],
         [ 'transfer-encoding', 'chunked' ],
         [ 'connection', 'keep-alive' ],
-        [ 'date', 'Thu, 30 Jul 2026 21:31:01 GMT' ],
-        [ 'x-request-id', '12b4c362-8813-4746-b5de-5fa116b9caff' ],
+        [ 'date', 'Fri, 31 Jul 2026 11:15:24 GMT' ],
+        [ 'x-request-id', '5f41a8f0-a16c-4c17-ac13-cdc01bf4ead2' ],
         [ 'x-xss-protection', '0' ],
         [ 'content-encoding', 'identity' ],
         [ 'cross-origin-opener-policy', 'same-origin' ],
@@ -206,23 +205,22 @@ Error: failed to fetch packument
         [ 'x-cache', 'Error from cloudfront' ],
         [
           'via',
-          '1.1 2bb4560ed08e22695c5989511be7b43e.cloudfront.net (CloudFront)'
+          '1.1 caca3796a9753caf000b1d1a5f744530.cloudfront.net (CloudFront)'
         ],
-        [ 'x-amz-cf-pop', 'ORD58-P3' ],
+        [ 'x-amz-cf-pop', 'HIO52-P4' ],
         [
           'x-amz-cf-id',
-          '5Z4IBywyM7ln-OrnWKapYd0Zz3rXLHthEDYmETZcfjVyy578yF1jQQ=='
+          'FNvrBoeKCbppAs63-AK_msBbyupIDG-RxXkYErZWNCxgoxIqDvXKnQ=='
         ],
-        [ 'age', '7' ],
         [ 'content-length', '29' ]
       ],
       contentType: 'application/json',
-      date: 2026-07-30T21:31:01.000Z,
-      expires: 2026-07-30T21:36:01.000Z,
+      date: 2026-07-31T11:15:24.000Z,
+      expires: 2026-07-31T11:20:24.000Z,
       cacheControl: {},
       valid: true,
       staleWhileRevalidate: true,
-      age: 7,
+      age: 0,
       maxAge: 300,
       isGzip: false,
       isJSON: true

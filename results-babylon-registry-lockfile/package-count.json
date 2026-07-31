@@ -3,15 +3,18 @@
     "count": 1782
   },
   "vlt": {
-    "count": 1788
+    "count": 1792
   },
   "aws": {
-    "count": 1785
+    "count": 1789
+  },
+  "cloudsmith": {
+    "count": 1794
   },
   "github": {
-    "count": 1786
+    "count": 1790
   },
   "jfrog": {
-    "count": 1786
+    "count": 1790
   }
 }
