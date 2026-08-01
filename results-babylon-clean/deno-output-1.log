@@ -1,0 +1,6 @@
+[0m[1m[31merror[0m: Could not find npm package '@nx/nx-linux-x64-musl' matching '22.7.8'.
+
+A newer matching version was found, but it was not used because it was newer than the specified minimum dependency date of 2026-07-30 23:59:24.191010855 UTC.
+
+[0m[33mhint:[0m This version is blocked by the minimum dependency age policy, which avoids installing recently published versions to reduce supply chain risk (the default is 24 hours). To use this version now, pass the [0m[1m--minimum-dependency-age[0m (or [0m[1m--min-dep-age[0m) flag (for example [0m[1m0[0m to disable it, or a shorter duration like [0m[1m60[0m minutes) or set [0m[1m"minimumDependencyAge"[0m in your deno.json, or wait until the version is old enough.
+[0m[33mdocs:[0m [0m[36mhttps://docs.deno.com/go/minimum-dependency-age[0m

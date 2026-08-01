@@ -1,3 +1,8 @@
-Error: Usage Error: Couldn't find a script named "build"
-
-› yarn run [--top-level,-T] [--binaries-only,-B] [--error-if-missing] [--run-cwd <arg>] [--inspect <arg>] [--inspect-brk <arg>] [--inspect-wait <arg>] [--require <arg>] <NAME> […ARGSN]
+➤ · Yarn 6.0.0-rc.19
+➤ ┌ Project validation
+➤ │ @dev/shared-ui-components: Resolutions field will be ignored
+➤ └ Completed in 0ms
+➤ ┌ Installing packages
+➤ │ @nx/nx-linux-x64-musl@npm:22.7.8: No candidates found for npm:22.7.8
+➤ │ Resolved 2319 packages
+➤ └ Completed in 1s 517ms

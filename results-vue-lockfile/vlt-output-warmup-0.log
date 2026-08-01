@@ -1,0 +1,47 @@
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+RequestRetryError: server does not support the range header and the payload was partially consumed
+    at _RetryHandler.onResponseStart (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-DI2CYYXF.js:11052:19)
+    at UnwrapHandler.onHeaders (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-DI2CYYXF.js:2816:40)
+    at Request.onHeaders (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-DI2CYYXF.js:2481:33)
+    at Parser.onHeadersComplete (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-DI2CYYXF.js:7165:32)
+    at wasm_on_headers_complete (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-DI2CYYXF.js:6821:34)
+    at wasm://wasm/00034eea:wasm-function[10]:0x571
+    at wasm://wasm/00034eea:wasm-function[20]:0x845f
+    at Parser.execute (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-DI2CYYXF.js:6953:26)
+    at Parser.readMore (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-DI2CYYXF.js:6929:16)
+    at TLSSocket.onHttpSocketReadable (file:///opt/hostedtoolcache/node/24.18.0/arm64/lib/node_modules/vlt/chunk-DI2CYYXF.js:7362:22) {
+  code: 'UND_ERR_REQ_RETRY',
+  statusCode: 200,
+  data: { count: 2 },
+  headers: {
+    'content-type': 'application/json; charset=UTF-8',
+    'transfer-encoding': 'chunked',
+    connection: 'keep-alive',
+    date: 'Fri, 31 Jul 2026 23:47:48 GMT',
+    'x-request-id': 'da94319a-1e99-422c-89a2-ac3748343df4',
+    'x-xss-protection': '0',
+    'cache-control': 'public, s-maxage=600, max-age=600',
+    'content-encoding': 'gzip',
+    'cross-origin-opener-policy': 'same-origin',
+    'cross-origin-resource-policy': 'same-origin',
+    etag: 'W/"12bbb2ba759108caab6080e6786924e3"',
+    'origin-agent-cluster': '?1',
+    'referrer-policy': 'no-referrer',
+    'strict-transport-security': 'max-age=15552000; includeSubDomains',
+    'x-content-type-options': 'nosniff',
+    'x-dns-prefetch-control': 'off',
+    'x-download-options': 'noopen',
+    'x-frame-options': 'SAMEORIGIN',
+    'x-permitted-cross-domain-policies': 'none',
+    vary: 'Accept-Encoding,Origin',
+    'x-cache': 'Miss from cloudfront',
+    via: '1.1 aa83353605ab84622a0546d65b02fbfc.cloudfront.net (CloudFront)',
+    'x-amz-cf-pop': 'ORD58-P3',
+    'x-amz-cf-id': '2yGb3OBjMFlF297gZyNM3loyROKDIz9mPrJrTDe9Vw3j6hGNGuuPeg=='
+  }
+}
+
+Node.js v24.18.0
