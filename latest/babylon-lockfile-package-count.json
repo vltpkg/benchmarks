@@ -3,7 +3,9 @@
     "count": 1782
   },
   "berry": {
-    "count": 1719
+    "count": 1752,
+    "minCount": 1719,
+    "maxCount": 1784
   },
   "pnpm": {
     "count": 1577,
@@ -17,5 +19,8 @@
   },
   "bun": {
     "count": 1650
+  },
+  "deno": {
+    "count": 1488
   }
 }
