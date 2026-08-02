@@ -1,11 +1,3 @@
-[31m[1mInternal Error[22m[39m: [38;5;166m@babylonjs/[39m[38;5;173mroot[39m[38;5;37m@[39m[38;5;37mworkspace:.[39m: This package doesn't seem to be present in your lockfile; run "yarn install" to update the lockfile
-    at QO.getCandidates (/home/runner/.cache/node/corepack/v1/yarn/4.18.0/yarn.js:206:4607)
-    at Dy.getCandidates (/home/runner/.cache/node/corepack/v1/yarn/4.18.0/yarn.js:143:1311)
-    at /home/runner/.cache/node/corepack/v1/yarn/4.18.0/yarn.js:211:8429
-    at Fw (/home/runner/.cache/node/corepack/v1/yarn/4.18.0/yarn.js:142:45058)
-    at ot (/home/runner/.cache/node/corepack/v1/yarn/4.18.0/yarn.js:211:8409)
-    at async Promise.allSettled (index 0)
-    at async bf (/home/runner/.cache/node/corepack/v1/yarn/4.18.0/yarn.js:142:44386)
-    at async /home/runner/.cache/node/corepack/v1/yarn/4.18.0/yarn.js:211:9175
-    at async rs.startProgressPromise (/home/runner/.cache/node/corepack/v1/yarn/4.18.0/yarn.js:142:130224)
-    at async t.resolveEverything (/home/runner/.cache/node/corepack/v1/yarn/4.18.0/yarn.js:211:7147)
+[31m[1mUsage Error[22m[39m: Couldn't find a script named "build".
+
+[1m$ [22myarn run [--inspect] [--inspect-brk] [-T,--top-level] [-B,--binaries-only] [--require #0] <scriptName> ...

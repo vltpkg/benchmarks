@@ -30,10 +30,10 @@ computing gzip size...
 [2m.svelte-kit/output/client/[22m[35m_app/immutable/assets/4.C7uEq_1w.css                                    [39m[1m[2m  3.69 kB[22m[1m[22m[2m │ gzip:  1.07 kB[22m
 [2m.svelte-kit/output/client/[22m[35m_app/immutable/assets/0.BsIrWqtB.css                                    [39m[1m[2m  5.45 kB[22m[1m[22m[2m │ gzip:  1.85 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/C6d_GRp7.js                                       [39m[1m[2m  0.04 kB[22m[1m[22m[2m │ gzip:  0.06 kB[22m
-[2m.svelte-kit/output/client/[22m[36m_app/immutable/entry/start.BLZwPqRi.js                                  [39m[1m[2m  0.08 kB[22m[1m[22m[2m │ gzip:  0.09 kB[22m
+[2m.svelte-kit/output/client/[22m[36m_app/immutable/entry/start.imxpCpkG.js                                  [39m[1m[2m  0.08 kB[22m[1m[22m[2m │ gzip:  0.09 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/Bzak7iHL.js                                       [39m[1m[2m  0.10 kB[22m[1m[22m[2m │ gzip:  0.10 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/DsK10xGM.js                                       [39m[1m[2m  0.39 kB[22m[1m[22m[2m │ gzip:  0.29 kB[22m
-[2m.svelte-kit/output/client/[22m[36m_app/immutable/nodes/1.CNNNYzR-.js                                      [39m[1m[2m  0.54 kB[22m[1m[22m[2m │ gzip:  0.35 kB[22m
+[2m.svelte-kit/output/client/[22m[36m_app/immutable/nodes/1.B2Nd6k5V.js                                      [39m[1m[2m  0.54 kB[22m[1m[22m[2m │ gzip:  0.35 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/KZvqQufQ.js                                       [39m[1m[2m  0.58 kB[22m[1m[22m[2m │ gzip:  0.41 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/CXm1OamV.js                                       [39m[1m[2m  0.65 kB[22m[1m[22m[2m │ gzip:  0.40 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/C7YJlRmi.js                                       [39m[1m[2m  0.84 kB[22m[1m[22m[2m │ gzip:  0.47 kB[22m
@@ -44,13 +44,13 @@ computing gzip size...
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/nodes/5.BgwVM06S.js                                      [39m[1m[2m  1.92 kB[22m[1m[22m[2m │ gzip:  0.87 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/vqK7r_K5.js                                       [39m[1m[2m  2.24 kB[22m[1m[22m[2m │ gzip:  0.99 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/nodes/2.BJm7tBba.js                                      [39m[1m[2m  4.31 kB[22m[1m[22m[2m │ gzip:  2.13 kB[22m
-[2m.svelte-kit/output/client/[22m[36m_app/immutable/nodes/0.Chenii1V.js                                      [39m[1m[2m  7.01 kB[22m[1m[22m[2m │ gzip:  3.01 kB[22m
-[2m.svelte-kit/output/client/[22m[36m_app/immutable/entry/app.jLbWP2i5.js                                    [39m[1m[2m  7.41 kB[22m[1m[22m[2m │ gzip:  3.32 kB[22m
+[2m.svelte-kit/output/client/[22m[36m_app/immutable/nodes/0.BZfJKnGT.js                                      [39m[1m[2m  7.01 kB[22m[1m[22m[2m │ gzip:  3.01 kB[22m
+[2m.svelte-kit/output/client/[22m[36m_app/immutable/entry/app.BuKSsgwu.js                                    [39m[1m[2m  7.41 kB[22m[1m[22m[2m │ gzip:  3.32 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/ABaSv-SM.js                                       [39m[1m[2m  9.18 kB[22m[1m[22m[2m │ gzip:  3.87 kB[22m
-[2m.svelte-kit/output/client/[22m[36m_app/immutable/nodes/4.C2l6SGQM.js                                      [39m[1m[2m 15.67 kB[22m[1m[22m[2m │ gzip:  7.11 kB[22m
+[2m.svelte-kit/output/client/[22m[36m_app/immutable/nodes/4.BsoZ3w-E.js                                      [39m[1m[2m 15.67 kB[22m[1m[22m[2m │ gzip:  7.10 kB[22m
 [2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/9tlkf-6O.js                                       [39m[1m[2m 28.84 kB[22m[1m[22m[2m │ gzip: 11.06 kB[22m
-[2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/Qg-MZVH8.js                                       [39m[1m[2m 37.11 kB[22m[1m[22m[2m │ gzip: 13.91 kB[22m
-[32m✓ built in 680ms[39m
+[2m.svelte-kit/output/client/[22m[36m_app/immutable/chunks/zWCno_Os.js                                       [39m[1m[2m 37.10 kB[22m[1m[22m[2m │ gzip: 13.91 kB[22m
+[32m✓ built in 666ms[39m
 [2m.svelte-kit/output/server/[22m[32m_app/immutable/assets/fira-mono-symbols2-400-normal.CpeG9ob9.woff       [39m[1m[2m  4.47 kB[22m[1m[22m
 [2m.svelte-kit/output/server/[22m[32m_app/immutable/assets/fira-mono-symbols2-400-normal.C6JptOil.woff2      [39m[1m[2m  5.03 kB[22m[1m[22m
 [2m.svelte-kit/output/server/[22m[32m_app/immutable/assets/fira-mono-greek-ext-400-normal.BQ5yw6bY.woff      [39m[1m[2m  6.62 kB[22m[1m[22m
@@ -96,7 +96,7 @@ computing gzip size...
 [2m.svelte-kit/output/server/[22m[36mchunks/index.js                                                         [39m[1m[2m 98.86 kB[22m[1m[22m
 [2m.svelte-kit/output/server/[22m[36mindex.js                                                                [39m[1m[2m130.92 kB[22m[1m[22m
 [2m.svelte-kit/output/server/[22m[36mentries/pages/sverdle/_page.server.js                                   [39m[1m[2m146.21 kB[22m[1m[22m
-[32m✓ built in 3.07s[39m
+[32m✓ built in 3.09s[39m
 
 Run npm run preview to preview your production build locally.
 

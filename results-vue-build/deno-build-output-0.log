@@ -12,7 +12,7 @@ computing gzip size...
 [2mdist/[22m[2massets/[22m[35mindex-DVB8kM4A.css      [39m[1m[2m  4.20 kB[22m[1m[22m[2m │ gzip:  1.29 kB[22m
 [2mdist/[22m[2massets/[22m[36mAboutView-BHsFs-B5.js   [39m[1m[2m  0.23 kB[22m[1m[22m[2m │ gzip:  0.21 kB[22m
 [2mdist/[22m[2massets/[22m[36mindex-COlPm8xv.js       [39m[1m[2m101.58 kB[22m[1m[22m[2m │ gzip: 39.85 kB[22m
-[32m✓ built in 846ms[39m
+[32m✓ built in 782ms[39m
 src/main.ts(6,17): error TS2307: Cannot find module './App.vue' or its corresponding type declarations.
 src/router/index.ts(2,22): error TS2307: Cannot find module '../views/HomeView.vue' or its corresponding type declarations.
 src/router/index.ts(18,31): error TS2307: Cannot find module '../views/AboutView.vue' or its corresponding type declarations.
