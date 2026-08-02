@@ -1,23 +1,23 @@
 yarn run v1.22.22
 warning package.json: No license field
 $ astro build
-[2m15:08:08[22m [34m[content][39m Syncing content
-[2m15:08:08[22m [34m[content][39m Synced content
-[2m15:08:08[22m [34m[types][39m Generated [2m33ms[22m
-[2m15:08:08[22m [34m[build][39m output: [34m"static"[39m
-[2m15:08:08[22m [34m[build][39m mode: [34m"static"[39m
-[2m15:08:08[22m [34m[build][39m directory: [34m/home/runner/work/benchmarks/benchmarks/fixtures/astro/dist/[39m
-[2m15:08:08[22m [34m[build][39m Collecting build info...
-[2m15:08:08[22m [34m[build][39m [32m✓ Completed in 40ms.[39m
-[2m15:08:08[22m [34m[build][39m Building static entrypoints...
-[2m15:08:08[22m [34m[vite][39m [32m✓ built in 415ms[39m
-[2m15:08:08[22m [34m[build][39m [32m✓ Completed in 440ms.[39m
+[2m17:38:10[22m [34m[content][39m Syncing content
+[2m17:38:10[22m [34m[content][39m Synced content
+[2m17:38:10[22m [34m[types][39m Generated [2m32ms[22m
+[2m17:38:10[22m [34m[build][39m output: [34m"static"[39m
+[2m17:38:10[22m [34m[build][39m mode: [34m"static"[39m
+[2m17:38:10[22m [34m[build][39m directory: [34m/home/runner/work/benchmarks/benchmarks/fixtures/astro/dist/[39m
+[2m17:38:10[22m [34m[build][39m Collecting build info...
+[2m17:38:10[22m [34m[build][39m [32m✓ Completed in 53ms.[39m
+[2m17:38:10[22m [34m[build][39m Building static entrypoints...
+[2m17:38:10[22m [34m[vite][39m [32m✓ built in 398ms[39m
+[2m17:38:10[22m [34m[build][39m [32m✓ Completed in 423ms.[39m
 
 [42m[30m generating static routes [39m[49m
-[2m15:08:08[22m [32m▶[39m src/pages/index.astro
-[2m15:08:08[22m   [34m└─[39m [2m/index.html[22m [2m(+5ms)[22m 
-[2m15:08:08[22m [32m✓ Completed in 9ms.
+[2m17:38:10[22m [32m▶[39m src/pages/index.astro
+[2m17:38:10[22m   [34m└─[39m [2m/index.html[22m [2m(+4ms)[22m 
+[2m17:38:10[22m [32m✓ Completed in 8ms.
 [39m
-[2m15:08:08[22m [34m[build][39m 1 page(s) built in [1m497ms[22m
-[2m15:08:08[22m [34m[build][39m [1mComplete![22m
-Done in 1.30s.
+[2m17:38:10[22m [34m[build][39m 1 page(s) built in [1m491ms[22m
+[2m17:38:10[22m [34m[build][39m [1mComplete![22m
+Done in 1.26s.

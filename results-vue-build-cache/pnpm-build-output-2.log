@@ -8,12 +8,6 @@ node_modules/.pnpm/@tsconfig+node22@22.0.5/node_modules/@tsconfig/node22/tsconfi
 rendering chunks...
 [ELIFECYCLE] Command failed with exit code 1.
 computing gzip size...
-[2mdist/[22m[32mindex.html                     [39m[1m[2m  0.43 kB[22m[1m[22m[2m │ gzip:  0.28 kB[22m
-[2mdist/[22m[2massets/[22m[35mAboutView-DhlS7raN.css  [39m[1m[2m  0.08 kB[22m[1m[22m[2m │ gzip:  0.10 kB[22m
-[2mdist/[22m[2massets/[22m[35mindex-DVB8kM4A.css      [39m[1m[2m  4.20 kB[22m[1m[22m[2m │ gzip:  1.29 kB[22m
-[2mdist/[22m[2massets/[22m[36mAboutView-BHsFs-B5.js   [39m[1m[2m  0.23 kB[22m[1m[22m[2m │ gzip:  0.21 kB[22m
-[2mdist/[22m[2massets/[22m[36mindex-COlPm8xv.js       [39m[1m[2m101.58 kB[22m[1m[22m[2m │ gzip: 39.43 kB[22m
-[32m✓ built in 907ms[39m
 [ELIFECYCLE] Command failed.
 ERROR: "type-check" exited with 1.
 [ELIFECYCLE] Command failed with exit code 1.
