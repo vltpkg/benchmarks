@@ -15,7 +15,7 @@ build:  ERROR  command (/home/runner/work/benchmarks/benchmarks/fixtures/vue/) /
 
  Tasks:    0 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    1.388s 
+  Time:    1.411s 
 Failed:    //#build
 
  ERROR  run failed: command  exited (1)

@@ -11,22 +11,22 @@ https://nextjs.org/telemetry
  ✓ Compiled successfully
    Linting and checking validity of types ...
    Collecting page data ...
-TypeError: e[o] is not a function
-    at t (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/webpack-runtime.js:1:127)
-    at 2817 (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/chunks/961.js:2:34957)
-    at t (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/webpack-runtime.js:1:127)
-    at 4076 (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/chunks/961.js:2:25912)
-    at t (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/webpack-runtime.js:1:127)
-    at 8486 (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/chunks/961.js:2:31629)
-    at t (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/webpack-runtime.js:1:127)
-    at 9451 (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/chunks/961.js:2:29076)
-    at t (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/webpack-runtime.js:1:127)
-    at 8513 (/home/runner/work/benchmarks/benchmarks/fixtures/next/.next/server/chunks/961.js:2:7280)
+   Generating static pages (0/5) ...
+   Generating static pages (1/5) 
+   Generating static pages (2/5) 
+   Generating static pages (3/5) 
+ ✓ Generating static pages (5/5)
+   Finalizing page optimization ...
+   Collecting build traces ...
 
-> Build error occurred
-Error: Failed to collect page data for /favicon.ico
-    at <unknown> (../../src/build/utils.ts:1746:12)
-    at processTicksAndRejections (ext:core/01_core.js:404:7)
-    at drainTicks (ext:core/01_core.js:431:5) {
-  type: "Error"
-}
+Route (app)                              Size     First Load JS
+┌ ○ /                                    5.47 kB         106 kB
+└ ○ /_not-found                          899 B           101 kB
++ First Load JS shared by all            100 kB
+  ├ chunks/979-efa7c585ddb1a32f.js       45.7 kB
+  ├ chunks/9f71dc18-40938ae20552e5b1.js  52.7 kB
+  └ other shared chunks (total)          1.87 kB
+
+
+○  (Static)  prerendered as static content
+

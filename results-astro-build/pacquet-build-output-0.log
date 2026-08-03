@@ -1,20 +1,20 @@
 $ astro build
-[2m19:16:48[22m [34m[content][39m Syncing content
-[2m19:16:48[22m [34m[content][39m Synced content
-[2m19:16:48[22m [34m[types][39m Generated [2m34ms[22m
-[2m19:16:48[22m [34m[build][39m output: [34m"static"[39m
-[2m19:16:48[22m [34m[build][39m mode: [34m"static"[39m
-[2m19:16:48[22m [34m[build][39m directory: [34m/home/runner/work/benchmarks/benchmarks/fixtures/astro/dist/[39m
-[2m19:16:48[22m [34m[build][39m Collecting build info...
-[2m19:16:48[22m [34m[build][39m [32m✓ Completed in 42ms.[39m
-[2m19:16:48[22m [34m[build][39m Building static entrypoints...
-[2m19:16:49[22m [34m[vite][39m [32m✓ built in 609ms[39m
-[2m19:16:49[22m [34m[build][39m [32m✓ Completed in 633ms.[39m
+[2m01:45:43[22m [34m[content][39m Syncing content
+[2m01:45:43[22m [34m[content][39m Synced content
+[2m01:45:43[22m [34m[types][39m Generated [2m35ms[22m
+[2m01:45:43[22m [34m[build][39m output: [34m"static"[39m
+[2m01:45:43[22m [34m[build][39m mode: [34m"static"[39m
+[2m01:45:43[22m [34m[build][39m directory: [34m/home/runner/work/benchmarks/benchmarks/fixtures/astro/dist/[39m
+[2m01:45:43[22m [34m[build][39m Collecting build info...
+[2m01:45:43[22m [34m[build][39m [32m✓ Completed in 42ms.[39m
+[2m01:45:43[22m [34m[build][39m Building static entrypoints...
+[2m01:45:44[22m [34m[vite][39m [32m✓ built in 624ms[39m
+[2m01:45:44[22m [34m[build][39m [32m✓ Completed in 649ms.[39m
 
 [42m[30m generating static routes [39m[49m
-[2m19:16:49[22m [32m▶[39m src/pages/index.astro
-[2m19:16:49[22m   [34m└─[39m [2m/index.html[22m [2m(+4ms)[22m 
-[2m19:16:49[22m [32m✓ Completed in 10ms.
+[2m01:45:44[22m [32m▶[39m src/pages/index.astro
+[2m01:45:44[22m   [34m└─[39m [2m/index.html[22m [2m(+4ms)[22m 
+[2m01:45:44[22m [32m✓ Completed in 10ms.
 [39m
-[2m19:16:49[22m [34m[build][39m 1 page(s) built in [1m692ms[22m
-[2m19:16:49[22m [34m[build][39m [1mComplete![22m
+[2m01:45:44[22m [34m[build][39m 1 page(s) built in [1m708ms[22m
+[2m01:45:44[22m [34m[build][39m [1mComplete![22m
