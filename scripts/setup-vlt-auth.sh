@@ -4,8 +4,8 @@ set -Eeuo pipefail
 
 : "${VLT_TOKEN:?VLT_TOKEN must be set}"
 
-# vlt scopes credentials by URL path. The vltpkg registry currently returns
-# upstream tarball URLs under /vlt/npm/, so CI needs the token for both paths.
+# Store CI credentials for the same registry configured in each vlt.json.
+# Using the keychain avoids VLT_REGISTRY overriding that project config.
 node --input-type=module <<'EOF'
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { homedir } from 'node:os'
@@ -24,7 +24,6 @@ try {
 
 const bearer = `Bearer ${token}`
 auth['https://registry.vlt.io/vltpkg/npm'] = bearer
-auth['https://registry.vlt.io/vlt/npm'] = bearer
 
 await mkdir(dirname(authFile), { recursive: true, mode: 0o700 })
 const temporary = `${authFile}.${process.pid}`
