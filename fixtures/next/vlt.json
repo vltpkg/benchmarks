@@ -1,0 +1,7 @@
+{
+  "config": {
+    "registries": {
+      "npm": "https://registry.vlt.io/vlt/npm/"
+    }
+  }
+}

@@ -36,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          fetch-depth: 2
       - name: Check changed files
         id: check
         run: |
@@ -162,9 +162,9 @@ jobs:
           echo "runs=$runs" >> "$GITHUB_OUTPUT"
       - name: Run Benchmarks variations
         env:
+          VLT_REGISTRY: https://registry.vlt.io/vlt/npm/
+          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
-          VLT_REGISTRY_URL: ${{ secrets.VLT_REGISTRY_URL }}
-          VLT_REGISTRY_AUTH_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
           CLOUDSMITH_REGISTRY: ${{ secrets.CLOUDSMITH_REGISTRY }}
           CLOUDSMITH_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
           GH_REGISTRY: ${{ secrets.GH_REGISTRY }}
@@ -220,7 +220,7 @@ jobs:
       - name: Build Charts View
         run: |
           pushd app
-          vlt install || true
+          vlt install
           vlt run build
           popd
       - name: Upload Processed Results
@@ -274,7 +274,7 @@ jobs:
       - name: Build App
         run: |
           pushd app
-          vlt install || true
+          vlt install
           vlt run build
           popd
       - name: Prepare deploy directory

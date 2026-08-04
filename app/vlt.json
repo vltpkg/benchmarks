@@ -1,5 +1,8 @@
 {
   "config": {
+    "registries": {
+      "npm": "https://registry.npmjs.org/"
+    },
     "command": {
       "install": {
         "allow-scripts": "#esbuild"

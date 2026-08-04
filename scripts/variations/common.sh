@@ -99,16 +99,8 @@ BENCH_INSTALL_BERRY="corepack yarn@latest install"
 BENCH_INSTALL_ZPM="yarn install --silent"
 BENCH_INSTALL_PNPM="corepack pnpm@latest install --ignore-scripts --silent"
 BENCH_INSTALL_PACQUET="/tmp/pnpm12/bin/pnpm install --ignore-scripts --silent"
-# vlt uses its own config (not .npmrc). When vlt registry credentials are
-# available, configure vlt to use the vlt registry via --registry flag and
-# VLT_REGISTRY / VLT_TOKEN env vars.
-if [ -n "${VLT_REGISTRY_URL:-}" ] && [ -n "${VLT_REGISTRY_AUTH_TOKEN:-}" ]; then
-  export VLT_REGISTRY="$VLT_REGISTRY_URL"
-  export VLT_TOKEN="$VLT_REGISTRY_AUTH_TOKEN"
-  BENCH_INSTALL_VLT="vlt install --registry=$VLT_REGISTRY_URL --view=silent"
-else
-  BENCH_INSTALL_VLT="vlt install --view=silent"
-fi
+# vlt uses the npm registry alias configured by each fixture's vlt.json.
+BENCH_INSTALL_VLT="vlt install --view=silent"
 BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
 BENCH_INSTALL_DENO="deno install --quiet"
 BENCH_INSTALL_AUBE="aube install --silent"

@@ -280,7 +280,7 @@ Preferred workflow (matches CI):
 
    ```sh
    cd app
-   vlt install || npm install
+   vlt install
    vlr dev
    ```
 
