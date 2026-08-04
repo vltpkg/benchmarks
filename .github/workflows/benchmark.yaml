@@ -220,9 +220,6 @@ jobs:
         run: |
           npm install -g vlt@latest
       - name: Build Charts View
-        env:
-          VLT_REGISTRY: https://registry.vlt.io/vlt/npm/
-          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
         run: |
           pushd app
           vlt install
@@ -277,9 +274,6 @@ jobs:
         run: |
           npm install -g vlt@latest
       - name: Build App
-        env:
-          VLT_REGISTRY: https://registry.vlt.io/vlt/npm/
-          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
         run: |
           pushd app
           vlt install
