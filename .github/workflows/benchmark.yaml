@@ -160,12 +160,9 @@ jobs:
 
           echo "warmup=$warmup" >> "$GITHUB_OUTPUT"
           echo "runs=$runs" >> "$GITHUB_OUTPUT"
-      - name: Configure vlt authentication
-        env:
-          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
-        run: ./scripts/setup-vlt-auth.sh
       - name: Run Benchmarks variations
         env:
+          VLT_REGISTRY: https://registry.vlt.io/vlt/npm/
           VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
           CLOUDSMITH_REGISTRY: ${{ secrets.CLOUDSMITH_REGISTRY }}
@@ -222,11 +219,10 @@ jobs:
       - name: Install vlt
         run: |
           npm install -g vlt@latest
-      - name: Configure vlt authentication
-        env:
-          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
-        run: ./scripts/setup-vlt-auth.sh
       - name: Build Charts View
+        env:
+          VLT_REGISTRY: https://registry.vlt.io/vlt/npm/
+          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
         run: |
           pushd app
           vlt install
@@ -280,11 +276,10 @@ jobs:
       - name: Install vlt
         run: |
           npm install -g vlt@latest
-      - name: Configure vlt authentication
-        env:
-          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
-        run: ./scripts/setup-vlt-auth.sh
       - name: Build App
+        env:
+          VLT_REGISTRY: https://registry.vlt.io/vlt/npm/
+          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
         run: |
           pushd app
           vlt install
