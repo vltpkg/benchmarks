@@ -181,5 +181,5 @@ echo "     cp results/latest/chart-data.json app/latest/chart-data.json"
 echo
 echo "  3) Run the app locally:"
 echo "     cd app"
-echo "     vlt install"
+echo "     vlt install || npm install"
 echo "     npm run dev"
