@@ -99,8 +99,7 @@ BENCH_INSTALL_BERRY="corepack yarn@latest install"
 BENCH_INSTALL_ZPM="yarn install --silent"
 BENCH_INSTALL_PNPM="corepack pnpm@latest install --ignore-scripts --silent"
 BENCH_INSTALL_PACQUET="/tmp/pnpm12/bin/pnpm install --ignore-scripts --silent"
-# vlt uses the registry configured by each fixture's vlt.json. CI provides
-# VLT_REGISTRY and VLT_TOKEN directly so the token is scoped to that registry.
+# vlt uses the npm registry alias configured by each fixture's vlt.json.
 BENCH_INSTALL_VLT="vlt install --view=silent"
 BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
 BENCH_INSTALL_DENO="deno install --quiet"
