@@ -99,14 +99,8 @@ BENCH_INSTALL_BERRY="corepack yarn@latest install"
 BENCH_INSTALL_ZPM="yarn install --silent"
 BENCH_INSTALL_PNPM="corepack pnpm@latest install --ignore-scripts --silent"
 BENCH_INSTALL_PACQUET="/tmp/pnpm12/bin/pnpm install --ignore-scripts --silent"
-# vlt uses its own config (not .npmrc), and vlt 1.0 no longer defaults to the
-# public npm registry. Each fixture has a vlt.json configured for the vlt
-# package registry. When vlt registry credentials are available, the
-# VLT_REGISTRY / VLT_TOKEN env vars override that project config.
-if [ -n "${VLT_REGISTRY_URL:-}" ] && [ -n "${VLT_REGISTRY_AUTH_TOKEN:-}" ]; then
-  export VLT_REGISTRY="$VLT_REGISTRY_URL"
-  export VLT_TOKEN="$VLT_REGISTRY_AUTH_TOKEN"
-fi
+# vlt uses the registry configured by each fixture's vlt.json. CI provides
+# VLT_REGISTRY and VLT_TOKEN directly so the token is scoped to that registry.
 BENCH_INSTALL_VLT="vlt install --view=silent"
 BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
 BENCH_INSTALL_DENO="deno install --quiet"
