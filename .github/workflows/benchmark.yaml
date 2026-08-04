@@ -174,6 +174,10 @@ jobs:
           BENCH_WARMUP: ${{ steps.tune.outputs.warmup }}
           BENCH_RUNS: ${{ steps.tune.outputs.runs }}
         run: |
+          vlt_auth_status=$(curl --silent --output /dev/null --write-out '%{http_code}' \
+            --header "Authorization: Bearer $VLT_TOKEN" \
+            "${VLT_REGISTRY}nx/-/nx-20.3.1.tgz")
+          echo "vlt registry auth preflight: HTTP $vlt_auth_status"
           ./bench run \
             --fixtures="${{ matrix.fixture }}" \
             --variation="${{ matrix.variation }}"
