@@ -165,7 +165,7 @@ jobs:
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
           VLT_REGISTRY: https://registry.vlt.io/vltpkg/npm/
           VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
-          VLT_LOGLEVEL: verbose
+          VLT_LOGLEVEL: debug
           CLOUDSMITH_REGISTRY: ${{ secrets.CLOUDSMITH_REGISTRY }}
           CLOUDSMITH_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
           GH_REGISTRY: ${{ secrets.GH_REGISTRY }}
