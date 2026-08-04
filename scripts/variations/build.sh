@@ -40,7 +40,7 @@ BENCH_COMMAND_BERRY="timeout $BENCH_TIMEOUT corepack yarn@latest run build > $BE
 BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT yarn run build > $BENCH_OUTPUT_FOLDER/zpm-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT corepack pnpm@latest run build > $BENCH_OUTPUT_FOLDER/pnpm-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_PACQUET="timeout $BENCH_TIMEOUT /tmp/pnpm12/bin/pnpm run build > $BENCH_OUTPUT_FOLDER/pacquet-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT vlt build --view=human > $BENCH_OUTPUT_FOLDER/vlt-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT vlt run build --view=human > $BENCH_OUTPUT_FOLDER/vlt-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT bun run build > $BENCH_OUTPUT_FOLDER/bun-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT deno run build > $BENCH_OUTPUT_FOLDER/deno-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_AUBE="timeout $BENCH_TIMEOUT aube run build > $BENCH_OUTPUT_FOLDER/aube-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
