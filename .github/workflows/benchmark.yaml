@@ -166,6 +166,7 @@ jobs:
         run: ./scripts/setup-vlt-auth.sh
       - name: Run Benchmarks variations
         env:
+          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
           CLOUDSMITH_REGISTRY: ${{ secrets.CLOUDSMITH_REGISTRY }}
           CLOUDSMITH_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
