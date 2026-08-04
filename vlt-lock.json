@@ -1,7 +1,7 @@
 {
   "lockfileVersion": 1,
   "options": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.vlt.io/vltpkg/npm/"
   },
   "nodes": {
     "~https_c++registry.npmjs.org+~@babel+code-frame@7.29.7": [2,"@babel/code-frame","sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw=="],
