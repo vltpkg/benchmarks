@@ -68,7 +68,7 @@ if [ -z "$BENCH_ZPM_VERSION" ]; then
 fi
 BENCH_SETUP_NPM=""
 BENCH_SETUP_YARN=""
-BENCH_SETUP_BERRY="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml"
+BENCH_SETUP_BERRY="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; [ -e yarn.lock ] || : > yarn.lock"
 BENCH_SETUP_ZPM="echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; { echo '[zpm prepare]'; echo 'cwd:'; pwd; echo 'package.json:'; ls -la package.json || true; echo 'yarn path:'; command -v yarn || true; echo 'yarn version:'; yarn -v || true; echo 'canary version:'; echo \"$BENCH_ZPM_VERSION\"; echo 'packageManager (before):'; npm pkg get packageManager || true; echo 'set packageManager=yarn@'"$BENCH_ZPM_VERSION"':' ; npm pkg set packageManager=\"yarn@$BENCH_ZPM_VERSION\" || true; echo 'packageManager (after):'; npm pkg get packageManager || true; } >> $BENCH_OUTPUT_FOLDER/zpm-prepare.log 2>&1"
 BENCH_SETUP_PNPM="npm pkg delete packageManager >/dev/null 2>&1 || true"
 
