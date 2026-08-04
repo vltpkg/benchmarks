@@ -219,8 +219,10 @@ jobs:
           npm install -g vlt@latest
       - name: Build Charts View
         run: |
-          vlt i
-          vlt build
+          pushd app
+          vlt install || true
+          vlt run build
+          popd
       - name: Upload Processed Results
         uses: actions/upload-artifact@v7
         with:
@@ -271,8 +273,10 @@ jobs:
           npm install -g vlt@latest
       - name: Build App
         run: |
-          vlt i
-          vlt build
+          pushd app
+          vlt install || true
+          vlt run build
+          popd
       - name: Prepare deploy directory
         run: |
           # Copy the latest data files from gh-pages into the built results

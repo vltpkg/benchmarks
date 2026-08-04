@@ -1,6 +1,6 @@
 {
   "config": {
-    "registry": "https://registry.vlt.io/vltpkg/npm/",
+    "registry": "https://registry.npmjs.org/",
     "command": {
       "install": {
         "allow-scripts": "#esbuild"
