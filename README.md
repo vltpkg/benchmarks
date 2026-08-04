@@ -118,6 +118,13 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 
 ### Local Development
 
+From a fresh clone, bootstrap and build the repository from its root:
+
+```bash
+vlt i
+vlt build
+```
+
 - 1. Setup:
   - 1.1 Install `jq` using your OS package manager
   - 1.2 Install `hyperfine`, version >= 1.19.0 is required
@@ -279,8 +286,9 @@ Preferred workflow (matches CI):
 5. Run the app:
 
    ```sh
+   vlt i
+   vlt build
    cd app
-   vlt install || npm install
    vlr dev
    ```
 

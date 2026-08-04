@@ -1,3 +1,6 @@
 {
-    "workspaces": ["packages/**/*"]
+    "workspaces": ["packages/**/*"],
+    "config": {
+        "registry": "https://registry.npmjs.org/"
+    }
 }

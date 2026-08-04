@@ -1,4 +1,5 @@
 {
+  "workspaces": ["app"],
   "config": {
     "registry": "https://registry.npmjs.org/",
     "command": {
