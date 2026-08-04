@@ -178,14 +178,12 @@ jobs:
             --fixtures="${{ matrix.fixture }}" \
             --variation="${{ matrix.variation }}"
       - name: Upload Benchmark Results
-        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: results-${{ matrix.fixture }}-${{ matrix.variation }}
           path: ./results/${{ matrix.fixture }}/${{ matrix.variation }}/
           retention-days: 7
       - name: Upload Versions Info
-        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: versions-${{ matrix.fixture }}-${{ matrix.variation }}
