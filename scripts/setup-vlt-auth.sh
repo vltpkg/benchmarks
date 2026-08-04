@@ -23,7 +23,7 @@ try {
 } catch {}
 
 const bearer = `Bearer ${token}`
-auth['https://registry.vlt.io/vltpkg/npm'] = bearer
+auth['https://registry.vlt.io/vlt/npm'] = bearer
 
 await mkdir(dirname(authFile), { recursive: true, mode: 0o700 })
 const temporary = `${authFile}.${process.pid}`

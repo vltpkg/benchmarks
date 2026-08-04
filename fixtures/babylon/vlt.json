@@ -2,7 +2,7 @@
     "workspaces": ["packages/**/*"],
     "config": {
         "registries": {
-            "npm": "https://registry.vlt.io/vltpkg/npm/"
+            "npm": "https://registry.vlt.io/vlt/npm/"
         }
     }
 }
