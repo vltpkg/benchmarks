@@ -163,7 +163,7 @@ jobs:
       - name: Run Benchmarks variations
         env:
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
-          VLT_REGISTRY: https://registry.vlt.io/vlt/npm/
+          VLT_REGISTRY: https://registry.vlt.io/vltpkg/npm/
           VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
           CLOUDSMITH_REGISTRY: ${{ secrets.CLOUDSMITH_REGISTRY }}
           CLOUDSMITH_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}

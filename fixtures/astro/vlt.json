@@ -1,5 +1,5 @@
 {
   "config": {
-    "registry": "https://registry.vlt.io/vlt/npm/"
+    "registry": "https://registry.vlt.io/vltpkg/npm/"
   }
 }
