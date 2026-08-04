@@ -167,7 +167,6 @@ jobs:
       - name: Run Benchmarks variations
         env:
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
-          VLT_LOGLEVEL: debug
           CLOUDSMITH_REGISTRY: ${{ secrets.CLOUDSMITH_REGISTRY }}
           CLOUDSMITH_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
           GH_REGISTRY: ${{ secrets.GH_REGISTRY }}
