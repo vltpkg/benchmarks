@@ -99,9 +99,13 @@ BENCH_INSTALL_BERRY="corepack yarn@latest install"
 BENCH_INSTALL_ZPM="yarn install --silent"
 BENCH_INSTALL_PNPM="corepack pnpm@latest install --ignore-scripts --silent"
 BENCH_INSTALL_PACQUET="/tmp/pnpm12/bin/pnpm install --ignore-scripts --silent"
-# vlt uses its own config (not .npmrc). When vlt registry credentials are
-# available, configure vlt to use the vlt registry via --registry flag and
-# VLT_REGISTRY / VLT_TOKEN env vars.
+# vlt uses its own config (not .npmrc). vlt v1+ ships with no default
+# registry and `vlt install` fails with ECONFIG unless a registry is
+# configured, so every fixture commits a default vlt.json pointing at the
+# public vlt mirror of the npm registry (https://registry.vlt.io/vltpkg/npm/).
+# When vlt registry credentials are available, configure vlt to use the vlt
+# registry via --registry flag (which takes precedence over the fixture
+# vlt.json) and VLT_REGISTRY / VLT_TOKEN env vars.
 if [ -n "${VLT_REGISTRY_URL:-}" ] && [ -n "${VLT_REGISTRY_AUTH_TOKEN:-}" ]; then
   export VLT_REGISTRY="$VLT_REGISTRY_URL"
   export VLT_TOKEN="$VLT_REGISTRY_AUTH_TOKEN"
