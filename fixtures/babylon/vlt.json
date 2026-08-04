@@ -1,6 +1,6 @@
 {
     "workspaces": ["packages/**/*"],
     "config": {
-        "registry": "https://registry.vlt.io/vltpkg/npm/"
+        "registry": "https://registry.vlt.io/vlt/npm/"
     }
 }
