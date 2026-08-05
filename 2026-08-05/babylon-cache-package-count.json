@@ -5,14 +5,14 @@
     "maxCount": 1795
   },
   "berry": {
-    "count": 1753,
+    "count": 1755,
     "minCount": 1722,
-    "maxCount": 1784
+    "maxCount": 1787
   },
   "pnpm": {
-    "count": 1578,
-    "minCount": 1576,
-    "maxCount": 1581
+    "count": 1580,
+    "minCount": 1579,
+    "maxCount": 1584
   },
   "vlt": {
     "count": 1526
@@ -23,6 +23,6 @@
     "maxCount": 1654
   },
   "deno": {
-    "count": 1488
+    "count": 1491
   }
 }
