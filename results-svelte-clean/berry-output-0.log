@@ -3,15 +3,15 @@
 ::group::Resolution step
 [94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;166m@fontsource/[39m[38;5;173mfira-mono[39m[38;5;111m@[39m[38;5;111mnpm:5.3.0[39m, [38;5;166m@neoconfetti/[39m[38;5;173msvelte[39m[38;5;111m@[39m[38;5;111mnpm:2.2.2[39m, [38;5;166m@sveltejs/[39m[38;5;173madapter-auto[39m[38;5;111m@[39m[38;5;111mnpm:3.3.1[39m, [38;5;166m@sveltejs/[39m[38;5;173mkit[39m[38;5;111m@[39m[38;5;111mnpm:2.70.2[39m, and [38;5;220m125[39m more.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 366ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 345ms
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 [94m➤[39m YN0013: │ [38;5;220m78[39m packages were added to the project ([38;5;160m+ 81.97 MiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 996ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 974ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [93m➤[39m YN0004: │ [38;5;173mesbuild[39m[38;5;111m@[39m[38;5;111mnpm:0.25.12[39m lists build scripts, but all build scripts have been disabled.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 356ms
-[93m➤[39m YN0000: · Done with warnings in 1s 743ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 369ms
+[93m➤[39m YN0000: · Done with warnings in 1s 712ms
