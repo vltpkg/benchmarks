@@ -12,7 +12,7 @@ https://turborepo.dev/docs/telemetry
    • Remote caching disabled
 
 ::group::build
-cache bypass, force executing 3521438a223a0fa2
+cache bypass, force executing c98679da1a678488
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -48,5 +48,5 @@ Route (app)                              Size     First Load JS
 
  Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    16.963s 
+  Time:    17.294s 
 
