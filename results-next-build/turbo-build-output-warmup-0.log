@@ -6,13 +6,13 @@ This information is used to shape the Turborepo roadmap and prioritize features.
 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
 https://turborepo.dev/docs/telemetry
 
- WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.8). Using a specified version in your repository will result in more predictable behavior.
+ WARNING  No locally installed `turbo` found in your repository. Using globally installed version (2.10.9). Using a specified version in your repository will result in more predictable behavior.
 
    • Running build
    • Remote caching disabled
 
 ::group::build
-cache bypass, force executing c98679da1a678488
+cache bypass, force executing 3525306f89b77f02
 ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -48,5 +48,5 @@ Route (app)                              Size     First Load JS
 
  Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    17.294s 
+  Time:    17.621s 
 
