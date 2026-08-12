@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     outputs:
       app_only: ${{ steps.check.outputs.app_only }}
+      partial_run: ${{ steps.partial.outputs.partial_run }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -77,6 +78,30 @@ jobs:
 
           echo "app_only=$APP_ONLY" >> "$GITHUB_OUTPUT"
           echo "App-only changes: $APP_ONLY"
+      - name: Detect partial run
+        id: partial
+        env:
+          IN_FIXTURES: ${{ inputs.fixtures || '' }}
+          IN_VARIATIONS: ${{ inputs.variations || '' }}
+          IN_BINARIES: ${{ inputs.binaries || '' }}
+          IN_WARMUP: ${{ inputs.warmup || '' }}
+          IN_RUNS: ${{ inputs.runs || '' }}
+        run: |
+          # A dispatch with any non-default input produces a partial/tuned data
+          # set: results stay in artifacts + logs but must not deploy to
+          # gh-pages, where missing variants break chart rendering for the day.
+          partial=false
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            [[ "$IN_FIXTURES" == '["next", "astro", "vue", "svelte", "large", "babylon"]' ]] || partial=true
+            [[ "$IN_VARIATIONS" == '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "lockfile", "lockfile+node_modules", "build", "build-cache", "registry-clean", "registry-lockfile"]' ]] || partial=true
+            [[ "$IN_BINARIES" == '"npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,nx,turbo,vp,node"' ]] || partial=true
+            [[ "$IN_WARMUP" == "2" ]] || partial=true
+            [[ "$IN_RUNS" == "5" ]] || partial=true
+          fi
+          echo "partial_run=$partial" >> "$GITHUB_OUTPUT"
+          if [[ "$partial" == "true" ]]; then
+            echo "::notice::Partial run detected (non-default dispatch inputs) — gh-pages deploy will be skipped; results live in job logs and artifacts."
+          fi
 
   benchmark:
     name: "Run Benchmarks"
@@ -214,6 +239,24 @@ jobs:
       - name: Process Results
         run: |
           ./bench process
+      - name: Summarize results in log
+        run: |
+          {
+            echo '```'
+            for f in results/results-*/benchmarks.json; do
+              [ -f "$f" ] || continue
+              node -e '
+                const fs = require("fs")
+                const p = process.argv[1]
+                const name = p.split("/")[1].replace(/^results-/, "")
+                for (const r of JSON.parse(fs.readFileSync(p, "utf8")).results ?? []) {
+                  const times = (r.times ?? []).map((t) => t.toFixed(1)).join(", ")
+                  console.log(`${name}  ${r.command}: mean=${(r.mean ?? 0).toFixed(1)}s times=[${times}]`)
+                }
+              ' "$f"
+            done
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Install vlt
         run: |
           npm install -g vlt@latest
@@ -235,7 +278,7 @@ jobs:
     needs: [detect-changes, process]
     permissions:
       contents: write
-    if: github.ref == 'refs/heads/main' && needs.detect-changes.outputs.app_only != 'true'
+    if: github.ref == 'refs/heads/main' && needs.detect-changes.outputs.app_only != 'true' && needs.detect-changes.outputs.partial_run != 'true'
     steps:
       - uses: actions/checkout@v6
       - name: Download Results
