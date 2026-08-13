@@ -236,6 +236,42 @@ jobs:
         with:
           path: versions-temp
           pattern: versions-*
+      - name: Scan Raw Registry Results
+        id: registry-raw
+        # Any non-zero vlt exit code is a potential outage or misconfiguration.
+        # This must run before `bench process`, which rewrites exit codes in
+        # place (dropping failed runs), so raw per-run failures are only
+        # visible here.
+        if: github.ref == 'refs/heads/main' && needs.detect-changes.outputs.partial_run != 'true'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const fs = require('fs')
+            const path = require('path')
+            const failures = []
+
+            for (const entry of fs.readdirSync('results').sort()) {
+              const match = /^results-(.+)-(registry-[a-z]+)$/.exec(entry)
+              if (!match) continue
+              const file = path.join('results', entry, 'benchmarks.json')
+              if (!fs.existsSync(file)) continue
+              const label = `${match[1]} ${match[2]}`
+
+              const vlt = (JSON.parse(fs.readFileSync(file, 'utf8')).results ?? [])
+                .find((r) => r.command === 'vlt')
+              if (!vlt) {
+                failures.push(`- **${label}**: no vlt result`)
+                continue
+              }
+              const codes = vlt.exit_codes ?? []
+              const bad = codes.filter((c) => c !== 0)
+              if (bad.length) {
+                failures.push(`- **${label}**: ${bad.length}/${codes.length} runs failed (exit codes: ${bad.join(', ')})`)
+              }
+            }
+
+            core.info(failures.length ? `vlt registry run failures:\n${failures.join('\n')}` : 'all vlt registry runs succeeded')
+            core.setOutput('vlt_failures', failures.join('\n'))
       - name: Process Results
         run: |
           ./bench process
@@ -278,6 +314,8 @@ jobs:
         # be published to the site.
         if: github.ref == 'refs/heads/main' && needs.detect-changes.outputs.partial_run != 'true'
         uses: actions/github-script@v9
+        env:
+          VLT_FAILURES: ${{ steps.registry-raw.outputs.vlt_failures }}
         with:
           script: |
             const fs = require('fs')
@@ -286,7 +324,6 @@ jobs:
             // difference counts as noticeably slower.
             const THRESHOLD = 1.1
             const slower = []
-            const failed = []
 
             // Compare the processed files that get deployed to the site so an
             // alert fires exactly when vlt appears slower on the site.
@@ -301,15 +338,12 @@ jobs:
               // Registries where every run failed are stamped with a non-zero
               // exit code and a zero mean by clean-benchmarks and rendered as
               // failures on the site, so they are excluded from the speed
-              // comparison and reported separately.
+              // comparison. A failed vlt is already reported by the raw scan.
               const ok = (JSON.parse(fs.readFileSync(path.join(dir, entry), 'utf8')).results ?? [])
                 .filter((r) => r.mean > 0 && (r.exit_codes ?? []).every((c) => c === 0))
               const vlt = ok.find((r) => r.command === 'vlt')
+              if (!vlt) continue
 
-              if (!vlt) {
-                failed.push(`- **${label}**`)
-                continue
-              }
               const best = ok.reduce((a, b) => (b.mean < a.mean ? b : a))
               if (best.command === 'vlt' || vlt.mean <= best.mean * THRESHOLD) continue
               slower.push(
@@ -317,14 +351,15 @@ jobs:
               )
             }
 
+            const failures = process.env.VLT_FAILURES ?? ''
             const message = []
+            if (failures) {
+              message.push('vlt registry runs failed (potential outage or misconfiguration):', failures)
+            }
             if (slower.length) {
               message.push(`vlt was noticeably slower than another registry in ${slower.length} registry benchmarks:`, ...slower)
             }
-            if (failed.length) {
-              message.push(`vlt produced no successful result in ${failed.length} registry benchmarks:`, ...failed)
-            }
-            core.info(message.length ? message.join('\n') : 'vlt was the fastest registry in all benchmarks')
+            core.info(message.length ? message.join('\n') : 'all vlt registry runs succeeded and vlt was the fastest registry')
             core.setOutput('message', message.join('\n'))
       - name: Slack Notify
         if: steps.registry-check.outputs.message != ''
@@ -338,7 +373,7 @@ jobs:
           SLACK_FOOTER: ""
           SLACKIFY_MARKDOWN: true
           MSG_MINIMAL: "actions url,commit"
-          SLACK_TITLE: vlt Is Not the Fastest Registry
+          SLACK_TITLE: vlt Registry Benchmark Alert
           SLACK_MESSAGE: |
             ${{ steps.registry-check.outputs.message }}
   deploy:
