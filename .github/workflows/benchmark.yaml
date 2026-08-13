@@ -134,7 +134,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: "24"
           package-manager-cache: false
       - name: Install & Setup Tools
         run: |
@@ -332,3 +332,110 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: results
           keep_files: true
+
+  on-failure:
+    name: "Notify on Failure"
+    runs-on: ubuntu-24.04-arm
+    # always() so this still runs when an upstream job failed.
+    # Limited to main so branch pushes don't notify.
+    # Cancelled runs are not 'failure', so concurrency cancels stay quiet.
+    if: ${{ always() && github.ref == 'refs/heads/main' && contains(needs.*.result, 'failure') }}
+    needs:
+      - detect-changes
+      - benchmark
+      - process
+      - deploy
+      - deploy-app
+    steps:
+      - name: Slack Notify
+        uses: rtCamp/action-slack-notify@v2.3.3
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_GITHUB_ALERTS_WEBHOOK_URL }}
+          SLACK_USERNAME: vltops
+          SLACK_CHANNEL: github-alerts
+          SLACK_ICON: https://github.com/vltpkg.png
+          SLACK_COLOR: failure
+          SLACK_FOOTER: ""
+          SLACKIFY_MARKDOWN: true
+          MSG_MINIMAL: "actions url,commit"
+          SLACK_TITLE: Benchmark Run Failed
+          SLACK_MESSAGE: |
+            The benchmark run failed and needs to be retriggered.
+            Benchmark: ${{ needs.benchmark.result == 'failure' && ':x:' || ':white_check_mark:' }}
+            Process: ${{ needs.process.result == 'failure' && ':x:' || ':white_check_mark:' }}
+            Deploy: ${{ (needs.deploy.result == 'failure' || needs.deploy-app.result == 'failure') && ':x:' || ':white_check_mark:' }}
+
+  on-slower-registry:
+    name: "Notify on Slower Registry"
+    runs-on: ubuntu-24.04-arm
+    if: ${{ github.ref == 'refs/heads/main' && needs.detect-changes.outputs.partial_run != 'true' }}
+    needs:
+      - detect-changes
+      - process
+    steps:
+      - name: Download Results
+        uses: actions/download-artifact@v8
+        with:
+          name: results
+          path: results/
+      - name: Check registry results
+        id: check
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const fs = require('fs')
+            const path = require('path')
+            const lines = []
+            let total = 0
+
+            for (const entry of fs.readdirSync('results').sort()) {
+              // Registry variations are the only ones where `command` is a
+              // registry name rather than a package manager.
+              const match = /^results-(.+)-(registry-(?:clean|lockfile))$/.exec(entry)
+              if (!match) continue
+              const file = path.join('results', entry, 'benchmarks.json')
+              if (!fs.existsSync(file)) continue
+              total++
+
+              // A registry whose hyperfine runs exited non-zero has a
+              // meaningless mean, so it is left out of the comparison.
+              const ok = (JSON.parse(fs.readFileSync(file, 'utf8')).results ?? [])
+                .filter((r) => (r.exit_codes ?? []).every((c) => c === 0))
+              const vlt = ok.find((r) => r.command === 'vlt')
+              const label = `${match[1]} ${match[2]}`
+
+              if (!vlt) {
+                lines.push(`- **${label}**: vlt produced no successful result`)
+                continue
+              }
+              const best = ok.reduce((a, b) => (b.mean < a.mean ? b : a))
+              if (best.command === 'vlt') continue
+              lines.push(
+                `- **${label}**: ${best.command} ${best.mean.toFixed(1)}s vs vlt ${vlt.mean.toFixed(1)}s (${(vlt.mean / best.mean).toFixed(2)}x slower)`
+              )
+            }
+
+            core.info(
+              lines.length
+                ? `vlt was not fastest in ${lines.length}/${total}:\n${lines.join('\n')}`
+                : `vlt was fastest in all ${total} registry benchmarks`
+            )
+            core.setOutput('count', lines.length)
+            core.setOutput('total', total)
+            core.setOutput('slower', lines.join('\n'))
+      - name: Slack Notify
+        if: steps.check.outputs.count != '0'
+        uses: rtCamp/action-slack-notify@v2.3.3
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_GITHUB_ALERTS_WEBHOOK_URL }}
+          SLACK_USERNAME: vltops
+          SLACK_CHANNEL: github-alerts
+          SLACK_ICON: https://github.com/vltpkg.png
+          SLACK_COLOR: warning
+          SLACK_FOOTER: ""
+          SLACKIFY_MARKDOWN: true
+          MSG_MINIMAL: "actions url,commit"
+          SLACK_TITLE: vlt Is Not the Fastest Registry
+          SLACK_MESSAGE: |
+            vlt was slower than another registry in ${{ steps.check.outputs.count }}/${{ steps.check.outputs.total }} registry benchmarks.
+            ${{ steps.check.outputs.slower }}
