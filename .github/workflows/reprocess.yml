@@ -48,24 +48,6 @@ jobs:
           BENCH_DATE: ${{ inputs.date }}
         run: |
           ./bench process
-      - name: Summarize results in log
-        run: |
-          {
-            echo '```'
-            for f in results/results-*/benchmarks.json; do
-              [ -f "$f" ] || continue
-              node -e '
-                const fs = require("fs")
-                const p = process.argv[1]
-                const name = p.split("/")[1].replace(/^results-/, "")
-                for (const r of JSON.parse(fs.readFileSync(p, "utf8")).results ?? []) {
-                  const times = (r.times ?? []).map((t) => t.toFixed(1)).join(", ")
-                  console.log(`${name}  ${r.command}: mean=${(r.mean ?? 0).toFixed(1)}s times=[${times}]`)
-                }
-              ' "$f"
-            done
-            echo '```'
-          } | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Install vlt
         run: |
           npm install -g vlt@latest
