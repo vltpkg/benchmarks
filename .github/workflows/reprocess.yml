@@ -63,3 +63,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: results
           keep_files: true
+          full_commit_message: "reprocess: run ${{ inputs.run-id }} -> ${{ inputs.date }} (dispatched via ${{ github.workflow }} run ${{ github.run_id }})"
