@@ -2,7 +2,8 @@
 set -Eeuxo pipefail
 
 # Get current date for results directory
-DATE=$(date +%Y-%m-%d)
+# BENCH_DATE overrides the folder date (see .github/workflows/reprocess.yml)
+DATE=${BENCH_DATE:-$(date +%Y-%m-%d)}
 
 # Create results directory structure
 mkdir -p "results/$DATE"

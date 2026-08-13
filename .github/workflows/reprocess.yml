@@ -1,0 +1,83 @@
+name: Reprocess Benchmark Results
+
+# Re-runs process + deploy from an EXISTING benchmark run's artifacts, writing
+# the results to an explicit date folder. Use case: a run whose process step
+# crossed UTC midnight and stamped the wrong date. The date input must match
+# the calendar day the run's benchmark jobs actually executed.
+#
+# Artifacts are retained for 7 days, so this only works on recent runs.
+on:
+  workflow_dispatch:
+    inputs:
+      run-id:
+        description: "The benchmark workflow run ID whose artifacts to reprocess"
+        required: true
+      date:
+        description: "Date folder to write (YYYY-MM-DD; the day the benchmarks ran)"
+        required: true
+
+jobs:
+  reprocess:
+    name: "Reprocess & Deploy"
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - name: Download Results
+        uses: actions/download-artifact@v8
+        with:
+          path: results
+          pattern: results-*
+          run-id: ${{ inputs.run-id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download Versions
+        uses: actions/download-artifact@v8
+        with:
+          path: versions-temp
+          pattern: versions-*
+          run-id: ${{ inputs.run-id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Process Results
+        env:
+          BENCH_DATE: ${{ inputs.date }}
+        run: |
+          ./bench process
+      - name: Summarize results in log
+        run: |
+          {
+            echo '```'
+            for f in results/results-*/benchmarks.json; do
+              [ -f "$f" ] || continue
+              node -e '
+                const fs = require("fs")
+                const p = process.argv[1]
+                const name = p.split("/")[1].replace(/^results-/, "")
+                for (const r of JSON.parse(fs.readFileSync(p, "utf8")).results ?? []) {
+                  const times = (r.times ?? []).map((t) => t.toFixed(1)).join(", ")
+                  console.log(`${name}  ${r.command}: mean=${(r.mean ?? 0).toFixed(1)}s times=[${times}]`)
+                }
+              ' "$f"
+            done
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Install vlt
+        run: |
+          npm install -g vlt@latest
+      - name: Build Charts View
+        run: |
+          pushd app
+          vlt install
+          vlt run build
+          popd
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: results
+          keep_files: true
