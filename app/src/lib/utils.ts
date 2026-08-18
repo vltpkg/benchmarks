@@ -298,51 +298,65 @@ export const calculateLeaderboard = (
         ?.variations.filter((v) => v !== "average") || [];
   }
 
-  // Calculate performance from the same per-fixture averages the charts
-  // display — calculateAverageVariationData already excludes DNF results
-  const dataSource = usePerPackageData
-    ? chartData.perPackageCountChartData.data
-    : chartData.chartData.data;
+  // Calculate performance — DNF runs are imputed as the slowest successful
+  // time for that fixture, matching the "Performance Over Time" chart data
+  variationsToUse.forEach((variation) => {
+    const dataSource = usePerPackageData
+      ? chartData.perPackageCountChartData.data
+      : chartData.chartData.data;
+    const variationData = dataSource[variation];
+    if (!variationData) return;
 
-  const averagedData = calculateAverageVariationData(
-    chartData,
-    usePerPackageData,
-    {
-      variationNames: variationsToUse,
-      dataSource: dataSource as Record<string, FixtureResult[]>,
-      packageManagers: availablePackageManagers as PackageManager[],
-    },
-  );
+    // Filter by enabled fixtures if provided
+    const filteredVariationData = enabledFixtures
+      ? variationData.filter((item) => enabledFixtures.has(item.fixture))
+      : variationData;
 
-  // Filter by enabled fixtures if provided
-  const filteredData = enabledFixtures
-    ? averagedData.filter((item) => enabledFixtures.has(item.fixture))
-    : averagedData;
+    filteredVariationData.forEach((fixtureResult: FixtureResult) => {
+      const times: Array<{ pm: PackageManager; time: number }> = [];
+      const dnfPMs: PackageManager[] = [];
 
-  filteredData.forEach((fixtureResult: FixtureResult) => {
-    const times: Array<{ pm: PackageManager; time: number }> = [];
+      // First pass: collect successful times and DNFs
+      (availablePackageManagers as PackageManager[]).forEach((pm) => {
+        const time = fixtureResult[pm];
+        const dnfKey = `${pm}_dnf` as keyof FixtureResult;
+        if (fixtureResult[dnfKey] === true) {
+          dnfPMs.push(pm);
+          return;
+        }
+        if (typeof time === "number" && time > 0) {
+          times.push({ pm, time });
+        }
+      });
 
-    (availablePackageManagers as PackageManager[]).forEach((pm) => {
-      const time = fixtureResult[pm];
-      if (typeof time === "number" && time > 0) {
-        times.push({ pm, time });
+      // Skip this fixture entirely if ALL PMs DNF'd
+      if (times.length === 0) return;
+
+      // Find the slowest successful time for DNF penalty
+      const slowestTime = Math.max(...times.map((t) => t.time));
+
+      // Apply DNF penalty: assign slowest successful time
+      dnfPMs.forEach((pm) => {
+        times.push({ pm, time: slowestTime });
+      });
+
+      // Accumulate stats for all PMs (successful + penalized DNFs)
+      times.forEach(({ pm, time }) => {
+        const stats = packageManagerStats[pm];
+        if (stats) {
+          stats.totalTime += time;
+          stats.testCount++;
+        }
+      });
+
+      // Determine the winner (lowest time, only among successful PMs)
+      const successfulTimes = times.filter((t) => !dnfPMs.includes(t.pm));
+      successfulTimes.sort((a, b) => a.time - b.time);
+      if (successfulTimes.length > 0) {
+        const winnerStats = packageManagerStats[successfulTimes[0].pm];
+        if (winnerStats) winnerStats.wins++;
       }
     });
-
-    if (times.length === 0) return;
-
-    times.forEach(({ pm, time }) => {
-      const stats = packageManagerStats[pm];
-      if (stats) {
-        stats.totalTime += time;
-        stats.testCount++;
-      }
-    });
-
-    // Determine the winner (lowest averaged time for this fixture)
-    times.sort((a, b) => a.time - b.time);
-    const winnerStats = packageManagerStats[times[0].pm];
-    if (winnerStats) winnerStats.wins++;
   });
 
   // Calculate final rankings
