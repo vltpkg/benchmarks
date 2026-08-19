@@ -25,5 +25,8 @@
   },
   "deno": {
     "count": 2
+  },
+  "aube": {
+    "count": 4
   }
 }

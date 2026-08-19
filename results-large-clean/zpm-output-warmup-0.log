@@ -1,0 +1,6 @@
+➤ · Yarn 6.0.0-rc.19
+➤ ┌ Installing packages
+➤ │ @floating-ui/core@npm:1.8.0: Requests to registry.npmjs.org are taking suspiciously long...
+➤ │ @floating-ui/core@npm:1.8.0: Network error: HTTP status client error (404 Not Found) for url (https://registry.npmjs.org/@floating-ui%2fcore/-/core-1.8.0.tgz)
+➤ │ Resolved 1670 packages, fetched 1322 packages (290.84 MiB)
+➤ └ Completed in 14s 752ms
