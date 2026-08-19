@@ -298,7 +298,8 @@ export const calculateLeaderboard = (
         ?.variations.filter((v) => v !== "average") || [];
   }
 
-  // Calculate performance
+  // Calculate performance — DNF runs are imputed as the slowest successful
+  // time for that fixture, matching the "Performance Over Time" chart data
   variationsToUse.forEach((variation) => {
     const dataSource = usePerPackageData
       ? chartData.perPackageCountChartData.data
@@ -384,19 +385,11 @@ export const calculateLeaderboard = (
     };
   });
 
-  // Determine if we're showing the average/default leaderboard
-  const isAverageView = !specificVariation || specificVariation === "average";
-
-  // Filter out PMs with no data, then sort:
-  // - Average view: sort by wins first (most wins = #1), then average time as tiebreaker
-  // - Specific variant views: sort by average time (lower is better), then wins as tiebreaker
+  // Filter out PMs with no data, then sort by average time (lower is
+  // better) so card order matches the displayed values, wins as tiebreaker
   return leaderboard
     .filter((item) => item.totalTests > 0)
     .sort((a, b) => {
-      if (isAverageView) {
-        if (a.wins !== b.wins) return b.wins - a.wins;
-        return a.averageTime - b.averageTime;
-      }
       if (a.averageTime !== b.averageTime) return a.averageTime - b.averageTime;
       return b.wins - a.wins;
     });
