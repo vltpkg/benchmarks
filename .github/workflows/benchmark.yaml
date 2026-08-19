@@ -134,7 +134,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: "24"
           package-manager-cache: false
       - name: Install & Setup Tools
         run: |
@@ -187,7 +187,7 @@ jobs:
           echo "runs=$runs" >> "$GITHUB_OUTPUT"
       - name: Run Benchmarks variations
         env:
-          VLT_REGISTRY: https://registry.vlt.io/vlt/npm/
+          VLT_REGISTRY: https://registry.vlt.io/vlt-benchmarks/npm/
           VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
           CODEARTIFACT_AUTH_TOKEN: ${{ steps.aws.outputs.token }}
           CLOUDSMITH_REGISTRY: ${{ secrets.CLOUDSMITH_REGISTRY }}

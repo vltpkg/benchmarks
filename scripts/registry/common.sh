@@ -61,7 +61,7 @@ BENCH_NPM_INSTALL="npm install --prefer-online --no-audit --no-fund --no-update-
 
 # Registry definitions
 BENCH_REGISTRY_NPM_URL="https://registry.npmjs.org/"
-BENCH_REGISTRY_VLT_URL="https://registry.vlt.io/vlt/npm/"
+BENCH_REGISTRY_VLT_URL="https://registry.vlt.io/vlt-benchmarks/npm/"
 BENCH_REGISTRY_VLT_URL_NPMRC_KEY="${BENCH_REGISTRY_VLT_URL#http*://}"
 BENCH_REGISTRY_AWS_URL="https://vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/"
 BENCH_REGISTRY_AWS_NPMRC_KEY="${BENCH_REGISTRY_AWS_URL#http*://}"
