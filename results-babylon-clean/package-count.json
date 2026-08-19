@@ -17,6 +17,11 @@
   "vlt": {
     "count": 1525
   },
+  "bun": {
+    "count": 1653,
+    "minCount": 1652,
+    "maxCount": 1653
+  },
   "deno": {
     "count": 1490
   }

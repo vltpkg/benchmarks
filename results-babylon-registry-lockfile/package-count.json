@@ -5,8 +5,11 @@
   "vlt": {
     "count": 1794
   },
-  "github": {
+  "aws": {
     "count": 1791
+  },
+  "cloudsmith": {
+    "count": 1796
   },
   "jfrog": {
     "count": 1792
