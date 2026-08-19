@@ -57,9 +57,12 @@ npm install -g vite-plus@latest
 npm install --global pnpm@next-12 --prefix /tmp/pnpm12 --allow-scripts=pnpm
 
 # Install aube via npm (available as the `@endevco/aube` package).
+# npm 12 blocks dependency lifecycle scripts by default, but aube's preinstall
+# selects and installs its platform-specific native binary. Allow only aube's
+# installer so the binary is available to the benchmark matrix.
 # Non-fatal: aube may not have a working binary for all platforms (e.g. arm64).
 # If it fails to install, the benchmark suite continues without aube.
-if ! npm install -g @endevco/aube@latest; then
+if ! npm install -g --allow-scripts=@endevco/aube @endevco/aube@latest; then
   echo "Warning: aube installation failed (may not support this platform) — skipping aube benchmarks"
 fi
 
