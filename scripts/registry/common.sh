@@ -85,14 +85,8 @@ BENCH_REGISTRY_JFROG_NPMRC_KEY="${JFROG_REGISTRY#//}"
 
 # Registry setup commands run in hyperfine --prepare (untimed, before each run).
 # Auth token is written as a literal placeholder so npm resolves it from env.
-# For vlt registry, a random suffix is appended to the auth token on every
-# iteration (separated by `:`) so that each run uses a unique token string.
-# This ensures the registry does not serve cached responses across iterations.
 BENCH_SETUP_REGISTRY_NPM="npm config set registry \"$BENCH_REGISTRY_NPM_URL\" --location=project"
-# The vlt registry auth token is appended with a random suffix with the iteration number to
-# ensure that a fresh cache is used for each iteration. A future update to the vlt registry
-# will allow sharing a public cache regardless of the authorization header.
-BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_VLT_URL_NPMRC_KEY}:_authToken=\\\${VLT_TOKEN}:$(head -c 16 /dev/urandom | xxd -p)_\\\${HYPERFINE_ITERATION}\" --location=project"
+BENCH_SETUP_REGISTRY_VLT="npm config set registry \"$BENCH_REGISTRY_VLT_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_VLT_URL_NPMRC_KEY}:_authToken=\\\${VLT_TOKEN}\" --location=project"
 BENCH_SETUP_REGISTRY_AWS="npm config set registry \"$BENCH_REGISTRY_AWS_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_AWS_NPMRC_KEY}:_authToken=\\\${CODEARTIFACT_AUTH_TOKEN}\" --location=project"
 BENCH_SETUP_REGISTRY_CLOUDSMITH="npm config set registry \"$BENCH_REGISTRY_CLOUDSMITH_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_CLOUDSMITH_NPMRC_KEY}:_authToken=\\\${CLOUDSMITH_TOKEN}\" --location=project"
 BENCH_SETUP_REGISTRY_GITHUB="npm config set registry \"$BENCH_REGISTRY_GITHUB_URL\" --location=project && npm config set \"//${BENCH_REGISTRY_GITHUB_NPMRC_KEY}:_authToken=\\\${GH_AUTH_TOKEN}\" --location=project"
