@@ -1,0 +1,6 @@
+➤ · Yarn 6.0.0-rc.19
+➤ ┌ Installing packages
+➤ │ @vue/reactivity@npm:3.5.41: Requests to registry.npmjs.org are taking suspiciously long...
+➤ │ @vue/reactivity@npm:3.5.41: Network error: HTTP status client error (404 Not Found) for url (https://registry.npmjs.org/@vue%2freactivity/-/reactivity-3.5.41.tgz)
+➤ │ Resolved 616 packages, fetched 459 packages (188.29 MiB)
+➤ └ Completed in 5s 821ms
