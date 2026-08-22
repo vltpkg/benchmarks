@@ -1,0 +1,31 @@
+{
+  "npm": {
+    "count": 476
+  },
+  "yarn": {
+    "count": 465
+  },
+  "berry": {
+    "count": 461
+  },
+  "zpm": {
+    "count": 466
+  },
+  "pnpm": {
+    "count": 442,
+    "minCount": 441,
+    "maxCount": 442
+  },
+  "vlt": {
+    "count": 441
+  },
+  "bun": {
+    "count": 468
+  },
+  "deno": {
+    "count": 439
+  },
+  "aube": {
+    "count": 406
+  }
+}
