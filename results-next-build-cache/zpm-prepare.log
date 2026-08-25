@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 584 Aug 24 10:40 package.json
+-rw-r--r-- 1 runner runner 584 Aug 25 10:39 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,13 +17,11 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 624 Aug 24 10:40 package.json
+-rw-r--r-- 1 runner runner 624 Aug 25 10:39 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-Error: Server answered with HTTP 404 Not Found (https://registry.npmjs.org/@yarnpkg/yarn-aarch64-unknown-linux-musl/-/yarn-aarch64-unknown-linux-musl-6.0.0-rc.20.tgz)
-
-› yarn […ARGSN]
+6.0.0-rc.20
 canary version:
 6.0.0-rc.20
 packageManager (before):
@@ -35,13 +33,11 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 624 Aug 24 10:40 package.json
+-rw-r--r-- 1 runner runner 624 Aug 25 10:39 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-Error: Server answered with HTTP 404 Not Found (https://registry.npmjs.org/@yarnpkg/yarn-aarch64-unknown-linux-musl/-/yarn-aarch64-unknown-linux-musl-6.0.0-rc.20.tgz)
-
-› yarn […ARGSN]
+6.0.0-rc.20
 canary version:
 6.0.0-rc.20
 packageManager (before):
@@ -53,13 +49,11 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 624 Aug 24 10:40 package.json
+-rw-r--r-- 1 runner runner 624 Aug 25 10:39 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-Error: Server answered with HTTP 404 Not Found (https://registry.npmjs.org/@yarnpkg/yarn-aarch64-unknown-linux-musl/-/yarn-aarch64-unknown-linux-musl-6.0.0-rc.20.tgz)
-
-› yarn […ARGSN]
+6.0.0-rc.20
 canary version:
 6.0.0-rc.20
 packageManager (before):
@@ -71,13 +65,11 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 624 Aug 24 10:40 package.json
+-rw-r--r-- 1 runner runner 624 Aug 25 10:39 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-Error: Server answered with HTTP 404 Not Found (https://registry.npmjs.org/@yarnpkg/yarn-aarch64-unknown-linux-musl/-/yarn-aarch64-unknown-linux-musl-6.0.0-rc.20.tgz)
-
-› yarn […ARGSN]
+6.0.0-rc.20
 canary version:
 6.0.0-rc.20
 packageManager (before):
@@ -89,13 +81,11 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 624 Aug 24 10:40 package.json
+-rw-r--r-- 1 runner runner 624 Aug 25 10:39 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-Error: Server answered with HTTP 404 Not Found (https://registry.npmjs.org/@yarnpkg/yarn-aarch64-unknown-linux-musl/-/yarn-aarch64-unknown-linux-musl-6.0.0-rc.20.tgz)
-
-› yarn […ARGSN]
+6.0.0-rc.20
 canary version:
 6.0.0-rc.20
 packageManager (before):
@@ -107,13 +97,11 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 624 Aug 24 10:40 package.json
+-rw-r--r-- 1 runner runner 624 Aug 25 10:39 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-Error: Server answered with HTTP 404 Not Found (https://registry.npmjs.org/@yarnpkg/yarn-aarch64-unknown-linux-musl/-/yarn-aarch64-unknown-linux-musl-6.0.0-rc.20.tgz)
-
-› yarn […ARGSN]
+6.0.0-rc.20
 canary version:
 6.0.0-rc.20
 packageManager (before):

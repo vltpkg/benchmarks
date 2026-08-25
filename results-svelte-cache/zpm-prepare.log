@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 635 Aug 24 10:33 package.json
+-rw-r--r-- 1 runner runner 635 Aug 25 10:28 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,7 +17,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 635 Aug 24 10:33 package.json
+-rw-r--r-- 1 runner runner 635 Aug 25 10:28 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -32,7 +32,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 635 Aug 24 10:33 package.json
+-rw-r--r-- 1 runner runner 635 Aug 25 10:29 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -47,7 +47,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 635 Aug 24 10:33 package.json
+-rw-r--r-- 1 runner runner 635 Aug 25 10:29 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -62,7 +62,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 635 Aug 24 10:33 package.json
+-rw-r--r-- 1 runner runner 635 Aug 25 10:29 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -77,7 +77,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 635 Aug 24 10:34 package.json
+-rw-r--r-- 1 runner runner 635 Aug 25 10:29 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -92,7 +92,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 635 Aug 24 10:34 package.json
+-rw-r--r-- 1 runner runner 635 Aug 25 10:29 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -107,7 +107,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/svelte
 package.json:
--rw-r--r-- 1 runner runner 635 Aug 24 10:38 package.json
+-rw-r--r-- 1 runner runner 635 Aug 25 10:32 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:

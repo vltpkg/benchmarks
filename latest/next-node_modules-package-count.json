@@ -7,10 +7,11 @@
     "minCount": 335,
     "maxCount": 337
   },
+  "zpm": {
+    "count": 342
+  },
   "pnpm": {
-    "count": 328,
-    "minCount": 327,
-    "maxCount": 328
+    "count": 327
   },
   "vlt": {
     "count": 327
