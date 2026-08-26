@@ -32,6 +32,9 @@ case "$2" in
     cache+lockfile+node_modules)
         bash ../../scripts/variations/cache+lockfile+node_modules.sh "../../scripts" "../../results" "$1" "$2"
         ;;
+    ci)
+        bash ../../scripts/variations/ci.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
     lockfile)
         bash ../../scripts/variations/lockfile.sh "../../scripts" "../../results" "$1" "$2"
         ;;
