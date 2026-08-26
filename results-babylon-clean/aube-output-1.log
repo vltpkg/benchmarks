@@ -1,4 +1,4 @@
-(node:25346) [DEP0176] DeprecationWarning: fs.R_OK is deprecated, use fs.constants.R_OK instead
+(node:25424) [DEP0176] DeprecationWarning: fs.R_OK is deprecated, use fs.constants.R_OK instead
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Chrome (127.0.6533.88) downloaded to /home/runner/.cache/puppeteer/chrome/linux-127.0.6533.88
 chrome-headless-shell (127.0.6533.88) downloaded to /home/runner/.cache/puppeteer/chrome-headless-shell/linux-127.0.6533.88
@@ -15,8 +15,8 @@ gyp info find Python using Python version 3.12.3 found at "/usr/bin/python3"
 gyp info find Python using Python version 3.12.3 found at "/usr/bin/python3"
 gyp info find Python using Python version 3.12.3 found at "/usr/bin/python3"
 
-
 gyp info spawn /usr/bin/python3
+
 gyp info spawn args [
 gyp info spawn args '/home/runner/.cache/aube/tools/node-gyp/v12/node_modules/.aube/node-gyp@12.4.0/node_modules/node-gyp/gyp/gyp_main.py',
 gyp info spawn args 'binding.gyp',
@@ -95,20 +95,20 @@ gyp info spawn args ]
 gyp info spawn make
 gyp info spawn args [ 'BUILDTYPE=Release', '-C', 'build' ]
 gyp info spawn make
-make: Entering directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/bufferutil@4.1.0/node_modules/bufferutil/build'
 gyp info spawn args [ 'BUILDTYPE=Release', '-C', 'build' ]
-  CC(target) Release/obj.target/bufferutil/src/bufferutil.o
+make: Entering directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/bufferutil@4.1.0/node_modules/bufferutil/build'
 make: Entering directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/utf-8-validate@5.0.10/node_modules/utf-8-validate/build'
+  CC(target) Release/obj.target/bufferutil/src/bufferutil.o
   CC(target) Release/obj.target/validation/src/validation.o
 gyp info spawn make
-gyp info spawn args [ 'BUILDTYPE=Release', '-C', 'build' ]
 make: Entering directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/sleep@6.1.0/node_modules/sleep/build'
+gyp info spawn args [ 'BUILDTYPE=Release', '-C', 'build' ]
   CXX(target) Release/obj.target/node_sleep/module_init.o
   SOLINK_MODULE(target) Release/obj.target/validation.node
+  SOLINK_MODULE(target) Release/obj.target/bufferutil.node
   COPY Release/validation.node
 make: Leaving directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/utf-8-validate@5.0.10/node_modules/utf-8-validate/build'
 gyp info ok 
-  SOLINK_MODULE(target) Release/obj.target/bufferutil.node
   COPY Release/bufferutil.node
 make: Leaving directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/bufferutil@4.1.0/node_modules/bufferutil/build'
 gyp info ok 
