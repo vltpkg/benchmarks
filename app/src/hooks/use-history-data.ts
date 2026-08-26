@@ -284,6 +284,7 @@ export const useHistoryData = (): UseHistoryDataReturn => {
           "cache+node_modules",
           "cache+lockfile",
           "cache+lockfile+node_modules",
+          "ci",
           "lockfile",
           "lockfile+node_modules",
         ]);

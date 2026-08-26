@@ -13,6 +13,7 @@ AVAILABLE_VARIATIONS=(
   cache+lockfile
   cache+node_modules
   cache+lockfile+node_modules
+  ci
   lockfile
   lockfile+node_modules
   node_modules

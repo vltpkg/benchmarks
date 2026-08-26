@@ -33,6 +33,7 @@ export type Variation =
   | "cache+lockfile"
   | "cache+lockfile+node_modules"
   | "cache+node_modules"
+  | "ci"
   | "clean"
   | "lockfile"
   | "lockfile+node_modules"
@@ -272,6 +273,7 @@ export function isValidVariation(variation: string): variation is Variation {
     "cache+lockfile",
     "cache+lockfile+node_modules",
     "cache+node_modules",
+    "ci",
     "clean",
     "lockfile",
     "lockfile+node_modules",
