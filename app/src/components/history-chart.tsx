@@ -283,9 +283,15 @@ export const HistoryChart = ({
                       return String(label);
                     }
                   }}
-                  formatter={(value, name) => (
+                  formatter={(value, name, item) => (
                     <div className="flex flex-1 justify-between items-center gap-4">
-                      <span className="text-muted-foreground">{name}</span>
+                      <span className="flex items-center gap-2 text-muted-foreground">
+                        <span
+                          className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: item.color }}
+                        />
+                        {name}
+                      </span>
                       <span className="font-mono font-medium tabular-nums text-foreground">
                         {typeof value === "number"
                           ? isPerPackageVariation
