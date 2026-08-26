@@ -1,11 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
@@ -15,7 +9,12 @@ import { Button } from "@/components/ui/button";
 import { resolveTheme, useTheme } from "@/components/theme-provider";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { formatPackageManagerLabel, isAverageVariation, isRegistryVariation, isTaskExecutionVariation } from "@/lib/utils";
+import {
+  formatPackageManagerLabel,
+  isAverageVariation,
+  isRegistryVariation,
+  isTaskExecutionVariation,
+} from "@/lib/utils";
 import { TrendingUp } from "lucide-react";
 import { format, parseISO } from "date-fns";
 
@@ -70,7 +69,8 @@ export const HistoryChart = ({
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [range, setRange] = useState<number>(90);
   const isRegistry = isRegistryRoute ?? isRegistryVariation(currentVariation);
-  const isTaskExecution = isTaskExecutionRoute ?? isTaskExecutionVariation(currentVariation);
+  const isTaskExecution =
+    isTaskExecutionRoute ?? isTaskExecutionVariation(currentVariation);
   // Package-management variations now use per-package data (ms/pkg);
   // registry and task-runner variations still use total time (seconds).
   const isPerPackageVariation = !isRegistry && !isTaskExecution;
@@ -129,7 +129,7 @@ export const HistoryChart = ({
   const getColor = (pm: PackageManager) =>
     pm === "vlt" && resolvedTheme === "dark"
       ? "white"
-      : colors[pm] ?? HISTORY_FALLBACK_COLORS[pm] ?? "#888888";
+      : (colors[pm] ?? HISTORY_FALLBACK_COLORS[pm] ?? "#888888");
 
   const handleLegendClick = (pm: string) => {
     setSelectedPMs((prev) => {
@@ -153,11 +153,9 @@ export const HistoryChart = ({
     const config: ChartConfig = {};
     filteredPMs.forEach((pm) => {
       config[pm] = {
-        label: formatPackageManagerLabel(
-          pm,
-          chartData.versions,
-          { isRegistryVariation: isRegistry },
-        ),
+        label: formatPackageManagerLabel(pm, chartData.versions, {
+          isRegistryVariation: isRegistry,
+        }),
         color: getColor(pm),
       };
     });
@@ -168,8 +166,7 @@ export const HistoryChart = ({
     if (!variationData) return [];
 
     const { dates } = historyData;
-    const startIdx =
-      range === Infinity ? 0 : Math.max(0, dates.length - range);
+    const startIdx = range === Infinity ? 0 : Math.max(0, dates.length - range);
 
     const points: HistoryDataPoint[] = [];
     for (let i = startIdx; i < dates.length; i++) {
@@ -258,7 +255,9 @@ export const HistoryChart = ({
             />
             <YAxis
               label={{
-                value: isPerPackageVariation ? "Time (ms/pkg)" : "Time (seconds)",
+                value: isPerPackageVariation
+                  ? "Time (ms/pkg)"
+                  : "Time (seconds)",
                 angle: -90,
                 position: "outside",
                 style: {
@@ -307,13 +306,11 @@ export const HistoryChart = ({
                 stroke={getColor(pm)}
                 strokeWidth={2}
                 dot={false}
-                connectNulls
+                connectNulls={false}
                 hide={!selectedPMs.has(pm)}
-                name={formatPackageManagerLabel(
-                  pm,
-                  chartData.versions,
-                  { isRegistryVariation: isRegistry },
-                )}
+                name={formatPackageManagerLabel(pm, chartData.versions, {
+                  isRegistryVariation: isRegistry,
+                })}
               />
             ))}
           </LineChart>
