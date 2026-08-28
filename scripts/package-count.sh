@@ -22,7 +22,10 @@ infer_package_manager() {
     # pnpm-lock.yaml, so the lockfile alone can't tell them apart. The
     # installer records its own version in node_modules/.modules.yaml
     # (packageManager: pnpm@<version>); v12+ is pacquet.
-    pnpm_major=$(sed -n "s/^packageManager: ['\"]\{0,1\}pnpm@\([0-9][0-9]*\).*/\1/p" node_modules/.modules.yaml 2>/dev/null | head -1)
+    # pnpm 11 writes YAML, while pnpm 12 currently writes JSON despite the
+    # .yaml extension. Accept both `packageManager: pnpm@11...` and
+    # `"packageManager": "pnpm@12..."`.
+    pnpm_major=$(sed -En 's/^[[:space:]]*"?packageManager"?[[:space:]]*:[[:space:]]*"?pnpm@([0-9]+).*/\1/p' node_modules/.modules.yaml 2>/dev/null | head -1)
     if [[ -n "$pnpm_major" && "$pnpm_major" -ge 12 ]]; then
       echo "pacquet"
     else

@@ -8,19 +8,11 @@ const fs = require("fs");
 const path = require("path");
 
 const DATE = process.argv[2];
-if (!DATE) {
-  console.error("Error: Date argument is required");
-  process.exit(1);
-}
 
 // Optional commit SHA passed as second argument
 const COMMIT_SHA = process.argv[3] || "";
 
-const RESULTS_DIR = path.resolve("results", DATE);
-if (!fs.existsSync(RESULTS_DIR)) {
-  console.error(`Error: Results directory ${RESULTS_DIR} does not exist`);
-  process.exit(1);
-}
+const RESULTS_DIR = path.resolve("results", DATE || "");
 
 // Colors for different package managers
 const COLORS = {
@@ -60,6 +52,27 @@ const parseNumeric = (value) => {
     return Number.isFinite(parsed) ? parsed : undefined;
   }
   return undefined;
+};
+
+const normalizeTiming = (result, count, perPackageCount) => {
+  if (!result || typeof result.mean !== "number") {
+    return undefined;
+  }
+
+  if (!perPackageCount) {
+    return { value: result.mean, stddev: result.stddev };
+  }
+
+  if (typeof count !== "number" || count <= 0) {
+    return undefined;
+  }
+
+  const scale = 1000 / count;
+  return {
+    value: result.mean * scale,
+    stddev:
+      typeof result.stddev === "number" ? result.stddev * scale : undefined,
+  };
 };
 
 // Read and process results
@@ -163,27 +176,24 @@ function generateChartData(option = {}) {
 
         const didFail = pmResult.failed || !Number.isFinite(pmResult.mean);
         const count = packageCounts[pm];
-        let value =
-          typeof pmResult.mean === "number" ? pmResult.mean : undefined;
+        const timing = didFail
+          ? undefined
+          : normalizeTiming(pmResult, count, option.perPackageCount);
 
-        if (
-          !didFail &&
-          option.perPackageCount &&
-          typeof count === "number" &&
-          count > 0 &&
-          typeof value === "number"
-        ) {
-          value = (value / count) * 1000;
+        if (!didFail && option.perPackageCount && !timing) {
+          console.warn(
+            `Warning: Skipping ${pm} in ${fixture}-${variation} per-package data because its package count is missing`,
+          );
         }
 
-        if (!didFail && typeof value === "number") {
-          validValues.push(value);
+        if (timing) {
+          validValues.push(timing.value);
         }
 
         pmEntries[pm] = {
           didFail,
-          value: didFail ? undefined : value,
-          stddev: didFail ? undefined : pmResult.stddev,
+          value: timing?.value,
+          stddev: timing?.stddev,
           count,
         };
       });
@@ -325,29 +335,24 @@ function generateRegistryChartData(option = {}) {
         const didFail =
           registryResult.failed || !Number.isFinite(registryResult.mean);
         const count = packageCounts[registry];
-        let value =
-          typeof registryResult.mean === "number"
-            ? registryResult.mean
-            : undefined;
+        const timing = didFail
+          ? undefined
+          : normalizeTiming(registryResult, count, option.perPackageCount);
 
-        if (
-          !didFail &&
-          option.perPackageCount &&
-          typeof count === "number" &&
-          count > 0 &&
-          typeof value === "number"
-        ) {
-          value = (value / count) * 1000;
+        if (!didFail && option.perPackageCount && !timing) {
+          console.warn(
+            `Warning: Skipping ${registry} in ${fixture}-${variation} per-package data because its package count is missing`,
+          );
         }
 
-        if (!didFail && typeof value === "number") {
-          validValues.push(value);
+        if (timing) {
+          validValues.push(timing.value);
         }
 
         pmEntries[registry] = {
           didFail,
-          value: didFail ? undefined : value,
-          stddev: didFail ? undefined : registryResult.stddev,
+          value: timing?.value,
+          stddev: timing?.stddev,
           count,
         };
       });
@@ -489,10 +494,23 @@ const dumpChartData = () => {
   }
 };
 
-try {
-  dumpChartData();
-  console.log("Chart generation complete!");
-} catch (error) {
-  console.error("Error generating chart:", error);
-  process.exit(1);
+if (require.main === module) {
+  if (!DATE) {
+    console.error("Error: Date argument is required");
+    process.exit(1);
+  }
+  if (!fs.existsSync(RESULTS_DIR)) {
+    console.error(`Error: Results directory ${RESULTS_DIR} does not exist`);
+    process.exit(1);
+  }
+
+  try {
+    dumpChartData();
+    console.log("Chart generation complete!");
+  } catch (error) {
+    console.error("Error generating chart:", error);
+    process.exit(1);
+  }
 }
+
+module.exports = { normalizeTiming };
