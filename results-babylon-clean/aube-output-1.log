@@ -1,46 +1,19 @@
-(node:25424) [DEP0176] DeprecationWarning: fs.R_OK is deprecated, use fs.constants.R_OK instead
+(node:25248) [DEP0176] DeprecationWarning: fs.R_OK is deprecated, use fs.constants.R_OK instead
 (Use `node --trace-deprecation ...` to show where the warning was created)
+gyp info it worked if it ends with ok
+gyp info using node-gyp@12.4.0
+gyp info using node@24.19.0 | linux | arm64
+gyp info it worked if it ends with ok
+gyp info using node-gyp@12.4.0
+gyp info using node@24.19.0 | linux | arm64
+gyp info it worked if it ends with ok
+gyp info using node-gyp@12.4.0
+gyp info using node@24.19.0 | linux | arm64
 Chrome (127.0.6533.88) downloaded to /home/runner/.cache/puppeteer/chrome/linux-127.0.6533.88
 chrome-headless-shell (127.0.6533.88) downloaded to /home/runner/.cache/puppeteer/chrome-headless-shell/linux-127.0.6533.88
-gyp info it worked if it ends with ok
-gyp info using node-gyp@12.4.0
-gyp info using node@24.19.0 | linux | arm64
-gyp info it worked if it ends with ok
-gyp info using node-gyp@12.4.0
-gyp info using node@24.19.0 | linux | arm64
-gyp info it worked if it ends with ok
-gyp info using node-gyp@12.4.0
-gyp info using node@24.19.0 | linux | arm64
 gyp info find Python using Python version 3.12.3 found at "/usr/bin/python3"
 gyp info find Python using Python version 3.12.3 found at "/usr/bin/python3"
 gyp info find Python using Python version 3.12.3 found at "/usr/bin/python3"
-
-gyp info spawn /usr/bin/python3
-
-gyp info spawn args [
-gyp info spawn args '/home/runner/.cache/aube/tools/node-gyp/v12/node_modules/.aube/node-gyp@12.4.0/node_modules/node-gyp/gyp/gyp_main.py',
-gyp info spawn args 'binding.gyp',
-gyp info spawn args '-f',
-gyp info spawn args 'make',
-gyp info spawn args '-I',
-gyp info spawn args '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/sleep@6.1.0/node_modules/sleep/build/config.gypi',
-gyp info spawn args '-I',
-gyp info spawn args '/home/runner/.cache/aube/tools/node-gyp/v12/node_modules/.aube/node-gyp@12.4.0/node_modules/node-gyp/addon.gypi',
-gyp info spawn args '-I',
-gyp info spawn args '/home/runner/.cache/node-gyp/24.19.0/include/node/common.gypi',
-gyp info spawn args '-Dlibrary=shared_library',
-gyp info spawn args '-Dvisibility=default',
-gyp info spawn args '-Dnode_root_dir=/home/runner/.cache/node-gyp/24.19.0',
-gyp info spawn args '-Dnode_gyp_dir=/home/runner/.cache/aube/tools/node-gyp/v12/node_modules/.aube/node-gyp@12.4.0/node_modules/node-gyp',
-gyp info spawn args '-Dnode_lib_file=/home/runner/.cache/node-gyp/24.19.0/<(target_arch)/node.lib',
-gyp info spawn args '-Dmodule_root_dir=/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/sleep@6.1.0/node_modules/sleep',
-gyp info spawn args '-Dnode_engine=v8',
-gyp info spawn args '--depth=.',
-gyp info spawn args '--no-parallel',
-gyp info spawn args '--generator-output',
-gyp info spawn args 'build',
-gyp info spawn args '-Goutput_dir=.'
-gyp info spawn args ]
 
 gyp info spawn /usr/bin/python3
 gyp info spawn args [
@@ -67,6 +40,7 @@ gyp info spawn args '--generator-output',
 gyp info spawn args 'build',
 gyp info spawn args '-Goutput_dir=.'
 gyp info spawn args ]
+
 gyp info spawn /usr/bin/python3
 gyp info spawn args [
 gyp info spawn args '/home/runner/.cache/aube/tools/node-gyp/v12/node_modules/.aube/node-gyp@12.4.0/node_modules/node-gyp/gyp/gyp_main.py',
@@ -92,17 +66,43 @@ gyp info spawn args '--generator-output',
 gyp info spawn args 'build',
 gyp info spawn args '-Goutput_dir=.'
 gyp info spawn args ]
-gyp info spawn make
-gyp info spawn args [ 'BUILDTYPE=Release', '-C', 'build' ]
+
+gyp info spawn /usr/bin/python3
+gyp info spawn args [
+gyp info spawn args '/home/runner/.cache/aube/tools/node-gyp/v12/node_modules/.aube/node-gyp@12.4.0/node_modules/node-gyp/gyp/gyp_main.py',
+gyp info spawn args 'binding.gyp',
+gyp info spawn args '-f',
+gyp info spawn args 'make',
+gyp info spawn args '-I',
+gyp info spawn args '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/sleep@6.1.0/node_modules/sleep/build/config.gypi',
+gyp info spawn args '-I',
+gyp info spawn args '/home/runner/.cache/aube/tools/node-gyp/v12/node_modules/.aube/node-gyp@12.4.0/node_modules/node-gyp/addon.gypi',
+gyp info spawn args '-I',
+gyp info spawn args '/home/runner/.cache/node-gyp/24.19.0/include/node/common.gypi',
+gyp info spawn args '-Dlibrary=shared_library',
+gyp info spawn args '-Dvisibility=default',
+gyp info spawn args '-Dnode_root_dir=/home/runner/.cache/node-gyp/24.19.0',
+gyp info spawn args '-Dnode_gyp_dir=/home/runner/.cache/aube/tools/node-gyp/v12/node_modules/.aube/node-gyp@12.4.0/node_modules/node-gyp',
+gyp info spawn args '-Dnode_lib_file=/home/runner/.cache/node-gyp/24.19.0/<(target_arch)/node.lib',
+gyp info spawn args '-Dmodule_root_dir=/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/sleep@6.1.0/node_modules/sleep',
+gyp info spawn args '-Dnode_engine=v8',
+gyp info spawn args '--depth=.',
+gyp info spawn args '--no-parallel',
+gyp info spawn args '--generator-output',
+gyp info spawn args 'build',
+gyp info spawn args '-Goutput_dir=.'
+gyp info spawn args ]
 gyp info spawn make
 gyp info spawn args [ 'BUILDTYPE=Release', '-C', 'build' ]
 make: Entering directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/bufferutil@4.1.0/node_modules/bufferutil/build'
-make: Entering directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/utf-8-validate@5.0.10/node_modules/utf-8-validate/build'
   CC(target) Release/obj.target/bufferutil/src/bufferutil.o
+gyp info spawn make
+gyp info spawn args [ 'BUILDTYPE=Release', '-C', 'build' ]
+make: Entering directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/utf-8-validate@5.0.10/node_modules/utf-8-validate/build'
   CC(target) Release/obj.target/validation/src/validation.o
 gyp info spawn make
-make: Entering directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/sleep@6.1.0/node_modules/sleep/build'
 gyp info spawn args [ 'BUILDTYPE=Release', '-C', 'build' ]
+make: Entering directory '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/node_modules/.aube/sleep@6.1.0/node_modules/sleep/build'
   CXX(target) Release/obj.target/node_sleep/module_init.o
   SOLINK_MODULE(target) Release/obj.target/validation.node
   SOLINK_MODULE(target) Release/obj.target/bufferutil.node
