@@ -1,0 +1,75 @@
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/large
+package.json:
+-rw-r--r-- 1 runner runner 3646 Aug 28 16:01 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.20
+packageManager (before):
+set packageManager=yarn@6.0.0-rc.20:
+packageManager (after):
+yarn@6.0.0-rc.20
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/large
+package.json:
+-rw-r--r-- 1 runner runner 3646 Aug 28 16:01 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.20
+packageManager (before):
+set packageManager=yarn@6.0.0-rc.20:
+packageManager (after):
+yarn@6.0.0-rc.20
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/large
+package.json:
+-rw-r--r-- 1 runner runner 3646 Aug 28 16:01 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.20
+packageManager (before):
+set packageManager=yarn@6.0.0-rc.20:
+packageManager (after):
+yarn@6.0.0-rc.20
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/large
+package.json:
+-rw-r--r-- 1 runner runner 3646 Aug 28 16:01 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.20
+packageManager (before):
+set packageManager=yarn@6.0.0-rc.20:
+packageManager (after):
+yarn@6.0.0-rc.20
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/fixtures/large
+package.json:
+-rw-r--r-- 1 runner runner 3646 Aug 28 16:08 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+1.22.22
+canary version:
+6.0.0-rc.20
+packageManager (before):
+set packageManager=yarn@6.0.0-rc.20:
+packageManager (after):
+yarn@6.0.0-rc.20

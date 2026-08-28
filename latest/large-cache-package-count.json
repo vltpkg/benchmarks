@@ -14,12 +14,15 @@
   "pnpm": {
     "count": 1283
   },
+  "pacquet": {
+    "count": 1283
+  },
   "vlt": {
     "count": 1285
   },
   "bun": {
     "count": 1548,
-    "minCount": 1542,
+    "minCount": 1540,
     "maxCount": 1550
   },
   "deno": {
