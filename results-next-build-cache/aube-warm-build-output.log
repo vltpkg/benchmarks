@@ -1,31 +1,31 @@
-ERR_AUBE_TRUST_DOWNGRADE
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
 
-  × failed to resolve dependencies
-  ╰─▶ trust downgrade for fastq@1.20.2 (trustPolicy=no-downgrade): earlier
-      published version 1.20.0 had trusted publisher but this version has no
-      trust evidence
-  help: this is a supply-chain trust failure, not an ordinary version-
-        resolution error. An earlier release carried trusted publisher, but
-        fastq@1.20.2 carries no trust evidence.
-        
-        This can signal a compromised publisher or tampered release. It can
-        also be benign release-process drift: a maintainer manually published,
-        backported outside the trusted workflow, skipped provenance for
-        convenience, or used a registry that stripped metadata.
-        
-        Before bypassing:
-        1. Inspect the package's npm release, source tag/commit, publisher
-        identity, and tarball; compare the metadata with npmjs.org, and
-        confirm the change is expected and nothing appears tampered with.
-        2. Report inconsistent evidence to the relevant upstream owner.
-        Package-release drift belongs with the maintainer; metadata present on
-        npmjs.org but missing from a proxy or mirror belongs with that
-        registry operator.
-        3. Only after review, pin a version that retains evidence or add the
-        narrow `fastq@1.20.2` exception to `trustPolicyExclude`. A bare
-        `fastq` exempts every version; `trustPolicy = off` disables this
-        protection for the entire install.
-        
-        Details and known built-in exceptions: https://aube.jdx.dev/trust-
-        policy-exceptions
+   ▲ Next.js 15.0.3
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/5) ...
+   Generating static pages (1/5) 
+   Generating static pages (2/5) 
+   Generating static pages (3/5) 
+ ✓ Generating static pages (5/5)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    5.46 kB         105 kB
+└ ○ /_not-found                          894 B           101 kB
++ First Load JS shared by all            99.9 kB
+  ├ chunks/271-4e5c1d5dabe690a7.js       45.6 kB
+  ├ chunks/a328ef2d-9046cc7ba9c97f6a.js  52.5 kB
+  └ other shared chunks (total)          1.88 kB
+
+
+○  (Static)  prerendered as static content
 

@@ -1,4 +1,0 @@
-  × no lockfile found and --frozen-lockfile is set
-  │ help: commit pnpm-lock.yaml to your repository, or run `aube install --no-
-  │ frozen-lockfile` to generate one
-
