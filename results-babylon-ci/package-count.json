@@ -16,7 +16,9 @@
     "count": 1581
   },
   "vlt": {
-    "count": 1542
+    "count": 1541,
+    "minCount": 1539,
+    "maxCount": 1542
   },
   "deno": {
     "count": 1490
