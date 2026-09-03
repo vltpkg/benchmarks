@@ -20,6 +20,7 @@ import {
   getVariationCategories,
   getPackageManagerDisplayName,
   isBaselinePackageManager,
+  isAverageVariation,
   sortVariations,
 } from "@/lib/utils";
 import type { LeaderboardRoute } from "@/lib/utils";
@@ -100,8 +101,14 @@ const HeaderNavigation = forwardRef<HTMLDivElement, ComponentProps<"div">>(
   ({ className, ...props }, ref) => {
     const { chartData, location, currentVariation, sortedVariations } =
       useHeaderContext();
+    const baseRoute = location.pathname.split("/")[1];
+    const isAverage = isAverageVariation(currentVariation as string);
     const variationData = chartData
-      ? chartData.chartData.data[currentVariation as Variation] || []
+      ? isAverage && baseRoute === "task-runners"
+        ? (chartData.taskRunnerAverageData ?? [])
+        : isAverage && baseRoute === "registries"
+          ? (chartData.registryAverageData ?? [])
+          : chartData.chartData.data[currentVariation as Variation] || []
       : [];
     const fixtures = useMemo(
       () => getAvailableFixtures(variationData),
