@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 584 Sep  4 10:38 package.json
+-rw-r--r-- 1 runner runner 584 Sep  5 10:33 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,7 +17,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 584 Sep  4 10:38 package.json
+-rw-r--r-- 1 runner runner 584 Sep  5 10:33 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -32,7 +32,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 584 Sep  4 10:39 package.json
+-rw-r--r-- 1 runner runner 584 Sep  5 10:33 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -47,7 +47,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 584 Sep  4 10:39 package.json
+-rw-r--r-- 1 runner runner 584 Sep  5 10:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -62,7 +62,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 584 Sep  4 10:39 package.json
+-rw-r--r-- 1 runner runner 584 Sep  5 10:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -77,7 +77,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 584 Sep  4 10:39 package.json
+-rw-r--r-- 1 runner runner 584 Sep  5 10:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -92,7 +92,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 584 Sep  4 10:39 package.json
+-rw-r--r-- 1 runner runner 584 Sep  5 10:34 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -107,7 +107,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 584 Sep  4 10:52 package.json
+-rw-r--r-- 1 runner runner 584 Sep  5 10:47 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
