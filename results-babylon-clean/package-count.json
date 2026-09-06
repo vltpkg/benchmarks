@@ -9,9 +9,6 @@
     "minCount": 1722,
     "maxCount": 1784
   },
-  "pnpm": {
-    "count": 1579
-  },
   "pacquet": {
     "count": 1582
   },
@@ -21,7 +18,7 @@
   "bun": {
     "count": 1640,
     "minCount": 1639,
-    "maxCount": 1641
+    "maxCount": 1640
   },
   "deno": {
     "count": 1491

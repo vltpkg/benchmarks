@@ -26,6 +26,7 @@ security-archive: failed to find node for @csstools/media-query-list-parser@unde
 security-archive: failed to find node for @csstools/selector-specificity@undefined found in the response.
 security-archive: failed to find node for @dual-bundle/import-meta-resolve@undefined found in the response.
 security-archive: failed to find node for @discoveryjs/json-ext@undefined found in the response.
+security-archive: failed to find node for @types/node-notifier@undefined found in the response.
 security-archive: failed to find node for @babel/helper-validator-identifier@undefined found in the response.
 security-archive: failed to find node for @babel/generator@undefined found in the response.
 security-archive: failed to find node for @babel/helper-globals@undefined found in the response.
@@ -53,6 +54,7 @@ security-archive: failed to find node for @floating-ui/utils@undefined found in 
 security-archive: failed to find node for @nodelib/fs.stat@undefined found in the response.
 security-archive: failed to find node for @paralleldrive/cuid2@undefined found in the response.
 security-archive: failed to find node for @polka/url@undefined found in the response.
+security-archive: failed to find node for @types/node@undefined found in the response.
 security-archive: failed to find node for @jridgewell/gen-mapping@undefined found in the response.
 security-archive: failed to find node for @jridgewell/trace-mapping@undefined found in the response.
 security-archive: failed to find node for @babel/compat-data@undefined found in the response.
@@ -69,7 +71,6 @@ security-archive: failed to find node for @webassemblyjs/ieee754@undefined found
 security-archive: failed to find node for @webassemblyjs/leb128@undefined found in the response.
 security-archive: failed to find node for @webassemblyjs/utf8@undefined found in the response.
 security-archive: failed to find node for @types/minimatch@undefined found in the response.
-security-archive: failed to find node for @types/node@undefined found in the response.
 security-archive: failed to find node for @noble/hashes@undefined found in the response.
 security-archive: failed to find node for @jridgewell/sourcemap-codec@undefined found in the response.
 security-archive: failed to find node for @jridgewell/resolve-uri@undefined found in the response.
