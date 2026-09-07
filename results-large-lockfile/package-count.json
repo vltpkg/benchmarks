@@ -6,26 +6,26 @@
     "count": 1329
   },
   "berry": {
-    "count": 1329
+    "count": 1330
   },
   "zpm": {
-    "count": 1511
+    "count": 1512
   },
   "pacquet": {
-    "count": 1284
+    "count": 1285
   },
   "vlt": {
     "count": 1287
   },
   "bun": {
-    "count": 1555
+    "count": 1543
   },
   "deno": {
-    "count": 1278
+    "count": 1279
   },
   "aube": {
-    "count": 1085,
-    "minCount": 1084,
-    "maxCount": 1087
+    "count": 1086,
+    "minCount": 1085,
+    "maxCount": 1088
   }
 }

@@ -1,20 +1,20 @@
 {
   "npm": {
-    "count": 1786
+    "count": 1787
   },
   "vlt": {
-    "count": 1796
-  },
-  "aws": {
-    "count": 1793
-  },
-  "cloudsmith": {
     "count": 1797
   },
-  "github": {
+  "aws": {
     "count": 1794
   },
+  "cloudsmith": {
+    "count": 1798
+  },
+  "github": {
+    "count": 1795
+  },
   "jfrog": {
-    "count": 1794
+    "count": 1795
   }
 }
