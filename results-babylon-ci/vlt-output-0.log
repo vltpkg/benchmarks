@@ -1,0 +1,19 @@
+TypeError: Cannot read properties of undefined (reading 'license')
+
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-8723.log
+
+Full details:
+TypeError: Cannot read properties of undefined (reading 'license')
+    at #loadFromNDJSON (file:///opt/hostedtoolcache/node/24.20.0/arm64/lib/node_modules/vlt/chunk-2YJ5MESP.js:497:22)
+    at LRUCache.refresh (file:///opt/hostedtoolcache/node/24.20.0/arm64/lib/node_modules/vlt/chunk-2YJ5MESP.js:589:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async _SecurityArchive.start (file:///opt/hostedtoolcache/node/24.20.0/arm64/lib/node_modules/vlt/chunk-2YJ5MESP.js:293:5)
+    at async filterNodesByQuery2 (file:///opt/hostedtoolcache/node/24.20.0/arm64/lib/node_modules/vlt/chunk-FUCQ7ARR.js:14797:75)
+    at async reify_ (file:///opt/hostedtoolcache/node/24.20.0/arm64/lib/node_modules/vlt/chunk-FUCQ7ARR.js:14891:29)
+    at async reify (file:///opt/hostedtoolcache/node/24.20.0/arm64/lib/node_modules/vlt/chunk-FUCQ7ARR.js:14857:28)
+    at async install (file:///opt/hostedtoolcache/node/24.20.0/arm64/lib/node_modules/vlt/chunk-FUCQ7ARR.js:15340:41)
+    at async command (file:///opt/hostedtoolcache/node/24.20.0/arm64/lib/node_modules/vlt/ci-G4PJWJQE.js:76:21)
+    at async outputCommand (file:///opt/hostedtoolcache/node/24.20.0/arm64/lib/node_modules/vlt/chunk-VL7RJVNN.js:568:33)
+
+Open an issue with the full error details at:
+  https://github.com/vltpkg/vltpkg/issues/new

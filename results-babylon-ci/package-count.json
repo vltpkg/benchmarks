@@ -7,15 +7,15 @@
   "berry": {
     "count": 1757,
     "minCount": 1727,
-    "maxCount": 1786
+    "maxCount": 1787
   },
   "pacquet": {
-    "count": 1587
+    "count": 1588
   },
   "vlt": {
-    "count": 1549,
-    "minCount": 1547,
-    "maxCount": 1550
+    "count": 102,
+    "minCount": 1,
+    "maxCount": 406
   },
   "deno": {
     "count": 1495
