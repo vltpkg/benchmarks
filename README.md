@@ -218,8 +218,10 @@ Chart data adds optional `<command>_partial`, `<command>_attempted_runs`,
 per-package datasets. Tables and chart notices label partial results with their
 success counts. Synthetic averages retain that warning and omit the affected
 command's value. Commands with any
-partial result in the selected comparisons are excluded from rankings; history
-omits that command's affected daily variation and category average.
+partial result in the selected comparisons are excluded from timing rankings;
+registry win rankings retain the common denominator and award no wins for
+incomplete fixtures. History omits that command's affected daily variation and
+category average.
 
 This is an additive schema change. Historical JSON without these fields remains
 readable, but its completeness is unknown: failed attempts discarded by older
@@ -249,7 +251,7 @@ same median multiplied by 1000 and divided by package count (ms/package).
 Failed attempts are excluded from timing statistics but retained in completeness
 metadata. Partial survivor samples are labeled and excluded from averages,
 history, leaderboard timing/win calculations, and registry speed alerts.
-All-failed results remain DNF; the existing leaderboard DNF penalty uses the
+All-failed results remain DNF; timing leaderboards' DNF penalty uses the
 slowest successful median for that fixture.
 
 Average views and leaderboard timing values are arithmetic averages of
