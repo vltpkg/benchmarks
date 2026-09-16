@@ -28,6 +28,7 @@ import {
 import { ShareButton } from "@/components/share-button";
 import { usePackageManagerFilter } from "@/contexts/package-manager-filter-context";
 import { Clock, StopWatch } from "@/components/icons";
+import { partialResultLabel } from "@/lib/run-completeness";
 
 import type {
   BenchmarkChartData,
@@ -53,6 +54,7 @@ interface TransposedVariationRow {
   packageManager: PackageManager;
   fixtureValues: Partial<Record<Fixture, number>>;
   fixtureDnf: Partial<Record<Fixture, boolean>>;
+  fixturePartial: Partial<Record<Fixture, string>>;
 }
 
 const columnHelper = createColumnHelper<TransposedVariationRow>();
@@ -91,12 +93,17 @@ export const VariationTable = ({
       filteredPackageManagers.map((packageManager) => {
         const fixtureValues: Partial<Record<Fixture, number>> = {};
         const fixtureDnf: Partial<Record<Fixture, boolean>> = {};
+        const fixturePartial: Partial<Record<Fixture, string>> = {};
 
         variationData.forEach((fixtureResult) => {
           const fixture = fixtureResult.fixture;
           const dnfKey = `${packageManager}_dnf` as keyof FixtureResult;
           const value = fixtureResult[packageManager];
           const isDnf = fixtureResult[dnfKey] === true;
+          fixturePartial[fixture] = partialResultLabel(
+            { ...fixtureResult },
+            packageManager,
+          );
 
           if (isDnf) {
             fixtureDnf[fixture] = true;
@@ -110,6 +117,7 @@ export const VariationTable = ({
           packageManager,
           fixtureValues,
           fixtureDnf,
+          fixturePartial,
         };
       }),
     [filteredPackageManagers, variationData],
@@ -168,6 +176,7 @@ export const VariationTable = ({
           header: () => <span className="font-bold">{getFixtureDisplayName(fixture)}</span>,
           cell: (info) => {
             const isDnf = info.row.original.fixtureDnf[fixture] === true;
+            const partial = info.row.original.fixturePartial[fixture];
             const value = info.getValue();
             if (isDnf) {
               return (
@@ -185,6 +194,11 @@ export const VariationTable = ({
                     {value.toFixed(decimals)}
                     {unit}
                   </span>
+                  {partial && (
+                    <div className="text-xs text-amber-700 dark:text-amber-400">
+                      {partial}
+                    </div>
+                  )}
                 </div>
               );
             }

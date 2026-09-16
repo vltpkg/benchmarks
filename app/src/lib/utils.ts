@@ -98,6 +98,16 @@ export const calculateAverageVariationData = (
 
     packageManagers.forEach((pm: PackageManager) => {
       const dnfKey: DnfKey = `${pm}_dnf`;
+      if (results.some((r) => r[`${pm}_partial`] === true)) {
+        averagedResult[`${pm}_partial`] = true;
+        for (const field of ["attempted_runs", "successful_runs", "dropped_runs"] as const) {
+          const key = `${pm}_${field}` as const;
+          // Do not claim a complete count if some historical rows lack it.
+          if (results.every((r) => typeof r[key] === "number")) {
+            averagedResult[key] = results.reduce((sum, r) => sum + (r[key] ?? 0), 0);
+          }
+        }
+      }
       const values = results
         .filter((r) => r[dnfKey] !== true)
         .map((r) => r[pm])
@@ -300,6 +310,21 @@ export const calculateLeaderboard = (
         ?.variations.filter((v) => v !== "average") || [];
   }
 
+  // A survivor-only result cannot establish a fair rank, including when other
+  // fixtures succeeded. Exclude the command from this selected comparison.
+  const partialPMs = new Set<PackageManager>();
+  const rankingData = usePerPackageData
+    ? chartData.perPackageCountChartData.data
+    : chartData.chartData.data;
+  for (const variation of variationsToUse) {
+    for (const row of rankingData[variation] ?? []) {
+      if (enabledFixtures && !enabledFixtures.has(row.fixture)) continue;
+      for (const pm of availablePackageManagers) {
+        if (row[`${pm}_partial`] === true) partialPMs.add(pm);
+      }
+    }
+  }
+
   // Calculate performance — DNF runs are imputed as the slowest successful
   // time for that fixture, matching the "Performance Over Time" chart data
   variationsToUse.forEach((variation) => {
@@ -320,6 +345,7 @@ export const calculateLeaderboard = (
 
       // First pass: collect successful times and DNFs
       (availablePackageManagers as PackageManager[]).forEach((pm) => {
+        if (partialPMs.has(pm)) return;
         const time = fixtureResult[pm];
         const dnfKey = `${pm}_dnf` as keyof FixtureResult;
         if (fixtureResult[dnfKey] === true) {

@@ -2,6 +2,7 @@ import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 
 import { cn } from "@/lib/utils";
+import { partialResultLabel } from "@/lib/run-completeness";
 
 /**
  * Creates a CSS repeating-linear-gradient that matches the SVG diagonal-stripe
@@ -290,6 +291,10 @@ function ChartTooltipContent({
           const key = `${nameKey || item.name || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
           const isDnf = isDnfPayload(item);
+          const partial = partialResultLabel(
+            item.payload,
+            String(item.dataKey ?? ""),
+          );
           const dnfIndicatorColor = isDnf ? getDnfIndicatorColor(item) : null;
           // Resolve the indicator color. For DNF entries, getDnfIndicatorColor
           // reads the hex color from `${dataKey}_fill` in the payload. For
@@ -366,6 +371,11 @@ function ChartTooltipContent({
                       <span className="text-muted-foreground">
                         {itemConfig?.label || item.name}
                       </span>
+                      {partial && (
+                        <span className="text-amber-700 dark:text-amber-400">
+                          {partial}
+                        </span>
+                      )}
                     </div>
                     {(item.value !== undefined || isDnf) && (
                       <span className="text-foreground font-mono font-medium tabular-nums">

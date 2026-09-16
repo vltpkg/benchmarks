@@ -240,8 +240,8 @@ jobs:
         id: registry-raw
         # Any non-zero vlt exit code is a potential outage or misconfiguration.
         # This must run before `bench process`, which rewrites exit codes in
-        # place (dropping failed runs), so raw per-run failures are only
-        # visible here.
+        # place. original_exit_codes also preserves those outcomes in the
+        # processed output, but validation reads the raw export here.
         if: github.ref == 'refs/heads/main' && needs.detect-changes.outputs.partial_run != 'true'
         uses: actions/github-script@v9
         with:
@@ -335,12 +335,11 @@ jobs:
               if (!match) continue
               const label = `${match[1]} ${match[2]}`
 
-              // Registries where every run failed are stamped with a non-zero
-              // exit code and a zero mean by clean-benchmarks and rendered as
-              // failures on the site, so they are excluded from the speed
-              // comparison. A failed vlt is already reported by the raw scan.
+              // Compare only complete results. Partial survivor statistics do
+              // not establish a fair speed comparison. Failures are already
+              // reported by the raw scan before processing.
               const ok = (JSON.parse(fs.readFileSync(path.join(dir, entry), 'utf8')).results ?? [])
-                .filter((r) => r.mean > 0 && (r.exit_codes ?? []).every((c) => c === 0))
+                .filter((r) => r.mean > 0 && r.status !== 'partial' && !(r.dropped_runs > 0) && (r.exit_codes ?? []).every((c) => c === 0))
               const vlt = ok.find((r) => r.command === 'vlt')
               if (!vlt) continue
 

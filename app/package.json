@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "test": "node --test tests/*.test.js",
     "dev": "vite",
     "format": "prettier --write . --log-level warn --ignore-path ./.prettierignore --cache",
     "build": "tsc -b && vite build",

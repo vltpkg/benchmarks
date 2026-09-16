@@ -37,7 +37,9 @@ const collectBenchmarkFiles = (targetPath) => {
 
   const stats = fs.statSync(resolvedPath);
   if (stats.isFile()) {
-    return path.basename(resolvedPath) === "benchmarks.json" ? [resolvedPath] : [];
+    return path.basename(resolvedPath) === "benchmarks.json"
+      ? [resolvedPath]
+      : [];
   }
 
   if (!stats.isDirectory()) {
@@ -84,7 +86,9 @@ const cleanBenchmarkFile = (filePath) => {
 
   data.results.forEach((result, index) => {
     const times = Array.isArray(result.times) ? result.times : null;
-    const exitCodes = Array.isArray(result.exit_codes) ? result.exit_codes : null;
+    const exitCodes = Array.isArray(result.exit_codes)
+      ? result.exit_codes
+      : null;
 
     if (!times || !exitCodes || times.length !== exitCodes.length) {
       console.warn(
@@ -96,6 +100,28 @@ const cleanBenchmarkFile = (filePath) => {
     const cleanTimes = times.filter((time, idx) => exitCodes[idx] === 0);
     const cleanExitCodes = exitCodes.filter((code) => code === 0);
 
+    // Keep the original outcomes even when this file is cleaned repeatedly.
+    // Hyperfine's user/system values cover all attempts, not just survivors.
+    const originalExitCodes = Array.isArray(result.original_exit_codes)
+      ? result.original_exit_codes
+      : [...exitCodes];
+    result.original_exit_codes = originalExitCodes;
+    result.attempted_runs = originalExitCodes.length;
+    result.successful_runs = originalExitCodes.filter(
+      (code) => code === 0,
+    ).length;
+    result.dropped_runs = result.attempted_runs - result.successful_runs;
+    result.status =
+      result.successful_runs === 0
+        ? "failure"
+        : result.dropped_runs > 0
+          ? "partial"
+          : "success";
+    if (result.dropped_runs > 0) {
+      delete result.user;
+      delete result.system;
+    }
+
     if (cleanTimes.length > 0) {
       const mean = calculateMean(cleanTimes);
       const stddev = calculateStddev(cleanTimes, mean);
@@ -106,7 +132,8 @@ const cleanBenchmarkFile = (filePath) => {
       result.times = cleanTimes;
       result.exit_codes = cleanExitCodes;
       result.mean = mean;
-      result.stddev = stddev;
+      result.stddev =
+        result.dropped_runs > 0 && cleanTimes.length < 2 ? null : stddev;
       result.median = median;
       result.min = min;
       result.max = max;
@@ -124,8 +151,6 @@ const cleanBenchmarkFile = (filePath) => {
       result.median = 0;
       result.min = 0;
       result.max = 0;
-      result.user = 0;
-      result.system = 0;
 
       updated = true;
     }
@@ -142,7 +167,9 @@ const cleanBenchmarkFile = (filePath) => {
 };
 
 const filesToClean = Array.from(
-  new Set(inputPaths.flatMap((targetPath) => collectBenchmarkFiles(targetPath))),
+  new Set(
+    inputPaths.flatMap((targetPath) => collectBenchmarkFiles(targetPath)),
+  ),
 );
 
 if (filesToClean.length === 0) {
