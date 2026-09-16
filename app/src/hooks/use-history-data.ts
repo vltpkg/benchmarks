@@ -67,7 +67,7 @@ async function parallelLimit<T>(
 
 type FixtureDataSet = Record<
   string,
-  Array<Record<string, number | string> & { fixture: string }>
+  Array<Record<string, number | string | boolean> & { fixture: string }>
 >;
 
 interface ChartDataResponse {
@@ -105,7 +105,7 @@ interface ChartDataResponse {
  *
  * Registry and task-runner variations always use total-time data.
  */
-function extractDayData(
+export function extractDayData(
   response: ChartDataResponse,
 ): Record<string, Record<string, number>> {
   const result: Record<string, Record<string, number>> = {};
@@ -132,7 +132,7 @@ function extractDayData(
 function extractFromDataSet(
   data: Record<
     string,
-    Array<Record<string, number | string> & { fixture: string }>
+    Array<Record<string, number | string | boolean> & { fixture: string }>
   >,
   result: Record<string, Record<string, number>>,
 ): void {
@@ -140,9 +140,15 @@ function extractFromDataSet(
     if (!Array.isArray(fixtures) || fixtures.length === 0) continue;
 
     const pmTotals: Record<string, { sum: number; count: number }> = {};
+    const partialPMs = new Set(PACKAGE_MANAGERS.filter((pm) =>
+      fixtures.some((fixture) => fixture[`${pm}_partial`] === true)));
 
     for (const fixture of fixtures) {
       for (const pm of PACKAGE_MANAGERS) {
+        // Never splice legacy mean points into a median series. Reprocessing
+        // dated raw files adds median metadata and restores those dates.
+        if (partialPMs.has(pm) || fixture[`${pm}_statistic`] !== "median" ||
+            fixture[`${pm}_dnf`] === true || fixture[`${pm}_partial`] === true) continue;
         const val = fixture[pm];
         if (typeof val === "number" && Number.isFinite(val)) {
           if (!pmTotals[pm]) pmTotals[pm] = { sum: 0, count: 0 };

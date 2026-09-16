@@ -42,10 +42,6 @@ export const calculateAverageVariationData = (
   },
 ): FixtureResult[] => {
   type FillKey = Extract<keyof PackageManagerData, `${PackageManager}_fill`>;
-  type StddevKey = Extract<
-    keyof PackageManagerData,
-    `${PackageManager}_stddev`
-  >;
   type CountKey = Extract<keyof PackageManagerData, `${PackageManager}_count`>;
   type DnfKey = Extract<keyof PackageManagerData, `${PackageManager}_dnf`>;
 
@@ -97,9 +93,10 @@ export const calculateAverageVariationData = (
     const averagedResult: FixtureResult = { fixture: fixture as Fixture };
 
     packageManagers.forEach((pm: PackageManager) => {
+      if (results.some((r) => r[`${pm}_partial`] === true)) return;
       const dnfKey: DnfKey = `${pm}_dnf`;
       const values = results
-        .filter((r) => r[dnfKey] !== true)
+        .filter((r) => r[dnfKey] !== true && r[`${pm}_partial`] !== true)
         .map((r) => r[pm])
         .filter((val): val is number => typeof val === "number" && val > 0);
 
@@ -115,25 +112,20 @@ export const calculateAverageVariationData = (
           averagedResult[fillKey] = firstFill;
         }
 
-        // Calculate average standard deviation if available
-        const stddevKey: StddevKey = `${pm}_stddev`;
-        const stddevValues = results
-          .filter((r) => r[dnfKey] !== true)
-          .map((r) => r[stddevKey])
-          .filter((val): val is number => typeof val === "number" && val > 0);
-
-        if (stddevValues.length > 0) {
-          const avgStddev =
-            stddevValues.reduce((sum, val) => sum + val, 0) /
-            stddevValues.length;
-          averagedResult[stddevKey] = avgStddev;
-        }
+        // This is an arithmetic average of benchmark medians, not a pooled
+        // sample. Averaging standard deviations would misrepresent its spread.
+        const contributing = results.filter((r) =>
+          r[dnfKey] !== true && r[`${pm}_partial`] !== true &&
+          typeof r[pm] === "number" && r[pm]! > 0);
+        averagedResult[`${pm}_statistic`] = contributing.every((r) => r[`${pm}_statistic`] === "median")
+          ? "average-of-medians" : "legacy-average";
+        averagedResult[`${pm}_variation_count`] = values.length;
 
         // For per-package data, also average the count if available
         if (isPerPackage) {
           const countKey: CountKey = `${pm}_count`;
           const countValues = results
-            .filter((r) => r[dnfKey] !== true)
+            .filter((r) => r[dnfKey] !== true && r[`${pm}_partial`] !== true)
             .map((r) => r[countKey])
             .filter((val): val is number => typeof val === "number" && val > 0);
 
@@ -300,8 +292,21 @@ export const calculateLeaderboard = (
         ?.variations.filter((v) => v !== "average") || [];
   }
 
+  // A partial result invalidates this PM's selected comparison set; dropping
+  // only its failed/slow cases would reward survivor bias.
+  const partialPMs = new Set<PackageManager>();
+  for (const variation of variationsToUse) {
+    const source = usePerPackageData ? chartData.perPackageCountChartData.data : chartData.chartData.data;
+    for (const row of source[variation] ?? []) {
+      if (enabledFixtures && !enabledFixtures.has(row.fixture)) continue;
+      for (const pm of availablePackageManagers as PackageManager[]) {
+        if (row[`${pm}_partial`] === true) partialPMs.add(pm);
+      }
+    }
+  }
+
   // Calculate performance — DNF runs are imputed as the slowest successful
-  // time for that fixture, matching the "Performance Over Time" chart data
+  // median for that fixture; history omits failures.
   variationsToUse.forEach((variation) => {
     const dataSource = usePerPackageData
       ? chartData.perPackageCountChartData.data
@@ -320,6 +325,7 @@ export const calculateLeaderboard = (
 
       // First pass: collect successful times and DNFs
       (availablePackageManagers as PackageManager[]).forEach((pm) => {
+        if (partialPMs.has(pm)) return;
         const time = fixtureResult[pm];
         const dnfKey = `${pm}_dnf` as keyof FixtureResult;
         if (fixtureResult[dnfKey] === true) {

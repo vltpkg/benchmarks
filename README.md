@@ -199,13 +199,49 @@ The workflow:
 
 ## Results
 
+### Timing statistic and sample quality
+
+The canonical timing is the **median of successful measured runs** for each
+fixture, variation, and tool/registry. For `[3, 4, 294]` seconds, the chart shows
+4 seconds instead of the 100.3-second mean. No successful outlier is discarded:
+the table reports the successful/attempted sample count and full observed range
+(3–294 seconds here). The range is descriptive, not a confidence interval;
+three samples provide limited evidence, even when their median looks stable.
+
+The first **measured** run (run 0) is intentionally included. We do not assume
+that it is a warmup or steady-state run: each variation controls its cache and
+lockfile preparation. Explicit Hyperfine warmups are excluded from `times` and
+therefore from the median and sample count. A one-run result is labeled 1/1;
+its equal min/max does not imply certainty.
+
+Dated and latest raw results retain mean, median, standard deviation, and
+individual successful timings. Chart data uses the median (seconds), or the
+same median multiplied by 1000 and divided by package count (ms/package).
+Failed attempts are excluded from timing statistics but retained in completeness
+metadata. Partial survivor samples are labeled and excluded from averages,
+history, leaderboard timing/win calculations, and registry speed alerts.
+All-failed results remain DNF; the existing leaderboard DNF penalty uses the
+slowest successful median for that fixture.
+
+Average views and leaderboard timing values are arithmetic averages of
+per-benchmark medians, **not pooled medians**. History averages those medians
+across available fixtures, and category history additionally averages across
+variations. Coverage may vary by date; neither an averaged standard deviation
+nor an invented confidence interval is shown for aggregates.
+
+Older chart files without statistic metadata remain readable in the latest
+view and are labeled **legacy mean**. They are omitted from median history to
+avoid a false trend at the methodology change. Reprocessing the original dated
+results regenerates median points from `times` or stored `median`; a mean-only
+raw result stays labeled `legacy-mean` and cannot be converted to a median.
+
 ### Console Output
 
 Each benchmark run provides a summary in the console:
 
 ```
 === Project Name (cache type) ===
-package-manager: X.XXs (stddev: X.XXs)
+package-manager: 4s (median; 3/3 successful runs; range 3s–294s)
 ...
 ```
 

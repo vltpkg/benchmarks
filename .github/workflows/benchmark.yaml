@@ -322,6 +322,7 @@ jobs:
             const path = require('path')
             // vlt must be more than 10% behind the fastest registry before a
             // difference counts as noticeably slower.
+            const { benchmarkStatistics } = require(`${process.env.GITHUB_WORKSPACE}/scripts/benchmark-statistics.js`)
             const THRESHOLD = 1.1
             const slower = []
 
@@ -336,18 +337,19 @@ jobs:
               const label = `${match[1]} ${match[2]}`
 
               // Registries where every run failed are stamped with a non-zero
-              // exit code and a zero mean by clean-benchmarks and rendered as
+              // exit code and a zero median by clean-benchmarks and rendered as
               // failures on the site, so they are excluded from the speed
               // comparison. A failed vlt is already reported by the raw scan.
               const ok = (JSON.parse(fs.readFileSync(path.join(dir, entry), 'utf8')).results ?? [])
-                .filter((r) => r.mean > 0 && (r.exit_codes ?? []).every((c) => c === 0))
+                .map((r) => ({ command: r.command, ...benchmarkStatistics(r) }))
+                .filter((r) => !r.failed && !r.partial && r.statistic === 'median' && r.value > 0)
               const vlt = ok.find((r) => r.command === 'vlt')
               if (!vlt) continue
 
-              const best = ok.reduce((a, b) => (b.mean < a.mean ? b : a))
-              if (best.command === 'vlt' || vlt.mean <= best.mean * THRESHOLD) continue
+              const best = ok.reduce((a, b) => (b.value < a.value ? b : a))
+              if (best.command === 'vlt' || vlt.value <= best.value * THRESHOLD) continue
               slower.push(
-                `- **${label}**: ${best.command} ${best.mean.toFixed(1)}s vs vlt ${vlt.mean.toFixed(1)}s (${(vlt.mean / best.mean).toFixed(2)}x slower)`
+                `- **${label}**: ${best.command} ${best.value.toFixed(1)}s median vs vlt ${vlt.value.toFixed(1)}s (${(vlt.value / best.value).toFixed(2)}x slower)`
               )
             }
 

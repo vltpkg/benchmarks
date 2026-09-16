@@ -71,7 +71,13 @@ export interface BaseFixtureResult {
   fixture: Fixture;
 }
 
-export interface PackageManagerData {
+type SampleMetadata = Partial<Record<
+  `${PackageManager}_${"sample_count" | "attempted_runs" | "successful_runs" | "dropped_runs" | "min" | "max" | "variation_count"}`,
+  number
+>> & Partial<Record<`${PackageManager}_statistic`, "median" | "legacy-mean" | "average-of-medians" | "legacy-average">>
+  & Partial<Record<`${PackageManager}_partial`, boolean>>;
+
+export interface PackageManagerData extends SampleMetadata {
   npm?: number;
   yarn?: number;
   pnpm?: number;

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { benchmarkStatistics } = require("./benchmark-statistics.js");
 
 const inputPaths = process.argv.slice(2);
 
@@ -92,6 +93,13 @@ const cleanBenchmarkFile = (filePath) => {
       );
       return;
     }
+
+    // Capture completeness before failures are removed; preserve it on reprocessing.
+    const stats = benchmarkStatistics(result);
+    result.attempted_runs ??= stats.attemptedRuns;
+    result.successful_runs ??= stats.sampleCount;
+    result.dropped_runs ??= stats.droppedRuns;
+    result.status = stats.failed ? "failure" : stats.partial ? "partial" : "success";
 
     const cleanTimes = times.filter((time, idx) => exitCodes[idx] === 0);
     const cleanExitCodes = exitCodes.filter((code) => code === 0);

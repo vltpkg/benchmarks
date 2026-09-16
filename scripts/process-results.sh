@@ -54,7 +54,7 @@ print_summary() {
     fi
 
     echo "=== RESULTS: $fixture ($variation) ==="
-    if ! jq -r '.results[] | "\(.command): \(.mean)s (stddev: \(.stddev)s)"' "$file"; then
+    if ! node ./scripts/benchmark-statistics.js "$file"; then
         echo "Warning: Could not parse results from $file"
         return 1
     fi

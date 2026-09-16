@@ -53,6 +53,7 @@ interface TransposedVariationRow {
   packageManager: PackageManager;
   fixtureValues: Partial<Record<Fixture, number>>;
   fixtureDnf: Partial<Record<Fixture, boolean>>;
+  fixtureSamples: Partial<Record<Fixture, string>>;
 }
 
 const columnHelper = createColumnHelper<TransposedVariationRow>();
@@ -91,12 +92,25 @@ export const VariationTable = ({
       filteredPackageManagers.map((packageManager) => {
         const fixtureValues: Partial<Record<Fixture, number>> = {};
         const fixtureDnf: Partial<Record<Fixture, boolean>> = {};
+        const fixtureSamples: Partial<Record<Fixture, string>> = {};
 
         variationData.forEach((fixtureResult) => {
           const fixture = fixtureResult.fixture;
           const dnfKey = `${packageManager}_dnf` as keyof FixtureResult;
           const value = fixtureResult[packageManager];
           const isDnf = fixtureResult[dnfKey] === true;
+          const stat = fixtureResult[`${packageManager}_statistic`];
+          const count = fixtureResult[`${packageManager}_sample_count`];
+          const attempted = fixtureResult[`${packageManager}_attempted_runs`];
+          const min = fixtureResult[`${packageManager}_min`];
+          const max = fixtureResult[`${packageManager}_max`];
+          const unit = isPerPackage ? "ms/pkg" : "s";
+          const range = typeof min === "number" && typeof max === "number"
+            ? ` · range ${min.toFixed(2)}–${max.toFixed(2)} ${unit}` : "";
+          const partial = fixtureResult[`${packageManager}_partial`] === true ? " · partial" : "";
+          fixtureSamples[fixture] = stat === "average-of-medians" || stat === "legacy-average"
+            ? `${stat === "average-of-medians" ? "Average of medians" : "Legacy average"} · ${fixtureResult[`${packageManager}_variation_count`]} variations`
+            : `${stat === "median" ? "Median" : "Legacy mean"} · ${count === undefined ? "sample count unknown" : `${count}/${attempted ?? count} runs`}${range}${partial}`;
 
           if (isDnf) {
             fixtureDnf[fixture] = true;
@@ -110,9 +124,10 @@ export const VariationTable = ({
           packageManager,
           fixtureValues,
           fixtureDnf,
+          fixtureSamples,
         };
       }),
-    [filteredPackageManagers, variationData],
+    [filteredPackageManagers, variationData, isPerPackage],
   );
 
   const columns = useMemo(
@@ -185,6 +200,9 @@ export const VariationTable = ({
                     {value.toFixed(decimals)}
                     {unit}
                   </span>
+                  <div className="mt-1 text-xs text-muted-foreground max-w-56 mx-auto">
+                    {info.row.original.fixtureSamples[fixture]}
+                  </div>
                 </div>
               );
             }
