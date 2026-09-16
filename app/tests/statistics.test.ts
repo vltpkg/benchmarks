@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { extractDayData } from "../src/hooks/use-history-data.ts";
+import { extractDayData } from "../src/lib/history-data.ts";
 import {
   calculateAverageVariationData,
   calculateLeaderboard,

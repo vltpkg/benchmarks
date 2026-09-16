@@ -1,32 +1,17 @@
 import { useState, useEffect } from "react";
 import type { HistoryData, HistoryVariation } from "@/types/history";
+import {
+  PACKAGE_MANAGERS,
+  extractDayData,
+  hasPartialResult,
+} from "@/lib/history-data";
+import type { ChartDataResponse } from "@/lib/history-data";
 
 /** Max days to attempt fetching (generates date strings, 404s are skipped) */
 const MAX_DAYS = 180;
 
 /** How many fetches to run in parallel */
 const CONCURRENCY = 10;
-
-const PACKAGE_MANAGERS = [
-  "npm",
-  "yarn",
-  "pnpm",
-  "pacquet",
-  "berry",
-  "zpm",
-  "deno",
-  "bun",
-  "vlt",
-  "aube",
-  "nx",
-  "turbo",
-  "vp",
-  "node",
-  "aws",
-  "cloudsmith",
-  "github",
-  "jfrog",
-];
 
 interface UseHistoryDataReturn {
   historyData: HistoryData | null;
@@ -65,139 +50,6 @@ async function parallelLimit<T>(
     Array.from({ length: Math.min(limit, tasks.length) }, worker),
   );
   return results;
-}
-
-type FixtureDataSet = Record<
-  string,
-  Array<Record<string, number | string | boolean> & { fixture: string }>
->;
-
-interface ChartDataResponse {
-  date: string;
-  chartData: {
-    variations: string[];
-    data: FixtureDataSet;
-    packageManagers: string[];
-  };
-  perPackageCountChartData?: {
-    variations: string[];
-    data: FixtureDataSet;
-    packageManagers: string[];
-  };
-  registryChartData?: {
-    variations: string[];
-    data: FixtureDataSet;
-    packageManagers: string[];
-  };
-  registryPerPackageCountChartData?: {
-    variations: string[];
-    data: FixtureDataSet;
-    packageManagers: string[];
-  };
-}
-
-/**
- * Extract per-PM averages (across fixtures) for each variation from a single
- * day's chart-data.json response.
- *
- * For package-management variations (clean, cache, lockfile, etc.) we use
- * perPackageCountChartData when available — these values are already in ms/pkg
- * and match what the leaderboard cards display.  Falls back to total-time
- * chartData for older files that lack per-package data.
- *
- * Registry and task-runner variations always use total-time data.
- */
-export function extractDayData(
-  response: ChartDataResponse,
-): Record<string, Record<string, number>> {
-  const result: Record<string, Record<string, number>> = {};
-
-  // Use per-package data for package-management variations when available,
-  // otherwise fall back to total-time chartData
-  const pmSource =
-    response.perPackageCountChartData?.data ?? response.chartData.data;
-  extractFromDataSet(pmSource, result);
-
-  // Process registry chart data. Use registryPerPackageCountChartData when
-  // available (normalized ms/pkg values); fall back to total-time
-  // registryChartData for older files that lack per-package registry data.
-  const registrySource =
-    response.registryPerPackageCountChartData?.data ??
-    response.registryChartData?.data;
-  if (registrySource) {
-    extractFromDataSet(registrySource, result);
-  }
-
-  return result;
-}
-
-function extractFromDataSet(
-  data: Record<
-    string,
-    Array<Record<string, number | string | boolean> & { fixture: string }>
-  >,
-  result: Record<string, Record<string, number>>,
-): void {
-  for (const [variation, fixtures] of Object.entries(data)) {
-    if (!Array.isArray(fixtures) || fixtures.length === 0) continue;
-
-    const pmTotals: Record<string, { sum: number; count: number }> = {};
-    const partialPMs = new Set(
-      PACKAGE_MANAGERS.filter((pm) =>
-        fixtures.some((fixture) => fixture[`${pm}_partial`] === true),
-      ),
-    );
-
-    for (const fixture of fixtures) {
-      for (const pm of PACKAGE_MANAGERS) {
-        // Never splice legacy mean points into a median series. Reprocessing
-        // dated raw files adds median metadata and restores those dates.
-        if (
-          partialPMs.has(pm) ||
-          fixture[`${pm}_statistic`] !== "median" ||
-          fixture[`${pm}_dnf`] === true ||
-          fixture[`${pm}_partial`] === true
-        )
-          continue;
-        const val = fixture[pm];
-        if (typeof val === "number" && Number.isFinite(val)) {
-          if (!pmTotals[pm]) pmTotals[pm] = { sum: 0, count: 0 };
-          pmTotals[pm].sum += val;
-          pmTotals[pm].count++;
-        }
-      }
-    }
-
-    const pmAverages: Record<string, number> = {};
-    for (const [pm, { sum, count }] of Object.entries(pmTotals)) {
-      pmAverages[pm] = Math.round((sum / count) * 1000) / 1000;
-    }
-
-    if (Object.keys(pmAverages).length > 0) {
-      result[variation] = pmAverages;
-    }
-  }
-}
-
-// Preserve the reason a daily value is missing when building category averages.
-// Otherwise an average could silently use only the variations that succeeded.
-export function hasPartialResult(
-  response: ChartDataResponse,
-  variations: string[],
-  pm: string,
-): boolean {
-  return [
-    response.chartData,
-    response.perPackageCountChartData,
-    response.registryChartData,
-    response.registryPerPackageCountChartData,
-  ].some((source) =>
-    variations.some((variation) =>
-      source?.data[variation]?.some(
-        (fixture) => fixture[`${pm}_partial`] === true,
-      ),
-    ),
-  );
 }
 
 export const useHistoryData = (): UseHistoryDataReturn => {
