@@ -296,6 +296,21 @@ Registry history uses total installation time in seconds from `registryChartData
 
 ### View Results Online
 
+Registry leaderboard cards rank registries by **fixture wins**, not an average
+installation time. Each selected fixture/variation pair counts once, so a large
+fixture has the same influence as a small fixture. The `average` tab counts pairs
+from both registry variations. Cards show wins out of the number of selected
+pairs; filtering fixtures recomputes both values. Tool toggles only hide cards:
+wins are always measured against all registries in the data.
+
+The fastest complete positive timing earns a win; exact ties each earn a win
+and share a rank (ordered alphabetically). Failed (DNF), partial, missing, and
+invalid results earn no wins and receive no invented timing penalty. They remain
+in the common denominator, including pairs where every registry failed. A card
+with incomplete coverage also shows its number of complete results. This summary
+describes how often a registry wins, not the magnitude of its speed advantage;
+the fixture charts provide the underlying timings.
+
 Results are automatically deployed to GitHub Pages when running on the main branch:
 
 <https://vltpkg.github.io/benchmarks/>
