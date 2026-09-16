@@ -6,6 +6,7 @@
 // web app folder in a `latest/` folder, e.g: app/latest/chart-data.json
 const fs = require("fs");
 const path = require("path");
+const { benchmarkStatistics } = require("./benchmark-statistics.js");
 
 const DATE = process.argv[2];
 
@@ -43,36 +44,33 @@ const REGISTRY_COLORS = {
   jfrog: "#40BE46",
 };
 
-const parseNumeric = (value) => {
-  if (typeof value === "number") {
-    return Number.isFinite(value) ? value : undefined;
-  }
-  if (typeof value === "string") {
-    const parsed = Number.parseFloat(value);
-    return Number.isFinite(parsed) ? parsed : undefined;
-  }
-  return undefined;
+const normalizeTiming = (result, count, perPackageCount) => {
+  const stats = result?.statistic ? result : result && benchmarkStatistics(result);
+  if (!stats || stats.failed || typeof stats.value !== "number") return undefined;
+  if (perPackageCount && !(typeof count === "number" && count > 0)) return undefined;
+  const scale = perPackageCount ? 1000 / count : 1;
+  return {
+    ...stats,
+    value: stats.value * scale,
+    stddev: typeof stats.stddev === "number" ? stats.stddev * scale : undefined,
+    min: typeof stats.min === "number" ? stats.min * scale : undefined,
+    max: typeof stats.max === "number" ? stats.max * scale : undefined,
+  };
 };
 
-const normalizeTiming = (result, count, perPackageCount) => {
-  if (!result || typeof result.mean !== "number") {
-    return undefined;
+const addStatistics = (row, pm, entry) => {
+  for (const [key, value] of Object.entries({
+    statistic: entry.statistic,
+    sample_count: entry.sampleCount,
+    successful_runs: entry.sampleCount,
+    attempted_runs: entry.attemptedRuns,
+    dropped_runs: entry.droppedRuns,
+    min: entry.min,
+    max: entry.max,
+    partial: entry.partial || undefined,
+  })) {
+    if (value !== undefined) row[`${pm}_${key}`] = value;
   }
-
-  if (!perPackageCount) {
-    return { value: result.mean, stddev: result.stddev };
-  }
-
-  if (typeof count !== "number" || count <= 0) {
-    return undefined;
-  }
-
-  const scale = 1000 / count;
-  return {
-    value: result.mean * scale,
-    stddev:
-      typeof result.stddev === "number" ? result.stddev * scale : undefined,
-  };
 };
 
 // Read and process results
@@ -83,44 +81,13 @@ function readResults(file) {
       console.warn(`Warning: Invalid results format in ${file}`);
       return [];
     }
-    return data.results.map((r) => {
-      const exitCodes = Array.isArray(r.exit_codes) ? r.exit_codes : [];
-      return {
-        command: r.command,
-        mean: parseNumeric(r.mean),
-        stddev: parseNumeric(r.stddev),
-        exitCodes,
-        partial:
-          r.status === "partial" ||
-          (r.dropped_runs > 0 && r.successful_runs > 0),
-        attempted_runs: r.attempted_runs,
-        successful_runs: r.successful_runs,
-        dropped_runs: r.dropped_runs,
-        failed:
-          exitCodes.some((code) => typeof code === "number" && code !== 0) ||
-          r.success === false ||
-          r.status === "failure" ||
-          r.result === "failure" ||
-          Boolean(r.error),
-      };
-    });
+    return data.results.map((r) => ({ command: r.command, ...benchmarkStatistics(r) }));
   } catch (error) {
     console.warn(
       `Warning: Could not read results from ${file}:`,
       error.message,
     );
     return [];
-  }
-}
-
-// Older published results have no completeness metadata. Leave it absent:
-// discarded historical attempts cannot be recovered from survivor-only files.
-function copyRunMetadata(target, command, result) {
-  if (result.partial) target[`${command}_partial`] = true;
-  for (const field of ["attempted_runs", "successful_runs", "dropped_runs"]) {
-    if (Number.isInteger(result[field]) && result[field] >= 0) {
-      target[`${command}_${field}`] = result[field];
-    }
   }
 }
 
@@ -192,7 +159,7 @@ function generateChartData(option = {}) {
         const pmResult = results.find((r) => r.command === pm);
         if (!pmResult) return;
 
-        const didFail = pmResult.failed || !Number.isFinite(pmResult.mean);
+        const didFail = pmResult.failed || !Number.isFinite(pmResult.value);
         const count = packageCounts[pm];
         const timing = didFail
           ? undefined
@@ -210,6 +177,7 @@ function generateChartData(option = {}) {
 
         pmEntries[pm] = {
           ...pmResult,
+          ...timing,
           didFail,
           value: timing?.value,
           stddev: timing?.stddev,
@@ -235,8 +203,8 @@ function generateChartData(option = {}) {
       const fallback = entry.slowestValid ?? fallbackGlobal;
 
       Object.entries(entry.pmEntries).forEach(([pm, pmEntry]) => {
-        copyRunMetadata(fixtureResults, pm, pmEntry);
         fixtureResults[`${pm}_fill`] = COLORS[pm];
+        addStatistics(fixtureResults, pm, pmEntry);
         if (pmEntry.count !== undefined) {
           fixtureResults[`${pm}_count`] = pmEntry.count;
         }
@@ -354,7 +322,7 @@ function generateRegistryChartData(option = {}) {
         if (!registryResult) return;
 
         const didFail =
-          registryResult.failed || !Number.isFinite(registryResult.mean);
+          registryResult.failed || !Number.isFinite(registryResult.value);
         const count = packageCounts[registry];
         const timing = didFail
           ? undefined
@@ -372,6 +340,7 @@ function generateRegistryChartData(option = {}) {
 
         pmEntries[registry] = {
           ...registryResult,
+          ...timing,
           didFail,
           value: timing?.value,
           stddev: timing?.stddev,
@@ -397,8 +366,8 @@ function generateRegistryChartData(option = {}) {
       const fallback = entry.slowestValid ?? fallbackGlobal;
 
       Object.entries(entry.pmEntries).forEach(([registry, regEntry]) => {
-        copyRunMetadata(fixtureResults, registry, regEntry);
         fixtureResults[`${registry}_fill`] = REGISTRY_COLORS[registry];
+        addStatistics(fixtureResults, registry, regEntry);
         if (regEntry.count !== undefined) {
           fixtureResults[`${registry}_count`] = regEntry.count;
         }

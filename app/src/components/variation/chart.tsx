@@ -408,7 +408,7 @@ export const VariationChart = ({
         const isActive = variationActivePackageManagers.has(pm);
         const hasNumber = typeof value === "number";
         const shouldFallback =
-          isActive && !hasNumber && typeof slowest === "number";
+          isActive && !hasNumber && item[`${pm}_partial`] !== true && typeof slowest === "number";
         const isDnf = item[dnfKey] === true || shouldFallback;
 
         if (hasNumber) {
@@ -499,10 +499,10 @@ export const VariationChart = ({
                 const value = fixtureResult[pm];
                 const hasNumber = typeof value === "number";
                 const shouldFallback =
-                  !hasNumber && typeof slowest === "number";
+                  !hasNumber && fixtureResult[`${pm}_partial`] !== true && typeof slowest === "number";
                 const isDnf =
                   fixtureResult[dnfKey] === true || shouldFallback;
-                const resolvedValue = hasNumber ? value : slowest;
+                const resolvedValue = hasNumber ? value : shouldFallback ? slowest : undefined;
 
                 if (typeof resolvedValue !== "number") return null;
 
@@ -762,10 +762,10 @@ export const VariationChart = ({
                   const value = fixtureResult[pm];
                   const hasNumber = typeof value === "number";
                   const shouldFallback =
-                    !hasNumber && typeof slowest === "number";
+                    !hasNumber && fixtureResult[`${pm}_partial`] !== true && typeof slowest === "number";
                   const isDnf =
                     fixtureResult[dnfKey] === true || shouldFallback;
-                  const resolvedValue = hasNumber ? value : slowest;
+                  const resolvedValue = hasNumber ? value : shouldFallback ? slowest : undefined;
 
                   if (typeof resolvedValue !== "number") return null;
 
@@ -1016,9 +1016,9 @@ export const VariationChart = ({
               const dnfKey = `${pm}_dnf` as keyof FixtureResult;
               const value = fixtureResult[pm];
               const hasNumber = typeof value === "number";
-              const shouldFallback = !hasNumber && typeof slowest === "number";
+              const shouldFallback = !hasNumber && fixtureResult[`${pm}_partial`] !== true && typeof slowest === "number";
               const isDnf = fixtureResult[dnfKey] === true || shouldFallback;
-              const resolvedValue = hasNumber ? value : slowest;
+              const resolvedValue = hasNumber ? value : shouldFallback ? slowest : undefined;
 
               if (typeof resolvedValue !== "number") {
                 return null;

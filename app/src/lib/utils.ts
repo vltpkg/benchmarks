@@ -42,10 +42,6 @@ export const calculateAverageVariationData = (
   },
 ): FixtureResult[] => {
   type FillKey = Extract<keyof PackageManagerData, `${PackageManager}_fill`>;
-  type StddevKey = Extract<
-    keyof PackageManagerData,
-    `${PackageManager}_stddev`
-  >;
   type CountKey = Extract<keyof PackageManagerData, `${PackageManager}_count`>;
   type DnfKey = Extract<keyof PackageManagerData, `${PackageManager}_dnf`>;
 
@@ -107,9 +103,12 @@ export const calculateAverageVariationData = (
             averagedResult[key] = results.reduce((sum, r) => sum + (r[key] ?? 0), 0);
           }
         }
+        // Keep the warning visible without publishing an average based on
+        // surviving runs or quietly omitting this command's slow cases.
+        return;
       }
       const values = results
-        .filter((r) => r[dnfKey] !== true)
+        .filter((r) => r[dnfKey] !== true && r[`${pm}_partial`] !== true)
         .map((r) => r[pm])
         .filter((val): val is number => typeof val === "number" && val > 0);
 
@@ -125,25 +124,20 @@ export const calculateAverageVariationData = (
           averagedResult[fillKey] = firstFill;
         }
 
-        // Calculate average standard deviation if available
-        const stddevKey: StddevKey = `${pm}_stddev`;
-        const stddevValues = results
-          .filter((r) => r[dnfKey] !== true)
-          .map((r) => r[stddevKey])
-          .filter((val): val is number => typeof val === "number" && val > 0);
-
-        if (stddevValues.length > 0) {
-          const avgStddev =
-            stddevValues.reduce((sum, val) => sum + val, 0) /
-            stddevValues.length;
-          averagedResult[stddevKey] = avgStddev;
-        }
+        // This is an arithmetic average of benchmark medians, not a pooled
+        // sample. Averaging standard deviations would misrepresent its spread.
+        const contributing = results.filter((r) =>
+          r[dnfKey] !== true && r[`${pm}_partial`] !== true &&
+          typeof r[pm] === "number" && r[pm]! > 0);
+        averagedResult[`${pm}_statistic`] = contributing.every((r) => r[`${pm}_statistic`] === "median")
+          ? "average-of-medians" : "legacy-average";
+        averagedResult[`${pm}_variation_count`] = values.length;
 
         // For per-package data, also average the count if available
         if (isPerPackage) {
           const countKey: CountKey = `${pm}_count`;
           const countValues = results
-            .filter((r) => r[dnfKey] !== true)
+            .filter((r) => r[dnfKey] !== true && r[`${pm}_partial`] !== true)
             .map((r) => r[countKey])
             .filter((val): val is number => typeof val === "number" && val > 0);
 
@@ -326,7 +320,7 @@ export const calculateLeaderboard = (
   }
 
   // Calculate performance — DNF runs are imputed as the slowest successful
-  // time for that fixture, matching the "Performance Over Time" chart data
+  // median for that fixture; history omits failures.
   variationsToUse.forEach((variation) => {
     const dataSource = usePerPackageData
       ? chartData.perPackageCountChartData.data
@@ -668,7 +662,7 @@ export const getAvailablePackageManagers = (
     allPackageManagers.forEach((pm) => {
       const value = fixtureResult[pm];
       const dnfKey = `${pm}_dnf` as keyof FixtureResult;
-      if (fixtureResult[dnfKey] === true) {
+      if (fixtureResult[dnfKey] === true || fixtureResult[`${pm}_partial`] === true) {
         availablePackageManagers.add(pm);
         return;
       }

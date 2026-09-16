@@ -322,6 +322,7 @@ jobs:
             const path = require('path')
             // vlt must be more than 10% behind the fastest registry before a
             // difference counts as noticeably slower.
+            const { benchmarkStatistics } = require(`${process.env.GITHUB_WORKSPACE}/scripts/benchmark-statistics.js`)
             const THRESHOLD = 1.1
             const slower = []
 
@@ -339,14 +340,15 @@ jobs:
               // not establish a fair speed comparison. Failures are already
               // reported by the raw scan before processing.
               const ok = (JSON.parse(fs.readFileSync(path.join(dir, entry), 'utf8')).results ?? [])
-                .filter((r) => r.mean > 0 && r.status !== 'partial' && !(r.dropped_runs > 0) && (r.exit_codes ?? []).every((c) => c === 0))
+                .map((r) => ({ command: r.command, ...benchmarkStatistics(r) }))
+                .filter((r) => !r.failed && !r.partial && r.statistic === 'median' && r.value > 0)
               const vlt = ok.find((r) => r.command === 'vlt')
               if (!vlt) continue
 
-              const best = ok.reduce((a, b) => (b.mean < a.mean ? b : a))
-              if (best.command === 'vlt' || vlt.mean <= best.mean * THRESHOLD) continue
+              const best = ok.reduce((a, b) => (b.value < a.value ? b : a))
+              if (best.command === 'vlt' || vlt.value <= best.value * THRESHOLD) continue
               slower.push(
-                `- **${label}**: ${best.command} ${best.mean.toFixed(1)}s vs vlt ${vlt.mean.toFixed(1)}s (${(vlt.mean / best.mean).toFixed(2)}x slower)`
+                `- **${label}**: ${best.command} ${best.value.toFixed(1)}s median vs vlt ${vlt.value.toFixed(1)}s (${(vlt.value / best.value).toFixed(2)}x slower)`
               )
             }
 
