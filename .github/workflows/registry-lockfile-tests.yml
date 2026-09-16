@@ -3,13 +3,11 @@ on:
   push:
     paths:
       - 'scripts/registry/**'
-      - 'scripts/registry-lockfile.test.js'
       - 'scripts/variations/registry-lockfile.sh'
       - '.github/workflows/registry-lockfile-tests.yml'
   pull_request:
     paths:
       - 'scripts/registry/**'
-      - 'scripts/registry-lockfile.test.js'
       - 'scripts/variations/registry-lockfile.sh'
       - '.github/workflows/registry-lockfile-tests.yml'
 jobs:
@@ -25,4 +23,4 @@ jobs:
         run: |
           curl -fsSL https://github.com/sharkdp/hyperfine/releases/download/v1.19.0/hyperfine_1.19.0_amd64.deb -o /tmp/hyperfine.deb
           sudo dpkg -i /tmp/hyperfine.deb
-      - run: node --test scripts/registry-lockfile.test.js
+      - run: node --test scripts/registry/lockfile.test.js

@@ -121,7 +121,7 @@ BENCH_WARMUP_TIMEOUT=600 BENCH_TIMEOUT=300 \
 ```
 
 Run the lockfile regression tests with Node.js, npm, GNU `timeout`, and hyperfine
-installed: `node --test scripts/registry-lockfile.test.js`.
+installed: `node --test scripts/registry/lockfile.test.js`.
 
 ## Testing Script Execution
 

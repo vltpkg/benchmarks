@@ -5,6 +5,7 @@ const http = require("node:http");
 const os = require("node:os");
 const path = require("node:path");
 const test = require("node:test");
+const scriptsDir = path.resolve(__dirname, "..");
 
 const quote = value => `'${String(value).replaceAll("'", "'\\''")}'`;
 const run = (command, args, options) => new Promise((resolve, reject) => {
@@ -24,7 +25,7 @@ function fixture(t, { realNpm = false } = {}) {
   fs.mkdirSync(scripts);
   fs.mkdirSync(output);
   for (const file of ["registry-package-count.sh", "collect-package-count.js"]) {
-    fs.copyFileSync(path.join(__dirname, file), path.join(scripts, file));
+    fs.copyFileSync(path.join(scriptsDir, file), path.join(scripts, file));
   }
   // Isolate destructive benchmark cleanup to this test's fixture/cache.
   fs.writeFileSync(path.join(scripts, "clean-helpers.sh"), `set -eu
@@ -37,7 +38,7 @@ for action in "$@"; do
   esac
 done
 `);
-  fs.cpSync(path.join(__dirname, "registry"), path.join(scripts, "registry"), { recursive: true });
+  fs.cpSync(__dirname, path.join(scripts, "registry"), { recursive: true });
   fs.writeFileSync(path.join(dir, "package.json"), JSON.stringify({ name: "fixture", version: "1.0.0" }));
   const validLock = path.join(dir, "valid-lock.json");
   fs.writeFileSync(validLock, JSON.stringify({ lockfileVersion: 3, packages: { "": { name: "fixture", version: "1.0.0" } } }));
@@ -176,7 +177,7 @@ test("real npm timed installs fetch tarballs and no packuments after warmup", as
 
 test("the full variation creates a separate fresh warmup for each registry", async t => {
   const f = fixture(t);
-  const result = await run("bash", [path.join(__dirname, "variations/registry-lockfile.sh"), f.scripts, f.output, "fixture", "registry-lockfile"], {
+  const result = await run("bash", [path.join(scriptsDir, "variations/registry-lockfile.sh"), f.scripts, f.output, "fixture", "registry-lockfile"], {
     cwd: f.dir,
     env: { ...f.env, BENCH_INCLUDE_REGISTRY: "npm,vlt", BENCH_WARMUP: "1", BENCH_RUNS: "2", VLT_TOKEN: "test", CLOUDSMITH_REGISTRY: "", GH_REGISTRY: "", JFROG_REGISTRY: "" },
   });
