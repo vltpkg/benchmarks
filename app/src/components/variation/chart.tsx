@@ -33,6 +33,7 @@ import { CHART_DEFAULTS } from "@/constants";
 import { formatPackageManagerLabel, getFixtureId } from "@/lib/utils";
 import { getFrameworkIcon } from "@/lib/get-icons";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { partialResultLabel } from "@/lib/run-completeness";
 
 import type { ChartConfig } from "@/components/ui/chart";
 import type {
@@ -126,6 +127,7 @@ const HorizontalBarTooltipContent = ({
               item.color;
 
           const isBaseline = item.payload?.isBaseline === true;
+          const partial = partialResultLabel(item.payload);
 
           return (
             <div key={index} className="flex items-center gap-2">
@@ -140,6 +142,11 @@ const HorizontalBarTooltipContent = ({
               <div className="flex flex-1 justify-between items-center gap-4">
                 <span className="text-muted-foreground">
                   {item.name ?? item.dataKey}
+                  {partial && (
+                    <span className="block text-amber-700 dark:text-amber-400">
+                      {partial}
+                    </span>
+                  )}
                   {isBaseline && (
                     <span className="ml-1 text-[10px] italic opacity-70">
                       baseline
@@ -323,6 +330,24 @@ export const VariationChart = ({
 
   // Variation data already respects fixture filters upstream
   const filteredVariationData = variationData;
+  const partialResults = filteredVariationData.flatMap((row) =>
+    filteredPackageManagers.flatMap((pm) => {
+      const label = partialResultLabel({ ...row }, pm);
+      return label ? [`${row.fixture} / ${pm}: ${label}`] : [];
+    }),
+  );
+  const partialNotice = partialResults.length > 0 && (
+    <div className="rounded-md border border-amber-500 p-3 text-sm text-amber-800 dark:text-amber-300">
+      <p>
+        Partial results include successful runs only and may appear faster
+        because failed or timed-out runs were dropped. Commands with partial
+        results are excluded from rankings and history averages.
+      </p>
+      <ul className="mt-2 list-disc pl-5">
+        {partialResults.map((label) => <li key={label}>{label}</li>)}
+      </ul>
+    </div>
+  );
 
   const variationActivePackageManagers = useMemo(() => {
     const active = new Set<PackageManager>();
@@ -372,7 +397,7 @@ export const VariationChart = ({
   // Always compute both data structures to avoid conditional hook calls
   const consolidatedData = useMemo(() => {
     return filteredVariationData.map((item): ConsolidatedChartItem => {
-      const chartItem: ConsolidatedChartItem = { fixture: item.fixture };
+      const chartItem: ConsolidatedChartItem = { ...item, fixture: item.fixture };
       const slowest = fixtureSlowestValues.get(item.fixture);
 
       filteredPackageManagers.forEach((pm) => {
@@ -430,6 +455,7 @@ export const VariationChart = ({
     // Task runners & registries: horizontal bar charts per fixture, sorted by speed
     return (
       <div className="space-y-8">
+        {partialNotice}
         <div className="flex flex-col gap-3 md:gap-0 md:flex-row items-start md:items-center justify-between">
           <h3 className="text-base md:text-lg w-full font-medium tracking-tighter flex items-center gap-2 group">
             <Clock className="text-muted-foreground flex-shrink-0" />
@@ -491,6 +517,9 @@ export const VariationChart = ({
                     ? getDnfPatternFill(fixtureId, pm)
                     : getColor(pm),
                   dnf: isDnf,
+                  partial: fixtureResult[`${pm}_partial`] === true,
+                  attempted_runs: fixtureResult[`${pm}_attempted_runs`],
+                  successful_runs: fixtureResult[`${pm}_successful_runs`],
                   dnfColor: getColor(pm),
                   isBaseline: isBaselinePackageManager(pm, isRegistry),
                 };
@@ -684,6 +713,7 @@ export const VariationChart = ({
     if (isMobile) {
       return (
         <div className="space-y-6">
+          {partialNotice}
           {consolidatedHeader}
 
           {/* Legend */}
@@ -752,6 +782,9 @@ export const VariationChart = ({
                       ? getDnfPatternFill(fixtureId, pm)
                       : getColor(pm),
                     dnf: isDnf,
+                    partial: fixtureResult[`${pm}_partial`] === true,
+                    attempted_runs: fixtureResult[`${pm}_attempted_runs`],
+                    successful_runs: fixtureResult[`${pm}_successful_runs`],
                     dnfColor: getColor(pm),
                     pm,
                   };
@@ -836,6 +869,7 @@ export const VariationChart = ({
     // DESKTOP: Grouped bar chart (existing layout)
     return (
       <div className="space-y-8">
+        {partialNotice}
         {consolidatedHeader}
 
         <div className="bg-card rounded-xl p-3 md:p-6 border-border border-[1px] overflow-hidden">
@@ -956,6 +990,7 @@ export const VariationChart = ({
   // Uses horizontal bar charts sorted fastest-to-slowest for all screen sizes
   return (
     <div className="space-y-8">
+      {partialNotice}
       <div>
         <h3 className="text-lg font-medium tracking-tighter flex items-center gap-2 group">
           <StopWatch className="text-muted-foreground" />
@@ -1000,6 +1035,9 @@ export const VariationChart = ({
                 value: resolvedValue,
                 fill: isDnf ? getDnfPatternFill(fixtureId, pm) : fillColor,
                 dnf: isDnf,
+                partial: fixtureResult[`${pm}_partial`] === true,
+                attempted_runs: fixtureResult[`${pm}_attempted_runs`],
+                successful_runs: fixtureResult[`${pm}_successful_runs`],
                 dnfColor: getColor(pm),
               };
             })

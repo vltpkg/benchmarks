@@ -237,6 +237,10 @@ export const HistoryChart = ({
       </div>
 
       <div className="bg-card rounded-xl p-3 md:p-6 border-border border-[1px] overflow-hidden">
+        <p className="mb-4 text-xs text-muted-foreground">
+          Days with partial results are omitted for that command and variation.
+          Older results without run counts have unknown completeness.
+        </p>
         <ChartContainer
           config={chartConfig}
           className="min-h-[180px] md:min-h-[250px] w-full"

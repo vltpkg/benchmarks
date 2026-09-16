@@ -1,0 +1,24 @@
+name: Data and App Tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - run: npm install --ignore-scripts --no-package-lock
+        working-directory: app
+      - run: node --test scripts/*.test.js
+      - name: Test app data semantics
+        run: |
+          if [ -d app/tests ]; then node --test app/tests/*.test.*; fi
+      - run: npm run build
+        working-directory: app
