@@ -227,6 +227,8 @@ The generated charts show:
 - Standard deviation in tooltips
 - Summary table with total installation times and package counts
 
+Registry history uses total installation time in seconds from `registryChartData`, with legacy registry entries in `chartData` as a fallback. Dates containing only normalized registry data are omitted from the seconds chart because those values are measured in milliseconds per package.
+
 ### View Results Online
 
 Results are automatically deployed to GitHub Pages when running on the main branch:
