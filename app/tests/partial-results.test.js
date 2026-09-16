@@ -8,7 +8,7 @@ import {
 import {
   extractDayData,
   hasPartialResult,
-} from "../src/hooks/use-history-data.ts";
+} from "../src/lib/history-data.ts";
 
 const complete = {
   fixture: "next",
