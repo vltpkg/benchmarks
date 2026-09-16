@@ -10,8 +10,15 @@ import {
   hasPartialResult,
 } from "../src/hooks/use-history-data.ts";
 
-const complete = { fixture: "next", npm: 5, vlt: 4 };
+const complete = {
+  fixture: "next",
+  npm: 5,
+  vlt: 4,
+  npm_statistic: "median",
+  vlt_statistic: "median",
+};
 const partial = {
+  ...complete,
   fixture: "astro",
   npm: 0.1,
   vlt: 3,
@@ -84,7 +91,7 @@ test("daily history omits the entire partial command instead of averaging only s
   assert.equal(hasPartialResult(chartData, ["clean", "cache"], "vlt"), false);
 });
 
-test("complete and historical daily results remain usable and DNF placeholders are excluded", () => {
+test("complete median results remain usable and DNF placeholders are excluded", () => {
   const response = {
     ...chartData,
     perPackageCountChartData: {
@@ -92,7 +99,7 @@ test("complete and historical daily results remain usable and DNF placeholders a
       data: {
         clean: [
           complete,
-          { fixture: "astro", npm: 100, npm_dnf: true, vlt: 6 },
+          { ...complete, fixture: "astro", npm: 100, npm_dnf: true, vlt: 6 },
         ],
       },
     },

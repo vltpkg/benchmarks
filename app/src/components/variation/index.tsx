@@ -219,6 +219,14 @@ export const VariationPage = () => {
         </div>
       )}
 
+      <p className="text-sm text-muted-foreground">
+        Times use the median of measured runs, including the first measured run;
+        explicit warmups are excluded. Tables show successful/attempted runs and
+        the observed range, which is not a confidence interval. Averages combine
+        per-benchmark medians and exclude partial samples. Older results are
+        labeled as legacy means.
+      </p>
+
       {/* History chart - performance over time */}
       {historyData && (
         <HistoryChart

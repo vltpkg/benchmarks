@@ -150,7 +150,15 @@ function extractFromDataSet(
 
     for (const fixture of fixtures) {
       for (const pm of PACKAGE_MANAGERS) {
-        if (partialPMs.has(pm) || fixture[`${pm}_dnf`] === true) continue;
+        // Never splice legacy mean points into a median series. Reprocessing
+        // dated raw files adds median metadata and restores those dates.
+        if (
+          partialPMs.has(pm) ||
+          fixture[`${pm}_statistic`] !== "median" ||
+          fixture[`${pm}_dnf`] === true ||
+          fixture[`${pm}_partial`] === true
+        )
+          continue;
         const val = fixture[pm];
         if (typeof val === "number" && Number.isFinite(val)) {
           if (!pmTotals[pm]) pmTotals[pm] = { sum: 0, count: 0 };

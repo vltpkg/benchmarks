@@ -8,10 +8,10 @@ const test = require("node:test");
 const { normalizeTiming } = require("./generate-chart.js");
 
 test("normalizes per-package timing and standard deviation", () => {
-  assert.deepEqual(normalizeTiming({ mean: 1.2, stddev: 0.12 }, 60, true), {
-    value: 20,
-    stddev: 2,
-  });
+  const timing = normalizeTiming({ median: 1.2, stddev: 0.12 }, 60, true);
+  assert.equal(timing.value, 20);
+  assert.equal(timing.stddev, 2);
+  assert.equal(timing.statistic, "median");
 });
 
 test("does not mix total seconds into per-package data without a count", () => {
@@ -26,13 +26,9 @@ test("does not mix total seconds into per-package data without a count", () => {
 });
 
 test("preserves total timing units", () => {
-  assert.deepEqual(
-    normalizeTiming({ mean: 1.2, stddev: 0.12 }, undefined, false),
-    {
-      value: 1.2,
-      stddev: 0.12,
-    },
-  );
+  const timing = normalizeTiming({ median: 1.2, stddev: 0.12 }, undefined, false);
+  assert.equal(timing.value, 1.2);
+  assert.equal(timing.stddev, 0.12);
 });
 
 for (const fixture of [

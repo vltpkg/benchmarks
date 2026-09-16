@@ -236,6 +236,11 @@ export const HistoryChart = ({
         </div>
       </div>
 
+      <p className="text-xs text-muted-foreground">
+        Arithmetic averages of complete benchmark medians across available fixtures.
+        Legacy mean-only dates and incomplete samples are omitted. The average view
+        also averages across variations; coverage may differ by date.
+      </p>
       <div className="bg-card rounded-xl p-3 md:p-6 border-border border-[1px] overflow-hidden">
         <p className="mb-4 text-xs text-muted-foreground">
           Days with partial results are omitted for that command and variation.
