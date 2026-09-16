@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { calculateRegistryLeaderboard } from "./registry-leaderboard.ts";
 import type {
   Variation,
   Fixture,
@@ -220,14 +221,13 @@ export const getVariationCategories = (
 interface RankingData {
   packageManager: PackageManager;
   wins: number;
-  averageTime: number;
+  averageTime?: number;
   totalTests: number;
+  completedTests?: number;
 }
 
 export type LeaderboardRoute =
-  | "package-managers"
-  | "task-runners"
-  | "registries";
+  "package-managers" | "task-runners" | "registries";
 
 export const calculateLeaderboard = (
   chartData: BenchmarkChartData,
@@ -235,6 +235,13 @@ export const calculateLeaderboard = (
   route?: LeaderboardRoute,
   enabledFixtures?: Set<Fixture>,
 ): RankingData[] => {
+  if ((route ?? "registries") === "registries") {
+    return calculateRegistryLeaderboard(
+      chartData,
+      specificVariation,
+      enabledFixtures,
+    );
+  }
   const categories = getVariationCategories(chartData.chartData.variations);
   const effectiveRoute = route ?? "registries";
 
@@ -382,30 +389,30 @@ export const calculateLeaderboard = (
   });
 
   // Calculate final rankings
-  const leaderboard: RankingData[] = (
-    availablePackageManagers as PackageManager[]
-  ).map((pm) => {
-    const stats = packageManagerStats[pm];
-    if (!stats) {
+  const leaderboard = (availablePackageManagers as PackageManager[]).map(
+    (pm) => {
+      const stats = packageManagerStats[pm];
+      if (!stats) {
+        return {
+          packageManager: pm,
+          wins: 0,
+          averageTime: Number.MAX_SAFE_INTEGER,
+          totalTests: 0,
+        };
+      }
+      const averageTime =
+        stats.testCount > 0
+          ? stats.totalTime / stats.testCount
+          : Number.MAX_SAFE_INTEGER;
+
       return {
         packageManager: pm,
-        wins: 0,
-        averageTime: Number.MAX_SAFE_INTEGER,
-        totalTests: 0,
+        wins: stats.wins,
+        averageTime,
+        totalTests: stats.testCount,
       };
-    }
-    const averageTime =
-      stats.testCount > 0
-        ? stats.totalTime / stats.testCount
-        : Number.MAX_SAFE_INTEGER;
-
-    return {
-      packageManager: pm,
-      wins: stats.wins,
-      averageTime,
-      totalTests: stats.testCount,
-    };
-  });
+    },
+  );
 
   // Filter out PMs with no data, then sort by average time (lower is
   // better) so card order matches the displayed values, wins as tiebreaker

@@ -307,7 +307,8 @@ HeaderSection.displayName = "HeaderSection";
 
 interface LeaderBoardItemProps {
   packageManager: PackageManager;
-  averageTime: number;
+  averageTime?: number;
+  registryStats?: { wins: number; totalTests: number; completedTests: number };
   idx: number;
   unit?: string;
   isBaseline?: boolean;
@@ -315,7 +316,8 @@ interface LeaderBoardItemProps {
 
 const LeaderBoardItem = ({
   packageManager,
-  averageTime,
+  averageTime = 0,
+  registryStats,
   idx,
   unit = "ms/pkg",
   isBaseline = false,
@@ -362,7 +364,18 @@ const LeaderBoardItem = ({
               </span>
             )}
           </p>
-          <p className="text-[10px] text-muted-foreground">{formattedTime}</p>
+          <p className="text-[10px] text-muted-foreground">
+            {registryStats
+              ? `${registryStats.wins}/${registryStats.totalTests} wins`
+              : formattedTime}
+          </p>
+          {registryStats &&
+            registryStats.completedTests < registryStats.totalTests && (
+              <p className="text-[10px] text-muted-foreground">
+                {registryStats.completedTests}/{registryStats.totalTests}{" "}
+                complete
+              </p>
+            )}
         </div>
       </div>
     </div>
@@ -404,25 +417,50 @@ const HeaderLeaderboard = forwardRef<HTMLDivElement, ComponentProps<"div">>(
     if (leaderboard && leaderboard.length === 0) return null;
 
     return (
-      <ScrollArea className="relative max-w-7xl">
-        <div ref={ref} className={cn("flex gap-2", className)} {...props}>
-          {leaderboard &&
-            leaderboard.map((item, idx) => (
-              <LeaderBoardItem
-                key={`${item.packageManager}-${idx}`}
-                idx={idx}
-                averageTime={item.averageTime}
-                packageManager={item.packageManager}
-                unit={unit}
-                isBaseline={isBaselinePackageManager(
-                  item.packageManager,
-                  isRegistryRoute,
-                )}
-              />
-            ))}
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+      <div className="space-y-2">
+        {isRegistryRoute && (
+          <p className="text-xs text-muted-foreground">
+            Fixture wins: each selected fixture and variation counts equally.
+            Fastest complete result wins; tied fastest results each earn a win.
+            Failed, partial, or missing results earn no wins. Compared across
+            all registries.
+          </p>
+        )}
+        <ScrollArea className="relative max-w-7xl">
+          <div ref={ref} className={cn("flex gap-2", className)} {...props}>
+            {leaderboard &&
+              leaderboard.map((item, idx) => (
+                <LeaderBoardItem
+                  key={`${item.packageManager}-${idx}`}
+                  idx={
+                    isRegistryRoute
+                      ? leaderboard.findIndex(
+                          (entry) => entry.wins === item.wins,
+                        )
+                      : idx
+                  }
+                  averageTime={item.averageTime}
+                  registryStats={
+                    isRegistryRoute
+                      ? {
+                          wins: item.wins,
+                          totalTests: item.totalTests,
+                          completedTests: item.completedTests ?? 0,
+                        }
+                      : undefined
+                  }
+                  packageManager={item.packageManager}
+                  unit={unit}
+                  isBaseline={isBaselinePackageManager(
+                    item.packageManager,
+                    isRegistryRoute,
+                  )}
+                />
+              ))}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </div>
     );
   },
 );

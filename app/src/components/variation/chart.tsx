@@ -341,7 +341,10 @@ export const VariationChart = ({
       <p>
         Partial results include successful runs only and may appear faster
         because failed or timed-out runs were dropped. Commands with partial
-        results are excluded from rankings and history averages.
+        results are excluded from history averages.{" "}
+        {isRegistry
+          ? "Incomplete fixture results earn no leaderboard wins."
+          : "They are also excluded from timing rankings."}
       </p>
       <ul className="mt-2 list-disc pl-5">
         {partialResults.map((label) => <li key={label}>{label}</li>)}

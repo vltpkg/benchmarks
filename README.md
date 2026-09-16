@@ -218,8 +218,10 @@ Chart data adds optional `<command>_partial`, `<command>_attempted_runs`,
 per-package datasets. Tables and chart notices label partial results with their
 success counts. Synthetic averages retain that warning and omit the affected
 command's value. Commands with any
-partial result in the selected comparisons are excluded from rankings; history
-omits that command's affected daily variation and category average.
+partial result in the selected comparisons are excluded from timing rankings;
+registry win rankings retain the common denominator and award no wins for
+incomplete fixtures. History omits that command's affected daily variation and
+category average.
 
 This is an additive schema change. Historical JSON without these fields remains
 readable, but its completeness is unknown: failed attempts discarded by older
@@ -249,7 +251,7 @@ same median multiplied by 1000 and divided by package count (ms/package).
 Failed attempts are excluded from timing statistics but retained in completeness
 metadata. Partial survivor samples are labeled and excluded from averages,
 history, leaderboard timing/win calculations, and registry speed alerts.
-All-failed results remain DNF; the existing leaderboard DNF penalty uses the
+All-failed results remain DNF; timing leaderboards' DNF penalty uses the
 slowest successful median for that fixture.
 
 Average views and leaderboard timing values are arithmetic averages of
@@ -295,6 +297,21 @@ The generated charts show:
 Registry history uses total installation time in seconds from `registryChartData`, with legacy registry entries in `chartData` as a fallback. Dates containing only normalized registry data are omitted from the seconds chart because those values are measured in milliseconds per package.
 
 ### View Results Online
+
+Registry leaderboard cards rank registries by **fixture wins**, not an average
+installation time. Each selected fixture/variation pair counts once, so a large
+fixture has the same influence as a small fixture. The `average` tab counts pairs
+from both registry variations. Cards show wins out of the number of selected
+pairs; filtering fixtures recomputes both values. Tool toggles only hide cards:
+wins are always measured against all registries in the data.
+
+The fastest complete positive timing earns a win; exact ties each earn a win
+and share a rank (ordered alphabetically). Failed (DNF), partial, missing, and
+invalid results earn no wins and receive no invented timing penalty. They remain
+in the common denominator, including pairs where every registry failed. A card
+with incomplete coverage also shows its number of complete results. This summary
+describes how often a registry wins, not the magnitude of its speed advantage;
+the fixture charts provide the underlying timings.
 
 Results are automatically deployed to GitHub Pages when running on the main branch:
 
