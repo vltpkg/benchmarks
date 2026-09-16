@@ -1,0 +1,19 @@
+{
+  "npm": {
+    "count": 1793,
+    "minCount": 1787,
+    "maxCount": 1797
+  },
+  "vlt": {
+    "count": 1795
+  },
+  "aws": {
+    "count": 1795
+  },
+  "github": {
+    "count": 1795
+  },
+  "jfrog": {
+    "count": 1795
+  }
+}
