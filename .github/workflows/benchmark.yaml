@@ -126,6 +126,8 @@ jobs:
       contents: read
       id-token: write
     env:
+      # rc.21 is advertised by the canary channel but its Linux ARM64 npm binary is missing.
+      BENCH_ZPM_VERSION: "6.0.0-rc.20"
       BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,nx,turbo,vp,node"') }}
       BENCH_WARMUP: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.warmup || '2') }}
       BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '5') }}
@@ -203,12 +205,14 @@ jobs:
             --fixtures="${{ matrix.fixture }}" \
             --variation="${{ matrix.variation }}"
       - name: Upload Benchmark Results
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7
         with:
           name: results-${{ matrix.fixture }}-${{ matrix.variation }}
           path: ./results/${{ matrix.fixture }}/${{ matrix.variation }}/
           retention-days: 7
       - name: Upload Versions Info
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7
         with:
           name: versions-${{ matrix.fixture }}-${{ matrix.variation }}
