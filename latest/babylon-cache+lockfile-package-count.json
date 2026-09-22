@@ -1,6 +1,6 @@
 {
   "npm": {
-    "count": 1787
+    "count": 1793
   },
   "berry": {
     "count": 1756,
@@ -10,13 +10,8 @@
   "pacquet": {
     "count": 1587
   },
-  "vlt": {
-    "count": 1545,
-    "minCount": 1532,
-    "maxCount": 1549
-  },
   "bun": {
-    "count": 1644
+    "count": 1645
   },
   "deno": {
     "count": 1494
