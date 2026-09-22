@@ -1,6 +1,6 @@
 Error: vlt-lock.json file is required when using --expect-lockfile, --frozen-lockfile, or ci command
 
-Full details written to: /home/runner/.local/share/vlt/error-logs/error-8254.log
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-8279.log
 
 Full details:
 Error: vlt-lock.json file is required when using --expect-lockfile, --frozen-lockfile, or ci command

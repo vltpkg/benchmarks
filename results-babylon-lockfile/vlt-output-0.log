@@ -9,7 +9,7 @@ Error: Could not resolve
     code: 'ERESOLVE',
     spec: Spec2 {
       type: 'registry',
-      spec: '@fluentui/react-tags@^9.9.6',
+      spec: '@fluentui/react-utilities@^9.26.7',
       options: {
         catalog: undefined,
         catalogs: undefined,
@@ -198,10 +198,10 @@ Error: Could not resolve
         lockfileData: undefined,
         Symbol(nodejs.util.inspect.custom): [Function: [nodejs.util.inspect.custom]]
       },
-      name: '@fluentui/react-tags',
+      name: '@fluentui/react-utilities',
       scope: '@fluentui',
       scopeRegistry: undefined,
-      bareSpec: '^9.9.6',
+      bareSpec: '^9.26.7',
       gitRemote: undefined,
       gitSelector: undefined,
       gitSelectorParsed: undefined,
@@ -213,17 +213,17 @@ Error: Could not resolve
       namedRegistry: undefined,
       namedJsrRegistry: undefined,
       registry: 'https://registry.vlt.io/vlt-benchmarks/npm/',
-      registrySpec: '^9.9.6',
+      registrySpec: '^9.26.7',
       conventionalRegistryTarball: undefined,
-      semver: '^9.9.6',
+      semver: '^9.26.7',
       range: Range {
-        raw: '^9.9.6',
+        raw: '^9.26.7',
         isAny: false,
         isSingle: false,
         set: [
           Comparator {
             includePrerelease: false,
-            raw: '^9.9.6',
+            raw: '^9.26.7',
             tokens: [Array],
             tuples: [Array],
             isNone: false,
