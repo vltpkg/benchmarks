@@ -12,15 +12,17 @@
     "count": 1510
   },
   "pacquet": {
-    "count": 1283
+    "count": 1282,
+    "minCount": 1280,
+    "maxCount": 1283
   },
   "vlt": {
     "count": 1284
   },
   "bun": {
-    "count": 1551,
-    "minCount": 1550,
-    "maxCount": 1552
+    "count": 1548,
+    "minCount": 1542,
+    "maxCount": 1550
   },
   "deno": {
     "count": 1278

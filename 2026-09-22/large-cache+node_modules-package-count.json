@@ -12,7 +12,9 @@
     "count": 1510
   },
   "pacquet": {
-    "count": 1283
+    "count": 1282,
+    "minCount": 1280,
+    "maxCount": 1283
   },
   "vlt": {
     "count": 1284

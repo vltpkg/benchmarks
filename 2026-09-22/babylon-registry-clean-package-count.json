@@ -4,11 +4,11 @@
     "minCount": 1793,
     "maxCount": 1803
   },
-  "aws": {
+  "vlt": {
     "count": 1801
   },
-  "cloudsmith": {
-    "count": 1804
+  "aws": {
+    "count": 1801
   },
   "github": {
     "count": 1801

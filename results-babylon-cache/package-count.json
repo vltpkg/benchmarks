@@ -10,7 +10,12 @@
     "maxCount": 1786
   },
   "pacquet": {
-    "count": 1587
+    "count": 1586,
+    "minCount": 1585,
+    "maxCount": 1587
+  },
+  "vlt": {
+    "count": 1532
   },
   "bun": {
     "count": 1643,
