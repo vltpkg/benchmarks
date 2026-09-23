@@ -14,13 +14,10 @@
     "minCount": 1585,
     "maxCount": 1587
   },
-  "vlt": {
-    "count": 1532
-  },
   "bun": {
     "count": 1643,
     "minCount": 1642,
-    "maxCount": 1645
+    "maxCount": 1644
   },
   "deno": {
     "count": 1494

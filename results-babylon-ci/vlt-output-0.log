@@ -1,0 +1,19 @@
+Error: vlt-lock.json file is required when using --expect-lockfile, --frozen-lockfile, or ci command
+
+Full details written to: /home/runner/.local/share/vlt/error-logs/error-8296.log
+
+Full details:
+Error: vlt-lock.json file is required when using --expect-lockfile, --frozen-lockfile, or ci command
+    at install (file:///opt/hostedtoolcache/node/24.21.0/arm64/lib/node_modules/vlt/chunk-JZJWASXL.js:15167:13)
+    at command (file:///opt/hostedtoolcache/node/24.21.0/arm64/lib/node_modules/vlt/ci-WVYVR4XK.js:75:27)
+    at outputCommand (file:///opt/hostedtoolcache/node/24.21.0/arm64/lib/node_modules/vlt/chunk-LR42WTKN.js:577:39)
+    at async Module.run (file:///opt/hostedtoolcache/node/24.21.0/arm64/lib/node_modules/vlt/src-575IYJOL.js:127:3)
+    at async run (file:///opt/hostedtoolcache/node/24.21.0/arm64/lib/node_modules/vlt/chunk-QQYTPGIL.js:23:3)
+    at async file:///opt/hostedtoolcache/node/24.21.0/arm64/lib/node_modules/vlt/vlt.js:19:1 {
+  [cause]: {
+    path: '/home/runner/work/benchmarks/benchmarks/fixtures/babylon/vlt-lock.json'
+  }
+}
+
+Open an issue with the full error details at:
+  https://github.com/vltpkg/vltpkg/issues/new

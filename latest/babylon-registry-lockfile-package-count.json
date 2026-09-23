@@ -2,11 +2,11 @@
   "npm": {
     "count": 1791
   },
-  "vlt": {
+  "aws": {
     "count": 1801
   },
-  "aws": {
-    "count": 1798
+  "cloudsmith": {
+    "count": 1801
   },
   "github": {
     "count": 1799
