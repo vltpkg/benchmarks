@@ -1,6 +1,6 @@
 {
   "npm": {
-    "count": 1793
+    "count": 1791
   },
   "berry": {
     "count": 1756,
@@ -18,9 +18,12 @@
     "maxCount": 1549
   },
   "bun": {
-    "count": 1645
+    "count": 1646
   },
   "deno": {
     "count": 1494
+  },
+  "aube": {
+    "count": 1344
   }
 }

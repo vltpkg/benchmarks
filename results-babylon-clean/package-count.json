@@ -1,8 +1,8 @@
 {
   "npm": {
-    "count": 1799,
-    "minCount": 1793,
-    "maxCount": 1803
+    "count": 1797,
+    "minCount": 1791,
+    "maxCount": 1801
   },
   "berry": {
     "count": 1756,
@@ -15,12 +15,15 @@
     "maxCount": 1587
   },
   "vlt": {
-    "count": 1549
+    "count": 1532
   },
   "bun": {
     "count": 1644
   },
   "deno": {
     "count": 1494
+  },
+  "aube": {
+    "count": 1344
   }
 }
