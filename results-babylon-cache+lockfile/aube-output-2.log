@@ -1,2 +1,32 @@
-The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
-Read more here - https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking
+ERR_AUBE_TRUST_DOWNGRADE
+
+  × failed to resolve dependencies
+  ╰─▶ trust downgrade for webpack-dev-middleware@7.4.6 (trustPolicy=no-
+      downgrade): earlier published version 8.0.0 had trusted publisher but
+      this version has no trust evidence
+  help: this is a supply-chain trust failure, not an ordinary version-
+        resolution error. An earlier release carried trusted publisher, but
+        webpack-dev-middleware@7.4.6 carries no trust evidence.
+        
+        This can signal a compromised publisher or tampered release. It can
+        also be benign release-process drift: a maintainer manually published,
+        backported outside the trusted workflow, skipped provenance for
+        convenience, or used a registry that stripped metadata.
+        
+        Before bypassing:
+        1. Inspect the package's npm release, source tag/commit, publisher
+        identity, and tarball; compare the metadata with npmjs.org, and
+        confirm the change is expected and nothing appears tampered with.
+        2. Report inconsistent evidence to the relevant upstream owner.
+        Package-release drift belongs with the maintainer; metadata present on
+        npmjs.org but missing from a proxy or mirror belongs with that
+        registry operator.
+        3. Only after review, pin a version that retains evidence or add the
+        narrow `webpack-dev-middleware@7.4.6` exception to
+        `trustPolicyExclude`. A bare `webpack-dev-middleware` exempts every
+        version; `trustPolicy = off` disables this protection for the entire
+        install.
+        
+        Details and known built-in exceptions: https://aube.jdx.dev/trust-
+        policy-exceptions
+

@@ -8,7 +8,9 @@
     "count": 1799
   },
   "aws": {
-    "count": 1799
+    "count": 1799,
+    "minCount": 1798,
+    "maxCount": 1799
   },
   "cloudsmith": {
     "count": 1802
