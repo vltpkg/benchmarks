@@ -56,6 +56,7 @@ for pm in npm yarn berry zpm pnpm pacquet vlt bun deno aube nx turbo vp node; do
   fi
 done
 BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
+export BENCH_CHILD_WAIT_LOG="$BENCH_OUTPUT_FOLDER/child-wait.log"
 BENCH_COMMAND_YARN_MODERN_CONFIG=$(cat <<EOF
 enableImmutableInstalls: false
 enableMirror: false
@@ -101,6 +102,10 @@ BENCH_INSTALL_PNPM="corepack pnpm@latest install --ignore-scripts --silent"
 BENCH_INSTALL_PACQUET="/tmp/pnpm12/bin/pnpm install --ignore-scripts --silent"
 # vlt uses the npm registry alias configured by each fixture's vlt.json.
 BENCH_INSTALL_VLT="vlt install --view=silent"
+# A/B control: same vlt binary with the global store linker turned off.
+# Enabled with BENCH_VLT_CONTROL=1 (runs as a 2nd hyperfine command, "vlt-unpack").
+BENCH_INSTALL_VLT_UNPACK="env VLT_STORE_LINKER=unpack vlt install --view=silent"
+BENCH_INCLUDE_VLT_UNPACK="${BENCH_VLT_CONTROL:+$BENCH_INCLUDE_VLT}"
 BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
 BENCH_INSTALL_DENO="deno install --quiet"
 BENCH_INSTALL_AUBE="aube install --silent"
@@ -112,6 +117,7 @@ BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT $BENCH_INSTALL_ZPM > $BENCH_OUTPUT_FOL
 BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT $BENCH_INSTALL_PNPM > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_PACQUET="timeout $BENCH_TIMEOUT $BENCH_INSTALL_PACQUET > $BENCH_OUTPUT_FOLDER/pacquet-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT $BENCH_INSTALL_VLT > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT_UNPACK="timeout $BENCH_TIMEOUT $BENCH_INSTALL_VLT_UNPACK > $BENCH_OUTPUT_FOLDER/vlt-unpack-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT $BENCH_INSTALL_BUN > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT $BENCH_INSTALL_DENO > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_AUBE="timeout $BENCH_TIMEOUT $BENCH_INSTALL_AUBE > $BENCH_OUTPUT_FOLDER/aube-output-\${HYPERFINE_ITERATION}.log 2>&1"

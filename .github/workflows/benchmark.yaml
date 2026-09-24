@@ -18,13 +18,19 @@ on:
       runs:
         description: "The number of runs on each benchmark"
         default: "5"
+      vlt_ref:
+        description: "A/B: build vlt from this vltpkg/vltpkg commit (tracked = default store-linker, control = VLT_STORE_LINKER=unpack on the same VM)"
+        default: "f5c4fdb354dd0b9d6948581ec96472b1b414a1c1"
+      drop_caches:
+        description: "A/B: drop page/dentry caches before every timed run (cold dentries)"
+        default: "false"
   schedule:
     # GitHub Actions cron uses UTC. 10:17 UTC ~= 2:17 AM Pacific (PST).
     - cron: "17 10 * * *"
 
 # Prevent multiple runs from interfering with each other
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}-bust
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}-${{ inputs.drop_caches }}-bust
   cancel-in-progress: true
 
 jobs:
@@ -115,13 +121,6 @@ jobs:
       matrix:
         fixture: ${{ fromJson((github.event_name == 'push' && github.ref != 'refs/heads/main') && '["next", "astro", "vue", "svelte"]' || (inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "babylon"]')) }}
         variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "ci", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]') }}
-        include:
-          - variation: "build"
-            fixture: "next"
-          - variation: "build-cache"
-            fixture: "next"
-          - variation: "run"
-            fixture: "run"
     permissions:
       contents: read
       id-token: write
@@ -131,6 +130,9 @@ jobs:
       BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,nx,turbo,vp,node"') }}
       BENCH_WARMUP: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.warmup || '2') }}
       BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '5') }}
+      BENCH_VLT_CONTROL: "1"
+      BENCH_DROP_CACHES: ${{ inputs.drop_caches == 'true' && '1' || '0' }}
+      VLT_REF: ${{ inputs.vlt_ref || 'f5c4fdb354dd0b9d6948581ec96472b1b414a1c1' }}
     steps:
       - uses: actions/checkout@v6
       - name: Install Node
@@ -141,6 +143,34 @@ jobs:
       - name: Install & Setup Tools
         run: |
           bash ./scripts/setup.sh
+      - name: Build vlt from source (A/B tracked binary)
+        run: |
+          set -Eeuxo pipefail
+          mkdir -p "$RUNNER_TEMP/vltpkg"
+          cd "$RUNNER_TEMP/vltpkg"
+          git init -q
+          git remote add origin https://github.com/vltpkg/vltpkg.git
+          git fetch -q --depth 1 origin "$VLT_REF"
+          git checkout -q FETCH_HEAD
+          git log --oneline -1
+          vlt install
+          node --run build:bundle
+          echo "$RUNNER_TEMP/vltpkg/scripts/bins/bundle" >> "$GITHUB_PATH"
+          export PATH="$RUNNER_TEMP/vltpkg/scripts/bins/bundle:$PATH"
+          command -v vlt
+          vlt --version
+          vlt config get store-linker
+          VLT_STORE_LINKER=unpack vlt config get store-linker
+          # record the source build in the versions artifact
+          cd "$GITHUB_WORKSPACE"
+          node -e '
+            const fs = require("fs")
+            const f = "./results/versions.json"
+            const v = JSON.parse(fs.readFileSync(f, "utf8"))
+            v.vlt = `source@${process.env.VLT_REF.slice(0, 8)}`
+            fs.writeFileSync(f, JSON.stringify(v, null, 2))
+          '
+          echo "drop caches: $BENCH_DROP_CACHES"
       - name: Configure AWS Credentials
         if: startsWith(matrix.variation, 'registry-')
         uses: aws-actions/configure-aws-credentials@v6
@@ -168,10 +198,15 @@ jobs:
 
           # Heavy fixtures (large, babylon) get reduced warmup/runs to keep
           # individual jobs under the timeout while still producing useful data.
+          # A/B (vlt only): keep the warmups, cap heavy fixtures at 5 runs.
           case "${{ matrix.fixture }}" in
             large|babylon)
-              warmup=1
-              runs=3
+              if [[ "$BENCH_INCLUDE" == "vlt" ]]; then
+                (( runs > 5 )) && runs=5
+              else
+                warmup=1
+                runs=3
+              fi
               echo "Heavy fixture detected — using warmup=$warmup, runs=$runs"
               ;;
           esac
@@ -204,6 +239,41 @@ jobs:
           ./bench run \
             --fixtures="${{ matrix.fixture }}" \
             --variation="${{ matrix.variation }}"
+      - name: A/B ratio (tracked vs control, same VM)
+        if: ${{ !cancelled() }}
+        run: |
+          f="./results/${{ matrix.fixture }}/${{ matrix.variation }}/benchmarks.json"
+          {
+            echo "### ${{ matrix.fixture }} ${{ matrix.variation }} (drop_caches=$BENCH_DROP_CACHES, warmup=${{ steps.tune.outputs.warmup }}, runs=${{ steps.tune.outputs.runs }})"
+            echo '```'
+            jq -r '.results[] | "\(.command): mean \(.mean * 1000 | round) ms ± \(.stddev * 1000 | round), median \(.median * 1000 | round), min \(.min * 1000 | round), max \(.max * 1000 | round), exit codes \(.exit_codes | unique | join(","))\n  times: \([.times[] | . * 1000 | round] | join(" "))"' "$f"
+            jq -r 'select(.results | length > 1) | .results | "control/tracked: \(.[1].mean / .[0].mean * 100 | round / 100)x (medians \(.[1].median / .[0].median * 100 | round / 100)x)"' "$f"
+            echo "child wait ms: $(tr '\n' ' ' < ./results/${{ matrix.fixture }}/${{ matrix.variation }}/child-wait.log 2>/dev/null || echo n/a)"
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Store hit-rate probe (untimed)
+        if: ${{ !cancelled() }}
+        run: |
+          set -Eeuo pipefail
+          cd "./fixtures/${{ matrix.fixture }}"
+          probe() {
+            rm -rf node_modules
+            bash "$GITHUB_WORKSPACE/scripts/clean-helpers.sh" wait_vlt_children >/dev/null
+            NODE_DEBUG=vlt "$@" install --view=silent 2> "$RUNNER_TEMP/probe.log" || true
+            grep -E 'global store|copying from now on|store-linker' "$RUNNER_TEMP/probe.log" || echo "(no global store line)"
+            echo "files: $(find node_modules -type f | wc -l), nlink>1: $(find node_modules -type f -links +1 | wc -l)"
+          }
+          {
+            echo "### ${{ matrix.fixture }} store probe (fresh cache: install, then reinstall)"
+            echo '```'
+            bash "$GITHUB_WORKSPACE/scripts/clean-helpers.sh" clean_all >/dev/null 2>&1
+            node "$GITHUB_WORKSPACE/scripts/add-workspace-protocol.js" . >/dev/null 2>&1 || true
+            echo "-- tracked, 1st install (populates cache + store)"; probe vlt
+            echo "-- tracked, 2nd install"; probe vlt
+            echo "-- control (VLT_STORE_LINKER=unpack), same cache"; probe env VLT_STORE_LINKER=unpack vlt
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+          bash "$GITHUB_WORKSPACE/scripts/clean-helpers.sh" clean_all >/dev/null 2>&1 || true
       - name: Upload Benchmark Results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7

@@ -117,6 +117,8 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_PACQUET:+--command-name="pacquet" "$BENCH_COMMAND_PACQUET"} \
   ${BENCH_INCLUDE_VLT:+--prepare="$BENCH_PREPARE_VLT"} \
   ${BENCH_INCLUDE_VLT:+--command-name="vlt" "$BENCH_COMMAND_VLT"} \
+  ${BENCH_INCLUDE_VLT_UNPACK:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_VLT")"} \
+  ${BENCH_INCLUDE_VLT_UNPACK:+--command-name="vlt-unpack" "$BENCH_COMMAND_VLT_UNPACK"} \
   ${BENCH_INCLUDE_BUN:+--prepare="$BENCH_PREPARE_BUN"} \
   ${BENCH_INCLUDE_BUN:+--command-name="bun" "$BENCH_COMMAND_BUN"} \
   ${BENCH_INCLUDE_DENO:+--prepare="$BENCH_PREPARE_DENO"} \
