@@ -119,19 +119,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fixture: ${{ fromJson((github.event_name == 'push' && github.ref != 'refs/heads/main') && '["next", "astro", "vue", "svelte"]' || (inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "babylon"]')) }}
-        variation: ${{ fromJson(inputs.variations || '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "ci", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]') }}
+        # A/B branch: push = vlt-only A/B on next/vue/large/babylon; a "-cold" ref drops caches and runs the store variations only
+        fixture: ${{ fromJson(inputs.fixtures || '["next", "vue", "large", "babylon"]') }}
+        variation: ${{ fromJson(inputs.variations || (endsWith(github.ref, '-cold') && '["cache+lockfile", "cache"]' || '["cache+lockfile", "cache", "clean", "lockfile", "cache+lockfile+node_modules"]')) }}
     permissions:
       contents: read
       id-token: write
     env:
       # rc.21 is advertised by the canary channel but its Linux ARM64 npm binary is missing.
       BENCH_ZPM_VERSION: "6.0.0-rc.20"
-      BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,nx,turbo,vp,node"') }}
-      BENCH_WARMUP: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.warmup || '2') }}
-      BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '5') }}
+      BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"vlt"') }}
+      BENCH_WARMUP: ${{ inputs.warmup || '2' }}
+      BENCH_RUNS: ${{ inputs.runs || '10' }}
       BENCH_VLT_CONTROL: "1"
-      BENCH_DROP_CACHES: ${{ inputs.drop_caches == 'true' && '1' || '0' }}
+      BENCH_DROP_CACHES: ${{ (inputs.drop_caches == 'true' || endsWith(github.ref, '-cold')) && '1' || '0' }}
       VLT_REF: ${{ inputs.vlt_ref || 'f5c4fdb354dd0b9d6948581ec96472b1b414a1c1' }}
     steps:
       - uses: actions/checkout@v6
@@ -292,7 +293,7 @@ jobs:
     name: "Process Results"
     runs-on: ubuntu-24.04-arm
     needs: [detect-changes, benchmark]
-    if: needs.detect-changes.outputs.app_only != 'true'
+    if: github.ref == 'refs/heads/main' && needs.detect-changes.outputs.app_only != 'true'
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
