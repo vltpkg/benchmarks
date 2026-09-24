@@ -127,7 +127,7 @@ jobs:
       matrix:
         # A/B branch: push = vlt-only A/B on next/vue/large/babylon; a "-cold" ref drops caches and runs the store variations only
         fixture: ${{ fromJson(inputs.fixtures || '["next", "vue", "large", "babylon"]') }}
-        variation: ${{ fromJson(inputs.variations || (endsWith(github.ref, '-cold') && '["cache+lockfile", "cache"]' || '["cache+lockfile", "cache", "clean", "lockfile", "cache+lockfile+node_modules"]')) }}
+        variation: ${{ fromJson(inputs.variations || (endsWith(github.ref, '-cold') && '["cache+lockfile", "cache"]' || '["cache+lockfile+node_modules"]')) }}
     permissions:
       contents: read
       id-token: write
@@ -260,6 +260,9 @@ jobs:
           } | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Store hit-rate probe (untimed)
         if: ${{ !cancelled() }}
+        env:
+          VLT_REGISTRY: https://registry.vlt.io/vlt-benchmarks/npm/
+          VLT_TOKEN: ${{ secrets.VLT_REGISTRY_AUTH_TOKEN }}
         run: |
           set -Eeuo pipefail
           cd "./fixtures/${{ matrix.fixture }}"
@@ -267,7 +270,7 @@ jobs:
             rm -rf node_modules
             bash "$GITHUB_WORKSPACE/scripts/clean-helpers.sh" wait_vlt_children >/dev/null
             NODE_DEBUG=vlt "$@" install --view=silent 2> "$RUNNER_TEMP/probe.log" || true
-            grep -E 'global store|copying from now on|store-linker' "$RUNNER_TEMP/probe.log" || echo "(no global store line)"
+            grep -E 'global store|copying from now on|store-linker' "$RUNNER_TEMP/probe.log" || { echo "(no global store line)"; tail -5 "$RUNNER_TEMP/probe.log"; }
             echo "files: $(find node_modules -type f | wc -l), nlink>1: $(find node_modules -type f -links +1 | wc -l)"
           }
           {
