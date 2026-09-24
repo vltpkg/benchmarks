@@ -47,6 +47,12 @@ jobs:
       - name: Check changed files
         id: check
         run: |
+          # A/B branch: always run benchmarks
+          if [[ "${{ github.ref }}" != "refs/heads/main" ]]; then
+            echo "app_only=false" >> "$GITHUB_OUTPUT"
+            echo "A/B branch, running benchmarks"
+            exit 0
+          fi
           # For scheduled runs and manual triggers, always run benchmarks
           if [[ "${{ github.event_name }}" != "push" ]]; then
             echo "app_only=false" >> "$GITHUB_OUTPUT"
