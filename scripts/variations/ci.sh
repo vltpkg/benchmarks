@@ -27,7 +27,7 @@ BENCH_CI_PACQUET="/tmp/pnpm12/bin/pnpm install --frozen-lockfile --ignore-script
 BENCH_CI_VLT="vlt ci --view=silent"
 BENCH_CI_BUN="bun install --frozen-lockfile --ignore-scripts --silent"
 BENCH_CI_DENO="deno install --frozen --quiet"
-BENCH_CI_AUBE="aube ci --silent"
+BENCH_CI_AUBE="aube ci --ignore-scripts --silent"
 
 # Override BENCH_COMMAND_* with CI commands + log redirection
 BENCH_COMMAND_NPM="timeout $BENCH_TIMEOUT $BENCH_CI_NPM >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
@@ -93,7 +93,7 @@ BENCH_PREPARE_PACQUET="$(ci_prepare "$BENCH_SETUP_PACQUET" "/tmp/pnpm12/bin/pnpm
 BENCH_PREPARE_VLT="$(ci_prepare "$BENCH_SETUP_VLT" "vlt install --view=silent")"
 BENCH_PREPARE_BUN="$(ci_prepare "$BENCH_SETUP_BUN" "bun install --ignore-scripts --silent")"
 BENCH_PREPARE_DENO="$(ci_prepare "$BENCH_SETUP_DENO" "deno install --quiet")"
-BENCH_PREPARE_AUBE="$(ci_prepare "$BENCH_SETUP_AUBE" "aube install --silent")"
+BENCH_PREPARE_AUBE="$(ci_prepare "$BENCH_SETUP_AUBE" "aube install --ignore-scripts --silent")"
 
 # Run the benchmark suite
 hyperfine --ignore-failure \

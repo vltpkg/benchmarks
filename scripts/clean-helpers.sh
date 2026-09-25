@@ -112,12 +112,20 @@ clean_aube_metadata_cache() {
   fi
 }
 
-# Function to safely clean ALL aube caches — metadata cache, package index,
-# virtual-store (all under ~/.cache/aube/) AND the global content-addressable
-# store (~/.aube-store/).  Used in "clean" (fully cold) variations.
+# Function to safely clean ALL aube caches, including the configured store.
+# Current releases put content and package indexes under the XDG data directory;
+# metadata and the global virtual store live under the XDG cache directory.
+# Keep cleaning ~/.aube-store for older releases too.
 clean_aube_cache() {
   clean_aube_metadata_cache
-  safe_remove "$HOME/.cache/aube"
+  if command -v aube &> /dev/null; then
+    local store_path
+    store_path="$(aube store path 2>/dev/null)" || store_path=""
+    if [ -n "$store_path" ]; then
+      safe_remove "$store_path"
+    fi
+  fi
+  safe_remove "${XDG_CACHE_HOME:-$HOME/.cache}/aube"
   safe_remove "$HOME/.aube-store"
 }
 
