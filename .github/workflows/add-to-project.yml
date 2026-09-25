@@ -3,8 +3,13 @@ name: Add Issue/PR to Project
 on:
   issues:
     types: [opened]
-  pull_request:
-    types: [opened]
+  # Use the base repository's workflow and secret for fork PR metadata.
+  # Do not check out or execute pull request code in this workflow.
+  pull_request_target:
+    types: [opened, reopened]
+
+# Project access comes from PROJECT_PAT; the default token needs no permissions.
+permissions: {}
 
 jobs:
   add_to_project:
