@@ -96,6 +96,33 @@ Auth notes:
 
 - `aws` requires `CODEARTIFACT_AUTH_TOKEN`.
 
+### Registry lockfile warmups
+
+`registry-lockfile` resolves and validates a fresh `package-lock.json` for each
+registry before starting timed runs. Warmups run in a checked prepare hook;
+a failed install, timeout, missing/invalid lockfile, or changed lockfile stops
+the job even though timed install failures are collected with `--ignore-failure`.
+The results artifact contains separate `<registry>-warmup-<n>.log` files,
+preparation logs, and the validated lockfile. GitHub's job summary reports warmup
+success or failure. `BENCH_WARMUP=0` still performs one required resolution.
+
+Warmups default to **600 seconds** per install (`BENCH_WARMUP_TIMEOUT`), while
+timed installs retain the **300-second** `BENCH_TIMEOUT` default. Third-party
+registries observed taking 300–380 seconds to resolve a cold graph can therefore
+finish preparation without raising the budget for timed tarball serving. A
+warmup exceeding 600 seconds fails visibly; it never becomes timed run 0.
+Every timed run clears caches and `node_modules`, checks the configured registry,
+and requires an unchanged validated lockfile. Successful lockfile installs fetch
+tarballs without resolving packuments again.
+
+```bash
+BENCH_WARMUP_TIMEOUT=600 BENCH_TIMEOUT=300 \
+  ./bench run --variation=registry-lockfile --fixtures=next --registries=npm
+```
+
+Run the lockfile regression tests with Node.js, npm, GNU `timeout`, and hyperfine
+installed: `node --test scripts/registry/lockfile.test.js`.
+
 ## Testing Script Execution
 
 This suite also tests the performance of basic script execution (ex. `npm run foo`). Notably, for any given build, test or deployment task the spawning of the process is a fraction of the overall execution time. That said, this is a commonly tracked workflow by various developer tools as it involves the common set of tasks: startup, filesystem read (`package.json`) & finally, spawning the process/command.

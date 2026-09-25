@@ -1,0 +1,26 @@
+name: Registry lockfile tests
+on:
+  push:
+    paths:
+      - 'scripts/registry/**'
+      - 'scripts/variations/registry-lockfile.sh'
+      - '.github/workflows/registry-lockfile-tests.yml'
+  pull_request:
+    paths:
+      - 'scripts/registry/**'
+      - 'scripts/variations/registry-lockfile.sh'
+      - '.github/workflows/registry-lockfile-tests.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install hyperfine 1.19.0 (supports --conclude)
+        run: |
+          curl -fsSL https://github.com/sharkdp/hyperfine/releases/download/v1.19.0/hyperfine_1.19.0_amd64.deb -o /tmp/hyperfine.deb
+          sudo dpkg -i /tmp/hyperfine.deb
+      - run: node --test scripts/registry/lockfile.test.js
