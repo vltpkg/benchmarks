@@ -1,4 +1,2 @@
-  × no lockfile found and --frozen-lockfile is set
-  │ help: commit pnpm-lock.yaml to your repository, or run `aube install --no-
-  │ frozen-lockfile` to generate one
-
+The Babylon.js team recommends using the es6-supported package - https://www.npmjs.com/package/@babylonjs/core
+Read more here - https://doc.babylonjs.com/divingDeeper/developWithBjs/treeShaking
