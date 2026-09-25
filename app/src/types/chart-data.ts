@@ -19,13 +19,7 @@ export type PackageManager =
   | "jfrog";
 
 export type Fixture =
-  | "next"
-  | "astro"
-  | "svelte"
-  | "vue"
-  | "large"
-  | "babylon"
-  | "run";
+  "next" | "astro" | "svelte" | "vue" | "large" | "babylon" | "run";
 
 export type Variation =
   | "average"
@@ -71,7 +65,15 @@ export interface BaseFixtureResult {
   fixture: Fixture;
 }
 
-export interface PackageManagerData {
+type RunCompletenessData = Partial<
+  Record<`${PackageManager}_partial`, boolean> &
+    Record<
+      `${PackageManager}_${"attempted_runs" | "successful_runs" | "dropped_runs"}`,
+      number
+    >
+>;
+
+export interface PackageManagerData extends RunCompletenessData {
   npm?: number;
   yarn?: number;
   pnpm?: number;

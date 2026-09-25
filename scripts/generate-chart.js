@@ -90,6 +90,12 @@ function readResults(file) {
         mean: parseNumeric(r.mean),
         stddev: parseNumeric(r.stddev),
         exitCodes,
+        partial:
+          r.status === "partial" ||
+          (r.dropped_runs > 0 && r.successful_runs > 0),
+        attempted_runs: r.attempted_runs,
+        successful_runs: r.successful_runs,
+        dropped_runs: r.dropped_runs,
         failed:
           exitCodes.some((code) => typeof code === "number" && code !== 0) ||
           r.success === false ||
@@ -104,6 +110,17 @@ function readResults(file) {
       error.message,
     );
     return [];
+  }
+}
+
+// Older published results have no completeness metadata. Leave it absent:
+// discarded historical attempts cannot be recovered from survivor-only files.
+function copyRunMetadata(target, command, result) {
+  if (result.partial) target[`${command}_partial`] = true;
+  for (const field of ["attempted_runs", "successful_runs", "dropped_runs"]) {
+    if (Number.isInteger(result[field]) && result[field] >= 0) {
+      target[`${command}_${field}`] = result[field];
+    }
   }
 }
 
@@ -192,6 +209,7 @@ function generateChartData(option = {}) {
         }
 
         pmEntries[pm] = {
+          ...pmResult,
           didFail,
           value: timing?.value,
           stddev: timing?.stddev,
@@ -217,6 +235,7 @@ function generateChartData(option = {}) {
       const fallback = entry.slowestValid ?? fallbackGlobal;
 
       Object.entries(entry.pmEntries).forEach(([pm, pmEntry]) => {
+        copyRunMetadata(fixtureResults, pm, pmEntry);
         fixtureResults[`${pm}_fill`] = COLORS[pm];
         if (pmEntry.count !== undefined) {
           fixtureResults[`${pm}_count`] = pmEntry.count;
@@ -224,6 +243,7 @@ function generateChartData(option = {}) {
 
         if (pmEntry.didFail) {
           fixtureResults[`${pm}_dnf`] = true;
+          hasData = true;
           if (typeof fallback === "number") {
             fixtureResults[pm] = fallback;
             hasData = true;
@@ -351,6 +371,7 @@ function generateRegistryChartData(option = {}) {
         }
 
         pmEntries[registry] = {
+          ...registryResult,
           didFail,
           value: timing?.value,
           stddev: timing?.stddev,
@@ -376,6 +397,7 @@ function generateRegistryChartData(option = {}) {
       const fallback = entry.slowestValid ?? fallbackGlobal;
 
       Object.entries(entry.pmEntries).forEach(([registry, regEntry]) => {
+        copyRunMetadata(fixtureResults, registry, regEntry);
         fixtureResults[`${registry}_fill`] = REGISTRY_COLORS[registry];
         if (regEntry.count !== undefined) {
           fixtureResults[`${registry}_count`] = regEntry.count;
@@ -383,6 +405,7 @@ function generateRegistryChartData(option = {}) {
 
         if (regEntry.didFail) {
           fixtureResults[`${registry}_dnf`] = true;
+          hasData = true;
           if (typeof fallback === "number") {
             fixtureResults[registry] = fallback;
             hasData = true;

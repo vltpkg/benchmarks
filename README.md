@@ -176,7 +176,7 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 - 4. Process benchmark output:
 
   ```bash
-  # Filter failed runs and generate dated + latest outputs and chart data
+  # Record run outcomes, filter failed timings, and generate dated + latest output
   ./bench process
   # Or pass --process directly when running
   ./bench run --fixtures=next --runs=3 --process
@@ -198,6 +198,35 @@ The workflow:
 5. Deploys results to GitHub Pages (main branch only)
 
 ## Results
+
+### Failed and partial runs
+
+Processed benchmark results retain `original_exit_codes`, `attempted_runs`,
+`successful_runs`, `dropped_runs`, and a `status` of `success`, `partial`, or
+`failure`. These counts refer to measured runs, excluding Hyperfine warmups.
+Cleaning the same output again preserves the original counts and exit codes.
+The existing `times` and `exit_codes` arrays contain successful runs; total
+failure keeps the existing zero-time DNF sentinel for compatibility.
+
+Partial timing statistics describe the successful runs only. A single survivor
+has `stddev: null` because it cannot establish variability. CPU `user` and
+`system` fields are omitted whenever runs were dropped: Hyperfine exports only
+aggregate CPU values, which cannot be recalculated for the surviving sample.
+
+Chart data adds optional `<command>_partial`, `<command>_attempted_runs`,
+`<command>_successful_runs`, and `<command>_dropped_runs` fields in both total and
+per-package datasets. Tables and chart notices label partial results with their
+success counts. Synthetic averages retain that warning. Commands with any
+partial result in the selected comparisons are excluded from rankings; history
+omits that command's affected daily variation and category average.
+
+This is an additive schema change. Historical JSON without these fields remains
+readable, but its completeness is unknown: failed attempts discarded by older
+processing cannot be reconstructed. Regenerate from raw benchmark artifacts to
+recover counts when those artifacts are still available. CI checks that inspect
+raw `exit_codes` must run before `./bench process`; the registry failure scan
+already does so. Persisted original codes also remain available in dated result
+files on gh-pages.
 
 ### Console Output
 

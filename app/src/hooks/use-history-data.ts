@@ -61,13 +61,15 @@ async function parallelLimit<T>(
     }
   }
 
-  await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, worker));
+  await Promise.all(
+    Array.from({ length: Math.min(limit, tasks.length) }, worker),
+  );
   return results;
 }
 
 type FixtureDataSet = Record<
   string,
-  Array<Record<string, number | string> & { fixture: string }>
+  Array<Record<string, number | string | boolean> & { fixture: string }>
 >;
 
 interface ChartDataResponse {
@@ -105,7 +107,7 @@ interface ChartDataResponse {
  *
  * Registry and task-runner variations always use total-time data.
  */
-function extractDayData(
+export function extractDayData(
   response: ChartDataResponse,
 ): Record<string, Record<string, number>> {
   const result: Record<string, Record<string, number>> = {};
@@ -132,7 +134,7 @@ function extractDayData(
 function extractFromDataSet(
   data: Record<
     string,
-    Array<Record<string, number | string> & { fixture: string }>
+    Array<Record<string, number | string | boolean> & { fixture: string }>
   >,
   result: Record<string, Record<string, number>>,
 ): void {
@@ -140,9 +142,15 @@ function extractFromDataSet(
     if (!Array.isArray(fixtures) || fixtures.length === 0) continue;
 
     const pmTotals: Record<string, { sum: number; count: number }> = {};
+    const partialPMs = new Set(
+      PACKAGE_MANAGERS.filter((pm) =>
+        fixtures.some((fixture) => fixture[`${pm}_partial`] === true),
+      ),
+    );
 
     for (const fixture of fixtures) {
       for (const pm of PACKAGE_MANAGERS) {
+        if (partialPMs.has(pm) || fixture[`${pm}_dnf`] === true) continue;
         const val = fixture[pm];
         if (typeof val === "number" && Number.isFinite(val)) {
           if (!pmTotals[pm]) pmTotals[pm] = { sum: 0, count: 0 };
@@ -161,6 +169,27 @@ function extractFromDataSet(
       result[variation] = pmAverages;
     }
   }
+}
+
+// Preserve the reason a daily value is missing when building category averages.
+// Otherwise an average could silently use only the variations that succeeded.
+export function hasPartialResult(
+  response: ChartDataResponse,
+  variations: string[],
+  pm: string,
+): boolean {
+  return [
+    response.chartData,
+    response.perPackageCountChartData,
+    response.registryChartData,
+    response.registryPerPackageCountChartData,
+  ].some((source) =>
+    variations.some((variation) =>
+      source?.data[variation]?.some(
+        (fixture) => fixture[`${pm}_partial`] === true,
+      ),
+    ),
+  );
 }
 
 export const useHistoryData = (): UseHistoryDataReturn => {
@@ -259,6 +288,16 @@ export const useHistoryData = (): UseHistoryDataReturn => {
           for (const pm of PACKAGE_MANAGERS) {
             avgSeries[pm] = [];
             for (let i = 0; i < dates.length; i++) {
+              if (
+                hasPartialResult(
+                  successfulResults[i].data,
+                  sourceVariations,
+                  pm,
+                )
+              ) {
+                avgSeries[pm].push(null);
+                continue;
+              }
               let sum = 0;
               let count = 0;
               for (const v of present) {
