@@ -87,6 +87,7 @@ BENCH_SETUP_NODE=""
 # measure dependency resolution + linking only (not arbitrary postinstall work).
 #   npm, yarn classic, bun: run scripts by default → --ignore-scripts
 #   pnpm v11+: errors on ignored build scripts (ERR_PNPM_IGNORED_BUILDS) → --ignore-scripts
+#   aube: runs scripts for its default trusted dependencies → --ignore-scripts
 #   berry, zpm, vlt: don't run scripts by default → no flag needed
 #   deno: doesn't run scripts by default → removed --allow-scripts
 BENCH_INSTALL_NPM="npm install --no-audit --no-fund --ignore-scripts --silent"
@@ -103,7 +104,7 @@ BENCH_INSTALL_PACQUET="/tmp/pnpm12/bin/pnpm install --ignore-scripts --silent"
 BENCH_INSTALL_VLT="vlt install --view=silent"
 BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
 BENCH_INSTALL_DENO="deno install --quiet"
-BENCH_INSTALL_AUBE="aube install --silent"
+BENCH_INSTALL_AUBE="aube install --ignore-scripts --silent"
 
 BENCH_COMMAND_NPM="timeout $BENCH_TIMEOUT $BENCH_INSTALL_NPM >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_YARN="timeout $BENCH_TIMEOUT $BENCH_INSTALL_YARN > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
