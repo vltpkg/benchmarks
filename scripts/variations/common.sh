@@ -40,7 +40,7 @@ BENCH_RUNS="${BENCH_RUNS:=5}"
 BENCH_TIMEOUT="${BENCH_TIMEOUT:=300}"
 for pm in npm yarn berry zpm pnpm pacquet vlt vlt-npm bun deno aube upm nx turbo vp node; do
   CHOICE=$(echo "$pm" | tr '[:lower:]' '[:upper:]' | tr '-' '_')
-  if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
+  if echo ",$BENCH_INCLUDE," | grep -qF ",$pm,"; then
     # Only allow nx, turbo, vp, node for task-runner variations (run, build, build-cache)
     if [[ "$pm" == "nx" || "$pm" == "turbo" || "$pm" == "vp" || "$pm" == "node" ]]; then
       if [[ "$BENCH_VARIATION" = "run" || "$BENCH_VARIATION" = "build" || "$BENCH_VARIATION" = "build-cache" ]]; then
@@ -156,7 +156,7 @@ collect_package_count() {
 
   # Prints the output of each install
   for pm in npm yarn berry zpm pnpm pacquet vlt vlt-npm bun deno aube upm nx turbo vp node; do
-    if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
+    if echo ",$BENCH_INCLUDE," | grep -qF ",$pm,"; then
       for i in {0..9}; do
         echo "-- Reading output of $pm install $i ---"
         log_file="$BENCH_OUTPUT_FOLDER/${pm}-output-$i.log"
