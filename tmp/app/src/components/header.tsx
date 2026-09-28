@@ -347,7 +347,7 @@ const LeaderBoardItem = ({
             <Icon
               size={28}
               className={cn(
-                packageManager === "vlt" && "dark:text-white",
+                (packageManager === "vlt" || packageManager === "vlt-npm") && "dark:text-white",
                 packageManager === "github" && "text-[#8250DF]",
               )}
             />

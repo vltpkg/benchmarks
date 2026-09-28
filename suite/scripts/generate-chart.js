@@ -26,6 +26,7 @@ const COLORS = {
   deno: "#70ffaf",
   bun: "#f472b6",
   vlt: "#000000",
+  "vlt-npm": "#666666",
   nx: "#3b82f6",
   turbo: "#ff1e56",
   vp: "#4f30e8",

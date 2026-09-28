@@ -107,7 +107,9 @@ NODE_VERSION=$(node -v)
 
 # Output versions
 echo "npm: $NPM_VERSION"
+VLT_NPM_VERSION="$VLT_VERSION"
 echo "vlt: $VLT_VERSION"
+echo "vlt-npm: $VLT_NPM_VERSION"
 echo "yarn: $YARN_VERSION"
 echo "yarn (berry): $BERRY_VERSION"
 echo "yarn (zpm): $ZPM_VERSION"
@@ -125,6 +127,7 @@ echo "node: $NODE_VERSION"
 echo "{
   \"npm\": \"$NPM_VERSION\",
   \"vlt\": \"$VLT_VERSION\",
+  \"vlt-npm\": \"$VLT_NPM_VERSION\",
   \"yarn\": \"$YARN_VERSION\",
   \"berry\": \"$BERRY_VERSION\",
   \"zpm\": \"$ZPM_VERSION\",
