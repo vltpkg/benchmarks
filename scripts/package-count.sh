@@ -70,7 +70,7 @@ if [ -d "node_modules" ]; then
   # hard links inside .pnpm/), so the standard `find -type f` cannot
   # traverse them.  When .aube/ is present, use `find -L` scoped to
   # node_modules/.aube to follow symlinks and extract unique package names.
-  if [ -d "node_modules/.aube" ]; then
+  elif [ -d "node_modules/.aube" ]; then
     BENCH_PACKAGE_COUNT=$(
       find -L node_modules/.aube -name package.json -type f \
       | grep -E 'node_modules/([a-zA-Z0-9_-]+)/package\.json$|node_modules/@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/package\.json$' \
