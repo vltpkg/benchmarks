@@ -28,6 +28,7 @@ BENCH_CI_VLT="vlt ci --view=silent"
 BENCH_CI_BUN="bun install --frozen-lockfile --ignore-scripts --silent"
 BENCH_CI_DENO="deno install --frozen --quiet"
 BENCH_CI_AUBE="aube ci --ignore-scripts --silent"
+BENCH_CI_UPM="upm install --frozen-lockfile --silent"
 
 # Override BENCH_COMMAND_* with CI commands + log redirection
 BENCH_COMMAND_NPM="timeout $BENCH_TIMEOUT $BENCH_CI_NPM >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
@@ -40,6 +41,7 @@ BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT $BENCH_CI_VLT > $BENCH_OUTPUT_FOLDER/v
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT $BENCH_CI_BUN > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT $BENCH_CI_DENO > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_AUBE="timeout $BENCH_TIMEOUT $BENCH_CI_AUBE > $BENCH_OUTPUT_FOLDER/aube-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_UPM="timeout $BENCH_TIMEOUT $BENCH_CI_UPM > $BENCH_OUTPUT_FOLDER/upm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Override bare install commands for strace process counting
 BENCH_INSTALL_NPM="$BENCH_CI_NPM"
@@ -52,6 +54,7 @@ BENCH_INSTALL_VLT="$BENCH_CI_VLT"
 BENCH_INSTALL_BUN="$BENCH_CI_BUN"
 BENCH_INSTALL_DENO="$BENCH_CI_DENO"
 BENCH_INSTALL_AUBE="$BENCH_CI_AUBE"
+BENCH_INSTALL_UPM="$BENCH_CI_UPM"
 
 # --- Prepare commands ---
 # CI commands require a lockfile to exist. Each PM's prepare step:
@@ -94,6 +97,7 @@ BENCH_PREPARE_VLT="$(ci_prepare "$BENCH_SETUP_VLT" "vlt install --view=silent")"
 BENCH_PREPARE_BUN="$(ci_prepare "$BENCH_SETUP_BUN" "bun install --ignore-scripts --silent")"
 BENCH_PREPARE_DENO="$(ci_prepare "$BENCH_SETUP_DENO" "deno install --quiet")"
 BENCH_PREPARE_AUBE="$(ci_prepare "$BENCH_SETUP_AUBE" "aube install --ignore-scripts --silent")"
+BENCH_PREPARE_UPM="$(ci_prepare "$BENCH_SETUP_UPM" "upm install --silent")"
 
 # Run the benchmark suite
 hyperfine --ignore-failure \
@@ -122,7 +126,9 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_DENO:+--prepare="$BENCH_PREPARE_DENO"} \
   ${BENCH_INCLUDE_DENO:+--command-name="deno" "$BENCH_COMMAND_DENO"} \
   ${BENCH_INCLUDE_AUBE:+--prepare="$BENCH_PREPARE_AUBE"} \
-  ${BENCH_INCLUDE_AUBE:+--command-name="aube" "$BENCH_COMMAND_AUBE"}
+  ${BENCH_INCLUDE_AUBE:+--command-name="aube" "$BENCH_COMMAND_AUBE"} \
+  ${BENCH_INCLUDE_UPM:+--prepare="$BENCH_PREPARE_UPM"} \
+  ${BENCH_INCLUDE_UPM:+--command-name="upm" "$BENCH_COMMAND_UPM"}
 
 collect_package_count
 

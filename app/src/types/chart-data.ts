@@ -9,6 +9,7 @@ export type PackageManager =
   | "bun"
   | "vlt"
   | "aube"
+  | "upm"
   | "nx"
   | "turbo"
   | "vp"
@@ -57,6 +58,7 @@ export interface PackageManagerVersions {
   bun?: string;
   vlt?: string;
   aube?: string;
+  upm?: string;
   nx?: string;
   turbo?: string;
   vp?: string;
@@ -82,6 +84,7 @@ export interface PackageManagerData {
   bun?: number;
   vlt?: number;
   aube?: number;
+  upm?: number;
   nx?: number;
   turbo?: number;
   vp?: number;
@@ -101,6 +104,7 @@ export interface PackageManagerData {
   bun_stddev?: number;
   vlt_stddev?: number;
   aube_stddev?: number;
+  upm_stddev?: number;
   nx_stddev?: number;
   turbo_stddev?: number;
   vp_stddev?: number;
@@ -120,6 +124,7 @@ export interface PackageManagerData {
   bun_fill?: string;
   vlt_fill?: string;
   aube_fill?: string;
+  upm_fill?: string;
   nx_fill?: string;
   turbo_fill?: string;
   vp_fill?: string;
@@ -139,6 +144,7 @@ export interface PackageManagerData {
   bun_count?: number;
   vlt_count?: number;
   aube_count?: number;
+  upm_count?: number;
   nx_count?: number;
   turbo_count?: number;
   vp_count?: number;
@@ -158,6 +164,7 @@ export interface PackageManagerData {
   bun_dnf?: boolean;
   vlt_dnf?: boolean;
   aube_dnf?: boolean;
+  upm_dnf?: boolean;
   nx_dnf?: boolean;
   turbo_dnf?: boolean;
   vp_dnf?: boolean;
@@ -208,6 +215,7 @@ export interface PackageCountData {
   bun?: PackageCountEntry;
   vlt?: PackageCountEntry;
   aube?: PackageCountEntry;
+  upm?: PackageCountEntry;
   nx?: PackageCountEntry;
   turbo?: PackageCountEntry;
   vp?: PackageCountEntry;
@@ -235,6 +243,7 @@ export interface ProcessCountData {
   bun?: PackageCountEntry;
   vlt?: PackageCountEntry;
   aube?: PackageCountEntry;
+  upm?: PackageCountEntry;
   nx?: PackageCountEntry;
   turbo?: PackageCountEntry;
   vp?: PackageCountEntry;

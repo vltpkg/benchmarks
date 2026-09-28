@@ -1,6 +1,6 @@
 # Package Manager Benchmarks
 
-This repo contains a suite of fixtures & tools to track the performance of package managers. We benchmark various Node.js package managers (npm, yarn, pnpm, berry, deno, bun, vlt, aube, nx, turbo) across different project types and scenarios.
+This repo contains a suite of fixtures & tools to track the performance of package managers. We benchmark various Node.js package managers (npm, yarn, pnpm, berry, deno, bun, vlt, aube, upm, nx, turbo) across different project types and scenarios.
 
 ## Environment
 
@@ -68,6 +68,7 @@ The installation tests we run today mimic a matrix of different variations (cold
 - `deno`
 - `bun`
 - `aube`
+- `upm`
 
 #### Supported Registries
 
@@ -110,6 +111,7 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 - `deno`
 - `bun`
 - `aube`
+- `upm`
 - `node`
 - `turborepo`
 - `nx`

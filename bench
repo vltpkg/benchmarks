@@ -36,6 +36,7 @@ AVAILABLE_PMS=(
   bun
   deno
   aube
+  upm
   nx
   turbo
   node

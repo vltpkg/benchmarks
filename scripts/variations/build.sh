@@ -20,6 +20,7 @@ BENCH_INSTALL_COMMAND_VLT="${BENCH_COMMAND_VLT//\$\{HYPERFINE_ITERATION\}/build}
 BENCH_INSTALL_COMMAND_BUN="${BENCH_COMMAND_BUN//\$\{HYPERFINE_ITERATION\}/build}"
 BENCH_INSTALL_COMMAND_DENO="${BENCH_COMMAND_DENO//\$\{HYPERFINE_ITERATION\}/build}"
 BENCH_INSTALL_COMMAND_AUBE="${BENCH_COMMAND_AUBE//\$\{HYPERFINE_ITERATION\}/build}"
+BENCH_INSTALL_COMMAND_UPM="${BENCH_COMMAND_UPM//\$\{HYPERFINE_ITERATION\}/build}"
 
 BENCH_INSTALL_PREPARE_NPM="$(prepend_setup "$BENCH_INSTALL_COMMAND_NPM" "$BENCH_SETUP_NPM")"
 BENCH_INSTALL_PREPARE_YARN="$(prepend_setup "$BENCH_INSTALL_COMMAND_YARN" "$BENCH_SETUP_YARN")"
@@ -31,6 +32,7 @@ BENCH_INSTALL_PREPARE_VLT="$(prepend_setup "$BENCH_INSTALL_COMMAND_VLT" "$BENCH_
 BENCH_INSTALL_PREPARE_BUN="$(prepend_setup "$BENCH_INSTALL_COMMAND_BUN" "$BENCH_SETUP_BUN")"
 BENCH_INSTALL_PREPARE_DENO="$(prepend_setup "$BENCH_INSTALL_COMMAND_DENO" "$BENCH_SETUP_DENO")"
 BENCH_INSTALL_PREPARE_AUBE="$(prepend_setup "$BENCH_INSTALL_COMMAND_AUBE" "$BENCH_SETUP_AUBE")"
+BENCH_INSTALL_PREPARE_UPM="$(prepend_setup "$BENCH_INSTALL_COMMAND_UPM" "$BENCH_SETUP_UPM")"
 
 # Build commands — run `<pm> run build` and log output.
 # Each prepare also removes .next/ so every iteration is a cold build.
@@ -44,6 +46,7 @@ BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT vlt run build --view=human > $BENCH_OU
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT bun run build > $BENCH_OUTPUT_FOLDER/bun-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT deno run build > $BENCH_OUTPUT_FOLDER/deno-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_AUBE="timeout $BENCH_TIMEOUT aube run build > $BENCH_OUTPUT_FOLDER/aube-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_UPM="timeout $BENCH_TIMEOUT upm run build > $BENCH_OUTPUT_FOLDER/upm-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_NX="timeout $BENCH_TIMEOUT nx run build > $BENCH_OUTPUT_FOLDER/nx-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_TURBO="timeout $BENCH_TIMEOUT turbo run build --dangerously-disable-package-manager-check --cache-dir=.cache --no-cache > $BENCH_OUTPUT_FOLDER/turbo-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_NODE="timeout $BENCH_TIMEOUT node --run build > $BENCH_OUTPUT_FOLDER/node-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
@@ -78,6 +81,8 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_DENO:+--command-name="deno" "$BENCH_COMMAND_DENO"} \
   ${BENCH_INCLUDE_AUBE:+--prepare="$BENCH_INSTALL_PREPARE_AUBE || true; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_AUBE:+--command-name="aube" "$BENCH_COMMAND_AUBE"} \
+  ${BENCH_INCLUDE_UPM:+--prepare="$BENCH_INSTALL_PREPARE_UPM || true; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
+  ${BENCH_INCLUDE_UPM:+--command-name="upm" "$BENCH_COMMAND_UPM"} \
   ${BENCH_INCLUDE_NX:+--prepare="$BENCH_INSTALL_PREPARE_NPM || true; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_NX:+--command-name="nx" "$BENCH_COMMAND_NX"} \
   ${BENCH_INCLUDE_TURBO:+--prepare="$BENCH_INSTALL_PREPARE_NPM || true; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \

@@ -259,6 +259,7 @@ export const calculateLeaderboard = (
               "deno",
               "vlt",
               "aube",
+              "upm",
             ].includes(pm),
           );
 
