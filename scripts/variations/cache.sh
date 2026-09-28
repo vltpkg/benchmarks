@@ -32,6 +32,8 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_PACQUET:+--command-name="pacquet" "$BENCH_COMMAND_PACQUET"} \
   ${BENCH_INCLUDE_VLT:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_VLT")"} \
   ${BENCH_INCLUDE_VLT:+--command-name="vlt" "$BENCH_COMMAND_VLT"} \
+  ${BENCH_INCLUDE_VLT_NPM:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_VLT_NPM")"} \
+  ${BENCH_INCLUDE_VLT_NPM:+--command-name="vlt-npm" "$BENCH_COMMAND_VLT_NPM"} \
   ${BENCH_INCLUDE_BUN:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_BUN")"} \
   ${BENCH_INCLUDE_BUN:+--command-name="bun" "$BENCH_COMMAND_BUN"} \
   ${BENCH_INCLUDE_DENO:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_DENO")"} \

@@ -25,6 +25,7 @@ BENCH_CI_ZPM="yarn install --immutable --silent"
 BENCH_CI_PNPM="corepack pnpm@latest install --frozen-lockfile --ignore-scripts --silent"
 BENCH_CI_PACQUET="/tmp/pnpm12/bin/pnpm install --frozen-lockfile --ignore-scripts --silent"
 BENCH_CI_VLT="vlt ci --view=silent"
+BENCH_CI_VLT_NPM="vlt ci --view=silent"
 BENCH_CI_BUN="bun install --frozen-lockfile --ignore-scripts --silent"
 BENCH_CI_DENO="deno install --frozen --quiet"
 BENCH_CI_AUBE="aube ci --ignore-scripts --silent"
@@ -38,6 +39,7 @@ BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT $BENCH_CI_ZPM > $BENCH_OUTPUT_FOLDER/z
 BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT $BENCH_CI_PNPM > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_PACQUET="timeout $BENCH_TIMEOUT $BENCH_CI_PACQUET > $BENCH_OUTPUT_FOLDER/pacquet-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT $BENCH_CI_VLT > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_VLT_NPM="timeout $BENCH_TIMEOUT $BENCH_CI_VLT_NPM > $BENCH_OUTPUT_FOLDER/vlt-npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT $BENCH_CI_BUN > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT $BENCH_CI_DENO > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_AUBE="timeout $BENCH_TIMEOUT $BENCH_CI_AUBE > $BENCH_OUTPUT_FOLDER/aube-output-\${HYPERFINE_ITERATION}.log 2>&1"
@@ -51,6 +53,7 @@ BENCH_INSTALL_ZPM="$BENCH_CI_ZPM"
 BENCH_INSTALL_PNPM="$BENCH_CI_PNPM"
 BENCH_INSTALL_PACQUET="$BENCH_CI_PACQUET"
 BENCH_INSTALL_VLT="$BENCH_CI_VLT"
+BENCH_INSTALL_VLT_NPM="$BENCH_CI_VLT_NPM"
 BENCH_INSTALL_BUN="$BENCH_CI_BUN"
 BENCH_INSTALL_DENO="$BENCH_CI_DENO"
 BENCH_INSTALL_AUBE="$BENCH_CI_AUBE"
@@ -94,6 +97,7 @@ BENCH_PREPARE_ZPM="$(ci_prepare "$BENCH_SETUP_ZPM" "yarn install --silent")"
 BENCH_PREPARE_PNPM="$(ci_prepare "$BENCH_SETUP_PNPM" "corepack pnpm@latest install --ignore-scripts --silent")"
 BENCH_PREPARE_PACQUET="$(ci_prepare "$BENCH_SETUP_PACQUET" "/tmp/pnpm12/bin/pnpm install --ignore-scripts --silent")"
 BENCH_PREPARE_VLT="$(ci_prepare "$BENCH_SETUP_VLT" "vlt install --view=silent")"
+BENCH_PREPARE_VLT_NPM="$(ci_prepare "$BENCH_SETUP_VLT_NPM" "vlt install --view=silent")"
 BENCH_PREPARE_BUN="$(ci_prepare "$BENCH_SETUP_BUN" "bun install --ignore-scripts --silent")"
 BENCH_PREPARE_DENO="$(ci_prepare "$BENCH_SETUP_DENO" "deno install --quiet")"
 BENCH_PREPARE_AUBE="$(ci_prepare "$BENCH_SETUP_AUBE" "aube install --ignore-scripts --silent")"
@@ -121,6 +125,8 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_PACQUET:+--command-name="pacquet" "$BENCH_COMMAND_PACQUET"} \
   ${BENCH_INCLUDE_VLT:+--prepare="$BENCH_PREPARE_VLT"} \
   ${BENCH_INCLUDE_VLT:+--command-name="vlt" "$BENCH_COMMAND_VLT"} \
+  ${BENCH_INCLUDE_VLT_NPM:+--prepare="$BENCH_PREPARE_VLT_NPM"} \
+  ${BENCH_INCLUDE_VLT_NPM:+--command-name="vlt-npm" "$BENCH_COMMAND_VLT_NPM"} \
   ${BENCH_INCLUDE_BUN:+--prepare="$BENCH_PREPARE_BUN"} \
   ${BENCH_INCLUDE_BUN:+--command-name="bun" "$BENCH_COMMAND_BUN"} \
   ${BENCH_INCLUDE_DENO:+--prepare="$BENCH_PREPARE_DENO"} \

@@ -8,6 +8,7 @@ export type PackageManager =
   | "deno"
   | "bun"
   | "vlt"
+  | "vlt-npm"
   | "aube"
   | "upm"
   | "nx"
@@ -57,6 +58,7 @@ export interface PackageManagerVersions {
   deno?: string;
   bun?: string;
   vlt?: string;
+  "vlt-npm"?: string;
   aube?: string;
   upm?: string;
   nx?: string;
@@ -83,6 +85,7 @@ export interface PackageManagerData {
   deno?: number;
   bun?: number;
   vlt?: number;
+  "vlt-npm"?: number;
   aube?: number;
   upm?: number;
   nx?: number;
@@ -103,6 +106,7 @@ export interface PackageManagerData {
   deno_stddev?: number;
   bun_stddev?: number;
   vlt_stddev?: number;
+  "vlt-npm_stddev"?: number;
   aube_stddev?: number;
   upm_stddev?: number;
   nx_stddev?: number;
@@ -123,6 +127,7 @@ export interface PackageManagerData {
   deno_fill?: string;
   bun_fill?: string;
   vlt_fill?: string;
+  "vlt-npm_fill"?: string;
   aube_fill?: string;
   upm_fill?: string;
   nx_fill?: string;
@@ -143,6 +148,7 @@ export interface PackageManagerData {
   deno_count?: number;
   bun_count?: number;
   vlt_count?: number;
+  "vlt-npm_count"?: number;
   aube_count?: number;
   upm_count?: number;
   nx_count?: number;
@@ -163,6 +169,7 @@ export interface PackageManagerData {
   deno_dnf?: boolean;
   bun_dnf?: boolean;
   vlt_dnf?: boolean;
+  "vlt-npm_dnf"?: boolean;
   aube_dnf?: boolean;
   upm_dnf?: boolean;
   nx_dnf?: boolean;
@@ -214,6 +221,7 @@ export interface PackageCountData {
   deno?: PackageCountEntry;
   bun?: PackageCountEntry;
   vlt?: PackageCountEntry;
+  "vlt-npm"?: PackageCountEntry;
   aube?: PackageCountEntry;
   upm?: PackageCountEntry;
   nx?: PackageCountEntry;
@@ -242,6 +250,7 @@ export interface ProcessCountData {
   deno?: PackageCountEntry;
   bun?: PackageCountEntry;
   vlt?: PackageCountEntry;
+  "vlt-npm"?: PackageCountEntry;
   aube?: PackageCountEntry;
   upm?: PackageCountEntry;
   nx?: PackageCountEntry;

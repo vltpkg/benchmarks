@@ -17,6 +17,7 @@ const PACKAGE_MANAGERS = [
   "deno",
   "bun",
   "vlt",
+  "vlt-npm",
   "aube",
   "upm",
   "nx",

@@ -33,6 +33,7 @@ AVAILABLE_PMS=(
   pnpm11
   pacquet
   vlt
+  vlt-npm
   bun
   deno
   aube

@@ -47,6 +47,7 @@ const packageManagerMap: Partial<Record<PackageManager, LucideIcon>> = {
   berry: Berry,
   zpm: Zpm,
   vlt: Vlt,
+  "vlt-npm": Vlt,
 };
 
 const frameworkMap: Partial<Record<Fixture, LucideIcon>> = {
