@@ -37,7 +37,9 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_DENO:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_DENO")"} \
   ${BENCH_INCLUDE_DENO:+--command-name="deno" "$BENCH_COMMAND_DENO"} \
   ${BENCH_INCLUDE_AUBE:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_AUBE")"} \
-  ${BENCH_INCLUDE_AUBE:+--command-name="aube" "$BENCH_COMMAND_AUBE"}
+  ${BENCH_INCLUDE_AUBE:+--command-name="aube" "$BENCH_COMMAND_AUBE"} \
+  ${BENCH_INCLUDE_UPM:+--prepare="$(append_setup "$BENCH_PREPARE_BASE" "$BENCH_SETUP_UPM")"} \
+  ${BENCH_INCLUDE_UPM:+--command-name="upm" "$BENCH_COMMAND_UPM"}
 
 collect_package_count
 collect_process_count

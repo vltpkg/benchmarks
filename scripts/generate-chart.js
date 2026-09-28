@@ -30,6 +30,7 @@ const COLORS = {
   turbo: "#ff1e56",
   vp: "#4f30e8",
   aube: "#FFB13B",
+  upm: "#18b583",
   node: "#84ba64",
 };
 

@@ -66,11 +66,15 @@ if ! npm install -g --allow-scripts=@endevco/aube @endevco/aube@latest; then
   echo "Warning: aube installation failed (may not support this platform) — skipping aube benchmarks"
 fi
 
+# Install upm via npm. upm is a pure TypeScript package manager (~230 KB),
+# so it installs quickly and works on all platforms.
+npm install -g upm@latest
+
 # Verify aube binary is actually available (install may succeed but produce no binary)
 if ! command -v aube &>/dev/null; then
   echo "Warning: aube binary not available after installation — excluding from benchmarks"
   if [ -n "${GITHUB_ENV:-}" ]; then
-    BENCH_INCLUDE="${BENCH_INCLUDE:-npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,nx,turbo,vp,node}"
+    BENCH_INCLUDE="${BENCH_INCLUDE:-npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,upm,nx,turbo,vp,node}"
     BENCH_INCLUDE="${BENCH_INCLUDE//,aube/}"
     BENCH_INCLUDE="${BENCH_INCLUDE//aube,/}"
     echo "BENCH_INCLUDE=$BENCH_INCLUDE" >> "$GITHUB_ENV"
@@ -105,6 +109,7 @@ NX_VERSION="$(npm view nx@latest version)"
 TURBO_VERSION="$(npm view turbo@latest version)"
 VP_VERSION="$(npm view vite-plus@latest version 2>/dev/null || echo "unknown")"
 AUBE_VERSION="$(aube --version 2>/dev/null | head -1 | grep -Eo '[0-9]+[.][0-9]+[.][0-9]+([-+][0-9A-Za-z.-]+)?' | head -1 || true)"
+UPM_VERSION="$(upm --version 2>/dev/null | grep -Eo '[0-9]+[.][0-9]+[.][0-9]+([-+][0-9A-Za-z.-]+)?' | head -1 || true)"
 NODE_VERSION=$(node -v)
 
 # Output versions
@@ -121,6 +126,7 @@ echo "nx: $NX_VERSION"
 echo "turbo: $TURBO_VERSION"
 echo "vp: $VP_VERSION"
 echo "aube: $AUBE_VERSION"
+echo "upm: $UPM_VERSION"
 echo "node: $NODE_VERSION"
 
 # Save versions to JSON file
@@ -138,6 +144,7 @@ echo "{
   \"turbo\": \"$TURBO_VERSION\",
   \"vp\": \"$VP_VERSION\",
   \"aube\": \"$AUBE_VERSION\",
+  \"upm\": \"$UPM_VERSION\",
   \"node\": \"$NODE_VERSION\"
 }" > ./results/versions.json
 

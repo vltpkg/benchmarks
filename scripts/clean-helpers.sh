@@ -112,6 +112,14 @@ clean_aube_metadata_cache() {
   fi
 }
 
+# Function to safely clean upm cache (shared store and metadata).
+# upm stores content-addressable files in ~/.upm/store and metadata in
+# ~/.upm/store/metadata. `upm prune` only removes unreferenced entries, so we
+# wipe the entire store directory for a clean benchmark.
+clean_upm_cache() {
+  safe_remove "$HOME/.upm"
+}
+
 # Function to safely clean ALL aube caches, including the configured store.
 # Current releases put content and package indexes under the XDG data directory;
 # metadata and the global virtual store live under the XDG cache directory.
@@ -140,6 +148,7 @@ clean_lockfiles() {
   safe_remove "bun.lock"
   safe_remove "deno.lock"
   safe_remove "aube-lock.yaml"
+  safe_remove "upm.lock"
 }
 
 # Function to clean package manager field from package.json
@@ -203,6 +212,7 @@ clean_all_cache() {
   clean_deno_cache
   clean_vp_cache
   clean_aube_cache
+  clean_upm_cache
 }
 
 clean_build_files() {
@@ -267,6 +277,7 @@ show_help() {
   echo "  clean_deno_cache"
   echo "  clean_aube_cache"
   echo "  clean_aube_metadata_cache"
+  echo "  clean_upm_cache"
   echo "  clean_lockfiles"
   echo "  clean_package_manager_field"
   echo "  clean_package_manager_files"
@@ -323,6 +334,9 @@ else
         ;;
       clean_aube_metadata_cache)
         clean_aube_metadata_cache
+        ;;
+      clean_upm_cache)
+        clean_upm_cache
         ;;
       clean_lockfiles)
         clean_lockfiles

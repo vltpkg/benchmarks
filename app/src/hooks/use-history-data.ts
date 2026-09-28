@@ -18,6 +18,7 @@ const PACKAGE_MANAGERS = [
   "bun",
   "vlt",
   "aube",
+  "upm",
   "nx",
   "turbo",
   "vp",

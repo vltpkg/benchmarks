@@ -9,7 +9,9 @@ else
 fi
 
 infer_package_manager() {
-  if [[ -f "aube-lock.yaml" ]]; then
+  if [[ -f "upm.lock" ]]; then
+    echo "upm"
+  elif [[ -f "aube-lock.yaml" ]]; then
     echo "aube"
   elif [[ -f "deno.lock" ]]; then
     echo "deno"
@@ -54,6 +56,16 @@ infer_package_manager() {
 
 # If the node_modules directory exists, count the number of packages
 if [ -d "node_modules" ]; then
+  # upm stores packages via hardlinks inside node_modules/.upm/. The
+  # standard find traverses hardlinks correctly.
+  if [ -d "node_modules/.upm" ]; then
+    BENCH_PACKAGE_COUNT=$(
+      find node_modules -name package.json -type f \
+      | grep -E 'node_modules/([a-zA-Z0-9_-]+)/package\.json$|node_modules/@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/package\.json$' \
+      | sort -u \
+      | wc -l \
+      | xargs
+    ) || true
   # aube uses symlinks inside node_modules/.aube/ (unlike pnpm which uses
   # hard links inside .pnpm/), so the standard `find -type f` cannot
   # traverse them.  When .aube/ is present, use `find -L` scoped to

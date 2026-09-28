@@ -31,14 +31,14 @@ else
 fi
 
 # Defines configurable values for the benchmark
-BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,nx,turbo,vp,node}"
+BENCH_INCLUDE="${BENCH_INCLUDE:=npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,upm,nx,turbo,vp,node}"
 BENCH_WARMUP="${BENCH_WARMUP:=2}"
 BENCH_RUNS="${BENCH_RUNS:=5}"
 # Per-command timeout in seconds (default: 5 minutes).
 # If a single install exceeds this, it is killed. hyperfine --ignore-failure
 # lets the suite continue; the timed-out run records as a failure.
 BENCH_TIMEOUT="${BENCH_TIMEOUT:=300}"
-for pm in npm yarn berry zpm pnpm pacquet vlt bun deno aube nx turbo vp node; do
+for pm in npm yarn berry zpm pnpm pacquet vlt bun deno aube upm nx turbo vp node; do
   CHOICE=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
   if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
     # Only allow nx, turbo, vp, node for task-runner variations (run, build, build-cache)
@@ -77,6 +77,7 @@ BENCH_SETUP_VLT="node $BENCH_SCRIPTS/add-workspace-protocol.js . >> $BENCH_OUTPU
 BENCH_SETUP_BUN=""
 BENCH_SETUP_DENO=""
 BENCH_SETUP_AUBE="npm pkg delete packageManager >/dev/null 2>&1 || true"
+BENCH_SETUP_UPM=""
 BENCH_SETUP_NX=""
 BENCH_SETUP_TURBO=""
 BENCH_SETUP_VP=""
@@ -105,6 +106,7 @@ BENCH_INSTALL_VLT="vlt install --view=silent"
 BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
 BENCH_INSTALL_DENO="deno install --quiet"
 BENCH_INSTALL_AUBE="aube install --ignore-scripts --silent"
+BENCH_INSTALL_UPM="upm install --silent"
 
 BENCH_COMMAND_NPM="timeout $BENCH_TIMEOUT $BENCH_INSTALL_NPM >> $BENCH_OUTPUT_FOLDER/npm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_YARN="timeout $BENCH_TIMEOUT $BENCH_INSTALL_YARN > $BENCH_OUTPUT_FOLDER/yarn-output-\${HYPERFINE_ITERATION}.log 2>&1"
@@ -116,6 +118,7 @@ BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT $BENCH_INSTALL_VLT > $BENCH_OUTPUT_FOL
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT $BENCH_INSTALL_BUN > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT $BENCH_INSTALL_DENO > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_AUBE="timeout $BENCH_TIMEOUT $BENCH_INSTALL_AUBE > $BENCH_OUTPUT_FOLDER/aube-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_UPM="timeout $BENCH_TIMEOUT $BENCH_INSTALL_UPM > $BENCH_OUTPUT_FOLDER/upm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
 # Clean up & create the results directory
 rm -rf "$BENCH_OUTPUT_FOLDER"
@@ -148,7 +151,7 @@ collect_package_count() {
   ls -la "$BENCH_OUTPUT_FOLDER"
 
   # Prints the output of each install
-  for pm in npm yarn berry zpm pnpm pacquet vlt bun deno aube nx turbo vp node; do
+  for pm in npm yarn berry zpm pnpm pacquet vlt bun deno aube upm nx turbo vp node; do
     if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
       for i in {0..9}; do
         echo "-- Reading output of $pm install $i ---"
@@ -190,6 +193,7 @@ collect_process_count() {
     [bun]="$BENCH_SETUP_BUN"
     [deno]="$BENCH_SETUP_DENO"
     [aube]="$BENCH_SETUP_AUBE"
+    [upm]="$BENCH_SETUP_UPM"
   )
   local -A PM_INSTALL=(
     [npm]="$BENCH_INSTALL_NPM"
@@ -202,6 +206,7 @@ collect_process_count() {
     [bun]="$BENCH_INSTALL_BUN"
     [deno]="$BENCH_INSTALL_DENO"
     [aube]="$BENCH_INSTALL_AUBE"
+    [upm]="$BENCH_INSTALL_UPM"
   )
   local -A PM_INCLUDE=(
     [npm]="$BENCH_INCLUDE_NPM"
@@ -214,9 +219,10 @@ collect_process_count() {
     [bun]="$BENCH_INCLUDE_BUN"
     [deno]="$BENCH_INCLUDE_DENO"
     [aube]="$BENCH_INCLUDE_AUBE"
+    [upm]="$BENCH_INCLUDE_UPM"
   )
 
-  for pm in npm yarn berry zpm pnpm pacquet vlt bun deno aube; do
+  for pm in npm yarn berry zpm pnpm pacquet vlt bun deno aube upm; do
     if [ -n "${PM_INCLUDE[$pm]:-}" ]; then
       local prepare_cmd="$BENCH_PREPARE_BASE"
       local setup="${PM_SETUP[$pm]:-}"
