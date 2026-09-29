@@ -31,6 +31,7 @@ const countFiles = [
   { filename: 'bun-process-count.txt', pmName: 'bun' },
   { filename: 'deno-process-count.txt', pmName: 'deno' },
   { filename: 'aube-process-count.txt', pmName: 'aube' },
+  { filename: 'upm-process-count.txt', pmName: 'upm' },
   { filename: 'nx-process-count.txt', pmName: 'nx' },
   { filename: 'turbo-process-count.txt', pmName: 'turbo' },
   { filename: 'node-process-count.txt', pmName: 'node' },
