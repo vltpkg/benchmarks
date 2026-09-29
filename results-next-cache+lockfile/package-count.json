@@ -3,15 +3,10 @@
     "count": 335
   },
   "berry": {
-    "count": 336,
-    "minCount": 335,
-    "maxCount": 337
-  },
-  "zpm": {
-    "count": 342
+    "count": 337
   },
   "pacquet": {
-    "count": 327
+    "count": 333
   },
   "vlt": {
     "count": 327
@@ -20,7 +15,7 @@
     "count": 339
   },
   "deno": {
-    "count": 331
+    "count": 337
   },
   "aube": {
     "count": 315,
@@ -28,6 +23,6 @@
     "maxCount": 319
   },
   "upm": {
-    "count": 327
+    "count": 333
   }
 }
