@@ -13,14 +13,15 @@
     "count": 1585
   },
   "vlt": {
-    "count": 1547,
-    "minCount": 1544,
-    "maxCount": 1549
+    "count": 1544
   },
   "deno": {
     "count": 1494
   },
   "aube": {
     "count": 1344
+  },
+  "upm": {
+    "count": 1567
   }
 }
