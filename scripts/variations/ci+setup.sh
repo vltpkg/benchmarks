@@ -42,8 +42,8 @@ SETUP_INSTALL_PNPM=""  # corepack auto-downloads on first invocation
 PACQUET_SETUP_CACHE="/tmp/bench-pacquet-cache"
 SETUP_INSTALL_PACQUET="npm install --global pnpm@next-12 --prefix /tmp/pnpm12 --cache $PACQUET_SETUP_CACHE --allow-scripts=pnpm >/dev/null 2>&1"
 SETUP_INSTALL_VLT="npm install -g vlt@latest >/dev/null 2>&1"
-SETUP_INSTALL_BUN="npm install -g bun@latest >/dev/null 2>&1"
-SETUP_INSTALL_DENO="npm install -g deno@latest >/dev/null 2>&1"
+SETUP_INSTALL_BUN="npm install -g --allow-scripts=bun bun@latest >/dev/null 2>&1"
+SETUP_INSTALL_DENO="npm install -g --allow-scripts=deno deno@latest >/dev/null 2>&1"
 SETUP_INSTALL_AUBE="npm install -g --allow-scripts=@endevco/aube @endevco/aube@latest >/dev/null 2>&1"
 SETUP_INSTALL_UPM="npm install -g upm@latest >/dev/null 2>&1"
 

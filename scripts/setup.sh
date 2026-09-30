@@ -45,7 +45,7 @@ echo "hyperfine: $HYPERFINE_VERSION"
 
 # Install Node.js package managers and tools
 echo "Installing package managers and tools..."
-npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
+npm install -g --allow-scripts=bun,deno,nx npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
 
 # Install Vite+ (vp) via npm (available as the `vite-plus` package)
 npm install -g vite-plus@latest
