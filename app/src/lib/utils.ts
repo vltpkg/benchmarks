@@ -66,7 +66,6 @@ export const calculateAverageVariationData = (
       "cache+lockfile",
       "cache+lockfile+node_modules",
       "ci",
-      "ci+setup",
       "lockfile",
       "lockfile+node_modules",
     ]

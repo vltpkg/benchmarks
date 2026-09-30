@@ -20,13 +20,23 @@ source "$1/variations/common.sh"
 #   1. Install the PM binary
 #   2. Run the PM's ci/frozen-lockfile command
 
+# Use an isolated corepack home so purging it between runs doesn't affect
+# other benchmarks, and so the path is deterministic (no reliance on
+# `corepack cache path` which is not a documented subcommand).
+export COREPACK_HOME="/tmp/bench-corepack-home"
+
 # --- PM install commands ---
 # These mirror what scripts/setup.sh does for each PM.
-# npm ships with Node so we reinstall the latest globally.
-SETUP_INSTALL_NPM="npm install -g npm@latest >/dev/null 2>&1"
+
+# npm: install into a dedicated prefix so the bootstrap npm and its cache are
+# separate from the dependency-level npm cache used by `npm ci`.
+NPM_SETUP_PREFIX="/tmp/bench-npm"
+NPM_SETUP_CACHE="/tmp/bench-npm-cache"
+SETUP_INSTALL_NPM="npm install -g npm@latest --prefix $NPM_SETUP_PREFIX --cache $NPM_SETUP_CACHE >/dev/null 2>&1"
 SETUP_INSTALL_YARN=""  # corepack auto-downloads on first invocation
 SETUP_INSTALL_BERRY="" # corepack auto-downloads on first invocation
-SETUP_INSTALL_ZPM=""   # corepack auto-downloads on first invocation
+# zpm is installed via the Yarn Switch installer (same as setup.sh)
+SETUP_INSTALL_ZPM="curl -sS https://repo.yarnpkg.com/install | bash >/dev/null 2>&1"
 SETUP_INSTALL_PNPM=""  # corepack auto-downloads on first invocation
 SETUP_INSTALL_PACQUET="npm install --global pnpm@next-12 --prefix /tmp/pnpm12 --allow-scripts=pnpm >/dev/null 2>&1"
 SETUP_INSTALL_VLT="npm install -g vlt@latest >/dev/null 2>&1"
@@ -36,10 +46,10 @@ SETUP_INSTALL_AUBE="npm install -g --allow-scripts=@endevco/aube @endevco/aube@l
 SETUP_INSTALL_UPM="npm install -g upm@latest >/dev/null 2>&1"
 
 # --- PM uninstall commands (run at end of prepare to force re-install) ---
-SETUP_UNINSTALL_NPM=""  # npm cannot uninstall itself; we wipe its global prefix instead
-SETUP_UNINSTALL_YARN="" # corepack manages; we purge its cache below
+SETUP_UNINSTALL_NPM="rm -rf $NPM_SETUP_PREFIX $NPM_SETUP_CACHE"
+SETUP_UNINSTALL_YARN="" # corepack managed; cache purged below
 SETUP_UNINSTALL_BERRY=""
-SETUP_UNINSTALL_ZPM=""
+SETUP_UNINSTALL_ZPM="rm -rf \$HOME/.yarn/switch >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_PNPM=""
 SETUP_UNINSTALL_PACQUET="rm -rf /tmp/pnpm12"
 SETUP_UNINSTALL_VLT="npm uninstall -g vlt >/dev/null 2>&1 || true"
@@ -48,12 +58,11 @@ SETUP_UNINSTALL_DENO="npm uninstall -g deno >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_AUBE="npm uninstall -g @endevco/aube >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_UPM="npm uninstall -g upm >/dev/null 2>&1 || true"
 
-# For corepack-managed PMs (yarn, berry, zpm, pnpm), purge the corepack cache
-# so the measured command includes downloading the PM binary.
-COREPACK_PURGE="rm -rf \$(corepack cache path 2>/dev/null || echo /tmp/corepack-noop) 2>/dev/null || true"
+# Purge the isolated corepack home so corepack-managed PMs must re-download.
+COREPACK_PURGE="rm -rf $COREPACK_HOME"
 
 # --- CI commands (same as ci variation) ---
-BENCH_CI_NPM="npm ci --no-audit --no-fund --ignore-scripts --silent"
+BENCH_CI_NPM="$NPM_SETUP_PREFIX/bin/npm ci --no-audit --no-fund --ignore-scripts --silent"
 if [ "$BENCH_FIXTURE" = "large" ]; then
   BENCH_CI_NPM="$BENCH_CI_NPM --legacy-peer-deps"
 fi
@@ -83,7 +92,7 @@ setup_and_ci() {
 BENCH_COMBINED_NPM="$(setup_and_ci "$SETUP_INSTALL_NPM" "$BENCH_CI_NPM")"
 BENCH_COMBINED_YARN="$(setup_and_ci "" "$BENCH_CI_YARN")"       # corepack download is part of the yarn invocation
 BENCH_COMBINED_BERRY="$(setup_and_ci "" "$BENCH_CI_BERRY")"
-BENCH_COMBINED_ZPM="$(setup_and_ci "" "$BENCH_CI_ZPM")"
+BENCH_COMBINED_ZPM="$(setup_and_ci "$SETUP_INSTALL_ZPM" "$BENCH_CI_ZPM")"
 BENCH_COMBINED_PNPM="$(setup_and_ci "" "$BENCH_CI_PNPM")"
 BENCH_COMBINED_PACQUET="$(setup_and_ci "$SETUP_INSTALL_PACQUET" "$BENCH_CI_PACQUET")"
 BENCH_COMBINED_VLT="$(setup_and_ci "$SETUP_INSTALL_VLT" "$BENCH_CI_VLT")"
@@ -164,8 +173,9 @@ ci_setup_prepare() {
   echo "$result"
 }
 
-# Regular (non-ci) install commands to generate lockfiles during prepare
-_INSTALL_NPM="npm install --no-audit --no-fund --ignore-scripts --silent"
+# Regular (non-ci) install commands to generate lockfiles during prepare.
+# npm uses the dedicated prefix binary for lockfile generation too.
+_INSTALL_NPM="$NPM_SETUP_PREFIX/bin/npm install --no-audit --no-fund --ignore-scripts --silent"
 if [ "$BENCH_FIXTURE" = "large" ]; then
   _INSTALL_NPM="$_INSTALL_NPM --legacy-peer-deps"
 fi
@@ -173,7 +183,7 @@ fi
 BENCH_PREPARE_NPM="$(ci_setup_prepare "$SETUP_INSTALL_NPM" "$BENCH_SETUP_NPM" "$_INSTALL_NPM" "$SETUP_UNINSTALL_NPM" "")"
 BENCH_PREPARE_YARN="$(ci_setup_prepare "$SETUP_INSTALL_YARN" "$BENCH_SETUP_YARN" "corepack yarn@1 install --ignore-scripts --silent" "$SETUP_UNINSTALL_YARN" "$COREPACK_PURGE")"
 BENCH_PREPARE_BERRY="$(ci_setup_prepare "$SETUP_INSTALL_BERRY" "$BENCH_SETUP_BERRY" "corepack yarn@latest install" "$SETUP_UNINSTALL_BERRY" "$COREPACK_PURGE")"
-BENCH_PREPARE_ZPM="$(ci_setup_prepare "$SETUP_INSTALL_ZPM" "$BENCH_SETUP_ZPM" "yarn install --silent" "$SETUP_UNINSTALL_ZPM" "$COREPACK_PURGE")"
+BENCH_PREPARE_ZPM="$(ci_setup_prepare "$SETUP_INSTALL_ZPM" "$BENCH_SETUP_ZPM" "yarn install --silent" "$SETUP_UNINSTALL_ZPM" "")"
 BENCH_PREPARE_PNPM="$(ci_setup_prepare "$SETUP_INSTALL_PNPM" "$BENCH_SETUP_PNPM" "corepack pnpm@latest install --ignore-scripts --silent" "$SETUP_UNINSTALL_PNPM" "$COREPACK_PURGE")"
 BENCH_PREPARE_PACQUET="$(ci_setup_prepare "$SETUP_INSTALL_PACQUET" "$BENCH_SETUP_PACQUET" "/tmp/pnpm12/bin/pnpm install --ignore-scripts --silent" "$SETUP_UNINSTALL_PACQUET" "")"
 BENCH_PREPARE_VLT="$(ci_setup_prepare "$SETUP_INSTALL_VLT" "$BENCH_SETUP_VLT" "vlt install --view=silent" "$SETUP_UNINSTALL_VLT" "")"
