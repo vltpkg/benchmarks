@@ -38,7 +38,9 @@ SETUP_INSTALL_BERRY="" # corepack auto-downloads on first invocation
 # zpm is installed via the Yarn Switch installer (same as setup.sh)
 SETUP_INSTALL_ZPM="curl -sS https://repo.yarnpkg.com/install | bash >/dev/null 2>&1"
 SETUP_INSTALL_PNPM=""  # corepack auto-downloads on first invocation
-SETUP_INSTALL_PACQUET="npm install --global pnpm@next-12 --prefix /tmp/pnpm12 --allow-scripts=pnpm >/dev/null 2>&1"
+# pacquet: use a dedicated npm cache so the pnpm tarball isn't warm from prepare
+PACQUET_SETUP_CACHE="/tmp/bench-pacquet-cache"
+SETUP_INSTALL_PACQUET="npm install --global pnpm@next-12 --prefix /tmp/pnpm12 --cache $PACQUET_SETUP_CACHE --allow-scripts=pnpm >/dev/null 2>&1"
 SETUP_INSTALL_VLT="npm install -g vlt@latest >/dev/null 2>&1"
 SETUP_INSTALL_BUN="npm install -g bun@latest >/dev/null 2>&1"
 SETUP_INSTALL_DENO="npm install -g deno@latest >/dev/null 2>&1"
@@ -51,7 +53,7 @@ SETUP_UNINSTALL_YARN="" # corepack managed; cache purged below
 SETUP_UNINSTALL_BERRY=""
 SETUP_UNINSTALL_ZPM="rm -rf \$HOME/.yarn/switch >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_PNPM=""
-SETUP_UNINSTALL_PACQUET="rm -rf /tmp/pnpm12"
+SETUP_UNINSTALL_PACQUET="rm -rf /tmp/pnpm12 $PACQUET_SETUP_CACHE"
 SETUP_UNINSTALL_VLT="npm uninstall -g vlt >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_BUN="npm uninstall -g bun >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_DENO="npm uninstall -g deno >/dev/null 2>&1 || true"
@@ -78,12 +80,14 @@ BENCH_CI_AUBE="aube ci --ignore-scripts --silent"
 BENCH_CI_UPM="upm install --frozen-lockfile --silent"
 
 # --- Build measured commands: install PM + ci command ---
-# Helper to combine PM install + ci command
+# Helper to combine PM install + ci command. Uses && so a failed PM
+# installation fails fast instead of silently falling through to the
+# ci command (which could succeed against a stale binary left behind).
 setup_and_ci() {
   local install_pm="$1"
   local ci_cmd="$2"
   if [ -n "$install_pm" ]; then
-    echo "$install_pm; $ci_cmd"
+    echo "$install_pm && $ci_cmd"
   else
     echo "$ci_cmd"
   fi
@@ -225,6 +229,71 @@ hyperfine --ignore-failure \
 
 collect_package_count
 
-# For process counting, use a representative prepare base.
-BENCH_PREPARE_BASE="$BENCH_PREPARE_NPM"
-collect_process_count
+# --- Process count collection ---
+# Unlike other variations that use a single BENCH_PREPARE_BASE for all PMs,
+# ci+setup needs per-PM prepare commands because each PM's prepare includes
+# PM-specific uninstall/cache-purge steps. Using a single base (e.g. npm's
+# prepare) would leave the wrong lockfile and skip corepack purges for
+# non-npm PMs, producing inaccurate process counts.
+collect_process_count_per_pm() {
+  if ! command -v strace &>/dev/null; then
+    echo "Warning: strace not available, skipping process count collection"
+    return 0
+  fi
+
+  echo "=== Collecting spawned process counts (per-PM prepare) ==="
+
+  local -A PM_PREPARE=(
+    [npm]="$BENCH_PREPARE_NPM"
+    [yarn]="$BENCH_PREPARE_YARN"
+    [berry]="$BENCH_PREPARE_BERRY"
+    [zpm]="$BENCH_PREPARE_ZPM"
+    [pnpm]="$BENCH_PREPARE_PNPM"
+    [pacquet]="$BENCH_PREPARE_PACQUET"
+    [vlt]="$BENCH_PREPARE_VLT"
+    [bun]="$BENCH_PREPARE_BUN"
+    [deno]="$BENCH_PREPARE_DENO"
+    [aube]="$BENCH_PREPARE_AUBE"
+    [upm]="$BENCH_PREPARE_UPM"
+  )
+  local -A PM_INSTALL=(
+    [npm]="$BENCH_INSTALL_NPM"
+    [yarn]="$BENCH_INSTALL_YARN"
+    [berry]="$BENCH_INSTALL_BERRY"
+    [zpm]="$BENCH_INSTALL_ZPM"
+    [pnpm]="$BENCH_INSTALL_PNPM"
+    [pacquet]="$BENCH_INSTALL_PACQUET"
+    [vlt]="$BENCH_INSTALL_VLT"
+    [bun]="$BENCH_INSTALL_BUN"
+    [deno]="$BENCH_INSTALL_DENO"
+    [aube]="$BENCH_INSTALL_AUBE"
+    [upm]="$BENCH_INSTALL_UPM"
+  )
+  local -A PM_INCLUDE=(
+    [npm]="$BENCH_INCLUDE_NPM"
+    [yarn]="$BENCH_INCLUDE_YARN"
+    [berry]="$BENCH_INCLUDE_BERRY"
+    [zpm]="$BENCH_INCLUDE_ZPM"
+    [pnpm]="$BENCH_INCLUDE_PNPM"
+    [pacquet]="$BENCH_INCLUDE_PACQUET"
+    [vlt]="$BENCH_INCLUDE_VLT"
+    [bun]="$BENCH_INCLUDE_BUN"
+    [deno]="$BENCH_INCLUDE_DENO"
+    [aube]="$BENCH_INCLUDE_AUBE"
+    [upm]="$BENCH_INCLUDE_UPM"
+  )
+
+  for pm in npm yarn berry zpm pnpm pacquet vlt bun deno aube upm; do
+    if [ -n "${PM_INCLUDE[$pm]:-}" ]; then
+      bash "$BENCH_SCRIPTS/process-count.sh" \
+        "$BENCH_OUTPUT_FOLDER" \
+        "$pm" \
+        "${PM_INSTALL[$pm]}" \
+        "${PM_PREPARE[$pm]}"
+    fi
+  done
+
+  node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
+}
+
+collect_process_count_per_pm
