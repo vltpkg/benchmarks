@@ -117,6 +117,7 @@ function generateChartData(option = {}) {
     "cache+lockfile+node_modules",
     "cache+node_modules",
     "ci",
+    "ci+setup",
     "clean",
     "lockfile",
     "lockfile+node_modules",

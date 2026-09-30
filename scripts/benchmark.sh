@@ -35,6 +35,9 @@ case "$2" in
     ci)
         bash ../../scripts/variations/ci.sh "../../scripts" "../../results" "$1" "$2"
         ;;
+    ci+setup)
+        bash ../../scripts/variations/ci+setup.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
     lockfile)
         bash ../../scripts/variations/lockfile.sh "../../scripts" "../../results" "$1" "$2"
         ;;
