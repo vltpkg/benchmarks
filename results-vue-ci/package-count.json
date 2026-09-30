@@ -5,13 +5,14 @@
   "yarn": {
     "count": 444
   },
+  "berry": {
+    "count": 443
+  },
   "zpm": {
-    "count": 497
+    "count": 449
   },
   "pacquet": {
-    "count": 426,
-    "minCount": 425,
-    "maxCount": 432
+    "count": 425
   },
   "vlt": {
     "count": 423

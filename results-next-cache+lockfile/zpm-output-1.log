@@ -1,8 +1,0 @@
-➤ · Yarn 6.0.0-rc.20
-➤ ┌ Installing packages
-➤ │ @typescript-eslint/scope-manager@npm:8.71.0: No candidates found for npm:8.71.0
-➤ │ @typescript-eslint/visitor-keys@npm:8.71.0: No candidates found for npm:8.71.0
-➤ │ @typescript-eslint/tsconfig-utils@npm:8.71.0: No candidates found for npm:8.71.0
-➤ │ @typescript-eslint/tsconfig-utils@npm:^8.71.0: No candidates found for npm:^8.71.0
-➤ │ Resolved 526 packages, fetched 1 package (15.87 KiB)
-➤ └ Completed in 1s 902ms
