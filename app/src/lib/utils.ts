@@ -66,6 +66,7 @@ export const calculateAverageVariationData = (
       "cache+lockfile",
       "cache+lockfile+node_modules",
       "ci",
+      "ci+setup",
       "lockfile",
       "lockfile+node_modules",
     ]
@@ -165,6 +166,7 @@ export const getVariationCategories = (
     "cache+lockfile",
     "cache+lockfile+node_modules",
     "ci",
+    "ci+setup",
     "lockfile",
     "lockfile+node_modules",
   ].filter((v) => variations.includes(v as Variation)) as Variation[];
@@ -412,6 +414,7 @@ export function sortVariations(variations: Variation[]): Variation[] {
     "cache+lockfile",
     "cache+lockfile+node_modules",
     "ci",
+    "ci+setup",
     "lockfile",
     "lockfile+node_modules",
     "build",
