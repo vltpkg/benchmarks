@@ -236,12 +236,13 @@ clean_git() {
 }
 
 clean_workspace_protocol() {
-  echo "Restoring package.json files (undo workspace: protocol changes)..."
+  echo "Restoring package.json and vlt.json files (undo workspace: protocol and registry changes)..."
   if command -v git &> /dev/null && git rev-parse --git-dir > /dev/null 2>&1; then
     # Restore each path independently. A single `git checkout -- packages/
     # package.json` fails as a whole when `packages/` does not exist (most
     # fixtures are not monorepos), leaving package.json un-restored.
     git checkout -- package.json 2>/dev/null || true
+    git checkout -- vlt.json 2>/dev/null || true
     [ -e packages ] && git checkout -- packages/ 2>/dev/null || true
   fi
 }

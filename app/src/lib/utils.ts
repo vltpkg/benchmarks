@@ -258,6 +258,7 @@ export const calculateLeaderboard = (
               "bun",
               "deno",
               "vlt",
+              "vlt-npm",
               "aube",
               "upm",
             ].includes(pm),
@@ -533,6 +534,7 @@ export function getPackageManagerDisplayName(
   if (packageManager === "pacquet") return "pnpm (v12)";
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
+  if (packageManager === "vlt-npm") return "vlt (npm registry)";
   if (packageManager === "turbo") return "turborepo";
   if (packageManager === "vp") return "vite+";
   if (packageManager === "aws") return "AWS CodeArtifact";

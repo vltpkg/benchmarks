@@ -28,6 +28,7 @@ const countFiles = [
   { filename: 'pnpm11-count.txt', pmName: 'pnpm11' },
   { filename: 'pacquet-count.txt', pmName: 'pacquet' },
   { filename: 'vlt-count.txt', pmName: 'vlt' },
+  { filename: 'vlt-npm-count.txt', pmName: 'vlt-npm' },
   { filename: 'bun-count.txt', pmName: 'bun' },
   { filename: 'deno-count.txt', pmName: 'deno' },
   { filename: 'aube-count.txt', pmName: 'aube' },
@@ -93,6 +94,17 @@ for (const { filename, pmName: pm } of countFiles) {
 if (!pmName || !countData) {
   console.warn('Could not read any temporary count file');
   process.exit(0);
+}
+
+// vlt-npm uses the same vlt binary and lockfile format as vlt, so
+// package-count.sh infers "vlt" for both. If vlt-npm was benchmarked
+// (output logs exist) but has no dedicated count, copy vlt's count.
+if (result['vlt'] && !result['vlt-npm']) {
+  const vltNpmLogs = fs.readdirSync(outputFolder).filter(f => f.startsWith('vlt-npm-output-'));
+  if (vltNpmLogs.length > 0) {
+    result['vlt-npm'] = { ...result['vlt'] };
+    console.log('Copied vlt package count to vlt-npm (same lockfile format)');
+  }
 }
 
 // Save the updated result back to the JSON file

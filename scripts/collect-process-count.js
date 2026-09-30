@@ -28,6 +28,7 @@ const countFiles = [
   { filename: 'pnpm11-process-count.txt', pmName: 'pnpm11' },
   { filename: 'pacquet-process-count.txt', pmName: 'pacquet' },
   { filename: 'vlt-process-count.txt', pmName: 'vlt' },
+  { filename: 'vlt-npm-process-count.txt', pmName: 'vlt-npm' },
   { filename: 'bun-process-count.txt', pmName: 'bun' },
   { filename: 'deno-process-count.txt', pmName: 'deno' },
   { filename: 'aube-process-count.txt', pmName: 'aube' },
