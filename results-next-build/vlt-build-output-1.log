@@ -20,10 +20,10 @@ You can learn more, including how to opt-out if you'd not like to participate in
 
 [4mRoute (app)[24m                              [4mSize[24m     [4mFirst Load JS[24m
 ┌ ○ /                                    5.46 kB         [37m[1m105 kB[22m[39m
-└ ○ /_not-found                          895 B           [37m[1m101 kB[22m[39m
-+ First Load JS shared by all            [37m[1m100 kB[22m[39m
-  ├ chunks/0789331b-86e855516b30dadb.js  52.5 kB
-  ├ chunks/491-6b478983ac17f839.js       45.6 kB
+└ ○ /_not-found                          898 B           [37m[1m101 kB[22m[39m
++ First Load JS shared by all            [37m[1m99.9 kB[22m[39m
+  ├ chunks/3577aff1-5c0fda34c137ea4b.js  52.5 kB
+  ├ chunks/587-6f0ad0614618258a.js       45.6 kB
   └ other shared chunks (total)          1.88 kB
 
 
