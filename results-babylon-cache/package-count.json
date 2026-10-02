@@ -5,20 +5,20 @@
     "maxCount": 1801
   },
   "berry": {
-    "count": 1756,
-    "minCount": 1726,
+    "count": 1757,
+    "minCount": 1728,
     "maxCount": 1786
   },
   "pacquet": {
     "count": 1585
   },
   "vlt": {
-    "count": 1532
+    "count": 1549
   },
   "bun": {
     "count": 1643,
     "minCount": 1642,
-    "maxCount": 1646
+    "maxCount": 1644
   },
   "deno": {
     "count": 1494

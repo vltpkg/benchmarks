@@ -3,17 +3,15 @@
     "count": 1791
   },
   "berry": {
-    "count": 1756,
-    "minCount": 1726,
+    "count": 1757,
+    "minCount": 1728,
     "maxCount": 1786
   },
   "pacquet": {
     "count": 1585
   },
   "vlt": {
-    "count": 1545,
-    "minCount": 1532,
-    "maxCount": 1549
+    "count": 1549
   },
   "bun": {
     "count": 1644
