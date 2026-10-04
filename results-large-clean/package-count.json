@@ -18,9 +18,9 @@
     "count": 1284
   },
   "bun": {
-    "count": 1541,
+    "count": 1544,
     "minCount": 1540,
-    "maxCount": 1542
+    "maxCount": 1552
   },
   "deno": {
     "count": 1278
