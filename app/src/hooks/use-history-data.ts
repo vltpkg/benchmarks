@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { HistoryData, HistoryVariation } from "@/types/history";
+import type { PackageManagerVersions } from "@/types/chart-data";
 
 /** Max days to attempt fetching (generates date strings, 404s are skipped) */
 const MAX_DAYS = 180;
@@ -62,7 +63,9 @@ async function parallelLimit<T>(
     }
   }
 
-  await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, worker));
+  await Promise.all(
+    Array.from({ length: Math.min(limit, tasks.length) }, worker),
+  );
   return results;
 }
 
@@ -93,6 +96,7 @@ interface ChartDataResponse {
     data: FixtureDataSet;
     packageManagers: string[];
   };
+  versions?: PackageManagerVersions;
 }
 
 /**
@@ -212,12 +216,16 @@ export const useHistoryData = (): UseHistoryDataReturn => {
           string,
           Record<string, Record<string, number>>
         >();
+        const versionsByDate: Record<string, PackageManagerVersions> = {};
 
         for (const { date, data } of successfulResults) {
           const dayData = extractDayData(data);
           dayDataMap.set(date, dayData);
           for (const variation of Object.keys(dayData)) {
             allVariations.add(variation);
+          }
+          if (data.versions && Object.keys(data.versions).length > 0) {
+            versionsByDate[date] = data.versions;
           }
         }
 
@@ -303,7 +311,7 @@ export const useHistoryData = (): UseHistoryDataReturn => {
           "run",
         ]);
 
-        setHistoryData({ dates, variations });
+        setHistoryData({ dates, variations, versionsByDate });
       } catch (e) {
         const msg = e instanceof Error ? e.message : "Unknown error";
         console.warn("History data not available:", msg);
