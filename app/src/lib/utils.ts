@@ -532,7 +532,7 @@ export function getPackageManagerDisplayName(
     if (packageManager === "jfrog") return "jfrog.io";
   }
   if (packageManager === "pnpm") return "pnpm";
-  if (packageManager === "pacquet") return "pnpm (v12)";
+  if (packageManager === "pacquet") return "pacquet";
   if (packageManager === "berry") return "yarn (berry)";
   if (packageManager === "zpm") return "yarn (zpm)";
   if (packageManager === "turbo") return "turborepo";
