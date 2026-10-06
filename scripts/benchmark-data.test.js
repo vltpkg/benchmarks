@@ -44,7 +44,7 @@ for (const fixture of [
   {
     name: "pnpm 12 JSON",
     modules: '{\n  "packageManager": "pnpm@12.0.0"\n}\n',
-    expectedFile: "pacquet-count.txt",
+    expectedFile: "pnpm-count.txt",
   },
 ]) {
   test(`attributes package counts from ${fixture.name} metadata`, (t) => {
