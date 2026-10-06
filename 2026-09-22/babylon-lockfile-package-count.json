@@ -22,5 +22,10 @@
   },
   "deno": {
     "count": 1494
+  },
+  "pnpm": {
+    "count": 1586,
+    "minCount": 1585,
+    "maxCount": 1587
   }
 }

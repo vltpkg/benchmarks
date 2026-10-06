@@ -27,5 +27,8 @@
     "count": 1086,
     "minCount": 1085,
     "maxCount": 1088
+  },
+  "pnpm": {
+    "count": 1285
   }
 }

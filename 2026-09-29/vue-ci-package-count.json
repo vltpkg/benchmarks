@@ -27,5 +27,10 @@
   },
   "upm": {
     "count": 427
+  },
+  "pnpm": {
+    "count": 426,
+    "minCount": 425,
+    "maxCount": 432
   }
 }
