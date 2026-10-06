@@ -11,7 +11,7 @@ on:
         default: '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "ci", "ci+setup", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]'
       binaries:
         description: "The binaries to run the benchmarks on"
-        default: '"npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,upm,nx,turbo,vp,node"'
+        default: '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,aube,upm,nx,turbo,vp,node"'
       warmup:
         description: "The number of warmup runs on each benchmark"
         default: "2"
@@ -94,7 +94,7 @@ jobs:
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             [[ "$IN_FIXTURES" == '["next", "astro", "vue", "svelte", "large", "babylon"]' ]] || partial=true
             [[ "$IN_VARIATIONS" == '["clean", "node_modules", "cache", "cache+node_modules", "cache+lockfile", "cache+lockfile+node_modules", "ci", "ci+setup", "lockfile", "lockfile+node_modules", "registry-clean", "registry-lockfile"]' ]] || partial=true
-            [[ "$IN_BINARIES" == '"npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,upm,nx,turbo,vp,node"' ]] || partial=true
+            [[ "$IN_BINARIES" == '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,aube,upm,nx,turbo,vp,node"' ]] || partial=true
             [[ "$IN_WARMUP" == "2" ]] || partial=true
             [[ "$IN_RUNS" == "5" ]] || partial=true
           fi
@@ -128,7 +128,7 @@ jobs:
     env:
       # rc.21 is advertised by the canary channel but its Linux ARM64 npm binary is missing.
       BENCH_ZPM_VERSION: "6.0.0-rc.20"
-      BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,upm,nx,turbo,vp,node"') }}
+      BENCH_INCLUDE: ${{ fromJson(inputs.binaries || '"npm,yarn,berry,zpm,pnpm,vlt,bun,deno,aube,upm,nx,turbo,vp,node"') }}
       BENCH_WARMUP: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.warmup || '2') }}
       BENCH_RUNS: ${{ (github.event_name == 'push' && github.ref != 'refs/heads/main') && '1' || (inputs.runs || '5') }}
     steps:
