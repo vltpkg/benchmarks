@@ -11,8 +11,11 @@
   "zpm": {
     "count": 449
   },
-  "pacquet": {
+  "pnpm": {
     "count": 425
+  },
+  "vlt": {
+    "count": 423
   },
   "bun": {
     "count": 446

@@ -11,7 +11,7 @@
   "zpm": {
     "count": 59
   },
-  "pacquet": {
+  "pnpm": {
     "count": 58
   },
   "vlt": {
@@ -27,9 +27,6 @@
     "count": 58
   },
   "upm": {
-    "count": 58
-  },
-  "pnpm": {
     "count": 58
   }
 }

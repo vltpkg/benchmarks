@@ -9,8 +9,11 @@
     "minCount": 1728,
     "maxCount": 1788
   },
-  "pacquet": {
+  "pnpm": {
     "count": 1586
+  },
+  "vlt": {
+    "count": 1549
   },
   "deno": {
     "count": 1494
@@ -20,8 +23,5 @@
   },
   "upm": {
     "count": 1568
-  },
-  "pnpm": {
-    "count": 1586
   }
 }

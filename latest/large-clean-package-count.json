@@ -11,15 +11,15 @@
   "zpm": {
     "count": 1510
   },
-  "pacquet": {
+  "pnpm": {
     "count": 1280
   },
   "vlt": {
     "count": 1284
   },
   "bun": {
-    "count": 1547,
-    "minCount": 1542,
+    "count": 1544,
+    "minCount": 1540,
     "maxCount": 1552
   },
   "deno": {
