@@ -299,7 +299,6 @@ else
       clean_pnpm_cache)
         clean_pnpm_cache
         ;;
-        ;;
       clean_vlt_cache)
         clean_vlt_cache
         ;;
