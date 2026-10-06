@@ -39,7 +39,6 @@ const packageManagerMap: Partial<Record<PackageManager, LucideIcon>> = {
   npm: Npm,
   nx: Nx,
   pnpm: Pnpm,
-  pacquet: Pnpm,
   turbo: Turbo,
   upm: Upm,
   vp: Vp,

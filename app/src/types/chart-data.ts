@@ -2,7 +2,7 @@ export type PackageManager =
   | "npm"
   | "yarn"
   | "pnpm"
-  | "pacquet"
+
   | "berry"
   | "zpm"
   | "deno"
@@ -52,7 +52,6 @@ export interface PackageManagerVersions {
   npm?: string;
   yarn?: string;
   pnpm?: string;
-  pacquet?: string;
   berry?: string;
   zpm?: string;
   deno?: string;
@@ -78,7 +77,6 @@ export interface PackageManagerData {
   npm?: number;
   yarn?: number;
   pnpm?: number;
-  pacquet?: number;
   berry?: number;
   zpm?: number;
   deno?: number;
@@ -98,7 +96,6 @@ export interface PackageManagerData {
   npm_stddev?: number;
   yarn_stddev?: number;
   pnpm_stddev?: number;
-  pacquet_stddev?: number;
   berry_stddev?: number;
   zpm_stddev?: number;
   deno_stddev?: number;
@@ -118,7 +115,6 @@ export interface PackageManagerData {
   npm_fill?: string;
   yarn_fill?: string;
   pnpm_fill?: string;
-  pacquet_fill?: string;
   berry_fill?: string;
   zpm_fill?: string;
   deno_fill?: string;
@@ -138,7 +134,6 @@ export interface PackageManagerData {
   npm_count?: number;
   yarn_count?: number;
   pnpm_count?: number;
-  pacquet_count?: number;
   berry_count?: number;
   zpm_count?: number;
   deno_count?: number;
@@ -158,7 +153,6 @@ export interface PackageManagerData {
   npm_dnf?: boolean;
   yarn_dnf?: boolean;
   pnpm_dnf?: boolean;
-  pacquet_dnf?: boolean;
   berry_dnf?: boolean;
   zpm_dnf?: boolean;
   deno_dnf?: boolean;
@@ -209,7 +203,6 @@ export interface PackageCountData {
   npm?: PackageCountEntry;
   yarn?: PackageCountEntry;
   pnpm?: PackageCountEntry;
-  pacquet?: PackageCountEntry;
   berry?: PackageCountEntry;
   zpm?: PackageCountEntry;
   deno?: PackageCountEntry;
@@ -237,7 +230,6 @@ export interface ProcessCountData {
   npm?: PackageCountEntry;
   yarn?: PackageCountEntry;
   pnpm?: PackageCountEntry;
-  pacquet?: PackageCountEntry;
   berry?: PackageCountEntry;
   zpm?: PackageCountEntry;
   deno?: PackageCountEntry;
