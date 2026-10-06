@@ -50,12 +50,6 @@ npm install -g --allow-scripts=bun,deno,nx npm@latest corepack@latest vlt@latest
 # Install Vite+ (vp) via npm (available as the `vite-plus` package)
 npm install -g vite-plus@latest
 
-# Install pnpm 12 alpha (pacquet engine) to a dedicated prefix so it doesn't
-# conflict with the corepack-managed pnpm@latest used by the pnpm benchmark.
-# npm 12 blocks dependency lifecycle scripts by default, but pnpm's preinstall
-# replaces its placeholder launcher with the platform-specific native binary.
-npm install --global pnpm@next-12 --prefix /tmp/pnpm12 --allow-scripts=pnpm
-
 # Install aube via npm (available as the `@endevco/aube` package).
 # npm 12 blocks dependency lifecycle scripts by default, but aube's preinstall
 # selects and installs its platform-specific native binary. Allow only aube's
@@ -74,7 +68,7 @@ npm install -g upm@latest
 if ! command -v aube &>/dev/null; then
   echo "Warning: aube binary not available after installation — excluding from benchmarks"
   if [ -n "${GITHUB_ENV:-}" ]; then
-    BENCH_INCLUDE="${BENCH_INCLUDE:-npm,yarn,berry,zpm,pnpm,pacquet,vlt,bun,deno,aube,upm,nx,turbo,vp,node}"
+    BENCH_INCLUDE="${BENCH_INCLUDE:-npm,yarn,berry,zpm,pnpm,vlt,bun,deno,aube,upm,nx,turbo,vp,node}"
     BENCH_INCLUDE="${BENCH_INCLUDE//,aube/}"
     BENCH_INCLUDE="${BENCH_INCLUDE//aube,/}"
     echo "BENCH_INCLUDE=$BENCH_INCLUDE" >> "$GITHUB_ENV"
@@ -102,7 +96,6 @@ YARN_VERSION="$(corepack yarn@1 -v)"
 BERRY_VERSION="$(corepack yarn@latest -v)"
 ZPM_VERSION="${BENCH_ZPM_VERSION:-$(curl -fsSL https://repo.yarnpkg.com/channels/default/canary)}"
 PNPM_VERSION="$(corepack pnpm@latest -v)"
-PACQUET_VERSION="$(/tmp/pnpm12/bin/pnpm --version)"
 BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"
@@ -119,7 +112,6 @@ echo "yarn: $YARN_VERSION"
 echo "yarn (berry): $BERRY_VERSION"
 echo "yarn (zpm): $ZPM_VERSION"
 echo "pnpm: $PNPM_VERSION"
-echo "pacquet: $PACQUET_VERSION"
 echo "bun: $BUN_VERSION"
 echo "deno: $DENO_VERSION"
 echo "nx: $NX_VERSION"
@@ -137,7 +129,6 @@ echo "{
   \"berry\": \"$BERRY_VERSION\",
   \"zpm\": \"$ZPM_VERSION\",
   \"pnpm\": \"$PNPM_VERSION\",
-  \"pacquet\": \"$PACQUET_VERSION\",
   \"bun\": \"$BUN_VERSION\",
   \"deno\": \"$DENO_VERSION\",
   \"nx\": \"$NX_VERSION\",

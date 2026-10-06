@@ -38,9 +38,6 @@ SETUP_INSTALL_BERRY="" # corepack auto-downloads on first invocation
 # zpm is installed via the Yarn Switch installer (same as setup.sh)
 SETUP_INSTALL_ZPM="curl -sS https://repo.yarnpkg.com/install | bash >/dev/null 2>&1"
 SETUP_INSTALL_PNPM=""  # corepack auto-downloads on first invocation
-# pacquet: use a dedicated npm cache so the pnpm tarball isn't warm from prepare
-PACQUET_SETUP_CACHE="/tmp/bench-pacquet-cache"
-SETUP_INSTALL_PACQUET="npm install --global pnpm@next-12 --prefix /tmp/pnpm12 --cache $PACQUET_SETUP_CACHE --allow-scripts=pnpm >/dev/null 2>&1"
 SETUP_INSTALL_VLT="npm install -g vlt@latest >/dev/null 2>&1"
 SETUP_INSTALL_BUN="npm install -g --allow-scripts=bun bun@latest >/dev/null 2>&1"
 SETUP_INSTALL_DENO="npm install -g --allow-scripts=deno deno@latest >/dev/null 2>&1"
@@ -53,7 +50,6 @@ SETUP_UNINSTALL_YARN="" # corepack managed; cache purged below
 SETUP_UNINSTALL_BERRY=""
 SETUP_UNINSTALL_ZPM="rm -rf \$HOME/.yarn/switch >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_PNPM=""
-SETUP_UNINSTALL_PACQUET="rm -rf /tmp/pnpm12 $PACQUET_SETUP_CACHE"
 SETUP_UNINSTALL_VLT="npm uninstall -g vlt >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_BUN="npm uninstall -g bun >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_DENO="npm uninstall -g deno >/dev/null 2>&1 || true"
@@ -72,7 +68,6 @@ BENCH_CI_YARN="corepack yarn@1 install --frozen-lockfile --ignore-scripts --sile
 BENCH_CI_BERRY="corepack yarn@latest install --immutable"
 BENCH_CI_ZPM="yarn install --immutable --silent"
 BENCH_CI_PNPM="corepack pnpm@latest install --frozen-lockfile --ignore-scripts --silent"
-BENCH_CI_PACQUET="/tmp/pnpm12/bin/pnpm install --frozen-lockfile --ignore-scripts --silent"
 BENCH_CI_VLT="vlt ci --view=silent"
 BENCH_CI_BUN="bun install --frozen-lockfile --ignore-scripts --silent"
 BENCH_CI_DENO="deno install --frozen --quiet"
@@ -98,7 +93,6 @@ BENCH_COMBINED_YARN="$(setup_and_ci "" "$BENCH_CI_YARN")"       # corepack downl
 BENCH_COMBINED_BERRY="$(setup_and_ci "" "$BENCH_CI_BERRY")"
 BENCH_COMBINED_ZPM="$(setup_and_ci "$SETUP_INSTALL_ZPM" "$BENCH_CI_ZPM")"
 BENCH_COMBINED_PNPM="$(setup_and_ci "" "$BENCH_CI_PNPM")"
-BENCH_COMBINED_PACQUET="$(setup_and_ci "$SETUP_INSTALL_PACQUET" "$BENCH_CI_PACQUET")"
 BENCH_COMBINED_VLT="$(setup_and_ci "$SETUP_INSTALL_VLT" "$BENCH_CI_VLT")"
 BENCH_COMBINED_BUN="$(setup_and_ci "$SETUP_INSTALL_BUN" "$BENCH_CI_BUN")"
 BENCH_COMBINED_DENO="$(setup_and_ci "$SETUP_INSTALL_DENO" "$BENCH_CI_DENO")"
@@ -111,7 +105,6 @@ BENCH_COMMAND_YARN="timeout $BENCH_TIMEOUT bash -c '$BENCH_COMBINED_YARN' > $BEN
 BENCH_COMMAND_BERRY="timeout $BENCH_TIMEOUT bash -c '$BENCH_COMBINED_BERRY' > $BENCH_OUTPUT_FOLDER/berry-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT bash -c '$BENCH_COMBINED_ZPM' > $BENCH_OUTPUT_FOLDER/zpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT bash -c '$BENCH_COMBINED_PNPM' > $BENCH_OUTPUT_FOLDER/pnpm-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_PACQUET="timeout $BENCH_TIMEOUT bash -c '$BENCH_COMBINED_PACQUET' > $BENCH_OUTPUT_FOLDER/pacquet-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT bash -c '$BENCH_COMBINED_VLT' > $BENCH_OUTPUT_FOLDER/vlt-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT bash -c '$BENCH_COMBINED_BUN' > $BENCH_OUTPUT_FOLDER/bun-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT bash -c '$BENCH_COMBINED_DENO' > $BENCH_OUTPUT_FOLDER/deno-output-\${HYPERFINE_ITERATION}.log 2>&1"
@@ -124,7 +117,6 @@ BENCH_INSTALL_YARN="bash -c '$BENCH_COMBINED_YARN'"
 BENCH_INSTALL_BERRY="bash -c '$BENCH_COMBINED_BERRY'"
 BENCH_INSTALL_ZPM="bash -c '$BENCH_COMBINED_ZPM'"
 BENCH_INSTALL_PNPM="bash -c '$BENCH_COMBINED_PNPM'"
-BENCH_INSTALL_PACQUET="bash -c '$BENCH_COMBINED_PACQUET'"
 BENCH_INSTALL_VLT="bash -c '$BENCH_COMBINED_VLT'"
 BENCH_INSTALL_BUN="bash -c '$BENCH_COMBINED_BUN'"
 BENCH_INSTALL_DENO="bash -c '$BENCH_COMBINED_DENO'"
@@ -189,7 +181,6 @@ BENCH_PREPARE_YARN="$(ci_setup_prepare "$SETUP_INSTALL_YARN" "$BENCH_SETUP_YARN"
 BENCH_PREPARE_BERRY="$(ci_setup_prepare "$SETUP_INSTALL_BERRY" "$BENCH_SETUP_BERRY" "corepack yarn@latest install" "$SETUP_UNINSTALL_BERRY" "$COREPACK_PURGE")"
 BENCH_PREPARE_ZPM="$(ci_setup_prepare "$SETUP_INSTALL_ZPM" "$BENCH_SETUP_ZPM" "yarn install --silent" "$SETUP_UNINSTALL_ZPM" "")"
 BENCH_PREPARE_PNPM="$(ci_setup_prepare "$SETUP_INSTALL_PNPM" "$BENCH_SETUP_PNPM" "corepack pnpm@latest install --ignore-scripts --silent" "$SETUP_UNINSTALL_PNPM" "$COREPACK_PURGE")"
-BENCH_PREPARE_PACQUET="$(ci_setup_prepare "$SETUP_INSTALL_PACQUET" "$BENCH_SETUP_PACQUET" "/tmp/pnpm12/bin/pnpm install --ignore-scripts --silent" "$SETUP_UNINSTALL_PACQUET" "")"
 BENCH_PREPARE_VLT="$(ci_setup_prepare "$SETUP_INSTALL_VLT" "$BENCH_SETUP_VLT" "vlt install --view=silent" "$SETUP_UNINSTALL_VLT" "")"
 BENCH_PREPARE_BUN="$(ci_setup_prepare "$SETUP_INSTALL_BUN" "$BENCH_SETUP_BUN" "bun install --ignore-scripts --silent" "$SETUP_UNINSTALL_BUN" "")"
 BENCH_PREPARE_DENO="$(ci_setup_prepare "$SETUP_INSTALL_DENO" "$BENCH_SETUP_DENO" "deno install --quiet" "$SETUP_UNINSTALL_DENO" "")"
@@ -214,8 +205,6 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_ZPM:+--command-name="zpm" "$BENCH_COMMAND_ZPM"} \
   ${BENCH_INCLUDE_PNPM:+--prepare="$BENCH_PREPARE_PNPM"} \
   ${BENCH_INCLUDE_PNPM:+--command-name="pnpm" "$BENCH_COMMAND_PNPM"} \
-  ${BENCH_INCLUDE_PACQUET:+--prepare="$BENCH_PREPARE_PACQUET"} \
-  ${BENCH_INCLUDE_PACQUET:+--command-name="pacquet" "$BENCH_COMMAND_PACQUET"} \
   ${BENCH_INCLUDE_VLT:+--prepare="$BENCH_PREPARE_VLT"} \
   ${BENCH_INCLUDE_VLT:+--command-name="vlt" "$BENCH_COMMAND_VLT"} \
   ${BENCH_INCLUDE_BUN:+--prepare="$BENCH_PREPARE_BUN"} \
@@ -249,7 +238,6 @@ collect_process_count_per_pm() {
     [berry]="$BENCH_PREPARE_BERRY"
     [zpm]="$BENCH_PREPARE_ZPM"
     [pnpm]="$BENCH_PREPARE_PNPM"
-    [pacquet]="$BENCH_PREPARE_PACQUET"
     [vlt]="$BENCH_PREPARE_VLT"
     [bun]="$BENCH_PREPARE_BUN"
     [deno]="$BENCH_PREPARE_DENO"
@@ -262,7 +250,6 @@ collect_process_count_per_pm() {
     [berry]="$BENCH_INSTALL_BERRY"
     [zpm]="$BENCH_INSTALL_ZPM"
     [pnpm]="$BENCH_INSTALL_PNPM"
-    [pacquet]="$BENCH_INSTALL_PACQUET"
     [vlt]="$BENCH_INSTALL_VLT"
     [bun]="$BENCH_INSTALL_BUN"
     [deno]="$BENCH_INSTALL_DENO"
@@ -275,7 +262,6 @@ collect_process_count_per_pm() {
     [berry]="$BENCH_INCLUDE_BERRY"
     [zpm]="$BENCH_INCLUDE_ZPM"
     [pnpm]="$BENCH_INCLUDE_PNPM"
-    [pacquet]="$BENCH_INCLUDE_PACQUET"
     [vlt]="$BENCH_INCLUDE_VLT"
     [bun]="$BENCH_INCLUDE_BUN"
     [deno]="$BENCH_INCLUDE_DENO"
@@ -283,7 +269,7 @@ collect_process_count_per_pm() {
     [upm]="$BENCH_INCLUDE_UPM"
   )
 
-  for pm in npm yarn berry zpm pnpm pacquet vlt bun deno aube upm; do
+  for pm in npm yarn berry zpm pnpm vlt bun deno aube upm; do
     if [ -n "${PM_INCLUDE[$pm]:-}" ]; then
       bash "$BENCH_SCRIPTS/process-count.sh" \
         "$BENCH_OUTPUT_FOLDER" \
