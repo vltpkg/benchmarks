@@ -14,10 +14,10 @@
 
 [4mRoute (app)[24m                              [4mSize[24m     [4mFirst Load JS[24m
 ┌ ○ /                                    5.46 kB         [37m[1m105 kB[22m[39m
-└ ○ /_not-found                          898 B           [37m[1m101 kB[22m[39m
-+ First Load JS shared by all            [37m[1m99.9 kB[22m[39m
-  ├ chunks/163-55cb7de0ad18b2c0.js       45.6 kB
-  ├ chunks/8962bd22-70b9abe1bba0d2ef.js  52.5 kB
+└ ○ /_not-found                          897 B           [37m[1m101 kB[22m[39m
++ First Load JS shared by all            [37m[1m100 kB[22m[39m
+  ├ chunks/951-4a62803f0bad2f2a.js       45.6 kB
+  ├ chunks/a6992bf5-a826740d47e1c09f.js  52.5 kB
   └ other shared chunks (total)          1.88 kB
 
 

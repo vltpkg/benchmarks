@@ -1,0 +1,115 @@
+{
+  "name": "2025-11-13",
+  "isLatest": false,
+  "fileCount": 83,
+  "benchmarks": {
+    "astro": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ],
+    "large": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ],
+    "next": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ],
+    "run": [
+      "run"
+    ],
+    "svelte": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ],
+    "vue": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ]
+  },
+  "packageCounts": {
+    "astro": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ],
+    "large": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ],
+    "next": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ],
+    "svelte": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ],
+    "vue": [
+      "cache",
+      "cache+lockfile",
+      "cache+lockfile+node_modules",
+      "cache+node_modules",
+      "clean",
+      "lockfile",
+      "lockfile+node_modules",
+      "node_modules"
+    ]
+  },
+  "processCounts": {},
+  "hasChartData": true,
+  "hasVersions": true
+}
