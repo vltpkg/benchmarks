@@ -1,0 +1,31 @@
+{
+  "name": "@benchmarks/data",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Discovery layer over the benchmark data published on gh-pages: a generated index plus a typed client. Does not re-emit the published tree.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "node bin/build-manifest.mts --out ../../suite/results ../../gh-pages-data ../../suite/results",
+    "dev": "node bin/serve.mts --root ../../suite/results",
+    "start": "node bin/serve.mts --root ../../suite/results",
+    "lint:check": "oxlint bin src test",
+    "lint": "oxlint --fix bin src test",
+    "format:check": "oxfmt --check bin src test",
+    "format": "oxfmt bin src test",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@benchmarks/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:hygiene",
+    "oxfmt": "catalog:hygiene",
+    "oxlint": "catalog:hygiene",
+    "typescript": "catalog:hygiene",
+    "vitest": "catalog:testing"
+  }
+}

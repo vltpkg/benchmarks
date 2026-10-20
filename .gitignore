@@ -13,11 +13,16 @@ node_modules
 dist
 chart
 charts
-/results/
 /versions-temp/
-
-# ignore latest in app for testing
-/app/latest/
+/suite/results/
+/suite/versions-temp/
+/gh-pages-data/
+/tmp/app/latest/
 
 # local agent config (kept untracked, same as vlt.io/vltpkg)
 .claude
+
+# agent stuff
+.mcp.json
+.openrig
+CLAUDE.md

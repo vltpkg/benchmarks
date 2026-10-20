@@ -1,0 +1,22 @@
+{
+  "workspaces": {
+    "apps": "apps/*",
+    "packages": "packages/*"
+  },
+  "catalogs": {
+    "hygiene": {
+      "@types/node": "^26.6.3",
+      "oxfmt": "^0.71.0",
+      "oxlint": "^1.86.0",
+      "typescript": "^5.9.3"
+    },
+    "testing": {
+      "vitest": "^5.0.3"
+    }
+  },
+  "config": {
+    "registries": {
+      "npm": "https://registry.npmjs.org/"
+    }
+  }
+}

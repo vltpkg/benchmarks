@@ -1,0 +1,25 @@
+{
+  "name": "@benchmarks/types",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Types describing the frozen benchmark data published to gh-pages. Descriptive of what the tree already holds.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint:check": "oxlint src test",
+    "lint": "oxlint --fix src test",
+    "format:check": "oxfmt --check src test",
+    "format": "oxfmt src test",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:hygiene",
+    "oxfmt": "catalog:hygiene",
+    "oxlint": "catalog:hygiene",
+    "typescript": "catalog:hygiene",
+    "vitest": "catalog:testing"
+  }
+}

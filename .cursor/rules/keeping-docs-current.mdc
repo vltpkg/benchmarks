@@ -1,0 +1,109 @@
+---
+description: Keeping docs/ current
+globs: docs/**,suite/**,apps/**,packages/**,.github/workflows/**,README.md
+---
+# Keeping `docs/` current
+
+`docs/` is the answer to "nobody knows how to run this thing locally or how it
+works in production". It only stays the answer if changes that invalidate it
+update it in the same commit.
+
+<rule>
+name: keeping_docs_current
+description: Which documents a change invalidates, and the rule that documented commands must be run
+filters:
+  - type: path
+    pattern: "^docs/"
+  - type: path
+    pattern: "^suite/"
+  - type: path
+    pattern: "^apps/"
+  - type: path
+    pattern: "^packages/"
+  - type: path
+    pattern: "\\.github/workflows/"
+  - type: path
+    pattern: "^README\\.md$"
+
+actions:
+  - type: suggest
+    message: |
+      ## Does this change invalidate a document?
+
+      | If you changed | Update |
+      | --- | --- |
+      | a variation, fixture, or anything about what is measured | `docs/METHODOLOGY.md` |
+      | the shape of published data | `docs/METHODOLOGY.md` **and** `packages/types` |
+      | a fixture | its `docs/FIXTURES/<NAME>.md`, the table in `docs/FIXTURES/README.md`, the root `README.md` |
+      | added or removed a fixture | also `docs/FIXTURES/ADDING-A-FIXTURE.md` and `.cursor/rules/adding-new-fixtures.mdc` |
+      | a local command, script, or env var | `docs/GET-STARTED/DEVELOPMENT.md` |
+      | `apps/data`'s endpoints or client methods | `docs/METHODOLOGY.md` and `docs/GET-STARTED/DEVELOPMENT.md` |
+      | a workflow, deploy step, or gh-pages behaviour | `docs/GET-STARTED/PRODUCTION.md` |
+      | **`runs-on`, or anything about the machine** | the **Environment** section of the root `README.md` — it states the hardware the published numbers were produced on, and it said `ubuntu-latest` for the whole time the suite ran on arm |
+      | `apps/www` — charts, tokens, components, or an honesty behaviour | `docs/FRONTEND.md` |
+      | workspace layout, catalogs, or required scripts | `docs/PACKAGE-CONTRACT.md` |
+
+      ## Three rules
+
+      ### 1. Every documented command must have been run
+
+      Not "should work". Run it, confirm the exit code, and prefer pasting real
+      output over describing it. This documentation exists because the previous
+      instructions had drifted into being wrong while still looking plausible.
+
+      ### 2. A silent failure is worth more words than a feature
+
+      This repository's signature failure is a command that exits 0 having done
+      the wrong thing or nothing: `bench process` reprocessing stale output,
+      `test` passing with a type error, a fixture without `vlt.json` measuring
+      the repository, `NEXT_PUBLIC_*` ignoring a changed env var. When you find
+      another, add it to
+      `docs/GET-STARTED/DEVELOPMENT.md#traps-that-cost-people-an-afternoon`
+      with the real terminal output and the exit code.
+
+      State the blast radius too. "CI is not exposed to this" is as important as
+      the trap, or a reader draws a bigger conclusion than the evidence supports.
+
+      ### 3. Do not duplicate; link
+
+      Each fact lives in one document. `docs/PACKAGE-CONTRACT.md` owns the
+      workspace contract, `docs/METHODOLOGY.md` owns the data contract,
+      `docs/GET-STARTED/*` own the workflows. A second copy is a second thing to
+      go stale. Cross-reference with a relative link and check it resolves.
+
+      ## When a path in the frozen suite is wrong
+
+      `suite/` is frozen: changing it changes what the benchmarks measure. Some
+      strings it *prints* are stale — `bench:73`, `bench:352`,
+      `download-latest-artifacts.sh:178-183`, `generate-chart.js:6` all name an
+      `app/latest` path that no longer applies.
+
+      Do not edit them to fix documentation. Correct the path in `docs/` and
+      make sure the stale-strings table in
+      `docs/GET-STARTED/DEVELOPMENT.md#stale-printed-guidance-inside-the-suite`
+      lists it, so the printed text is not the only answer a reader finds.
+
+examples:
+  - input: |
+      # Added a client method to apps/data
+      apps/data/src/client.ts
+      docs/METHODOLOGY.md                    <- endpoint table
+      docs/GET-STARTED/DEVELOPMENT.md        <- endpoint table
+    output: "Change and its documentation in one commit"
+  - input: |
+      # Found a command that exits 0 while doing nothing
+      docs/GET-STARTED/DEVELOPMENT.md        <- traps section, with real output,
+                                                exit code, and blast radius
+    output: "Trap documented with evidence"
+
+metadata:
+  priority: high
+  version: 1.0
+  last_updated: "2026-09-30"
+  related_files:
+    - "docs/METHODOLOGY.md"
+    - "docs/GET-STARTED/DEVELOPMENT.md"
+    - "docs/GET-STARTED/PRODUCTION.md"
+    - "docs/PACKAGE-CONTRACT.md"
+    - "docs/FIXTURES/README.md"
+</rule>

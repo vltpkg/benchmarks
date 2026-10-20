@@ -1,0 +1,504 @@
+@import "tailwindcss";
+/* As the vlt docs import them: the animate-in/out utilities and shadcn's variants. */
+@import "tw-animate-css";
+@import "./shadcn.css";
+/* The docs' type system (vltpkg/www/docs/src/styles/typeset.css), verbatim. */
+@import "./typeset.css";
+@import "./prose.css";
+
+/*
+ * Design system.
+ *
+ * The neutral palette is PORTED from the vltpkg docs theme
+ * (vltpkg/www/docs/src/styles/theme.css, read-only) so the two sites share
+ * tokens rather than resemble each other. Ported, not re-derived: a second
+ * hand-written copy of an oklch ramp is a second thing to drift.
+ *
+ * Dark mode switches on [data-theme="dark"], which is the docs' own variant.
+ * next-themes is configured with attribute="data-theme" to match. The default
+ * (a `class`) would leave every dark rule present and never applied — styles
+ * that exist and never arrive, which is this repository's signature failure.
+ */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* The snapshot banner is in the header while a past run is shown. */
+:root:has([data-snapshot-banner]) {
+  --banner-height: 2.5rem;
+}
+
+/* --- ported neutral tokens ------------------------------------------- */
+:root {
+  /* The docs site's navbar height, from vltpkg's sidebar-provider. Under it, on
+     a past run, the snapshot banner (components/snapshot-banner.tsx); the
+     header is both, and everything placed below the header uses the sum. */
+  --nav-height: 3.5rem;
+  --banner-height: 0px;
+  --header-height: calc(var(--nav-height) + var(--banner-height));
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.205 0 0);
+  --card: oklch(0.985 0 0);
+  --card-foreground: oklch(0.205 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.205 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.5 0 0);
+  --accent: oklch(0.96 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.925 0 0);
+  --input: oklch(0.925 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.5rem;
+
+  /*
+   * The docs' code-card tokens, ported for the figure container: the inner
+   * panel's fill and the shell's hairline ring. Same values, both schemes.
+   */
+  --illustration: oklch(1 0 0);
+  --border-illustration: oklch(0 0 0 / 8%);
+
+  /* The docs' sidebar tokens: it shares the page background. */
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: oklch(0.955 0 0);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* Steps the docs theme does not carry, derived from its own ramp: table row rules, and
+     the hero's blueprint lines. */
+  --line-soft: oklch(0.955 0 0);
+  --ink-faint: oklch(0.65 0 0);
+
+  /*
+   * The BRAND accent, deliberately not named `--accent`.
+   *
+   * In a shadcn token set `accent` is the subtle hover SURFACE, not a brand
+   * colour. Mapping an orange onto it would turn every component's hover
+   * state orange.
+   */
+  --brand: oklch(0.58 0.2 32);
+
+  /* Semantic, used sparingly. */
+  --better: oklch(0.52 0.13 155);
+  --worse: oklch(0.52 0.18 25);
+  --absent: oklch(0.55 0.12 75);
+
+  --tool-bun: #d9408f;
+  --tool-vlt: #000000;
+  --tool-zpm: #5a6ff0;
+  --tool-upm: #0e8c8c;
+  --tool-aube: #c2410c;
+  --tool-pacquet: #8a5a0a;
+  --tool-pnpm: #b87f00;
+  --tool-deno: #12925c;
+  --tool-berry: #9555bb;
+  --tool-yarn: #117cad;
+  /*
+   * BRAND colours: each tool is drawn in its own, everywhere it is drawn --
+   * lines, bars, dots, swatches. The source is the previous app's map
+   * (suite/scripts/generate-chart.js, COLORS and REGISTRY_COLORS) and the
+   * marks in components/icons. vlt is black here and white on dark.
+   *
+   * Where a brand colour could not be used as it stands:
+   *
+   *   too light for a 3:1 mark on white   pnpm, aws (yellows), deno (mint),
+   *                                        bun (pink), jfrog, node -- darkened
+   *                                        on light only; dark keeps the brand
+   *   two brands, one colour              aube was the same amber as pnpm and
+   *                                        is a burnt orange; upm was a green
+   *                                        beside deno's and is a teal; deno
+   *                                        keeps the mint over its own black,
+   *                                        which is vlt's
+   *
+   * Every value clears 3:1 against its page background, measured. The set is
+   * NOT mutually distinguishable and cannot be -- see FRONTEND.md -- so no
+   * figure relies on colour alone: every line, bar and dot is also named.
+   */
+  --tool-npm: #cb0606;
+  --tool-node: #4a8f3a;
+  --tool-nx: #2563eb;
+  --tool-turbo: #e0113f;
+  --tool-vp: #7e14ff;
+  --tool-pnpm11: #a85a00;
+  --tool-aws: #c77700;
+  --tool-cloudsmith: #2a6fe1;
+  --tool-github: #8250df;
+  --tool-jfrog: #2a9a30;
+  /* The consumed names, emitted here rather than mapped through
+     @theme: `inline` does not stop Tailwind tree-shaking an entry no
+     utility references. Measured — 1 of 20 survived the mapping. */
+  --color-tool-bun: var(--tool-bun);
+  --color-tool-vlt: var(--tool-vlt);
+  --color-tool-zpm: var(--tool-zpm);
+  --color-tool-upm: var(--tool-upm);
+  --color-tool-aube: var(--tool-aube);
+  --color-tool-pacquet: var(--tool-pacquet);
+  --color-tool-pnpm: var(--tool-pnpm);
+  --color-tool-deno: var(--tool-deno);
+  --color-tool-berry: var(--tool-berry);
+  --color-tool-yarn: var(--tool-yarn);
+  --color-tool-npm: var(--tool-npm);
+  --color-tool-node: var(--tool-node);
+  --color-tool-nx: var(--tool-nx);
+  --color-tool-turbo: var(--tool-turbo);
+  --color-tool-vp: var(--tool-vp);
+  --color-tool-pnpm11: var(--tool-pnpm11);
+  --color-tool-aws: var(--tool-aws);
+  --color-tool-cloudsmith: var(--tool-cloudsmith);
+  --color-tool-github: var(--tool-github);
+  --color-tool-jfrog: var(--tool-jfrog);
+}
+
+[data-theme="dark"] {
+  --background: oklch(0 0 0);
+  --foreground: oklch(0.945 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.945 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.945 0 0);
+  --primary: oklch(0.945 0 0);
+  --primary-foreground: oklch(0.145 0 0);
+  --secondary: oklch(0.235 0 0);
+  --secondary-foreground: oklch(0.945 0 0);
+  --muted: oklch(0.2 0 0);
+  --muted-foreground: oklch(0.715 0 0);
+  --accent: oklch(0.235 0 0);
+  --accent-foreground: oklch(0.945 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+
+  --illustration: oklch(0.1 0 0);
+  --border-illustration: oklch(1 0 0 / 8%);
+  --sidebar-accent: oklch(0.235 0 0);
+
+  --line-soft: oklch(1 0 0 / 7%);
+  --ink-faint: oklch(0.55 0 0);
+  --brand: oklch(0.72 0.17 36);
+  --better: oklch(0.78 0.16 155);
+  --worse: oklch(0.72 0.17 25);
+  --absent: oklch(0.8 0.13 80);
+
+  --tool-bun: #f472b6;
+  --tool-vlt: #ffffff;
+  --tool-zpm: #8c9dff;
+  --tool-upm: #2fd4c8;
+  --tool-aube: #ff9f6b;
+  --tool-pacquet: #d9a441;
+  --tool-pnpm: #f9ad00;
+  --tool-deno: #70ffaf;
+  --tool-berry: #b98ae0;
+  --tool-yarn: #4fb3e0;
+  --tool-npm: #ff5a4f;
+  --tool-node: #84ba64;
+  --tool-nx: #60a5fa;
+  --tool-turbo: #ff4d79;
+  --tool-vp: #a66bff;
+  --tool-pnpm11: #e68a00;
+  --tool-aws: #ff9900;
+  --tool-cloudsmith: #6aa0f5;
+  --tool-github: #a57cf0;
+  --tool-jfrog: #40be46;
+  /* The consumed names, emitted here rather than mapped through
+     @theme: `inline` does not stop Tailwind tree-shaking an entry no
+     utility references. Measured — 1 of 20 survived the mapping. */
+  --color-tool-bun: var(--tool-bun);
+  --color-tool-vlt: var(--tool-vlt);
+  --color-tool-zpm: var(--tool-zpm);
+  --color-tool-upm: var(--tool-upm);
+  --color-tool-aube: var(--tool-aube);
+  --color-tool-pacquet: var(--tool-pacquet);
+  --color-tool-pnpm: var(--tool-pnpm);
+  --color-tool-deno: var(--tool-deno);
+  --color-tool-berry: var(--tool-berry);
+  --color-tool-yarn: var(--tool-yarn);
+  --color-tool-npm: var(--tool-npm);
+  --color-tool-node: var(--tool-node);
+  --color-tool-nx: var(--tool-nx);
+  --color-tool-turbo: var(--tool-turbo);
+  --color-tool-vp: var(--tool-vp);
+  --color-tool-pnpm11: var(--tool-pnpm11);
+  --color-tool-aws: var(--tool-aws);
+  --color-tool-cloudsmith: var(--tool-cloudsmith);
+  --color-tool-github: var(--tool-github);
+  --color-tool-jfrog: var(--tool-jfrog);
+}
+
+/*
+ * Mapped with `@theme inline`, as the docs theme does.
+ *
+ * `inline` keeps the var() reference rather than resolving it at build time,
+ * which is what makes the [data-theme] switch reach a utility class at all.
+ * It also sidesteps the tree-shaking that silently emptied the tool ramp when
+ * these lived in a plain `@theme` and no utility referenced them.
+ */
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  /* The docs' third face, for the sidebar's labels and the breadcrumbs. */
+  --font-pixel: var(--font-geist-pixel);
+  /* The docs' app-wide body size: `text-body` on <body>, and typeset reads it too. */
+  --text-body: 0.9375rem;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-illustration: var(--illustration);
+  --color-border-illustration: var(--border-illustration);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* This app's semantic names, mapped onto the ported ramp. */
+  --color-line-soft: var(--line-soft);
+  --color-ink: var(--foreground);
+  --color-ink-soft: var(--muted-foreground);
+  --color-ink-faint: var(--ink-faint);
+  --color-brand: var(--brand);
+  --color-better: var(--better);
+  --color-worse: var(--worse);
+  --color-absent: var(--absent);
+}
+
+/* The docs' article preset (vltpkg/www/docs/src/styles/theme.css), verbatim; unlayered so it
+   overrides typeset.css's layered defaults. */
+.typeset-docs {
+  --typeset-font-body: var(--font-sans);
+  --typeset-font-heading: var(--font-sans);
+  --typeset-font-mono: var(--font-mono);
+  --typeset-size: var(--text-body);
+  --typeset-leading: 1.75;
+  --typeset-flow: 1.25em;
+}
+
+@layer base {
+  /*
+   * Scrollbars: a slim thumb and no rail, everywhere -- the page and every
+   * inner scroller (sidebar, menus, tables). Chrome and Safari take the
+   * ::-webkit-scrollbar rules, which allow a 6px bar (a 4px thumb inside a
+   * transparent edge). Chrome ignores those rules wherever the standard
+   * properties are set, and the standard `thin` is wider, so the standard
+   * properties are given to Firefox alone, whose `thin` is as slim as it goes.
+   */
+  @supports (-moz-appearance: none) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: color-mix(in oklab, var(--foreground) 22%, transparent) transparent;
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+  }
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--foreground) 22%, transparent) padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklab, var(--foreground) 40%, transparent) padding-box;
+  }
+  /*
+   * The scrollbar's width while the search palette or a menu locks the page's
+   * scroll (Radix sets the variable on body then), and 0 otherwise. The lock
+   * takes the scrollbar away and widens the viewport; the body is given a
+   * margin for it, but what is fixed to the viewport (the floating breadcrumb
+   * bar, the outline, back to top) sits that much further in by this, so
+   * nothing moves.
+   */
+  body {
+    --lock-gap: var(--removed-body-scroll-bar-size, 0px);
+  }
+
+  /*
+   * shadcn/ui components use a bare `border` class, which in Tailwind 4 sets
+   * the WIDTH only and leaves the colour at `currentColor`. Measured in the
+   * browser before this rule existed: the dropdown menu drew a near-black
+   * 1px outline, lab(7.78 0 0) -- the foreground ink, not a border colour.
+   *
+   * shadcn's own globals.css carries `* { @apply border-border }` for exactly
+   * this reason. Ours sets the property directly. Utilities still win, so the
+   * explicit border colours in this app's own components
+   * (`border-line-soft`, the brand outlines) are unaffected, as are inline `borderColor` style props.
+   *
+   * shadcn also ships `outline-ring/50` in the same rule. Not adopted: the
+   * focus ring below is the full-strength ring colour, which is more visible
+   * than a half-transparent one.
+   */
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    background: var(--background);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .tabular,
+  table {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * Selection and focus are the docs site's: a translucent blue that keeps
+   * the selected text's own colour, and a neutral ring. Both were the brand
+   * orange, which made the one accent on the page mean three things.
+   */
+  ::selection {
+    background: oklch(0.62 0.19 255 / 0.25);
+  }
+
+  [data-theme="dark"] ::selection {
+    background: oklch(0.62 0.19 255 / 0.45);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* The docs' page scroll fade (vltpkg/www/docs/src/styles/prose.css), verbatim.
+   The page is the scroller, so shadcn's scroll-fade (a mask on its own
+   scroller) cannot reach it. Instead background-coloured edges pin under the
+   navbar and to the viewport's bottom, inside the content column so they
+   start where the sidebar ends, fading in once the page leaves the top and
+   out as it reaches the end. */
+@supports (animation-timeline: scroll()) {
+  .page-fade {
+    position: sticky;
+    z-index: 30;
+    height: 0;
+    pointer-events: none;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      height: --spacing(8);
+      opacity: 0; /* inactive timeline (page doesn't scroll) skips the animation, so stay hidden */
+      animation: page-fade linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+
+  .page-fade-top {
+    top: var(--header-height);
+
+    &::after {
+      top: 0;
+      background: linear-gradient(var(--background), transparent);
+      animation-range: 0 --spacing(24);
+    }
+  }
+
+  .page-fade-bottom {
+    bottom: 0;
+
+    &::after {
+      bottom: 0;
+      background: linear-gradient(transparent, var(--background));
+      animation-direction: reverse;
+      animation-range: calc(100% - --spacing(24)) 100%;
+    }
+  }
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+ * A report the server is re-rendering (components/report-pending.tsx): what is
+ * stale dims, and each figure on it shimmers, so the page reads as updating
+ * without going blank. The dim waits a beat, so a fast answer never flashes.
+ * A tools change leaves the trend (`data-live`) alone: it has already redrawn.
+ */
+.pending-region,
+.pending-region figure {
+  transition: opacity 150ms ease-out;
+}
+
+.pending-region[data-pending="data"],
+.pending-region[data-pending="tools"] figure:not([data-live]) {
+  opacity: 0.6;
+  transition-delay: 100ms;
+}
+
+.pending-region[data-pending] figure:not([data-live]) [data-shimmer]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+      100deg,
+      transparent 35%,
+      color-mix(in oklab, var(--foreground) 6%, transparent) 50%,
+      transparent 65%
+    )
+    0 0 / 300% 100%;
+  animation: pending-shimmer 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pending-region[data-pending] figure:not([data-live]) [data-shimmer]::after {
+    animation: none;
+    background: color-mix(in oklab, var(--foreground) 4%, transparent);
+  }
+}
+
+@keyframes pending-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
