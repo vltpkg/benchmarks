@@ -1,0 +1,15 @@
+/* The docs' rules on the article's generated markup (vltpkg/www/docs/src/styles/prose.css). Their
+   page fades are already in globals.css, and there is no mobile toc bar here to clear. */
+@layer components {
+  .typeset-docs {
+    /* clear the sticky navbar, plus breathing room */
+    & :where([id]) {
+      scroll-margin-block-start: calc(var(--header-height) + --spacing(6));
+    }
+
+    /* typeset's flow margins skip not-typeset blocks (code cards, media), so give them the same rhythm */
+    & :where(figure[data-not-typeset], .not-typeset):not(:first-child) {
+      margin-block-start: var(--typeset-flow);
+    }
+  }
+}

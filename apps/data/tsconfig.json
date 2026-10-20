@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Node runs this package's TypeScript directly (native type stripping, no
+    // bundler -- decision D2 forbids re-emitting the published tree). Stripping
+    // only erases types, so syntax that needs codegen must be rejected here
+    // rather than at runtime.
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
+    "types": ["node"]
+  },
+  "include": ["bin", "src", "test"]
+}

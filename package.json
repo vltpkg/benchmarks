@@ -1,0 +1,24 @@
+{
+  "name": "benchmarks",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Workspace root for the vlt package manager benchmarks. Workspace membership and dependency catalogs live in vlt.json, not here.",
+  "scripts": {
+    "dev:prebuild": "./suite/bench process",
+    "dev:build": "vlt run --workspace=apps/data build && vlt run --workspace=apps/www build",
+    "dev": "vlt run dev:prebuild && vlt run dev:build && vlt run --workspace-group=apps dev",
+    "lint:check": "oxlint",
+    "lint": "oxlint --fix",
+    "wipe": "vlt query ':root, :workspace' --view=json | jq -r '.[].to.location + \"/node_modules\"' | sort -u | xargs -n1 rm -rf --",
+    "clean": "rm vlt-lock.json && vlr wipe",
+    "format:check": "oxfmt --check .",
+    "format": "oxfmt .",
+    "typecheck": "vlt run --recursive --if-present --bail typecheck",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "oxfmt": "catalog:hygiene",
+    "oxlint": "catalog:hygiene",
+    "vitest": "catalog:testing"
+  }
+}

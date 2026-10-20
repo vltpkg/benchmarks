@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.next/**",
+    "**/vlt-lock.json",
+    "**/package-lock.json",
+    ".github/**",
+    "bench",
+    "fixtures/**",
+    "scripts/**",
+    "suite/**",
+    "app/**",
+    "tmp/**",
+    "versions-temp/**",
+    "projects/**"
+  ]
+}

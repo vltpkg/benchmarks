@@ -32,14 +32,14 @@ jobs:
       - name: Download Results
         uses: actions/download-artifact@v8
         with:
-          path: results
+          path: suite/results
           pattern: results-*
           run-id: ${{ inputs.run-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Download Versions
         uses: actions/download-artifact@v8
         with:
-          path: versions-temp
+          path: suite/versions-temp
           pattern: versions-*
           run-id: ${{ inputs.run-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -47,20 +47,23 @@ jobs:
         env:
           BENCH_DATE: ${{ inputs.date }}
         run: |
-          ./bench process
+          ./suite/bench process
+      - name: Checkout gh-pages data
+        uses: actions/checkout@v6
+        with:
+          ref: gh-pages
+          path: gh-pages-data
       - name: Install vlt
         run: |
           npm install -g vlt@latest
-      - name: Build Charts View
+      - name: Generate Data Index
         run: |
-          pushd app
           vlt install
-          vlt run build
-          popd
+          vlt run --workspace=apps/data build
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: results
+          publish_dir: suite/results
           keep_files: true
           full_commit_message: "reprocess: run ${{ inputs.run-id }} -> ${{ inputs.date }} (dispatched via ${{ github.workflow }} run ${{ github.run_id }})"

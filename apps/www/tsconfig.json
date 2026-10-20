@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "types": ["node", "mdx"],
+    // `@benchmarks/data` and `@benchmarks/types` ship source whose internal
+    // relative imports carry explicit `.ts` extensions. Type-checking reaches
+    // those files, so this flag is needed here and not only in the packages.
+    "allowImportingTsExtensions": true,
+    "plugins": [{ "name": "next" }],
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["next-env.d.ts", "src", "test", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

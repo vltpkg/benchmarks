@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // This package ships TypeScript source rather than a build, so its own
+    // imports carry explicit .ts extensions. Kept here rather than in the
+    // shared base: the flag requires noEmit, and a future member that needs
+    // to emit should not inherit the restriction.
+    "allowImportingTsExtensions": true,
+    "types": ["node"]
+  },
+  "include": ["src", "test"]
+}

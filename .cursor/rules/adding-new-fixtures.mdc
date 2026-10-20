@@ -1,192 +1,159 @@
+---
+description: Adding New Fixtures to Benchmarks
+globs: suite/fixtures/**,suite/scripts/**,packages/types/src/**,.github/workflows/**
+---
 # Adding New Fixtures to Benchmarks
 
-Comprehensive guide for adding new fixture types to the vlt benchmarks suite.
+Checklist for adding a fixture to the benchmark suite. The explanation, with the
+verification commands and the reasoning, is in
+`docs/FIXTURES/ADDING-A-FIXTURE.md` — keep the two in step.
 
 <rule>
 name: adding_new_fixtures
-description: Complete checklist and procedures for adding new benchmark fixtures
+description: Checklist for adding a benchmark fixture, including the vlt.json step whose omission silently measures the wrong project
 filters:
-  # Match fixture-related files and directories
   - type: path
-    pattern: "^fixtures/"
+    pattern: "^suite/fixtures/"
   - type: path
-    pattern: "scripts/(generate-chart\\.js|process-results\\.sh|benchmark\\.sh)"
+    pattern: "^suite/fixtures/.*/package\\.json$"
   - type: path
-    pattern: "app/src/(types|hooks|lib|components)/"
+    pattern: "^suite/fixtures/.*/vlt\\.json$"
+  - type: path
+    pattern: "suite/scripts/(generate-chart\\.js|process-results\\.sh|benchmark\\.sh)"
+  - type: path
+    pattern: "^packages/types/src/"
   - type: path
     pattern: "\\.github/workflows/"
-  # Match package.json files in fixtures
-  - type: path
-    pattern: "fixtures/.*/package\\.json$"
 
 actions:
   - type: suggest
     message: |
-      ## Adding a New Fixture Checklist
+      ## Adding a fixture: checklist
 
-      When adding a new fixture (e.g., "my-fixture"), follow these steps:
+      Full reasoning: `docs/FIXTURES/ADDING-A-FIXTURE.md`.
 
-      ### 1. Create Fixture Directory and Configuration
+      ### 0. `vlt.json` — DO NOT SKIP THIS
+
+      Every fixture directory needs its own `vlt.json`:
+
+      ```json
+      { "config": { "registries": { "npm": "https://registry.vlt.io/vlt-benchmarks/npm/" } } }
+      ```
+
+      It points installs at the benchmark registry mirror AND makes the fixture
+      directory a vlt project root.
+
+      **Without it, vlt walks up and resolves the REPOSITORY ROOT as the
+      project.** The install then operates on the monorepo's dependency graph
+      instead of the fixture's. There is no error — you get numbers, and they
+      measure the wrong thing. Verified: from a directory with a `package.json`
+      and no `vlt.json`, `vlt query ':root'` returns the `benchmarks` root
+      package at `location: "."`.
+
+      If the fixture is itself a monorepo, declare its workspaces here too —
+      `suite/fixtures/babylon/vlt.json` is the worked example.
+
+      ### 1. Create the fixture
+
       ```bash
-      mkdir -p fixtures/my-fixture
-      ```
-      
-      Create `fixtures/my-fixture/package.json` with:
-      - Appropriate dependencies for your test case
-      - Valid npm package.json structure
-      - Consider the fixture's purpose (small, large, specific framework, etc.)
-
-      ### 2. Update Scripts (Data Processing)
-      
-      **File: `scripts/generate-chart.js`**
-      ```javascript
-      // Line ~54: Add fixture to the fixtures array
-      const fixtures = ["next", "astro", "svelte", "vue", "large", "my-fixture", "run"];
+      mkdir -p suite/fixtures/<name>
+      # then: package.json AND vlt.json
       ```
 
-      **File: `scripts/process-results.sh`**
+      `<name>` becomes part of every published filename as
+      `{fixture}-{variation}.json`, and the parser splits on the FIRST `-`, so
+      the name must not contain a hyphen. Use kebab-case otherwise.
+
+      ### 2. Suite enumerations — TWO occurrences in each file
+
+      | File | Occurrences |
+      | --- | --- |
+      | `suite/scripts/generate-chart.js` | **2** arrays (one includes `run`, one does not) |
+      | `suite/scripts/process-results.sh` | **2** loops (both exclude `run`) |
+
+      Updating only the first occurrence yields a partial integration that
+      still exits 0.
+
+      ### 3. Published types
+
+      `packages/types/src/index.ts` — add to **both** the `Fixture` union and
+      the `FIXTURES` array. A `satisfies` clause ties them together, so missing
+      one is a type error rather than a silent gap.
+
+      ### 4. Workflow — THREE places in `.github/workflows/benchmark.yaml`
+
+      | Line (approx.) | What |
+      | --- | --- |
+      | 8 | the `fixtures` input default |
+      | 98 | the literal the partial-run gate string-compares against |
+      | 119 | the matrix `fixture` list |
+
+      Line 98 is the trap. The workflow decides a dispatch is a "partial run" —
+      and therefore must not deploy — by comparing the input against the
+      default list as a string. Change the default without changing that
+      literal and every dispatch is classified partial, so results silently
+      stop publishing while every job stays green.
+
+      Decide separately whether the fixture joins the reduced set that runs on
+      pushes to non-`main` branches. `large` and `babylon` are excluded there
+      because they are slow.
+
+      ### 5. Documentation
+
+      - `docs/FIXTURES/<NAME>.md`, following the existing pages
+      - a row in `docs/FIXTURES/README.md`
+      - the fixture list in the root `README.md`
+
+      ### 6. What you do NOT need to touch
+
+      `apps/www` discovers fixtures from the generated manifest at runtime, so
+      the frontend needs no per-fixture change. `apps/data` validates fixture
+      names against `FIXTURES`, so step 3 covers it.
+
+      Older versions of this rule listed files under `app/src/` — those
+      instructions are obsolete. That app is parked at `tmp/app/`.
+
+      ### 7. Verify
+
       ```bash
-      # Line ~55: Add fixture to the processing loop
-      for fixture in next astro svelte vue large my-fixture; do
+      # resolves to itself, not the repository root
+      cd suite/fixtures/<name> && vlt install && vlt query ':root' --view=json
+
+      # one short run, from the repo root
+      ./suite/bench run --fixtures=<name> --variation=clean --runs=1
       ```
 
-      ### 3. Update TypeScript Types
+      Then clean up before committing. A run leaves
+      `suite/fixtures/<name>/package-lock.json`, which DOES show as untracked,
+      and `suite/fixtures/<name>/node_modules/`, which is gitignored and shows
+      nowhere:
 
-      **File: `app/src/types/chart-data.ts`**
-      ```typescript
-      // Line ~13: Add to Fixture type union
-      export type Fixture = "next" | "astro" | "svelte" | "vue" | "large" | "my-fixture" | "run";
+      ```bash
+      git status --porcelain suite/fixtures/
+      rm -rf suite/fixtures/<name>/node_modules suite/fixtures/<name>/package-lock.json
       ```
-
-      ### 4. Update React Application
-
-      **File: `app/src/hooks/use-package-count-data.ts`**
-      ```typescript
-      // Lines ~26-33: Add to fixtures array
-      const fixtures: Fixture[] = sortFixtures([
-        "next",
-        "astro", 
-        "svelte",
-        "vue",
-        "large",
-        "my-fixture",
-        "run",
-      ]);
-      ```
-
-      **File: `app/src/lib/utils.ts`**
-      ```typescript
-      // Line ~334: Add to sortFixtures preferredOrder
-      const preferredOrder: Fixture[] = ["next", "vue", "svelte", "astro", "large", "my-fixture", "run"];
-      ```
-
-      ### 5. Update GitHub Actions Workflow
-
-      **File: `.github/workflows/benchmark.yaml`**
-      ```yaml
-      # Line ~8: Update default fixtures list
-      default: '["next", "astro", "vue", "svelte", "large", "my-fixture"]'
-
-      # Line ~36: Update matrix fixture list  
-      fixture: ${{ fromJson(inputs.fixtures || '["next", "astro", "vue", "svelte", "large", "my-fixture"]') }}
-
-      # Lines ~102-108: Update JavaScript fixtures array
-      const fixtures = [
-        "next",
-        "astro", 
-        "vue",
-        "svelte",
-        "large",
-        "my-fixture", 
-        "run"
-      ];
-      ```
-
-      ### 6. Update Icon Support (Optional)
-
-      **File: `app/src/lib/get-icons.ts`**
-      ```typescript
-      // Import appropriate icon or use existing one
-      import { MyFixtureIcon } from "@/components/icons/index";
-
-      // Add to frameworkMap
-      const frameworkMap: Partial<Record<Fixture, LucideIcon>> = {
-        astro: Astro,
-        next: Next,
-        svelte: Svelte,
-        vue: Vue,
-        large: Package,
-        "my-fixture": MyFixtureIcon, // or reuse existing icon
-      };
-      ```
-
-      ### 7. Update Documentation
-
-      **File: `README.md`**
-      ```markdown
-      ### Project Types (fixtures)
-      - Next.js
-      - Astro
-      - Svelte
-      - Vue
-      - Large
-      - My Fixture (description of what this fixture tests)
-      ```
-
-      ### 8. Verification Steps
-
-      After making all changes:
-
-      1. **Lint Check**: Run linting on modified TypeScript files
-      2. **Directory Check**: Verify fixture directory exists with package.json
-      3. **Build Test**: Test that the app builds successfully
-      4. **Workflow Test**: Verify GitHub Actions workflow accepts the new fixture
-
-      ### 9. Fixture Design Considerations
-
-      When creating the fixture's `package.json`:
-      
-      - **Small fixtures**: 5-15 dependencies (testing basic scenarios)
-      - **Medium fixtures**: 20-50 dependencies (realistic projects)  
-      - **Large fixtures**: 50+ dependencies (stress testing)
-      - **Framework fixtures**: Use actual framework templates
-      - **Specific use cases**: Target particular scenarios (monorepo, TypeScript, etc.)
-
-      ### 10. Common Pitfalls
-
-      ⚠️ **Don't forget to update ALL locations**:
-      - Missing GitHub Actions updates will cause CI failures
-      - Missing TypeScript type updates will cause build errors
-      - Missing script updates will exclude fixture from processing
-      - Missing icon mapping will show no icon in UI
-
-      ⚠️ **Maintain consistent ordering**:
-      - Keep the same fixture order across all files
-      - Follow the established naming conventions
-      - Use kebab-case for fixture directory names
 
 examples:
   - input: |
-      # Example: Adding a "typescript" fixture
-      
-      1. Create fixtures/typescript/package.json
-      2. Update all 7+ files mentioned above
-      3. Use TypeScript icon or create new one
-      4. Update README with description
-      
-    output: "Complete fixture integration following all steps"
+      # Adding a "remix" fixture
+      suite/fixtures/remix/package.json
+      suite/fixtures/remix/vlt.json          <- without this, wrong numbers
+      suite/scripts/generate-chart.js        <- 2 arrays
+      suite/scripts/process-results.sh       <- 2 loops
+      packages/types/src/index.ts            <- Fixture union + FIXTURES
+      .github/workflows/benchmark.yaml       <- lines 8, 98, 119
+      docs/FIXTURES/REMIX.md + README rows
+    output: "Complete fixture integration"
 
 metadata:
   priority: high
-  version: 1.0
-  last_updated: "2024-09-25"
+  version: 2.0
+  last_updated: "2026-09-30"
   related_files:
-    - "scripts/generate-chart.js"
-    - "scripts/process-results.sh" 
-    - "app/src/types/chart-data.ts"
-    - "app/src/hooks/use-package-count-data.ts"
-    - "app/src/lib/utils.ts"
+    - "docs/FIXTURES/ADDING-A-FIXTURE.md"
+    - "suite/scripts/generate-chart.js"
+    - "suite/scripts/process-results.sh"
+    - "packages/types/src/index.ts"
     - ".github/workflows/benchmark.yaml"
-    - "app/src/lib/get-icons.ts"
     - "README.md"
 </rule>
