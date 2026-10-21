@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "vlr build",
+  "installCommand": "echo $PWD && npm install vlt@latest --force --prefix=/vlt/ --install-strategy=nested --no-save && vlt --version && vlt ci",
+  "git": {
+    "deploymentEnabled": {
+      "gh-pages": false
+    }
+  }
+}
