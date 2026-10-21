@@ -39,6 +39,47 @@ export const dataBaseUrl = (): string => {
 };
 
 /*
+ * GitHub Pages answers a burst with 429, and a prerender is one: a report
+ * fans out to hundreds of files, on every build worker at once. So at most
+ * MAX_IN_FLIGHT requests run per process, and a 429 waits and tries again.
+ */
+const MAX_IN_FLIGHT = 12;
+const RETRIES = 5;
+let inFlight = 0;
+const waiting: (() => void)[] = [];
+
+const acquire = (): Promise<void> => {
+  if (inFlight < MAX_IN_FLIGHT) {
+    inFlight++;
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => waiting.push(resolve));
+};
+
+/* A waiter takes the freed slot directly, so a newcomer cannot jump the queue. */
+const release = (): void => {
+  const next = waiting.shift();
+  if (next === undefined) inFlight--;
+  else next();
+};
+
+export const throttledFetch = async (url: string): Promise<Response> => {
+  await acquire();
+  try {
+    for (let attempt = 0; ; attempt++) {
+      const response = await fetch(url);
+      if (response.status !== 429 || attempt === RETRIES) return response;
+      await response.body?.cancel();
+      const after = Number(response.headers.get("retry-after"));
+      const ms = after > 0 ? after * 1000 : 250 * 2 ** attempt;
+      await new Promise((resolve) => setTimeout(resolve, ms));
+    }
+  } finally {
+    release();
+  }
+};
+
+/*
  * Every fetch of the served tree, cached. A dated file (`2026-10-13/…`,
  * `manifest/2026-10-13.json`) is written once by its night's run, so it is
  * kept for a day and refreshed behind the reader; the index, the full
@@ -48,7 +89,7 @@ export const dataBaseUrl = (): string => {
  */
 const cachedGet = async (url: string) => {
   "use cache";
-  const response = await fetch(url);
+  const response = await throttledFetch(url);
   if (!response.ok && response.status !== 404) {
     throw new Error(`Request for ${url} failed with status ${response.status}`);
   }
