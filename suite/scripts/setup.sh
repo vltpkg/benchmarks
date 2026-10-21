@@ -18,7 +18,7 @@ if [ -n "${GITHUB_ENV:-}" ]; then
 fi
 
 # Check Node version
-REQUIRED_NODE_VERSION="24"
+REQUIRED_NODE_VERSION="26"
 CURRENT_NODE_VERSION=$(node -v | cut -d'v' -f2)
 if [[ "$CURRENT_NODE_VERSION" != "$REQUIRED_NODE_VERSION"* ]]; then
     echo "Error: Node.js version $REQUIRED_NODE_VERSION is required, but version $CURRENT_NODE_VERSION is installed"
