@@ -28,7 +28,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v6
         with:
-          node-version: "24"
+          node-version: "26"
       - name: Download Results
         uses: actions/download-artifact@v8
         with:
