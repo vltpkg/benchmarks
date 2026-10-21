@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { loadCatalog } from "@/lib/catalog";
 import { dataClient } from "@/lib/data";
 import { reportMarkdown } from "@/lib/markdown";
@@ -7,8 +8,8 @@ import { loadReport } from "@/lib/report";
 import { withAverage } from "@/lib/scenarios";
 import { SECTIONS } from "@/lib/sections";
 
-/** Every scenario of the latest run, at the default view, one after another. */
 export const GET = async (request: Request) => {
+  await connection();
   const client = dataClient();
   const { scenarios } = await loadCatalog(client);
   const query = loadReportParams(new URLSearchParams());
