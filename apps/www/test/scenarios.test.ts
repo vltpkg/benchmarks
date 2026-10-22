@@ -523,7 +523,7 @@ describe("query parameters", () => {
       reportHref("/package-managers/clean", {
         date: null,
         fixture: null,
-        range: 30,
+        range: 120,
         from: null,
         to: null,
         hide: [],
@@ -538,7 +538,7 @@ describe("query parameters", () => {
 
   it("a malformed value falls back to the default instead of erroring", async () => {
     const q = await loadReportParams(new URLSearchParams("range=7&scale=sideways&hide="));
-    expect(q.range).toBe(30);
+    expect(q.range).toBe(120);
     expect(q.scale).toBe("linear");
     expect(q.hide).toEqual([]);
   });
