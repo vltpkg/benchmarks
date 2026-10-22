@@ -24,8 +24,8 @@ Route (app)                              Size     First Load JS
 ┌ ○ /                                    5.46 kB         105 kB
 └ ○ /_not-found                          896 B           101 kB
 + First Load JS shared by all            99.9 kB
-  ├ chunks/515-8d57c45dab72ef82.js       45.6 kB
-  ├ chunks/51d823ad-796114b830469c45.js  52.5 kB
+  ├ chunks/115-01e0730e753ceb53.js       45.6 kB
+  ├ chunks/c2885e79-2f4596d94e21e853.js  52.5 kB
   └ other shared chunks (total)          1.88 kB
 
 
