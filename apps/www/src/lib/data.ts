@@ -43,9 +43,12 @@ export const dataBaseUrl = (): string => {
  * fans out to hundreds of files, on every build worker at once. So at most
  * MAX_IN_FLIGHT requests run per process, and a 429 waits and tries again.
  *
- * The queue is outside "use cache", around the call: a fill waiting on a
- * module-scoped queue is what `next dev` reports as a deadlock (it re-runs a
- * fill idle for 10s in isolation, where the queue is empty, and it completes).
+ * The queue is inside "use cache", in the fill: a prerender's second pass
+ * must find every entry already filled, so nothing may wait before the cached
+ * call. `next dev` skips it, since it reports a fill idle for 10s as a
+ * deadlock (re-run in isolation, where the queue is empty, it completes), and
+ * a long queue is exactly that. Dev reads the local data server, which does
+ * not rate-limit; pointed at GitHub Pages, the retries still apply.
  */
 const MAX_IN_FLIGHT = 12;
 const RETRIES = 5;
@@ -87,6 +90,9 @@ export const fetchRetrying = async (url: string): Promise<Response> => {
   }
 };
 
+const throttledFetch = (url: string): Promise<Response> =>
+  process.env.NODE_ENV === "development" ? fetchRetrying(url) : throttle(() => fetchRetrying(url));
+
 /*
  * Every fetch of the served tree, cached. A dated file (`2026-10-13/…`,
  * `manifest/2026-10-13.json`) is written once by its night's run, so it is
@@ -97,7 +103,7 @@ export const fetchRetrying = async (url: string): Promise<Response> => {
  */
 const cachedGet = async (url: string) => {
   "use cache";
-  const response = await fetchRetrying(url);
+  const response = await throttledFetch(url);
   if (!response.ok && response.status !== 404) {
     throw new Error(`Request for ${url} failed with status ${response.status}`);
   }
@@ -114,7 +120,7 @@ export const dataClient = (): DataClient =>
   new DataClient({
     baseUrl: dataBaseUrl(),
     fetch: async (url) => {
-      const { body, ...rest } = await throttle(() => cachedGet(url));
+      const { body, ...rest } = await cachedGet(url);
       return { ...rest, json: async () => body };
     },
   });
