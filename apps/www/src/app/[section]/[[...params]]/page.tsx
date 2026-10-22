@@ -657,7 +657,7 @@ const Report = async ({
           }
         />
         {caveats.qualifier === null ? null : (
-          <div className="mt-6">
+          <div data-narrative className="mt-6">
             <Callout title="A faster mean is not ranked">
               <Marked text={caveats.qualifier} />
             </Callout>
@@ -665,7 +665,7 @@ const Report = async ({
         )}
 
         {report.stats === null ? null : (
-          <dl className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <dl data-narrative className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {report.stats.map((stat) => (
               <Stat
                 key={stat.label}
@@ -684,7 +684,7 @@ const Report = async ({
         )}
 
         {caveats.hidden === null ? null : (
-          <div className="mt-10">
+          <div data-narrative className="mt-10">
             <Callout title={caveats.hidden.title}>
               {caveats.hidden.body}{" "}
               <ShowAllTools className="text-foreground underline underline-offset-4" />
@@ -693,7 +693,10 @@ const Report = async ({
         )}
 
         {caveats.disclosure === null ? null : (
-          <p className="mt-10 max-w-[78ch] text-sm leading-relaxed text-muted-foreground">
+          <p
+            data-narrative
+            className="mt-10 max-w-[78ch] text-sm leading-relaxed text-muted-foreground"
+          >
             <span className="font-medium text-foreground">Disclosure.</span> {caveats.disclosure}
           </p>
         )}

@@ -195,25 +195,33 @@ export const ReportIntro = ({
           </div>
         )}
         {finding === undefined ? (
-          <div aria-hidden className={`col-span-2 row-start-2 sm:col-span-1 ${FINDING}`}>
+          <div
+            aria-hidden
+            data-narrative
+            className={`col-span-2 row-start-2 sm:col-span-1 ${FINDING}`}
+          >
             <span className={GHOST}>
               <Marked text={`${baseline} is fastest at 0.00s, 0.00× faster than ${baseline}.`} />
             </span>
           </div>
         ) : (
-          <h1 className={`col-span-2 row-start-2 sm:col-span-1 ${FINDING}`}>
+          <h1
+            data-narrative="heading"
+            className={`col-span-2 row-start-2 sm:col-span-1 ${FINDING}`}
+          >
             <Marked text={finding} />
           </h1>
         )}
-        {/* Below sm, under the headline: beside the pills it squeezed long scenario names. */}
-        <div className="col-span-2 row-start-3 justify-self-start sm:col-span-1 sm:col-start-2 sm:row-start-2 sm:self-start sm:justify-self-end">
+        {/* Below sm, under the headline: beside the pills it squeezed long scenario names.
+            In data mode the headline is hidden, so it moves up beside the pills. */}
+        <div className="col-span-2 row-start-3 justify-self-start sm:col-span-1 sm:col-start-2 sm:row-start-2 sm:self-start sm:justify-self-end data-mode:sm:row-start-1 data-mode:sm:self-center">
           <CopyPage />
         </div>
       </div>
       {/* What the scenario is, under the headline; then, on its own, what the
           numbers are of: the run, the fixtures, the runners. */}
       {scenario === undefined ? null : (
-        <p className={`mt-4 max-w-[65ch] ${DESCRIPTION}`}>
+        <p data-narrative className={`mt-4 max-w-[65ch] ${DESCRIPTION}`}>
           {DESCRIPTIONS[scenario.variation] ??
             "This scenario is published but has no description yet."}
           {scenario.uncurated ? (
@@ -224,7 +232,7 @@ export const ReportIntro = ({
           ) : null}
         </p>
       )}
-      <p className={`mt-3 max-w-[65ch] ${DESCRIPTION}`}>
+      <p data-narrative className={`mt-3 max-w-[65ch] ${DESCRIPTION}`}>
         {lede ?? (
           <span aria-hidden className={GHOST}>
             Mean time across 6 fixtures, from the run of Jan 1, 2026 on GitHub-hosted
@@ -232,7 +240,11 @@ export const ReportIntro = ({
           </span>
         )}
       </p>
-      {action === undefined ? null : <div className="mt-5">{action}</div>}
+      {action === undefined ? null : (
+        <div data-narrative className="mt-5">
+          {action}
+        </div>
+      )}
     </>
   );
 };
@@ -268,7 +280,7 @@ export const ReportSkeleton = ({
         Loading…
       </p>
       <div aria-hidden>
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div data-narrative className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[0, 1, 2, 3].map((i) => (
             <Skeleton key={i} className="min-h-44 rounded-2xl" />
           ))}

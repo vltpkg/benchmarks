@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { BotIcon } from "lucide-react";
+import { ViewToggle } from "@/components/view-toggle";
 
 const LINK =
   "inline-flex items-center gap-1 rounded-sm transition-colors hover:text-foreground focus-visible:outline-2";
@@ -66,22 +67,26 @@ export const SiteFooter = () => (
       <p className="tabular">
         &copy; <Year /> vlt technology inc, All rights reserved
       </p>
-      <nav aria-label="Site" className="flex flex-wrap items-center gap-x-5">
-        {(
-          [
-            ["About", "/about"],
-            ["Methodology", "/methodology"],
-          ] as const
-        ).map(([label, href]) => (
-          <Link key={href} href={href} className={`${LINK} h-8`}>
-            {label}
+      {/* Data mode stands apart from the links: twice their gap. */}
+      <div className="flex flex-wrap items-center gap-x-10">
+        <nav aria-label="Site" className="flex flex-wrap items-center gap-x-5">
+          {(
+            [
+              ["About", "/about"],
+              ["Methodology", "/methodology"],
+            ] as const
+          ).map(([label, href]) => (
+            <Link key={href} href={href} className={`${LINK} h-8`}>
+              {label}
+            </Link>
+          ))}
+          <Link href="/about#set-up-your-agent" className={`${LINK} h-8`}>
+            <BotIcon aria-hidden className="size-3.5" />
+            For agents
           </Link>
-        ))}
-        <Link href="/about#set-up-your-agent" className={`${LINK} h-8`}>
-          <BotIcon aria-hidden className="size-3.5" />
-          For agents
-        </Link>
-      </nav>
+        </nav>
+        <ViewToggle />
+      </div>
     </div>
   </footer>
 );

@@ -70,6 +70,14 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
       className={`${sans.variable} ${mono.variable} ${pixel.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        {/* The reader's Report or Data choice, on <html> before paint (components/view-toggle.tsx). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("view")==="data")document.documentElement.dataset.view="data"}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="flex min-h-full flex-col text-body">
         <ThemeProvider>
           {/* nuqs: every query parameter is defined in lib/params.ts. */}
@@ -86,9 +94,12 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
                     latest={catalog.latest}
                     className="sticky top-(--header-height) h-[calc(100svh-var(--header-height))]!"
                   />
-                  <SidebarInset className="min-w-0 px-4 pt-4 pb-8 md:px-16 md:pb-12">
+                  <SidebarInset className="min-w-0 px-4 pt-4 pb-8 md:px-16 md:pb-12 data-mode:md:pl-8">
                     <div aria-hidden className="page-fade page-fade-top" />
-                    <div className="mx-auto w-full max-w-6xl">{children}</div>
+                    {/* Data mode is charts and tables, so it takes more of the screen (the right gutter stays, for the minimap). */}
+                    <div className="mx-auto w-full max-w-6xl data-mode:max-w-[96rem]">
+                      {children}
+                    </div>
                     <div aria-hidden className="page-fade page-fade-bottom" />
                   </SidebarInset>
                 </div>

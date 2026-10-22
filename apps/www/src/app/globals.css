@@ -21,6 +21,8 @@
  */
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+/* Data mode (components/view-toggle.tsx). */
+@custom-variant data-mode (&:where([data-view="data"] *));
 
 /* The snapshot banner is in the header while a past run is shown. */
 :root:has([data-snapshot-banner]) {
@@ -501,4 +503,20 @@
   to {
     background-position: 0 0;
   }
+}
+
+/* Data mode (components/view-toggle.tsx): the charts, tables and numbers, without the prose around them. */
+[data-view="data"] [data-narrative] {
+  display: none;
+}
+
+/* The finding is the page's h1, so it stays for a screen reader. */
+[data-view="data"] [data-narrative="heading"] {
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
