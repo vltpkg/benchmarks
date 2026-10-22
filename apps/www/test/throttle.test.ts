@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { throttledFetch } from "@/lib/data";
+import { fetchRetrying, throttle } from "@/lib/data";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -23,7 +23,7 @@ it("caps requests in flight and retries a 429", async () => {
   });
 
   const responses = await Promise.all(
-    Array.from({ length: 50 }, (_, i) => throttledFetch(`https://x/${i}.json`)),
+    Array.from({ length: 50 }, (_, i) => throttle(() => fetchRetrying(`https://x/${i}.json`))),
   );
 
   expect(responses.every((r) => r.status === 200)).toBe(true);

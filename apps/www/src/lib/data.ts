@@ -42,6 +42,10 @@ export const dataBaseUrl = (): string => {
  * GitHub Pages answers a burst with 429, and a prerender is one: a report
  * fans out to hundreds of files, on every build worker at once. So at most
  * MAX_IN_FLIGHT requests run per process, and a 429 waits and tries again.
+ *
+ * The queue is outside "use cache", around the call: a fill waiting on a
+ * module-scoped queue is what `next dev` reports as a deadlock (it re-runs a
+ * fill idle for 10s in isolation, where the queue is empty, and it completes).
  */
 const MAX_IN_FLIGHT = 12;
 const RETRIES = 5;
@@ -63,19 +67,23 @@ const release = (): void => {
   else next();
 };
 
-export const throttledFetch = async (url: string): Promise<Response> => {
+export const throttle = async <T>(task: () => Promise<T>): Promise<T> => {
   await acquire();
   try {
-    for (let attempt = 0; ; attempt++) {
-      const response = await fetch(url);
-      if (response.status !== 429 || attempt === RETRIES) return response;
-      await response.body?.cancel();
-      const after = Number(response.headers.get("retry-after"));
-      const ms = after > 0 ? after * 1000 : 250 * 2 ** attempt;
-      await new Promise((resolve) => setTimeout(resolve, ms));
-    }
+    return await task();
   } finally {
     release();
+  }
+};
+
+export const fetchRetrying = async (url: string): Promise<Response> => {
+  for (let attempt = 0; ; attempt++) {
+    const response = await fetch(url);
+    if (response.status !== 429 || attempt === RETRIES) return response;
+    await response.body?.cancel();
+    const after = Number(response.headers.get("retry-after"));
+    const ms = after > 0 ? after * 1000 : 250 * 2 ** attempt;
+    await new Promise((resolve) => setTimeout(resolve, ms));
   }
 };
 
@@ -89,7 +97,7 @@ export const throttledFetch = async (url: string): Promise<Response> => {
  */
 const cachedGet = async (url: string) => {
   "use cache";
-  const response = await throttledFetch(url);
+  const response = await fetchRetrying(url);
   if (!response.ok && response.status !== 404) {
     throw new Error(`Request for ${url} failed with status ${response.status}`);
   }
@@ -106,7 +114,7 @@ export const dataClient = (): DataClient =>
   new DataClient({
     baseUrl: dataBaseUrl(),
     fetch: async (url) => {
-      const { body, ...rest } = await cachedGet(url);
+      const { body, ...rest } = await throttle(() => cachedGet(url));
       return { ...rest, json: async () => body };
     },
   });
