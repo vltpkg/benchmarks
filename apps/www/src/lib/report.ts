@@ -18,7 +18,13 @@ import { dataClient, probe } from "./data";
 import { flagOutliers, meanBars, type Bar } from "./figures";
 import { formatDuration, formatRatio, type Finding } from "./findings";
 import { scenarioFacts, scopedFinding } from "./headline";
-import { averageTrendDates, loadAverage, loadScenario, type TrendPoint } from "./load";
+import {
+  averageTrendDates,
+  loadAverage,
+  loadScenario,
+  loadSummaries,
+  type TrendPoint,
+} from "./load";
 import {
   countRows,
   perPackageByFixture,
@@ -362,13 +368,18 @@ export const loadReport = async ({
    * them -- the report's numbers are about it.
    */
   const exclude = query.exclude.filter((e) => e.split("@").at(-1) !== date);
-  /* The derived view's trend is cut to what its request budget allows. */
+  /* The derived view's trend reads each run's summary; a run without one is cut to what the request budget allows. */
   const shownPlan = Object.fromEntries(fixtures.map((f) => [f, plan[f] ?? []]));
   const filesPerRun = Object.values(shownPlan).flat().length;
+  const summaries = averageOf === null ? undefined : await loadSummaries(client, window.dates);
   const trendDates =
-    averageOf === null ? window.dates : averageTrendDates(window.dates, filesPerRun);
+    summaries === undefined
+      ? window.dates
+      : averageTrendDates(window.dates, filesPerRun, new Set(summaries.keys()));
   const average =
-    averageOf === null ? null : await loadAverage(client, date, shownPlan, trendDates, { exclude });
+    averageOf === null
+      ? null
+      : await loadAverage(client, date, shownPlan, trendDates, { exclude, summaries });
   const data =
     average ??
     (await loadScenario(client, date, selected.variation, fixtures, trendDates, {
@@ -623,7 +634,7 @@ export const loadReport = async ({
         outliers,
         cut:
           trendDates.length < window.dates.length
-            ? `Each run here averages ${filesPerRun} result files, so the trend covers the last ${trendDates.length} runs of the window.`
+            ? `Each run here averages ${filesPerRun} result files, so the trend shows ${trendDates.length} of the window's ${window.dates.length} runs.`
             : null,
         focus,
         inFocus,

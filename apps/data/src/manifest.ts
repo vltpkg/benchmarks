@@ -66,6 +66,8 @@ export interface DataManifest {
 export interface DirectoryListing {
   name: string;
   files: string[];
+  /** Where the directory is on disk, when it was scanned from one. */
+  dir?: string;
 }
 
 const addPair = (into: VariationsByFixture, fixture: string, variation: string): void => {

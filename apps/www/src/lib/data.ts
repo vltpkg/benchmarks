@@ -42,6 +42,13 @@ export const dataBaseUrl = (): string => {
  * GitHub Pages answers a burst with 429, and a prerender is one: a report
  * fans out to hundreds of files, on every build worker at once. So at most
  * MAX_IN_FLIGHT requests run per process, and a 429 waits and tries again.
+ *
+ * The queue is inside "use cache", in the fill: a prerender's second pass
+ * must find every entry already filled, so nothing may wait before the cached
+ * call. `next dev` skips it, since it reports a fill idle for 10s as a
+ * deadlock (re-run in isolation, where the queue is empty, it completes), and
+ * a long queue is exactly that. Dev reads the local data server, which does
+ * not rate-limit; pointed at GitHub Pages, the retries still apply.
  */
 const MAX_IN_FLIGHT = 12;
 const RETRIES = 5;
@@ -63,21 +70,28 @@ const release = (): void => {
   else next();
 };
 
-export const throttledFetch = async (url: string): Promise<Response> => {
+export const throttle = async <T>(task: () => Promise<T>): Promise<T> => {
   await acquire();
   try {
-    for (let attempt = 0; ; attempt++) {
-      const response = await fetch(url);
-      if (response.status !== 429 || attempt === RETRIES) return response;
-      await response.body?.cancel();
-      const after = Number(response.headers.get("retry-after"));
-      const ms = after > 0 ? after * 1000 : 250 * 2 ** attempt;
-      await new Promise((resolve) => setTimeout(resolve, ms));
-    }
+    return await task();
   } finally {
     release();
   }
 };
+
+export const fetchRetrying = async (url: string): Promise<Response> => {
+  for (let attempt = 0; ; attempt++) {
+    const response = await fetch(url);
+    if (response.status !== 429 || attempt === RETRIES) return response;
+    await response.body?.cancel();
+    const after = Number(response.headers.get("retry-after"));
+    const ms = after > 0 ? after * 1000 : 250 * 2 ** attempt;
+    await new Promise((resolve) => setTimeout(resolve, ms));
+  }
+};
+
+const throttledFetch = (url: string): Promise<Response> =>
+  process.env.NODE_ENV === "development" ? fetchRetrying(url) : throttle(() => fetchRetrying(url));
 
 /*
  * Every fetch of the served tree, cached. A dated file (`2026-10-13/…`,

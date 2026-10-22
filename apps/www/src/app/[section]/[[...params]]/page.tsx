@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment, Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChartLine } from "lucide-react";
 import { InlineCode, Marked } from "@/components/inline-code";
 import { Button } from "@/components/ui/button";
 import { TimeSeriesChart } from "@/components/charts-echarts";
@@ -13,6 +13,7 @@ import { NoData } from "@/components/no-data";
 import { Callout, Figure, ReportSection, Stat } from "@/components/report";
 import { DataAndSource } from "@/components/raw-results";
 import { FixtureMenu } from "@/components/fixture-menu";
+import { HeadingLink } from "@/components/heading-anchor";
 import { PathSkeleton } from "@/components/path-skeleton";
 import { PendingLink, PendingProvider, PendingRegion } from "@/components/report-pending";
 import {
@@ -637,18 +638,31 @@ const Report = async ({
             </>
           }
           action={
-            run.isLatest ? undefined : (
-              <Button asChild size="sm">
-                <PendingLink href={path}>
-                  See the latest run
-                  <ArrowRight aria-hidden />
-                </PendingLink>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                asChild
+                size="sm"
+                variant={run.isLatest ? "default" : "outline"}
+                data-narrative
+              >
+                <HeadingLink to="time-trend">
+                  <ChartLine aria-hidden />
+                  See performance over time
+                </HeadingLink>
               </Button>
-            )
+              {run.isLatest ? null : (
+                <Button asChild size="sm">
+                  <PendingLink href={path}>
+                    See the latest run
+                    <ArrowRight aria-hidden />
+                  </PendingLink>
+                </Button>
+              )}
+            </div>
           }
         />
         {caveats.qualifier === null ? null : (
-          <div className="mt-6">
+          <div data-narrative className="mt-6">
             <Callout title="A faster mean is not ranked">
               <Marked text={caveats.qualifier} />
             </Callout>
@@ -656,7 +670,7 @@ const Report = async ({
         )}
 
         {report.stats === null ? null : (
-          <dl className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <dl data-narrative className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {report.stats.map((stat) => (
               <Stat
                 key={stat.label}
@@ -675,7 +689,7 @@ const Report = async ({
         )}
 
         {caveats.hidden === null ? null : (
-          <div className="mt-10">
+          <div data-narrative className="mt-10">
             <Callout title={caveats.hidden.title}>
               {caveats.hidden.body}{" "}
               <ShowAllTools className="text-foreground underline underline-offset-4" />
@@ -684,7 +698,10 @@ const Report = async ({
         )}
 
         {caveats.disclosure === null ? null : (
-          <p className="mt-10 max-w-[78ch] text-sm leading-relaxed text-muted-foreground">
+          <p
+            data-narrative
+            className="mt-10 max-w-[78ch] text-sm leading-relaxed text-muted-foreground"
+          >
             <span className="font-medium text-foreground">Disclosure.</span> {caveats.disclosure}
           </p>
         )}

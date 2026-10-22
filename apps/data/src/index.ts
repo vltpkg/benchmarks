@@ -21,8 +21,11 @@ export {
   packageCountFile,
   parseDataFile,
   processCountFile,
+  SUMMARY_DIR,
+  summaryPath,
   VERSIONS_FILE,
   type FileKind,
   type ParsedDataFile,
 } from "./paths.ts";
 export { scanRoots } from "./scan.ts";
+export { buildSummary, type DateSummary, type SummaryResult } from "./summary.ts";

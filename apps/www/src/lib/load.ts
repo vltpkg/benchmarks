@@ -1,13 +1,14 @@
 /**
  * Server-side loading for one scenario.
  *
- * Every fetch here is a measurement file. Nothing reads `chart-data.json`:
- * it is derived, it has drifted into six shapes across the archive, and on
- * 2026-04-14 it describes registry data that does not exist. The files are the
- * measurement.
+ * Every fetch here is a measurement file, or a date's summary of them
+ * (apps/data src/summary.ts): the same results, verbatim, in one file. Nothing
+ * reads `chart-data.json`: it is derived, it has drifted into six shapes across
+ * the archive, on 2026-04-14 it describes registry data that does not exist,
+ * and it gives a failed run a time. The files are the measurement.
  */
 import type { BenchmarkFile, Fixture, PackageCount, ProcessCount } from "@benchmarks/types";
-import { DataClient } from "@benchmarks/data";
+import { DataClient, type DateSummary } from "@benchmarks/data";
 import { probe } from "./data";
 import { applyExclusions } from "./figures";
 import { averageFiles, usable } from "./measurements";
@@ -248,9 +249,35 @@ export const loadScenario = async (
  */
 export const AVERAGE_TREND_BUDGET = 400;
 
-/** The most recent dates whose files fit the budget, and never fewer than two. */
-export const averageTrendDates = (dates: readonly string[], cellsPerDate: number): string[] =>
-  dates.slice(-Math.max(2, Math.floor(AVERAGE_TREND_BUDGET / Math.max(cellsPerDate, 1))));
+/**
+ * The window's dates the average's trend draws: every date with a summary,
+ * which costs one fetch, and of the rest the most recent whose files fit the
+ * budget, never fewer than two.
+ */
+export const averageTrendDates = (
+  dates: readonly string[],
+  cellsPerDate: number,
+  summarised: ReadonlySet<string> = new Set(),
+): string[] => {
+  const raw = dates
+    .filter((d) => !summarised.has(d))
+    .slice(-Math.max(2, Math.floor(AVERAGE_TREND_BUDGET / Math.max(cellsPerDate, 1))));
+  return dates.filter((d) => summarised.has(d) || raw.includes(d));
+};
+
+/** Each date's summary, where a deploy has written one; a date without is left out. */
+export const loadSummaries = async (
+  client: DataClient,
+  dates: readonly string[],
+): Promise<Map<string, DateSummary>> => {
+  const found = await Promise.all(dates.map((d) => probe(() => client.getSummary(d))));
+  return new Map(
+    dates.flatMap((d, i) => {
+      const summary = found[i];
+      return summary?.state === "present" ? [[d, summary.value] as const] : [];
+    }),
+  );
+};
 
 /** One measured scenario's file for one fixture. */
 export interface RunCell {
@@ -259,11 +286,38 @@ export interface RunCell {
   readonly file: BenchmarkFile;
 }
 
+/* What a summary leaves out of a result; nothing on a trend reads it. */
+const unsummarised = {
+  median: Number.NaN,
+  min: Number.NaN,
+  max: Number.NaN,
+  user: Number.NaN,
+  system: Number.NaN,
+  times: [],
+};
+
 const loadCells = async (
   client: DataClient,
   date: string,
   plan: { readonly [fixture: string]: readonly string[] },
+  summary?: DateSummary,
 ): Promise<RunCell[]> => {
+  if (summary !== undefined) {
+    return Object.entries(plan).flatMap(([fixture, variations]) =>
+      variations.flatMap((variation) => {
+        const results = summary[variation]?.[fixture];
+        return results === undefined
+          ? []
+          : [
+              {
+                fixture,
+                variation,
+                file: { results: results.map((r) => ({ ...r, ...unsummarised })) },
+              },
+            ];
+      }),
+    );
+  }
   const cells = await Promise.all(
     Object.entries(plan).flatMap(([fixture, variations]) =>
       variations.map(async (variation) => {
@@ -288,11 +342,17 @@ export const loadAverage = async (
   date: string,
   plan: { readonly [fixture: string]: readonly string[] },
   trendDates: readonly string[],
-  options: { readonly exclude?: readonly string[] } = {},
+  options: {
+    readonly exclude?: readonly string[];
+    /** From `loadSummaries`: a summarised run costs one fetch, not one per file. */
+    readonly summaries?: ReadonlyMap<string, DateSummary>;
+  } = {},
 ): Promise<ScenarioData & { readonly cells: readonly RunCell[] }> => {
-  // The run shown is usually the trend's last date; fetched once either way.
+  // The run shown is usually the trend's last date; fetched once either way,
+  // and from its files, which the report reads in full.
   const dates = trendDates.includes(date) ? trendDates : [...trendDates, date];
-  const loaded = await Promise.all(dates.map((d) => loadCells(client, d, plan)));
+  const summaryOf = (d: string) => (d === date ? undefined : options.summaries?.get(d));
+  const loaded = await Promise.all(dates.map((d) => loadCells(client, d, plan, summaryOf(d))));
   const trend = trendDates.flatMap(
     (d, i) => trendPoint(d, averageFiles(loaded[i] ?? [], plan)) ?? [],
   );
@@ -307,7 +367,13 @@ export const loadAverage = async (
     })),
     trend: applyExclusions(trend, options.exclude ?? []),
     trendCost: {
-      requests: dates.length * Object.values(plan).flat().length,
+      requests: dates.reduce(
+        (sum, d) =>
+          sum +
+          (options.summaries === undefined ? 0 : 1) +
+          (summaryOf(d) === undefined ? Object.values(plan).flat().length : 0),
+        0,
+      ),
       dates: trendDates.length,
     },
   };

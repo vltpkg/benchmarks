@@ -169,7 +169,7 @@ export const METRIC_LABELS: { readonly [M in Metric]: string } = {
   total: "Total time",
   change: "Change since start",
   baseline: "Relative to baseline",
-  "per-package": "Per package",
+  "per-package": "Per package (ms/pkg)",
 };
 
 /** The mark a derived metric carries wherever it is chosen or drawn. */
@@ -324,7 +324,7 @@ export const TimeSeriesChart = ({
       : metric === "baseline"
         ? `${v.toFixed(v < 10 ? 2 : 1)}×`
         : metric === "per-package"
-          ? `${v.toFixed(v < 10 ? 2 : 1)}ms`
+          ? `${v.toFixed(v < 10 ? 2 : 1)}ms/pkg`
           : formatDuration(v);
   const derived = metric !== "total";
   const detailOn = useMemo(() => new Map(trend.map((d) => [d.date, d])), [trend]);
@@ -495,12 +495,13 @@ export const TimeSeriesChart = ({
 
   const measured =
     metric === "change"
-      ? "Change since the first run in range"
+      ? "Change since the first run in range (%)"
       : metric === "baseline"
-        ? `Time relative to ${baselineLabel ?? "the baseline"}`
+        ? `Time as a multiple of ${baselineLabel ?? "the baseline"}'s (×)`
         : metric === "per-package"
-          ? "Install time per package"
-          : yLabel;
+          ? "Install time per installed package (ms/pkg)"
+          : /* No unit here: a tick is in seconds or milliseconds and says which. */
+            `${yLabel}, per ${section === "task-runners" ? "run" : "install"}`;
   const yTitle = `${measured}${derived ? " · derived" : ""}${axis === "log" ? " · log scale" : ""}${
     range === null ? "" : range === "fit" ? " · fit to data" : " · zoomed"
   }`;
@@ -996,11 +997,6 @@ export const TimeSeriesChart = ({
                         ...(axis === "log" ? decades(...range) : {}),
                       }),
                 show: true,
-                /* The axis title, as the component sets its own. */
-                name: yTitle,
-                nameLocation: "middle",
-                nameGap: 38,
-                nameTextStyle: { color: EVIL_AXIS_LABEL.color, fontSize: EVIL_AXIS_LABEL.fontSize },
                 axisLine: { show: false },
                 axisTick: EVIL_TICK_DOT,
                 splitLine: EVIL_SPLIT_LINE,
@@ -1277,6 +1273,7 @@ export const TimeSeriesChart = ({
              in every trend on the page, so they are never silent. */
           <div className="mb-4">
             <Callout
+              narrative={false}
               title={`${exclude.length} exclusion${exclude.length === 1 ? "" : "s"} from every trend`}
             >
               <span className="flex flex-wrap items-center gap-1.5">
@@ -1309,6 +1306,8 @@ export const TimeSeriesChart = ({
             </Callout>
           </div>
         )}
+        {/* What the values are, above the plot where it is read first: not turned on its side beside it. */}
+        <p className="pb-3 font-mono text-xs text-muted-foreground">{yTitle}</p>
         <div ref={plot} className="relative">
           {drawn ? (
             <>
@@ -1442,7 +1441,7 @@ export const TimeSeriesChart = ({
               <EChartsLineChart.XAxis
                 tickFormatter={(v: string) => (v.length === 10 ? shortDay(v) : v)}
               />
-              <EChartsLineChart.YAxis label={yTitle} tickFormatter={tick} />
+              <EChartsLineChart.YAxis tickFormatter={tick} />
               <EChartsLineChart.Tooltip />
               {/*
                * EvilCharts' brush, as its docs wire it: a miniature of every

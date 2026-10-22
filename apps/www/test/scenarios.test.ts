@@ -207,11 +207,11 @@ describe("buildOutline", () => {
     expect(buildOutline({ ...base, fixtures: [] })).toEqual([]);
   });
 
-  it("puts the trend cards, the trend, the bars and the table under time", () => {
+  it("puts the trend, the trend cards, the bars and the table under time", () => {
     const time = buildOutline(base).find((s) => s.id === "time");
     expect(time?.items.map((i) => i.id)).toEqual([
-      "trend-by-tool",
       "time-trend",
+      "trend-by-tool",
       "time-bars",
       "time-by-fixture",
       "time-table",

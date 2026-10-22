@@ -240,3 +240,16 @@ describe("the average report's twins", () => {
     expect(text.indexOf("- [average]")).toBeLessThan(text.indexOf("- [clean]"));
   });
 });
+
+describe("averageTrendDates with summaries", () => {
+  it("keeps every summarised date and budgets only the rest", () => {
+    const dates = Array.from({ length: 30 }, (_, i) => `d${String(i).padStart(2, "0")}`);
+    const summarised = new Set(dates.slice(0, 20));
+    // 54 files a run leaves room for 7 raw runs: the last 7 of the 10 unsummarised.
+    expect(averageTrendDates(dates, 54, summarised)).toEqual([
+      ...dates.slice(0, 20),
+      ...dates.slice(23),
+    ]);
+    expect(averageTrendDates(dates, 54, new Set(dates))).toEqual(dates);
+  });
+});

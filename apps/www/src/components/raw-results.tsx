@@ -69,7 +69,7 @@ export const DataAndSource = ({ raw = [] }: { raw?: readonly RawFile[] }) => {
     </CommandItem>
   );
   return (
-    <nav aria-labelledby="data-and-source" className="mt-24 min-w-0">
+    <nav aria-labelledby="data-and-source" className="mt-24 min-w-0 data-mode:mt-12">
       <h2 id="data-and-source" className="sr-only">
         Data and source
       </h2>

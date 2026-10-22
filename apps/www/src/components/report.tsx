@@ -15,7 +15,7 @@ import { HeadingAnchor, HeadingLink } from "@/components/heading-anchor";
  * its `id`, and its title links to it, so a deep link to a figure works.
  * Hovering a title shows `HeadingAnchor`, a copy-link icon in the margin.
  */
-const ANCHOR = "scroll-mt-[calc(var(--header-height)+1.5rem)]";
+const ANCHOR = "scroll-mt-[calc(var(--header-height)+4.5rem)]";
 
 export const ReportSection = ({
   id,
@@ -30,16 +30,16 @@ export const ReportSection = ({
   title?: string;
   children: ReactNode;
 }) => (
-  <section id={id} className={`${ANCHOR} mt-24`}>
+  <section id={id} className={`${ANCHOR} mt-24 data-mode:mt-12`}>
     {title === undefined ? null : (
-      <h2 className="group/heading relative mb-8 w-fit text-2xl font-semibold tracking-tight">
+      <h2 className="group/heading relative mb-8 w-fit data-mode:mb-4 text-2xl font-semibold tracking-tight">
         <HeadingLink to={id} className="rounded-sm">
           {title}
         </HeadingLink>
         <HeadingAnchor id={id} title={title} />
       </h2>
     )}
-    <div className="space-y-10">{children}</div>
+    <div className="space-y-10 data-mode:space-y-6">{children}</div>
   </section>
 );
 
@@ -179,7 +179,7 @@ export const Figure = ({
       {kind === "table" || tabs !== undefined ? (
         /* A table has no tab, and tabs name views: the title is a heading above the container. */
         <Heading
-          className={`group/heading relative mb-5 flex w-fit max-w-full items-center gap-2 ${
+          className={`group/heading relative mb-5 flex w-fit max-w-full items-center gap-2 data-mode:mb-3 ${
             level === 2 ? "text-2xl font-semibold tracking-tight" : "text-lg font-semibold"
           }`}
         >
@@ -241,7 +241,12 @@ export const Figure = ({
       </div>
 
       {guide === undefined ? null : (
-        <p className="mt-4 max-w-[78ch] text-sm leading-relaxed text-muted-foreground">{guide}</p>
+        <p
+          data-narrative
+          className="mt-4 max-w-[78ch] text-sm leading-relaxed text-muted-foreground"
+        >
+          {guide}
+        </p>
       )}
       {notes.map((note) => (
         <div key={note.title} className="mt-3">
@@ -263,9 +268,19 @@ export interface Note {
  * an info mark, a short title at full ink and the explanation beneath it.
  * Quiet, but read at a glance -- a muted paragraph behind a rule was not.
  */
-export const Callout = ({ title, children }: { title: string; children: ReactNode }) => (
+export const Callout = ({
+  title,
+  narrative = true,
+  children,
+}: {
+  title: string;
+  /** Prose that data mode hides; false for one that holds controls. */
+  narrative?: boolean;
+  children: ReactNode;
+}) => (
   <div
     role="note"
+    data-narrative={narrative ? "" : undefined}
     className="flex w-full gap-3 rounded-xl border bg-card px-4 py-3.5 text-sm leading-relaxed"
   >
     <Info aria-hidden className="mt-[0.1875rem] size-4 shrink-0 text-muted-foreground" />
