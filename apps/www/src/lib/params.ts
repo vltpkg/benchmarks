@@ -43,7 +43,7 @@ export const reportParams = {
   /** SERVER. One fixture; absent means all of them, averaged. */
   fixture: parseAsString,
   /** SERVER. A preset trend window: this many days, ending at the run shown. */
-  range: parseAsNumberLiteral(RANGES).withDefault(120),
+  range: parseAsNumberLiteral(RANGES).withDefault(30),
   /** SERVER. An exact trend window. Both must be published dates; see `trendWindow`. */
   from: parseAsString,
   to: parseAsString,
