@@ -34,6 +34,11 @@ export const MANIFEST_DIR = "manifest";
  */
 export const manifestShardPath = (name: string): string[] => [MANIFEST_DIR, `${name}.json`];
 
+/** Directory holding one results summary per date (src/summary.ts), beside the shards. */
+export const SUMMARY_DIR = "summary";
+
+export const summaryPath = (date: string): string[] => [SUMMARY_DIR, `${date}.json`];
+
 const PACKAGE_COUNT_SUFFIX = "-package-count.json";
 const PROCESS_COUNT_SUFFIX = "-process-count.json";
 const JSON_SUFFIX = ".json";

@@ -15,15 +15,18 @@
  *
  *   node bin/build-manifest.mts --out suite/results gh-pages-data suite/results
  *
- * Writes only index.json, manifest.json and the manifest/ shards. It never
+ * Writes only index.json, manifest.json, the manifest/ shards and the summary/
+ * files. It never
  * copies or re-emits the published date directories (decision D2), and never
  * writes an index.html.
  */
-import { mkdirSync, statSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildManifest } from "../src/manifest.ts";
 import { scanRoots } from "../src/scan.ts";
-import { INDEX_FILE, MANIFEST_DIR, MANIFEST_FILE } from "../src/paths.ts";
+import { buildSummary } from "../src/summary.ts";
+import { INDEX_FILE, MANIFEST_DIR, MANIFEST_FILE, SUMMARY_DIR } from "../src/paths.ts";
+import { isDateKey } from "@benchmarks/types";
 
 const argv = process.argv.slice(2);
 let out: string | undefined;
@@ -107,9 +110,28 @@ for (const [name, entry] of Object.entries(manifest.entries)) {
   shardCount++;
 }
 
+// One results summary per date (src/summary.ts), deterministic for the same
+// reason as the shards. latest/ is merged rather than a run, so it gets none.
+const summaryDir = join(out, SUMMARY_DIR);
+mkdirSync(summaryDir, { recursive: true });
+let summaryCount = 0;
+const skipped: string[] = [];
+for (const listing of listings) {
+  if (!isDateKey(listing.name) || listing.dir === undefined) continue;
+  const dir = listing.dir;
+  const built = buildSummary(listing, (file) => readFileSync(join(dir, file), "utf8"));
+  skipped.push(...built.skipped.map((file) => `${listing.name}/${file}`));
+  writeFileSync(join(summaryDir, `${listing.name}.json`), `${JSON.stringify(built.summary)}\n`);
+  summaryCount++;
+}
+if (skipped.length > 0) {
+  console.warn(`left out of the summaries, not benchmark files: ${skipped.join(", ")}`);
+}
+
 const dirCount = Object.keys(manifest.entries).length;
 console.log(
-  `wrote ${INDEX_FILE}, ${MANIFEST_FILE} and ${shardCount} ${MANIFEST_DIR}/ shards to ${out}: ` +
+  `wrote ${INDEX_FILE}, ${MANIFEST_FILE}, ${shardCount} ${MANIFEST_DIR}/ shards and ` +
+    `${summaryCount} ${SUMMARY_DIR}/ files to ${out}: ` +
     `${index.dates.length} dates, ${dirCount} directories, latest=${index.latest ?? "none"}, ` +
     `${index.fixtures.length} fixtures, ${index.variations.length} variations`,
 );

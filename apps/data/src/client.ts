@@ -25,8 +25,10 @@ import {
   manifestShardPath,
   packageCountFile,
   processCountFile,
+  summaryPath,
   VERSIONS_FILE,
 } from "./paths.ts";
+import type { DateSummary } from "./summary.ts";
 
 export type FetchLike = (url: string) => Promise<{
   ok: boolean;
@@ -127,6 +129,11 @@ export class DataClient {
     variation: Variation | string,
   ): Promise<ProcessCount> {
     return this.#get<ProcessCount>(date, processCountFile(fixture, variation));
+  }
+
+  /** Every benchmark file of one date in one fetch (src/summary.ts); 404 until a deploy has written it. */
+  getSummary(date: string): Promise<DateSummary> {
+    return this.#get<DateSummary>(...summaryPath(date));
   }
 
   getChartData(date: string): Promise<ChartData> {

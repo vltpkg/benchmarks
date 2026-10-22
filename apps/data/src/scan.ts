@@ -31,7 +31,7 @@ export const scanRoots = (roots: string[]): DirectoryListing[] => {
       } catch {
         continue;
       }
-      byName.set(name, { name, files });
+      byName.set(name, { name, files, dir });
     }
   }
 
