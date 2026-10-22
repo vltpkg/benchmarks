@@ -15,7 +15,7 @@ import { HeadingAnchor, HeadingLink } from "@/components/heading-anchor";
  * its `id`, and its title links to it, so a deep link to a figure works.
  * Hovering a title shows `HeadingAnchor`, a copy-link icon in the margin.
  */
-const ANCHOR = "scroll-mt-[calc(var(--header-height)+1.5rem)]";
+const ANCHOR = "scroll-mt-[calc(var(--header-height)+4.5rem)]";
 
 export const ReportSection = ({
   id,

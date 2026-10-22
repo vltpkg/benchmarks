@@ -167,7 +167,7 @@ export const ReportIntro = ({
   /** Names between backticks. Absent while the report loads. */
   finding?: string;
   lede?: ReactNode;
-  /** A call to action under the lede: on a past run, the way to the latest. */
+  /** Calls to action under the lede: the way to the trend, and on a past run the way to the latest. */
   action?: ReactNode;
 }) => {
   const scenario = scenarioOf(section, variation);

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment, Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChartLine } from "lucide-react";
 import { InlineCode, Marked } from "@/components/inline-code";
 import { Button } from "@/components/ui/button";
 import { TimeSeriesChart } from "@/components/charts-echarts";
@@ -13,6 +13,7 @@ import { NoData } from "@/components/no-data";
 import { Callout, Figure, ReportSection, Stat } from "@/components/report";
 import { DataAndSource } from "@/components/raw-results";
 import { FixtureMenu } from "@/components/fixture-menu";
+import { HeadingLink } from "@/components/heading-anchor";
 import { PathSkeleton } from "@/components/path-skeleton";
 import { PendingLink, PendingProvider, PendingRegion } from "@/components/report-pending";
 import {
@@ -637,14 +638,22 @@ const Report = async ({
             </>
           }
           action={
-            run.isLatest ? undefined : (
-              <Button asChild size="sm">
-                <PendingLink href={path}>
-                  See the latest run
-                  <ArrowRight aria-hidden />
-                </PendingLink>
+            <div className="flex flex-wrap gap-2">
+              <Button asChild size="sm" variant={run.isLatest ? "default" : "outline"}>
+                <HeadingLink to="time-trend">
+                  <ChartLine aria-hidden />
+                  See performance over time
+                </HeadingLink>
               </Button>
-            )
+              {run.isLatest ? null : (
+                <Button asChild size="sm">
+                  <PendingLink href={path}>
+                    See the latest run
+                    <ArrowRight aria-hidden />
+                  </PendingLink>
+                </Button>
+              )}
+            </div>
           }
         />
         {caveats.qualifier === null ? null : (
