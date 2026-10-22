@@ -634,7 +634,7 @@ export const loadReport = async ({
         outliers,
         cut:
           trendDates.length < window.dates.length
-            ? `Each run here averages ${filesPerRun} result files, so the trend covers the last ${trendDates.length} runs of the window.`
+            ? `Each run here averages ${filesPerRun} result files, so the trend shows ${trendDates.length} of the window's ${window.dates.length} runs.`
             : null,
         focus,
         inFocus,

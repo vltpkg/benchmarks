@@ -268,10 +268,19 @@ export interface Note {
  * an info mark, a short title at full ink and the explanation beneath it.
  * Quiet, but read at a glance -- a muted paragraph behind a rule was not.
  */
-export const Callout = ({ title, children }: { title: string; children: ReactNode }) => (
+export const Callout = ({
+  title,
+  narrative = true,
+  children,
+}: {
+  title: string;
+  /** Prose that data mode hides; false for one that holds controls. */
+  narrative?: boolean;
+  children: ReactNode;
+}) => (
   <div
     role="note"
-    data-narrative
+    data-narrative={narrative ? "" : undefined}
     className="flex w-full gap-3 rounded-xl border bg-card px-4 py-3.5 text-sm leading-relaxed"
   >
     <Info aria-hidden className="mt-[0.1875rem] size-4 shrink-0 text-muted-foreground" />

@@ -510,6 +510,11 @@
   display: none;
 }
 
+/* The actions row goes once every link in it has (the latest run's link stays). */
+[data-view="data"] [data-actions]:not(:has(a:not([data-narrative]))) {
+  display: none;
+}
+
 /* The finding is the page's h1, so it stays for a screen reader. */
 [data-view="data"] [data-narrative="heading"] {
   display: block;

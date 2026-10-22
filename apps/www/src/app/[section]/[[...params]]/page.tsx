@@ -639,7 +639,12 @@ const Report = async ({
           }
           action={
             <div className="flex flex-wrap gap-2">
-              <Button asChild size="sm" variant={run.isLatest ? "default" : "outline"}>
+              <Button
+                asChild
+                size="sm"
+                variant={run.isLatest ? "default" : "outline"}
+                data-narrative
+              >
                 <HeadingLink to="time-trend">
                   <ChartLine aria-hidden />
                   See performance over time

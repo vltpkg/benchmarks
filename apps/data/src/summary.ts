@@ -30,7 +30,8 @@ export const buildSummary = (
   listing: DirectoryListing,
   read: (file: string) => string,
 ): { summary: DateSummary; skipped: string[] } => {
-  const summary: DateSummary = {};
+  // A variation is whatever the file name says, `__proto__` included.
+  const summary: DateSummary = Object.create(null);
   const skipped: string[] = [];
   for (const file of listing.files) {
     const parsed = parseDataFile(file);
@@ -41,7 +42,7 @@ export const buildSummary = (
     } catch {
       results = undefined;
     }
-    if (!Array.isArray(results)) {
+    if (!Array.isArray(results) || !results.every((r) => typeof r === "object" && r !== null)) {
       skipped.push(file);
       continue;
     }

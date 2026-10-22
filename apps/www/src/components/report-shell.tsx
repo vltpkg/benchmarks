@@ -241,7 +241,7 @@ export const ReportIntro = ({
         )}
       </p>
       {action === undefined ? null : (
-        <div data-narrative className="mt-5">
+        <div data-actions className="mt-5">
           {action}
         </div>
       )}

@@ -14,6 +14,8 @@ describe("buildSummary", () => {
       "next-clean-package-count.json": "{}",
       "chart-data.json": "{}",
       "astro-clean.json": "not json",
+      "vue-clean.json": JSON.stringify({ results: [null] }),
+      "next-__proto__.json": JSON.stringify({ results: [] }),
     };
     const { summary, skipped } = buildSummary(
       { name: "2026-10-19", files: Object.keys(files) },
@@ -27,7 +29,9 @@ describe("buildSummary", () => {
         ],
       },
       "registry-clean": { next: [] },
+      ["__proto__"]: { next: [] },
     });
-    expect(skipped).toEqual(["astro-clean.json"]);
+    expect(Object.prototype).not.toHaveProperty("next");
+    expect(skipped).toEqual(["astro-clean.json", "vue-clean.json"]);
   });
 });

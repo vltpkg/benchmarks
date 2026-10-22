@@ -368,7 +368,10 @@ export const loadAverage = async (
     trend: applyExclusions(trend, options.exclude ?? []),
     trendCost: {
       requests: dates.reduce(
-        (sum, d) => sum + (summaryOf(d) === undefined ? Object.values(plan).flat().length : 1),
+        (sum, d) =>
+          sum +
+          (options.summaries === undefined ? 0 : 1) +
+          (summaryOf(d) === undefined ? Object.values(plan).flat().length : 0),
         0,
       ),
       dates: trendDates.length,

@@ -1273,6 +1273,7 @@ export const TimeSeriesChart = ({
              in every trend on the page, so they are never silent. */
           <div className="mb-4">
             <Callout
+              narrative={false}
               title={`${exclude.length} exclusion${exclude.length === 1 ? "" : "s"} from every trend`}
             >
               <span className="flex flex-wrap items-center gap-1.5">
