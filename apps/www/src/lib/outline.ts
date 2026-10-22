@@ -59,8 +59,8 @@ export const buildOutline = (input: OutlineInput): OutlineSection[] => {
     title: measure,
     summary: `By tool, over time, and as raw numbers`,
     items: [
-      chart("trend-by-tool", "Trend by tool"),
       chart("time-trend", "Performance over time"),
+      chart("trend-by-tool", "Trend by tool"),
       chart("time-bars", `Total ${measureNoun} time by tool`),
       ...(fixtureCount > 1
         ? [chart("time-by-fixture", `Total ${measureNoun} time by fixture`)]
