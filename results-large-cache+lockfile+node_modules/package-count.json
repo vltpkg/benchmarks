@@ -1,9 +1,9 @@
 {
   "npm": {
-    "count": 1398
+    "count": 1399
   },
   "yarn": {
-    "count": 1327
+    "count": 1328
   },
   "berry": {
     "count": 1328
@@ -18,7 +18,7 @@
     "count": 1285
   },
   "bun": {
-    "count": 1533
+    "count": 1534
   },
   "deno": {
     "count": 1279
