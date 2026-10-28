@@ -3,13 +3,13 @@
     "count": 1399
   },
   "yarn": {
-    "count": 1328
+    "count": 1329
   },
   "berry": {
-    "count": 1328
+    "count": 1329
   },
   "zpm": {
-    "count": 1510
+    "count": 1509
   },
   "pnpm": {
     "count": 1281
@@ -21,12 +21,12 @@
     "count": 1534
   },
   "deno": {
-    "count": 1279
+    "count": 1278
   },
   "aube": {
-    "count": 1085,
-    "minCount": 1084,
-    "maxCount": 1087
+    "count": 1084,
+    "minCount": 1083,
+    "maxCount": 1086
   },
   "upm": {
     "count": 1292
