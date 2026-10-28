@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist_Mono, Geist_Pixel, Inter } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -109,6 +110,8 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
             </TooltipProvider>
           </NuqsAdapter>
         </ThemeProvider>
+        {/* Vercel Web Analytics: page views only, recorded on Vercel deployments. */}
+        <Analytics />
       </body>
     </html>
   );
