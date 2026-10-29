@@ -102,12 +102,16 @@ clean_aube_metadata_cache() {
   fi
 }
 
-# Function to safely clean upm cache (shared store and metadata).
-# upm stores content-addressable files in ~/.upm/store and metadata in
-# ~/.upm/store/metadata. `upm prune` only removes unreferenced entries, so we
-# wipe the entire store directory for a clean benchmark.
+# Function to safely clean upm cache (shared store, metadata, and compile cache).
+# upm resolves its directories via XDG base directories on Linux:
+#   data  (store + metadata): $XDG_DATA_HOME/upm  or ~/.local/share/upm
+#   cache (compile cache):    $XDG_CACHE_HOME/upm  or ~/.cache/upm
+# When ~/.upm/store already exists, upm falls back to ~/.upm for both.
+# `upm prune` only removes unreferenced entries, so we wipe everything.
 clean_upm_cache() {
   safe_remove "$HOME/.upm"
+  safe_remove "${XDG_DATA_HOME:-$HOME/.local/share}/upm"
+  safe_remove "${XDG_CACHE_HOME:-$HOME/.cache}/upm"
 }
 
 # Function to safely clean ALL aube caches, including the configured store.
@@ -172,6 +176,8 @@ clean_package_manager_files() {
   safe_remove "pnpm-debug.log"
   safe_remove "yarn-error.log"
   safe_remove ".aube"
+  safe_remove ".upm"
+  safe_remove ".upm-store"
 }
 
 # Function to remove benchmark-added registry lines from .npmrc
