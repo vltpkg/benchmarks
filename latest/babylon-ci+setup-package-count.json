@@ -5,12 +5,12 @@
     "maxCount": 1802
   },
   "berry": {
-    "count": 1763,
+    "count": 1759,
     "minCount": 1729,
-    "maxCount": 1788
+    "maxCount": 1789
   },
   "pnpm": {
-    "count": 1680
+    "count": 1681
   },
   "vlt": {
     "count": 1550
@@ -25,6 +25,6 @@
     "count": 1345
   },
   "upm": {
-    "count": 1568
+    "count": 1569
   }
 }

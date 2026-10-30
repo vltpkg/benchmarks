@@ -22,10 +22,10 @@ https://nextjs.org/telemetry
 
 Route (app)                              Size     First Load JS
 ┌ ○ /                                    5.46 kB         105 kB
-└ ○ /_not-found                          897 B           101 kB
+└ ○ /_not-found                          896 B           101 kB
 + First Load JS shared by all            100 kB
-  ├ chunks/139-3d0ffce7fdb64a02.js       45.6 kB
-  ├ chunks/516832d0-1f423ce8c3fdb6df.js  52.5 kB
+  ├ chunks/2ce164b2-fd6e43246105dcc2.js  52.5 kB
+  ├ chunks/323-461d6f271d4b26c8.js       45.6 kB
   └ other shared chunks (total)          1.88 kB
 
 

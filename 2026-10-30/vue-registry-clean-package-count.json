@@ -1,0 +1,20 @@
+{
+  "npm": {
+    "count": 448
+  },
+  "vlt": {
+    "count": 448
+  },
+  "aws": {
+    "count": 448
+  },
+  "cloudsmith": {
+    "count": 451
+  },
+  "github": {
+    "count": 448
+  },
+  "jfrog": {
+    "count": 448
+  }
+}
