@@ -21,11 +21,11 @@ https://nextjs.org/telemetry
    Collecting build traces ...
 
 Route (app)                              Size     First Load JS
-┌ ○ /                                    5.46 kB         105 kB
-└ ○ /_not-found                          896 B           101 kB
-+ First Load JS shared by all            100 kB
-  ├ chunks/2ce164b2-fd6e43246105dcc2.js  52.5 kB
-  ├ chunks/323-461d6f271d4b26c8.js       45.6 kB
+┌ ○ /                                    5.47 kB         105 kB
+└ ○ /_not-found                          895 B           101 kB
++ First Load JS shared by all            99.9 kB
+  ├ chunks/67-abb0c999e743062f.js        45.6 kB
+  ├ chunks/6cdbcdbd-de29fea43a57e901.js  52.5 kB
   └ other shared chunks (total)          1.88 kB
 
 
