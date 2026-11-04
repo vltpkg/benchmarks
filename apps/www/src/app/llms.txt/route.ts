@@ -17,7 +17,7 @@ Every page is available as Markdown: append \`.md\` to its URL, or request the p
 ## Reading the results
 
 ${READING.map((line) => `- ${line}`).join("\n")}
-- Page parameters: \`date\`, \`fixture\`, \`range\` (30, 60, 90 or 120 days of trend), \`from\` and \`to\` (an exact trend window), \`hide\` (comma-separated tools), \`metric\` (total, change, baseline or per-package), \`exclude\` (\`YYYY-MM-DD\` or \`tool@YYYY-MM-DD\`, comma-separated).
+- Page parameters: \`date\`, \`fixture\`, \`range\` (today, 1w, 1m, 1y or all: rolling days of trend ending at the run; default 1m), \`from\` and \`to\` (an exact trend window), \`hide\` (comma-separated tools), \`metric\` (total, change, baseline or per-package), \`exclude\` (\`YYYY-MM-DD\` or \`tool@YYYY-MM-DD\`, comma-separated).
 
 ## API and MCP
 

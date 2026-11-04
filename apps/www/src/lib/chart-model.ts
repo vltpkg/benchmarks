@@ -162,8 +162,12 @@ export const spreadOf = (
 
 const DAY = 86_400_000;
 
-/** Cap on densification, so a two-year window cannot produce 700 rows. */
-export const MAX_DENSE_DAYS = 120;
+/**
+ * Cap on densification: about three years, so the whole archive (440 days and
+ * growing) is spaced by calendar time on every window, All time included. A
+ * row per day is cheap at this size; past it the fallback below takes over.
+ */
+export const MAX_DENSE_DAYS = 1100;
 
 /**
  * Rows covering every calendar day between the first and last published run.
@@ -214,6 +218,155 @@ export const toDenseChartRows = (
     rows.push(blank);
   }
   return { rows, dense: true, spanDays };
+};
+
+/** One row of a trend chart: a date and each tool's value, `null` for a hole. */
+export type ChartRow = { date: string; [tool: string]: string | number | null };
+
+/**
+ * Dense rows, by column: what the server sends a chart island instead of one
+ * object per calendar day with every tool's key repeated. Lossless -- the
+ * values are the rows' own, unrounded -- and `rowsOf` turns it back into
+ * exactly those rows, so the charts' internals never see the difference.
+ */
+export interface DenseSeries {
+  /** First calendar day, YYYY-MM-DD. Index i is start + i days. */
+  readonly start: string;
+  /** Calendar days covered; every array below has this length. */
+  readonly length: number;
+  /** False past MAX_DENSE_DAYS: then `dates` lists each index's day (the sparse fallback). */
+  readonly dense: boolean;
+  readonly dates?: readonly string[];
+  /** One column per tool, null for a hole (never 0). */
+  readonly values: { readonly [tool: string]: readonly (number | null)[] };
+}
+
+/** `toDenseChartRows`, by column. */
+export const toDenseSeries = (
+  points: readonly Plotted[],
+  tools: readonly string[],
+): DenseSeries => {
+  const { rows, dense } = toDenseChartRows(points, tools);
+  /* Dense rows are consecutive days, so their dates are implied. */
+  const implied = dense && rows.length > 0;
+  return {
+    start: rows[0]?.date ?? "",
+    length: rows.length,
+    dense: implied,
+    ...(implied ? {} : { dates: rows.map((r) => r.date) }),
+    values: Object.fromEntries(
+      tools.map((tool) => [tool, rows.map((r) => (typeof r[tool] === "number" ? r[tool] : null))]),
+    ),
+  };
+};
+
+/** The rows a `DenseSeries` encodes: `toDenseChartRows(points, tools).rows`, exactly. */
+export const rowsOf = (series: DenseSeries): ChartRow[] => {
+  const first = Date.parse(`${series.start}T00:00:00Z`);
+  const columns = Object.entries(series.values);
+  return Array.from({ length: series.length }, (_, i) => {
+    const date = series.dense
+      ? new Date(first + i * DAY).toISOString().slice(0, 10)
+      : (series.dates?.[i] ?? "");
+    const row: ChartRow = { date };
+    for (const [tool, column] of columns) row[tool] = column[i] ?? null;
+    return row;
+  });
+};
+
+/** What a chart island needs of each run besides its plotted values. */
+export type TrendRun = Pick<
+  TrendPoint,
+  "date" | "fixtures" | "partial" | "failed" | "byFixture" | "rsd" | "rsdByFixture"
+>;
+
+type Column = readonly (number | null)[];
+
+/**
+ * Each run's detail, by column: what the server sends instead of one object
+ * per run with every tool and fixture key repeated. The per-fixture seconds
+ * and spreads are most of a long trend's bytes, so they become one column per
+ * (tool, fixture) over the runs, `null` where that run has no value. Partial
+ * and failed are sparse and stay per run. Lossless -- nothing is rounded --
+ * and `trendOf` gives back the runs.
+ */
+export interface TrendColumns {
+  readonly dates: readonly string[];
+  /** Every fixture any run published, in first-seen order. */
+  readonly fixtures: readonly string[];
+  /** Which of `fixtures` each run published, by index, in the run's own order. */
+  readonly published: readonly (readonly number[])[];
+  readonly partial: readonly TrendRun["partial"][];
+  readonly failed: readonly TrendRun["failed"][];
+  readonly rsd: { readonly [tool: string]: Column };
+  readonly byFixture: { readonly [tool: string]: { readonly [fixture: string]: Column } };
+  readonly rsdByFixture: { readonly [tool: string]: { readonly [fixture: string]: Column } };
+}
+
+/** The runs' detail by column. */
+export const toTrendColumns = (runs: readonly TrendRun[]): TrendColumns => {
+  const fixtures = [...new Set(runs.flatMap((r) => r.fixtures))];
+  const nested = (
+    pick: (r: TrendRun) => { readonly [tool: string]: { readonly [fixture: string]: number } },
+  ) => {
+    const out: { [tool: string]: { [fixture: string]: (number | null)[] } } = {};
+    runs.forEach((run, i) => {
+      for (const [tool, byFixture] of Object.entries(pick(run))) {
+        for (const [fixture, value] of Object.entries(byFixture)) {
+          ((out[tool] ??= {})[fixture] ??= Array.from({ length: runs.length }, () => null))[i] =
+            value;
+        }
+      }
+    });
+    return out;
+  };
+  const rsd: { [tool: string]: (number | null)[] } = {};
+  runs.forEach((run, i) => {
+    for (const [tool, value] of Object.entries(run.rsd)) {
+      (rsd[tool] ??= Array.from({ length: runs.length }, () => null))[i] = value;
+    }
+  });
+  return {
+    dates: runs.map((r) => r.date),
+    fixtures,
+    published: runs.map((r) => r.fixtures.map((f) => fixtures.indexOf(f))),
+    partial: runs.map((r) => r.partial),
+    failed: runs.map((r) => r.failed),
+    rsd,
+    byFixture: nested((r) => r.byFixture),
+    rsdByFixture: nested((r) => r.rsdByFixture),
+  };
+};
+
+/** The runs a `TrendColumns` encodes: a tool or fixture with no value on a run is absent, as it was. */
+export const trendOf = (columns: TrendColumns): TrendRun[] => {
+  const unnest = (
+    by: TrendColumns["byFixture"],
+    i: number,
+  ): { [tool: string]: { [fixture: string]: number } } => {
+    const out: { [tool: string]: { [fixture: string]: number } } = {};
+    for (const [tool, byFixture] of Object.entries(by)) {
+      for (const [fixture, column] of Object.entries(byFixture)) {
+        const value = column[i];
+        if (typeof value === "number") (out[tool] ??= {})[fixture] = value;
+      }
+    }
+    return out;
+  };
+  return columns.dates.map((date, i) => ({
+    date,
+    fixtures: (columns.published[i] ?? []).map((f) => columns.fixtures[f] ?? ""),
+    partial: columns.partial[i] ?? {},
+    failed: columns.failed[i] ?? {},
+    byFixture: unnest(columns.byFixture, i),
+    rsd: Object.fromEntries(
+      Object.entries(columns.rsd).flatMap(([tool, column]) => {
+        const value = column[i];
+        return typeof value === "number" ? [[tool, value]] : [];
+      }),
+    ),
+    rsdByFixture: unnest(columns.rsdByFixture, i),
+  }));
 };
 
 /* ------------------------------------------------------------------ */

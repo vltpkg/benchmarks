@@ -28,4 +28,13 @@ export {
   type ParsedDataFile,
 } from "./paths.ts";
 export { scanRoots } from "./scan.ts";
-export { buildSummary, type DateSummary, type SummaryResult } from "./summary.ts";
+export {
+  buildSummary,
+  SUMMARY_PACKAGE_COUNTS,
+  SUMMARY_VERSIONS,
+  summaryPackageCounts,
+  summaryVersions,
+  type DateSummary,
+  type SummaryCounts,
+  type SummaryResult,
+} from "./summary.ts";

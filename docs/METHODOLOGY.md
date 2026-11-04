@@ -119,6 +119,7 @@ nightly run since 2025-08-22.
 /{date}/versions.json                              tool versions for that run
 /latest/                                           see below — NOT a copy
 /index.json  /manifest.json  /manifest/{date}.json discovery layer
+/summary/{date}.json                               one date's results, counts and versions
 ```
 
 [`packages/types`](../packages/types/src/index.ts) encodes these shapes and is
@@ -178,3 +179,21 @@ given row.
 
 For a single date, fetch `index.json` plus that date's shard (~12KB), not the
 whole manifest.
+
+### `summary/{date}.json`
+
+One file per date, so a trend over many runs costs one fetch a run, not one
+per file. Every value is lifted verbatim from that date's files; nothing is
+derived. Written by `apps/data` build-manifest on each deploy, for every date.
+
+| Key              | Holds                                                                                   |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| `{variation}`    | `{fixture}` to that benchmark file's results: `command`, `mean`, `stddev`, `exit_codes` |
+| `#packageCounts` | `{variation}` to `{fixture}` to that package-count file, as published                   |
+| `#versions`      | that date's `versions.json`                                                             |
+
+Results keep `exit_codes`, so a failed run is still a failed run. The `#` keys
+were added in 2026-11 and are each optional: a summary written before then has
+none, and a date that published no count files or no `versions.json` has no
+such key. Absent means "read the file", never zero. No variation name starts
+with `#`.

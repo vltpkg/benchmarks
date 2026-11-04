@@ -14,11 +14,14 @@ import { describe, expect, it } from "vitest";
 import {
   alignedSeries,
   gappedPath,
+  MAX_DENSE_DAYS,
+  rowsOf,
   niceTicks,
   segments,
   spreadOf,
   toChartRows,
   toDenseChartRows,
+  toDenseSeries,
 } from "../src/lib/chart-model.ts";
 import { PACKAGE_MANAGERS, usable, type ToolMean } from "../src/lib/measurements.ts";
 import { findingFor, formatRatio, formatVersus } from "../src/lib/findings.ts";
@@ -246,16 +249,66 @@ describe("inventory 12 · a calendar gap is a real hole, not an equal step", () 
     expect(rows).toHaveLength(2);
   });
 
-  it("falls back rather than emitting 700 rows for a two-year window, and says so", () => {
+  it("keeps a whole-archive window on the calendar: one row per day", () => {
     const { dense, spanDays, rows } = toDenseChartRows(
       [
         { date: "2025-08-22", byTool: { npm: 1 } },
+        { date: "2026-09-26", byTool: { npm: 2 } },
+      ],
+      ["npm"],
+    );
+    expect(dense).toBe(true);
+    expect(spanDays).toBe(401); // calendar days, both ends included
+    expect(rows).toHaveLength(401);
+    expect(rows[1]?.["date"]).toBe("2025-08-23");
+  });
+
+  it("by column, the same rows exactly: a 400-day span with holes and partial tools", () => {
+    // One run in three, a tool that skips some, another that never ran, an excluded zero.
+    const runs = Array.from({ length: 134 }, (_, i) => ({
+      date: new Date(Date.parse("2025-08-22T00:00:00Z") + i * 3 * 86_400_000)
+        .toISOString()
+        .slice(0, 10),
+      byTool: { npm: 10 + i / 7, bun: i % 5 === 0 ? undefined : 1 / (i + 3), vlt: 0 },
+    }));
+    const tools = ["npm", "bun", "vlt", "deno"];
+    const series = toDenseSeries(runs, tools);
+    expect(series).toMatchObject({ start: "2025-08-22", length: 400, dense: true });
+    expect(series.dates).toBeUndefined();
+    expect(rowsOf(series)).toEqual(toDenseChartRows(runs, tools).rows);
+    expect(Object.keys(rowsOf(series)[0] ?? {})).toEqual(["date", ...tools]);
+    // Lossless: nothing rounded on the way.
+    expect(series.values["bun"]?.[3]).toBe(1 / 4);
+  });
+
+  it("by column, the sparse fallback keeps each run's date", () => {
+    const runs = [
+      { date: "2022-01-01", byTool: { npm: 1 } },
+      { date: "2024-02-29", byTool: { npm: undefined } },
+      { date: "2026-06-29", byTool: { npm: 2 } },
+    ];
+    const series = toDenseSeries(runs, ["npm"]);
+    expect(series.dense).toBe(false);
+    expect(series.dates).toEqual(["2022-01-01", "2024-02-29", "2026-06-29"]);
+    expect(rowsOf(series)).toEqual(toDenseChartRows(runs, ["npm"]).rows);
+  });
+
+  it("by column, a single run and an empty trend", () => {
+    const one = [{ date: "2026-06-29", byTool: { npm: 2 } }];
+    expect(rowsOf(toDenseSeries(one, ["npm"]))).toEqual(toDenseChartRows(one, ["npm"]).rows);
+    expect(rowsOf(toDenseSeries([], ["npm"]))).toEqual([]);
+  });
+
+  it("falls back rather than emitting thousands of rows past MAX_DENSE_DAYS, and says so", () => {
+    const { dense, spanDays, rows } = toDenseChartRows(
+      [
+        { date: "2022-01-01", byTool: { npm: 1 } },
         { date: "2026-06-29", byTool: { npm: 2 } },
       ],
       ["npm"],
     );
     expect(dense).toBe(false);
-    expect(spanDays).toBeGreaterThan(300);
+    expect(spanDays).toBeGreaterThan(MAX_DENSE_DAYS);
     expect(rows).toHaveLength(2);
   });
 });

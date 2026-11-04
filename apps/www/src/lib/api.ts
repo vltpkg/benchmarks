@@ -4,9 +4,9 @@
  * it, and say what would have worked.
  */
 import type { DataClient } from "@benchmarks/data";
+import { rowsOf } from "./chart-model";
 import { dataClient } from "./data";
 import { metricRows } from "./figures";
-import { MAX_WINDOW_DAYS } from "./params";
 import { ignoredSelection, loadReport, type ReportModel, type ReportQuery } from "./report";
 import { SECTIONS } from "./sections";
 
@@ -91,7 +91,7 @@ export const strictReport = async ({
             status: 400,
             code: "invalid_window",
             message: `The window ${query.from ?? "?"} to ${query.to ?? "?"} cannot be used.`,
-            hint: `from and to must both be published dates, from no later than to, to no later than the run shown, and less than ${MAX_WINDOW_DAYS} days apart. /api/v1/runs lists the published dates.`,
+            hint: `from and to must both be published dates, from no later than to, and to no later than the run shown. /api/v1/runs lists the published dates.`,
           },
         };
       }
@@ -127,8 +127,8 @@ export const historyOf = (report: ReportModel, tools?: readonly string[]) => {
     window: report.filters.window,
     excluded: report.filters.exclude,
     tools: chosen,
-    /* One row per calendar day; `null` is a day with no value, never a zero. */
-    rows: metricRows(report.trend.rows, all, plotted, report.baseline).map((row) => ({
+    /* One row per calendar day (per run past MAX_DENSE_DAYS); `null` is no value, never a zero. */
+    rows: metricRows(rowsOf(report.trend.series), all, plotted, report.baseline).map((row) => ({
       date: row.date,
       ...pick(row),
     })),

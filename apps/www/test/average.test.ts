@@ -5,7 +5,7 @@ import type { BenchmarkFile } from "@benchmarks/types";
 import { GET as api } from "../src/app/api/v1/[section]/[scenario]/route.ts";
 import { GET as llms } from "../src/app/llms.txt/route.ts";
 import { GET as markdown } from "../src/app/llms.mdx/[[...slug]]/route.ts";
-import { AVERAGE_TREND_BUDGET, averageTrendDates } from "../src/lib/load.ts";
+import { TREND_BUDGET, trendDates } from "../src/lib/load.ts";
 import { averageFiles } from "../src/lib/measurements.ts";
 import { treeFor } from "../src/lib/page-tree.ts";
 import { loadReportParams } from "../src/lib/params.ts";
@@ -13,7 +13,7 @@ import { loadReport } from "../src/lib/report.ts";
 import { AVERAGE, scenariosFor, withAverage } from "../src/lib/scenarios.ts";
 import { DATA_URL, fakeFetch } from "./fixture-tree.ts";
 
-const ORIGIN = "https://benchmarks.vlt.sh";
+const ORIGIN = "https://benchmarks.vlt.io";
 
 const result = (command: string, mean: number, exit = 0) => ({
   command,
@@ -133,13 +133,13 @@ describe("default routes", () => {
   });
 });
 
-describe("averageTrendDates", () => {
+describe("trendDates", () => {
   it("cuts the window to the newest runs the budget pays for", () => {
     const dates = Array.from({ length: 30 }, (_, i) => `d${i}`);
-    expect(averageTrendDates(dates, 54)).toEqual(dates.slice(-7));
-    expect(7 * 54).toBeLessThanOrEqual(AVERAGE_TREND_BUDGET);
-    expect(averageTrendDates(dates, 12)).toEqual(dates);
-    expect(averageTrendDates(dates, 1000)).toHaveLength(2);
+    expect(trendDates(dates, 54)).toEqual(dates.slice(-7));
+    expect(7 * 54).toBeLessThanOrEqual(TREND_BUDGET);
+    expect(trendDates(dates, 12)).toEqual(dates);
+    expect(trendDates(dates, 1000)).toHaveLength(2);
   });
 });
 
@@ -241,15 +241,12 @@ describe("the average report's twins", () => {
   });
 });
 
-describe("averageTrendDates with summaries", () => {
+describe("trendDates with summaries", () => {
   it("keeps every summarised date and budgets only the rest", () => {
     const dates = Array.from({ length: 30 }, (_, i) => `d${String(i).padStart(2, "0")}`);
     const summarised = new Set(dates.slice(0, 20));
     // 54 files a run leaves room for 7 raw runs: the last 7 of the 10 unsummarised.
-    expect(averageTrendDates(dates, 54, summarised)).toEqual([
-      ...dates.slice(0, 20),
-      ...dates.slice(23),
-    ]);
-    expect(averageTrendDates(dates, 54, new Set(dates))).toEqual(dates);
+    expect(trendDates(dates, 54, summarised)).toEqual([...dates.slice(0, 20), ...dates.slice(23)]);
+    expect(trendDates(dates, 54, new Set(dates))).toEqual(dates);
   });
 });

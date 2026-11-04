@@ -525,3 +525,45 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/*
+ * The trend's marks (components/charts-echarts.tsx): did not finish, a version
+ * change and an unusual run. Lucide's circle-x, tag and triangle-alert at its
+ * stroke 2.5, painted in `currentColor` through a mask -- one rule each here
+ * rather than an inline <svg> per mark, of which All time draws over a
+ * thousand.
+ */
+.mark-dnf,
+.mark-version,
+.mark-unusual {
+  display: inline-block;
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  background-color: currentColor;
+  mask: var(--mark) center / contain no-repeat;
+}
+
+.mark-dnf {
+  --mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='m15 9-6 6'/%3E%3Cpath d='m9 9 6 6'/%3E%3C/svg%3E");
+}
+
+.mark-version {
+  --mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z'/%3E%3Ccircle cx='7.5' cy='7.5' r='.5' fill='black'/%3E%3C/svg%3E");
+}
+
+.mark-unusual {
+  --mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3'/%3E%3Cpath d='M12 9v4'/%3E%3Cpath d='M12 17h.01'/%3E%3C/svg%3E");
+}
+
+/* Forced colours replace the background a mask paints with the page's own
+   colour, which hid the marks. There they take the system text colour, as the
+   inline SVG strokes they replaced did. */
+@media (forced-colors: active) {
+  .mark-dnf,
+  .mark-version,
+  .mark-unusual {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+}

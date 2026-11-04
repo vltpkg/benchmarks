@@ -333,8 +333,8 @@ jobs:
         # apps/data emits index.json, manifest.json and the manifest/ shards
         # into suite/results/, the single results tree. It never re-emits the
         # published date directories (decision D2) and never writes an
-        # index.html -- the published index.html is the live site at
-        # benchmarks.vlt.sh and survives via keep_files.
+        # index.html -- the published index.html is a live page at
+        # benchmarks-data.vlt.io (the gh-pages CNAME) and survives via keep_files.
         run: |
           vlt install
           vlt run --workspace=apps/data build

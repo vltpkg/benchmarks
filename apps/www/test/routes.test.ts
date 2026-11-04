@@ -10,7 +10,7 @@ import { GET as openapi } from "../src/app/openapi.json/route.ts";
 import { METHOD, READING, RUNNER_NOTE, TRADEMARK } from "../src/lib/metadata.ts";
 import { DATA_URL, fakeFetch } from "./fixture-tree.ts";
 
-const ORIGIN = "https://benchmarks.vlt.sh";
+const ORIGIN = "https://benchmarks.vlt.io";
 const get = (path: string) => new Request(`${ORIGIN}${path}`);
 const scenario = (section: string, scenario: string) => ({
   params: Promise.resolve({ section, scenario }),

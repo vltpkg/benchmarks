@@ -23,16 +23,51 @@
  */
 import {
   createLoader,
+  createParser,
   createSerializer,
   parseAsArrayOf,
-  parseAsNumberLiteral,
   parseAsString,
   parseAsStringLiteral,
 } from "nuqs/server";
 import { METRICS } from "./figures";
 
-/** Trend windows, in calendar days ending at the run being shown. */
-export const RANGES = [30, 60, 90, 120] as const;
+/**
+ * The trend windows offered, in rolling calendar days ending at the run being
+ * shown -- not calendar months. `today` is that run alone; `all` has no lower
+ * bound: every published date up to it.
+ */
+export const PRESETS = [
+  { value: "today", label: "Today", days: 1 },
+  { value: "1w", label: "1 week", days: 7 },
+  { value: "1m", label: "1 month", days: 30 },
+  { value: "1y", label: "1 year", days: 365 },
+  { value: "all", label: "All time", days: null },
+] as const;
+export type Preset = (typeof PRESETS)[number]["value"];
+/** Old links: `range=30|60|90|120` keep meaning N rolling days. Parsed, never written. */
+export const LEGACY_RANGES = [30, 60, 90, 120] as const;
+export type RangeValue = Preset | (typeof LEGACY_RANGES)[number];
+
+const presetOf = (value: string): (typeof PRESETS)[number] | undefined =>
+  PRESETS.find((p) => p.value === value);
+
+/** How many days a range reaches back, or `null` for no lower bound. */
+export const rangeDays = (range: RangeValue): number | null =>
+  typeof range === "number" ? range : (presetOf(range)?.days ?? null);
+
+/** A range in words: the preset's label, or "Last N days" for an old link. */
+export const rangeLabel = (range: RangeValue): string =>
+  typeof range === "number" ? `Last ${range} days` : (presetOf(range)?.label ?? range);
+
+/** A preset name or a legacy day count; anything else is not a range. */
+const parseAsRange = createParser<RangeValue>({
+  parse: (value) => {
+    if (presetOf(value) !== undefined) return value as Preset;
+    const legacy = LEGACY_RANGES.find((n) => String(n) === value);
+    return legacy ?? null;
+  },
+  serialize: String,
+});
 export const SCALES = ["linear", "log"] as const;
 export const SMOOTHING = ["off", "median7"] as const;
 export const GAPS = ["connect", "hole"] as const;
@@ -42,8 +77,8 @@ export const reportParams = {
   date: parseAsString,
   /** SERVER. One fixture; absent means all of them, averaged. */
   fixture: parseAsString,
-  /** SERVER. A preset trend window: this many days, ending at the run shown. */
-  range: parseAsNumberLiteral(RANGES).withDefault(30),
+  /** SERVER. A preset trend window, ending at the run shown; see `PRESETS`. */
+  range: parseAsRange.withDefault("1m"),
   /** SERVER. An exact trend window. Both must be published dates; see `trendWindow`. */
   from: parseAsString,
   to: parseAsString,
@@ -148,9 +183,6 @@ export const withTableSort = (
 /* The trend window                                                    */
 /* ------------------------------------------------------------------ */
 
-/** The longest window offered: the span that can be spaced by calendar date. */
-export const MAX_WINDOW_DAYS = 120;
-
 const DAY = 86_400_000;
 const day = (date: string): number => Date.parse(`${date}T00:00:00Z`);
 
@@ -161,6 +193,8 @@ export interface TrendWindow {
   readonly custom: boolean;
   readonly from: string;
   readonly to: string;
+  /** The preset asked for; the one applied whenever `custom` is false. */
+  readonly range: RangeValue;
 }
 
 /**
@@ -168,10 +202,14 @@ export interface TrendWindow {
  *
  * An exact window is honoured only if it can be: both ends are dates the
  * archive actually published (a range cannot start or end on a hole), `from`
- * is not after `to`, `to` is not after the run being shown, and the span is
- * within {@link MAX_WINDOW_DAYS}. Anything else -- a hand-edited URL, a link
- * that outlived its dates -- falls back to the preset rather than to an empty
- * chart or an error.
+ * is not after `to`, and `to` is not after the run being shown. There is no
+ * cap on the span: the axis is spaced by calendar time for any window the
+ * archive can hold (see MAX_DENSE_DAYS). Anything else -- a hand-edited URL,
+ * a link that outlived its dates -- falls back to the preset rather than to
+ * an empty chart or an error.
+ *
+ * The same rule serves the site, `/api/v1` and MCP; agents get no separate
+ * cap.
  */
 export const trendWindow = ({
   dates,
@@ -184,7 +222,7 @@ export const trendWindow = ({
   readonly dates: readonly string[];
   /** The run the report is showing. */
   readonly end: string;
-  readonly range: number;
+  readonly range: RangeValue;
   readonly from: string | null;
   readonly to: string | null;
 }): TrendWindow => {
@@ -194,15 +232,16 @@ export const trendWindow = ({
     dates.includes(from) &&
     dates.includes(to) &&
     from <= to &&
-    to <= end &&
-    (day(to) - day(from)) / DAY < MAX_WINDOW_DAYS
+    to <= end
   ) {
-    return { dates: dates.filter((d) => d >= from && d <= to), custom: true, from, to };
+    return { dates: dates.filter((d) => d >= from && d <= to), custom: true, from, to, range };
   }
+  const days = rangeDays(range);
   const inRange = dates.filter((d) => {
     if (d > end) return false;
+    if (days === null) return true;
     const age = (day(end) - day(d)) / DAY;
-    return Number.isFinite(age) && age < Math.min(range, MAX_WINDOW_DAYS);
+    return Number.isFinite(age) && age < days;
   });
-  return { dates: inRange, custom: false, from: inRange[0] ?? end, to: end };
+  return { dates: inRange, custom: false, from: inRange[0] ?? end, to: end, range };
 };

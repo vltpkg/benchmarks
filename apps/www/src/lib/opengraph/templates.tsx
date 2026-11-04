@@ -10,6 +10,7 @@ import { join } from "node:path";
 import { createElement, type ComponentType, type ReactElement, type ReactNode } from "react";
 import { Vlt } from "@/components/icons/vlt";
 import { TOOL_ICONS } from "@/components/tool-name";
+import { rowsOf } from "@/lib/chart-model";
 import { shownBars } from "@/lib/figures";
 import { formatDuration, longDate } from "@/lib/findings";
 import { formatMs } from "@/lib/measurements";
@@ -443,7 +444,7 @@ export const FigureCard = ({
         report.trend.perPackageByFixture[0])
       : null;
     if (lane != null) extra = [`on ${fixtureLabel(lane.fixture)}`];
-    const rows = lane?.rows ?? report.trend.rows;
+    const rows = rowsOf(lane?.series ?? report.trend.series);
     const unit = per || report.trend.plotted === "per-package" ? "ms" : "s";
     const tools = order.filter((t) => rows.some((r) => typeof r[t] === "number"));
     const { svg, max } = lineSvg(rows, tools, colors, report.baseline, PLOT);

@@ -8,7 +8,7 @@ import {
 } from "../src/lib/mcp.ts";
 import { fixtureClient } from "./fixture-tree.ts";
 
-const ORIGIN = "https://benchmarks.vlt.sh";
+const ORIGIN = "https://benchmarks.vlt.io";
 
 describe("MCP tools", () => {
   it("list_benchmarks: the catalog and every run", async () => {

@@ -8,23 +8,17 @@
  * and the same file is the source of the section lists this report refuses
  * to trust.
  */
-import { benchmarkFile, type DataClient } from "@benchmarks/data";
+import { benchmarkFile, summaryVersions, type DataClient } from "@benchmarks/data";
 import type { Fixture, Versions } from "@benchmarks/types";
 import type { inferParserType } from "nuqs/server";
 import { publishedVariations } from "./catalog";
-import { toDenseChartRows } from "./chart-model";
+import { rowsOf, toDenseSeries, type DenseSeries } from "./chart-model";
 import { citeFor, type Citation } from "./cite";
 import { dataClient, probe } from "./data";
 import { flagOutliers, meanBars, type Bar } from "./figures";
 import { formatDuration, formatRatio, type Finding } from "./findings";
 import { scenarioFacts, scopedFinding } from "./headline";
-import {
-  averageTrendDates,
-  loadAverage,
-  loadScenario,
-  loadSummaries,
-  type TrendPoint,
-} from "./load";
+import { loadAverage, loadScenario, loadSummaries, type TrendPoint } from "./load";
 import {
   countRows,
   perPackageByFixture,
@@ -155,16 +149,19 @@ export interface ReportModel {
   readonly outline: readonly OutlineSection[];
   readonly trend: {
     readonly points: readonly TrendPoint[];
-    /** One row per calendar day, holes as `null`, in the plotted metric. */
-    readonly rows: readonly { date: string; [tool: string]: string | number | null }[];
-    /** What `rows` holds: total seconds, or milliseconds per installed package. */
+    /**
+     * One row per calendar day, holes as `null`, in the plotted metric -- by
+     * column, as the chart island receives it; `rowsOf` gives the rows.
+     */
+    readonly series: DenseSeries;
+    /** What `series` holds: total seconds, or milliseconds per installed package. */
     readonly plotted: "total" | "per-package";
     /** Whether per-package can be plotted here at all. */
     readonly perPackage: boolean;
     /** Each fixture's milliseconds per installed package, one row per calendar day, holes as `null`. */
     readonly perPackageByFixture: readonly {
       readonly fixture: string;
-      readonly rows: readonly { date: string; [tool: string]: string | number | null }[];
+      readonly series: DenseSeries;
     }[];
     /** Whether the window ends at the run shown, so "since last run" is about it. */
     readonly endsHere: boolean;
@@ -346,14 +343,16 @@ export const loadReport = async ({
   });
 
   /*
-   * Trend window: a preset number of calendar days ending at this run, or an
-   * exact from/to. Resolved and validated in `trendWindow`.
+   * Trend window: a preset of rolling calendar days ending at this run (up to
+   * the whole archive), or an exact from/to. Resolved and validated in
+   * `trendWindow`; there is no cap.
    *
    * By TIME, not by count. The archive is missing 53 calendar days, so "the
    * last 16 runs" can reach back the better part of a year, and a line joining
    * runs ten months apart is not a trend -- it is two unrelated states drawn
-   * as a slope. Every window is inside MAX_DENSE_DAYS (120), so the axis is
-   * always spaced by real calendar time and a gap is always a gap.
+   * as a slope. MAX_DENSE_DAYS (1,100) holds the whole archive, so the axis is
+   * spaced by real calendar time and a gap is a gap; a window past it falls
+   * back to an evenly spaced axis that says so.
    */
   const window = trendWindow({
     dates: index.dates,
@@ -368,24 +367,25 @@ export const loadReport = async ({
    * them -- the report's numbers are about it.
    */
   const exclude = query.exclude.filter((e) => e.split("@").at(-1) !== date);
-  /* The derived view's trend reads each run's summary; a run without one is cut to what the request budget allows. */
+  /*
+   * Both views' trends read each run's summary: one fetch a run, whatever the
+   * window, All time included. A run without one costs its files, cut to what
+   * the request budget allows. The shown run's files load while the summaries
+   * do.
+   */
   const shownPlan = Object.fromEntries(fixtures.map((f) => [f, plan[f] ?? []]));
-  const filesPerRun = Object.values(shownPlan).flat().length;
-  const summaries = averageOf === null ? undefined : await loadSummaries(client, window.dates);
-  const trendDates =
-    summaries === undefined
-      ? window.dates
-      : averageTrendDates(window.dates, filesPerRun, new Set(summaries.keys()));
+  const summaries = loadSummaries(client, window.dates);
   const average =
     averageOf === null
       ? null
-      : await loadAverage(client, date, shownPlan, trendDates, { exclude, summaries });
+      : await loadAverage(client, date, shownPlan, window.dates, { exclude, summaries });
   const data =
     average ??
-    (await loadScenario(client, date, selected.variation, fixtures, trendDates, {
+    (await loadScenario(client, date, selected.variation, fixtures, window.dates, {
       exclude,
       /* The per-package figures by fixture draw every run, so the counts are always wanted where there are any. */
       perPackage: section !== "task-runners",
+      summaries,
     }));
   const facts = scenarioFacts(
     section,
@@ -394,8 +394,13 @@ export const loadReport = async ({
   );
   const { tools, means, timeRows, baseline } = facts;
 
+  /* Each run's versions: from its summary where that carries them, else its versions.json. */
+  const summarisedRuns = await summaries;
   const versionSeries = await Promise.all(
     data.trend.map(async (p) => {
+      const summarised = summarisedRuns.get(p.date);
+      const carried = summarised === undefined ? undefined : summaryVersions(summarised);
+      if (carried !== undefined) return { date: p.date, versions: carried };
       const v = await probe<Versions>(() => client.getVersions(p.date));
       return { date: p.date, versions: v.state === "present" ? v.value : null };
     }),
@@ -439,23 +444,22 @@ export const loadReport = async ({
   /* Per package, the trend plots the per-package series the loader built. */
   const perPackageTrend = averageOf === null && section !== "task-runners";
   const plotted = perPackageTrend && query.metric === "per-package" ? "per-package" : "total";
-  const dense = toDenseChartRows(
+  const plottedPoints =
     plotted === "per-package"
       ? data.trend.map((p) => ({ date: p.date, byTool: p.perPackage ?? {} }))
-      : data.trend,
-    tools,
-  );
+      : data.trend;
+  const series = toDenseSeries(plottedPoints, tools);
   /* Each fixture's per-package time, run by run, for the per-package figure by fixture. */
   const perPackageTrends = perPackageTrend
     ? fixtures.map((f) => ({
         fixture: f,
-        rows: toDenseChartRows(
+        series: toDenseSeries(
           data.trend.map((p) => ({
             date: p.date,
             byTool: Object.fromEntries(tools.map((t) => [t, p.perPackageByFixture?.[t]?.[f]])),
           })),
           tools,
-        ).rows,
+        ),
       }))
     : [];
   const measure = isScript ? "execution" : "install";
@@ -503,10 +507,11 @@ export const loadReport = async ({
     };
   });
 
+  const rows = rowsOf(series);
   const outliers = ranked.flatMap((tool) =>
-    flagOutliers(dense.rows.map((r) => (typeof r[tool] === "number" ? r[tool] : null))).flatMap(
+    flagOutliers(rows.map((r) => (typeof r[tool] === "number" ? r[tool] : null))).flatMap(
       (deviation, i) => {
-        const day = dense.rows[i]?.date;
+        const day = rows[i]?.date;
         return deviation === null || day === undefined ? [] : [{ tool, date: day, deviation }];
       },
     ),
@@ -590,7 +595,7 @@ export const loadReport = async ({
       filters: {
         date: pinned,
         fixture,
-        range: query.range,
+        range: window.range,
         window: { from: window.from, to: window.to, custom: window.custom },
         hide: hidden,
         metric: query.metric,
@@ -624,7 +629,7 @@ export const loadReport = async ({
       outline,
       trend: {
         points: data.trend,
-        rows: dense.rows,
+        series,
         plotted,
         perPackage: perPackageTrend,
         perPackageByFixture: perPackageTrends,
@@ -633,8 +638,8 @@ export const loadReport = async ({
         markers,
         outliers,
         cut:
-          trendDates.length < window.dates.length
-            ? `Each run here averages ${filesPerRun} result files, so the trend shows ${trendDates.length} of the window's ${window.dates.length} runs.`
+          data.trendCost.dates < window.dates.length
+            ? `A run without a summary costs ${data.trendCost.perRun} files here, so the trend shows ${data.trendCost.dates} of the window's ${window.dates.length} runs.`
             : null,
         focus,
         inFocus,

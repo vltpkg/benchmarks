@@ -14,6 +14,28 @@ import type { SectionId } from "@/lib/sections";
 
 export type TrendDetail = Omit<TrendPoint, "byTool" | "perPackage">;
 
+/**
+ * Each run as one fixture saw it: the failures there and no others, nothing
+ * partial (one fixture is all or nothing), and that fixture's own spread for
+ * the band.
+ */
+export const onFixture = (trend: readonly TrendDetail[], fixture: string): TrendDetail[] =>
+  trend.map((d) => ({
+    ...d,
+    fixtures: d.fixtures.filter((f) => f === fixture),
+    partial: {},
+    failed: Object.fromEntries(
+      Object.entries(d.failed)
+        .map(([tool, list]) => [tool, list.filter((e) => e.fixture === fixture)] as const)
+        .filter(([, list]) => list.length > 0),
+    ),
+    rsd: Object.fromEntries(
+      Object.entries(d.rsdByFixture).flatMap(([tool, by]) =>
+        by[fixture] === undefined ? [] : [[tool, by[fixture]]],
+      ),
+    ),
+  }));
+
 /** One tool on the pinned run, everything the panel says about it. */
 export interface PinnedTool {
   readonly tool: string;

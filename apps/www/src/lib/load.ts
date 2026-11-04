@@ -8,7 +8,12 @@
  * and it gives a failed run a time. The files are the measurement.
  */
 import type { BenchmarkFile, Fixture, PackageCount, ProcessCount } from "@benchmarks/types";
-import { DataClient, type DateSummary } from "@benchmarks/data";
+import {
+  DataClient,
+  summaryPackageCounts,
+  type DateSummary,
+  type SummaryResult,
+} from "@benchmarks/data";
 import { probe } from "./data";
 import { applyExclusions } from "./figures";
 import { averageFiles, usable } from "./measurements";
@@ -54,8 +59,16 @@ export interface TrendPoint {
 export interface ScenarioData {
   readonly bundles: readonly FixtureBundle[];
   readonly trend: readonly TrendPoint[];
-  /** What the trend actually cost, so the number is reported rather than guessed. */
-  readonly trendCost: { readonly requests: number; readonly dates: number };
+  /**
+   * What the trend actually cost, so the number is reported rather than
+   * guessed: its requests, the runs it drew, and what a run without a summary
+   * costs, which is what cut the window when `dates` is short of it.
+   */
+  readonly trendCost: {
+    readonly requests: number;
+    readonly dates: number;
+    readonly perRun: number;
+  };
 }
 
 const asFixture = (name: string): Fixture => name as Fixture;
@@ -172,12 +185,31 @@ export const trendPoint = (
   };
 };
 
+/* What a summary leaves out of a result; nothing on a trend reads it. */
+const unsummarised = {
+  median: Number.NaN,
+  min: Number.NaN,
+  max: Number.NaN,
+  user: Number.NaN,
+  system: Number.NaN,
+  times: [],
+};
+
+/** A summarised result as a benchmark file's: the fields a trend reads, verbatim. */
+const fromSummary = (results: readonly SummaryResult[]): BenchmarkFile => ({
+  results: results.map((r) => ({ ...r, ...unsummarised })),
+});
+
 /**
  * The trend series behind the sparklines and the time chart.
  *
- * Cost is `dates x fixtures` requests, doubled when package counts are asked
- * for; `trendCost` reports the real number. Dates the scenario did not run on
- * contribute no point, which is why the series can be shorter than the window.
+ * A date with a summary (from `loadSummaries`) reads its files out of it: the
+ * same mean, stddev and exit codes, so the same DNF rule, for one fetch already
+ * made. A date without costs one request per fixture. Package counts, when
+ * asked for, come from the summary too where it carries that fixture's, and
+ * otherwise cost one request per fixture that ran; `requests` counts what this function
+ * fetched. Dates the scenario did not run on contribute no
+ * point, which is why the series can be shorter than the window.
  */
 const loadTrend = async (
   client: DataClient,
@@ -185,91 +217,132 @@ const loadTrend = async (
   fixtures: readonly string[],
   variation: string,
   withCounts: boolean,
+  summaries: ReadonlyMap<string, DateSummary> = new Map(),
 ): Promise<{ trend: TrendPoint[]; requests: number }> => {
+  let requests = 0;
   const perDate = await Promise.all(
     dates.map(async (date) => {
-      const loaded = await Promise.all(
+      const summary = summaries.get(date);
+      const files = await Promise.all(
         fixtures.map(async (fixture) => {
-          const [file, counts] = await Promise.all([
-            probe<BenchmarkFile>(() => client.getBenchmark(date, asFixture(fixture), variation)),
-            withCounts
-              ? probe<PackageCount>(() =>
-                  client.getPackageCount(date, asFixture(fixture), variation),
-                )
-              : null,
-          ]);
-          return {
-            fixture,
-            file: file.state === "present" ? file.value : null,
-            counts: counts?.state === "present" ? counts.value : null,
-          };
+          if (summary !== undefined) {
+            const results = summary[variation]?.[fixture];
+            return { fixture, file: results === undefined ? null : fromSummary(results) };
+          }
+          requests++;
+          const file = await probe<BenchmarkFile>(() =>
+            client.getBenchmark(date, asFixture(fixture), variation),
+          );
+          return { fixture, file: file.state === "present" ? file.value : null };
         }),
       );
-      return trendPoint(
-        date,
-        loaded.flatMap((l) => (l.file === null ? [] : [{ fixture: l.fixture, file: l.file }])),
-        loaded.flatMap((l) =>
-          l.counts === null ? [] : [{ fixture: l.fixture, counts: l.counts }],
-        ),
+      const ran = files.flatMap((f) =>
+        f.file === null ? [] : [{ fixture: f.fixture, file: f.file }],
       );
+      /*
+       * A fixture the summary has no count for falls back to its file: the
+       * build skips a count file it cannot parse, and absent is never zero.
+       */
+      const summarised = summary === undefined ? undefined : summaryPackageCounts(summary);
+      const counts = withCounts
+        ? await Promise.all(
+            ran.map(async ({ fixture }) => {
+              const carried = summarised?.[variation]?.[fixture];
+              if (carried !== undefined) return [{ fixture, counts: carried }];
+              requests++;
+              const c = await probe<PackageCount>(() =>
+                client.getPackageCount(date, asFixture(fixture), variation),
+              );
+              return c.state === "present" ? [{ fixture, counts: c.value }] : [];
+            }),
+          )
+        : [];
+      return trendPoint(date, ran, counts.flat());
     }),
   );
 
-  return {
-    trend: perDate.filter((p): p is TrendPoint => p !== null),
-    requests: dates.length * fixtures.length * (withCounts ? 2 : 1),
-  };
+  return { trend: perDate.filter((p): p is TrendPoint => p !== null), requests };
 };
 
+/**
+ * The shown run and its trend. `summaries` may still be loading: the run's
+ * own files do not wait for it, and only the trend does, since which runs it
+ * can afford depends on which have one.
+ */
 export const loadScenario = async (
   client: DataClient,
   date: string,
   variation: string,
   fixtures: readonly string[],
-  trendDates: readonly string[],
-  options: { readonly exclude?: readonly string[]; readonly perPackage?: boolean } = {},
+  windowDates: readonly string[],
+  options: {
+    readonly exclude?: readonly string[];
+    readonly perPackage?: boolean;
+    /** From `loadSummaries`: a summarised run costs one fetch, not one per fixture. */
+    readonly summaries?: Summaries | Promise<Summaries>;
+  } = {},
 ): Promise<ScenarioData> => {
+  const withCounts = options.perPackage === true;
+  /* A run without a summary: a file per fixture, and its count where that is wanted. */
+  const perRun = fixtures.length * (withCounts ? 2 : 1);
   const [bundles, trend] = await Promise.all([
     Promise.all(fixtures.map((f) => loadFixture(client, date, f, variation))),
-    loadTrend(client, trendDates, fixtures, variation, options.perPackage === true),
+    (async () => {
+      const summaries = await options.summaries;
+      const dates = trendDates(windowDates, perRun, new Set(summaries?.keys()));
+      return {
+        dates,
+        ...(await loadTrend(client, dates, fixtures, variation, withCounts, summaries)),
+      };
+    })(),
   ]);
 
   return {
     bundles: bundles.filter((b): b is FixtureBundle => b !== null),
     trend: applyExclusions(trend.trend, options.exclude ?? []),
-    trendCost: { requests: trend.requests, dates: trendDates.length },
+    trendCost: {
+      requests: trend.requests + (options.summaries === undefined ? 0 : windowDates.length),
+      dates: trend.dates.length,
+      perRun,
+    },
   };
 };
 
-/**
- * What the derived "average" view's trend may fetch per page. One run costs a
- * file per (fixture, scenario) -- 54 for package managers -- so a 30-day
- * window would be about 1,600 requests; the window is cut to its most recent
- * runs instead.
- */
-export const AVERAGE_TREND_BUDGET = 400;
+/** Each date's summary, from `loadSummaries`. */
+export type Summaries = ReadonlyMap<string, DateSummary>;
 
 /**
- * The window's dates the average's trend draws: every date with a summary,
- * which costs one fetch, and of the rest the most recent whose files fit the
- * budget, never fewer than two.
+ * What a trend may fetch per page beyond its summaries. A run without one
+ * costs a request per file it reads -- for the derived "average" a file per
+ * (fixture, scenario), 54 for package managers, so a 30-day window would be
+ * about 1,600 requests -- and the window is cut to its most recent such runs
+ * instead. A missing or failed summary never fans out past it.
  */
-export const averageTrendDates = (
+export const TREND_BUDGET = 400;
+
+/**
+ * The window's dates a trend draws: every date with a summary, which costs
+ * one fetch, and of the rest the most recent whose files fit the budget,
+ * never fewer than two.
+ */
+export const trendDates = (
   dates: readonly string[],
-  cellsPerDate: number,
+  requestsPerDate: number,
   summarised: ReadonlySet<string> = new Set(),
 ): string[] => {
-  const raw = dates
-    .filter((d) => !summarised.has(d))
-    .slice(-Math.max(2, Math.floor(AVERAGE_TREND_BUDGET / Math.max(cellsPerDate, 1))));
-  return dates.filter((d) => summarised.has(d) || raw.includes(d));
+  const raw = new Set(
+    dates
+      .filter((d) => !summarised.has(d))
+      .slice(-Math.max(2, Math.floor(TREND_BUDGET / Math.max(requestsPerDate, 1)))),
+  );
+  return dates.filter((d) => summarised.has(d) || raw.has(d));
 };
 
 /** Each date's summary, where a deploy has written one; a date without is left out. */
 export const loadSummaries = async (
   client: DataClient,
   dates: readonly string[],
-): Promise<Map<string, DateSummary>> => {
+): Promise<Summaries> => {
   const found = await Promise.all(dates.map((d) => probe(() => client.getSummary(d))));
   return new Map(
     dates.flatMap((d, i) => {
@@ -286,16 +359,6 @@ export interface RunCell {
   readonly file: BenchmarkFile;
 }
 
-/* What a summary leaves out of a result; nothing on a trend reads it. */
-const unsummarised = {
-  median: Number.NaN,
-  min: Number.NaN,
-  max: Number.NaN,
-  user: Number.NaN,
-  system: Number.NaN,
-  times: [],
-};
-
 const loadCells = async (
   client: DataClient,
   date: string,
@@ -306,15 +369,7 @@ const loadCells = async (
     return Object.entries(plan).flatMap(([fixture, variations]) =>
       variations.flatMap((variation) => {
         const results = summary[variation]?.[fixture];
-        return results === undefined
-          ? []
-          : [
-              {
-                fixture,
-                variation,
-                file: { results: results.map((r) => ({ ...r, ...unsummarised })) },
-              },
-            ];
+        return results === undefined ? [] : [{ fixture, variation, file: fromSummary(results) }];
       }),
     );
   }
@@ -341,21 +396,26 @@ export const loadAverage = async (
   client: DataClient,
   date: string,
   plan: { readonly [fixture: string]: readonly string[] },
-  trendDates: readonly string[],
+  windowDates: readonly string[],
   options: {
     readonly exclude?: readonly string[];
-    /** From `loadSummaries`: a summarised run costs one fetch, not one per file. */
-    readonly summaries?: ReadonlyMap<string, DateSummary>;
+    /** From `loadSummaries`, possibly still loading, as for `loadScenario`. */
+    readonly summaries?: Summaries | Promise<Summaries>;
   } = {},
 ): Promise<ScenarioData & { readonly cells: readonly RunCell[] }> => {
   // The run shown is usually the trend's last date; fetched once either way,
-  // and from its files, which the report reads in full.
-  const dates = trendDates.includes(date) ? trendDates : [...trendDates, date];
-  const summaryOf = (d: string) => (d === date ? undefined : options.summaries?.get(d));
-  const loaded = await Promise.all(dates.map((d) => loadCells(client, d, plan, summaryOf(d))));
-  const trend = trendDates.flatMap(
-    (d, i) => trendPoint(d, averageFiles(loaded[i] ?? [], plan)) ?? [],
+  // and from its files, which the report reads in full, without waiting for
+  // the summaries.
+  const shown = loadCells(client, date, plan);
+  const summaries = await options.summaries;
+  const perRun = Object.values(plan).flat().length;
+  const drawn = trendDates(windowDates, perRun, new Set(summaries?.keys()));
+  const dates = drawn.includes(date) ? drawn : [...drawn, date];
+  const summaryOf = (d: string) => (d === date ? undefined : summaries?.get(d));
+  const loaded = await Promise.all(
+    dates.map((d) => (d === date ? shown : loadCells(client, d, plan, summaryOf(d)))),
   );
+  const trend = drawn.flatMap((d, i) => trendPoint(d, averageFiles(loaded[i] ?? [], plan)) ?? []);
   const cells = loaded[dates.indexOf(date)] ?? [];
 
   return {
@@ -367,14 +427,11 @@ export const loadAverage = async (
     })),
     trend: applyExclusions(trend, options.exclude ?? []),
     trendCost: {
-      requests: dates.reduce(
-        (sum, d) =>
-          sum +
-          (options.summaries === undefined ? 0 : 1) +
-          (summaryOf(d) === undefined ? Object.values(plan).flat().length : 0),
-        0,
-      ),
-      dates: trendDates.length,
+      requests:
+        (summaries === undefined ? 0 : windowDates.length) +
+        dates.filter((d) => summaryOf(d) === undefined).length * perRun,
+      dates: drawn.length,
+      perRun,
     },
   };
 };

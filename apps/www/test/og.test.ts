@@ -6,7 +6,7 @@ import { ellipsize } from "../src/lib/opengraph/truncate.ts";
 import { DATA_URL, fakeFetch } from "./fixture-tree.ts";
 
 const og = (path: string) =>
-  GET(new Request(`https://benchmarks.vlt.sh/og/${path}`), {
+  GET(new Request(`https://benchmarks.vlt.io/og/${path}`), {
     params: Promise.resolve({ path: path.split("?")[0]?.split("/").filter(Boolean) }),
   });
 
