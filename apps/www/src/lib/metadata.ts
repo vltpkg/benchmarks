@@ -26,7 +26,8 @@ const https = (host?: string) => (host ? `https://${host}` : undefined);
  * out (vltpkg/www/docs/src/lib/site-url.ts, after Next's own social-image
  * fallback): localhost in development, so a card previews on the machine
  * serving it; the preview URL on a Vercel preview; the project's production
- * domain in production, and benchmarks.vlt.sh where nothing says otherwise.
+ * domain in production, and benchmarks.vlt.io where nothing says otherwise
+ * (benchmarks.vlt.sh only redirects there).
  * SITE_URL overrides all of it.
  */
 export const siteUrl = new URL(
@@ -36,7 +37,7 @@ export const siteUrl = new URL(
       : process.env.VERCEL_ENV === "preview"
         ? https(process.env.VERCEL_BRANCH_URL ?? process.env.VERCEL_URL)
         : https(process.env.VERCEL_PROJECT_PRODUCTION_URL)) ??
-    "https://benchmarks.vlt.sh",
+    "https://benchmarks.vlt.io",
 );
 
 /**

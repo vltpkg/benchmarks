@@ -1,35 +1,11 @@
 "use client";
 
 import { useState, type ComponentProps } from "react";
+import type { DenseSeries } from "@/lib/chart-model";
 import { TimeSeriesChart } from "@/components/charts-echarts";
-import type { TrendDetail } from "@/components/pinned-run";
 import { FigureTabStrip } from "@/components/tabbed-figure";
 import { FixtureName } from "@/components/tool-name";
 import { fixtureLabel } from "@/lib/tools";
-
-type Rows = ComponentProps<typeof TimeSeriesChart>["rows"];
-
-/**
- * Each run as one fixture saw it: the failures there and no others, nothing
- * partial (one fixture is all or nothing), and that fixture's own spread for
- * the band.
- */
-const onFixture = (trend: readonly TrendDetail[], fixture: string): TrendDetail[] =>
-  trend.map((d) => ({
-    ...d,
-    fixtures: d.fixtures.filter((f) => f === fixture),
-    partial: {},
-    failed: Object.fromEntries(
-      Object.entries(d.failed)
-        .map(([tool, list]) => [tool, list.filter((e) => e.fixture === fixture)] as const)
-        .filter(([, list]) => list.length > 0),
-    ),
-    rsd: Object.fromEntries(
-      Object.entries(d.rsdByFixture).flatMap(([tool, by]) =>
-        by[fixture] === undefined ? [] : [[tool, by[fixture]]],
-      ),
-    ),
-  }));
 
 /**
  * Per-package time on each fixture, run by run: the report's own
@@ -47,9 +23,9 @@ export const FixtureTimeSeries = ({
   ...chart
 }: Omit<
   ComponentProps<typeof TimeSeriesChart>,
-  "rows" | "yLabel" | "tabs" | "firstTabActive" | "fixedMetric" | "scope"
+  "series" | "yLabel" | "tabs" | "firstTabActive" | "fixedMetric" | "scope"
 > & {
-  fixtures: readonly { readonly fixture: string; readonly rows: Rows }[];
+  fixtures: readonly { readonly fixture: string; readonly series: DenseSeries }[];
 }) => {
   const [active, setActive] = useState(fixtures[0]?.fixture ?? "");
   const shown = fixtures.find((f) => f.fixture === active) ?? fixtures[0];
@@ -60,8 +36,9 @@ export const FixtureTimeSeries = ({
       {...chart}
       id={id}
       title={title}
-      rows={shown.rows}
-      trend={onFixture(trend ?? [], shown.fixture)}
+      series={shown.series}
+      trend={trend}
+      fixture={shown.fixture}
       yLabel={`Time per installed package on ${fixtureLabel(shown.fixture)}`}
       fixedMetric="per-package"
       scope="pp"

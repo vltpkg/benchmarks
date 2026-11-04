@@ -43,7 +43,7 @@ export const inputs = {
     section,
     scenario,
     tools: tools.optional(),
-    from: date.optional().describe("Window start, a published date; with to. At most 120 days."),
+    from: date.optional().describe("Window start, a published date; with to. Any span."),
     to: date
       .optional()
       .describe("Window end, a published date. Omitted: the 30 days to the latest run."),

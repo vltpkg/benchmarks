@@ -21,7 +21,9 @@ import {
 } from "../src/lib/measurements.ts";
 import { markersForTools, versionMarkers } from "../src/lib/version-markers.ts";
 import {
+  LEGACY_RANGES,
   loadReportParams,
+  type RangeValue,
   reportHref,
   tableSortOf,
   trendWindow,
@@ -465,19 +467,62 @@ describe("versionMarkers · the empty-version case", () => {
 describe("the trend window", () => {
   // Published dates either side of the archive's widest gap.
   const dates = ["2026-06-15", "2026-06-16", "2026-06-17", "2026-06-29", "2026-06-30"];
-  const base = { dates, end: "2026-06-30", range: 30, from: null, to: null };
+  const base = {
+    dates,
+    end: "2026-06-30",
+    range: "1m" as RangeValue,
+    from: null,
+    to: null,
+  };
+  // Most of 2025, one run every other day, then the five above.
+  const archive = [
+    ...Array.from({ length: 180 }, (_, i) =>
+      new Date(Date.parse("2025-01-01T00:00:00Z") + i * 2 * 86_400_000).toISOString().slice(0, 10),
+    ),
+    ...dates,
+  ];
 
   it("a preset is that many calendar days ending at the run shown", () => {
-    const w = trendWindow({ ...base, range: 30 });
+    const w = trendWindow({ ...base, range: "1m" });
     expect(w.custom).toBe(false);
+    expect(w.range).toBe("1m");
     expect(w.dates).toEqual(dates);
     expect(w.to).toBe("2026-06-30");
-    // Fourteen days back from Jun 30 reaches Jun 17 and no further.
-    expect(trendWindow({ ...base, range: 14 }).dates).toEqual([
-      "2026-06-17",
-      "2026-06-29",
-      "2026-06-30",
+    // Seven days back from Jun 30 reaches Jun 24 -- inside the gap -- so only the last two runs.
+    expect(trendWindow({ ...base, range: "1w" }).dates).toEqual(["2026-06-29", "2026-06-30"]);
+  });
+
+  it("today is the run shown alone", () => {
+    const w = trendWindow({ ...base, range: "today" });
+    expect(w).toMatchObject({ dates: ["2026-06-30"], from: "2026-06-30", to: "2026-06-30" });
+    expect(trendWindow({ ...base, end: "2026-06-16", range: "today" }).dates).toEqual([
+      "2026-06-16",
     ]);
+  });
+
+  it("1y is 365 rolling days and all is the whole archive up to the run", () => {
+    const year = trendWindow({ ...base, dates: archive, range: "1y" }).dates;
+    expect(year[0]).toBe("2025-07-02"); // the first run fewer than 365 days before Jun 30
+    expect(year.at(-1)).toBe("2026-06-30");
+    expect(trendWindow({ ...base, dates: archive, range: "all" }).dates).toEqual(archive);
+    expect(trendWindow({ ...base, dates: archive, end: "2026-06-16", range: "all" }).dates).toEqual(
+      archive.filter((d) => d <= "2026-06-16"),
+    );
+  });
+
+  it("an old day-count link keeps its old meaning", () => {
+    // What the 120-day cap allowed, the legacy numbers still give exactly.
+    for (const n of LEGACY_RANGES) {
+      const w = trendWindow({ ...base, dates: archive, range: n });
+      const oldest = new Date(Date.parse("2026-06-30T00:00:00Z") - (n - 1) * 86_400_000)
+        .toISOString()
+        .slice(0, 10);
+      expect(w.dates).toEqual(archive.filter((d) => d >= oldest));
+      expect(w.range).toBe(n);
+    }
+    expect(trendWindow({ ...base, range: 30 }).dates).toEqual(
+      trendWindow({ ...base, range: "1m" }).dates,
+    );
   });
 
   it("honours an exact range whose ends are both published dates", () => {
@@ -486,6 +531,7 @@ describe("the trend window", () => {
       custom: true,
       from: "2026-06-16",
       to: "2026-06-29",
+      range: "1m",
       dates: ["2026-06-16", "2026-06-17", "2026-06-29"],
     });
   });
@@ -496,13 +542,20 @@ describe("the trend window", () => {
     expect(trendWindow({ ...base, from: "2026-06-15", to: "2026-06-25" }).custom).toBe(false);
   });
 
-  it("falls back to the preset for a reversed, half-given or over-long range", () => {
-    expect(trendWindow({ ...base, from: "2026-06-30", to: "2026-06-15" }).custom).toBe(false);
+  it("falls back to the preset for a reversed or half-given range", () => {
+    const reversed = trendWindow({ ...base, range: "1w", from: "2026-06-30", to: "2026-06-15" });
+    expect(reversed.custom).toBe(false);
+    expect(reversed.range).toBe("1w");
+    expect(reversed.dates).toEqual(["2026-06-29", "2026-06-30"]);
     expect(trendWindow({ ...base, from: "2026-06-15", to: null }).custom).toBe(false);
+  });
+
+  it("honours an exact range of any length", () => {
+    // Past the old 120-day cap: there is no cap now.
     const long = ["2026-01-01", ...dates];
-    expect(trendWindow({ ...base, dates: long, from: "2026-01-01", to: "2026-06-30" }).custom).toBe(
-      false,
-    );
+    const w = trendWindow({ ...base, dates: long, from: "2026-01-01", to: "2026-06-30" });
+    expect(w.custom).toBe(true);
+    expect(w.dates).toEqual(long);
   });
 
   it("will not run past the run the report is showing", () => {
@@ -523,7 +576,7 @@ describe("query parameters", () => {
       reportHref("/package-managers/clean", {
         date: null,
         fixture: null,
-        range: 30,
+        range: "1m",
         from: null,
         to: null,
         hide: [],
@@ -534,11 +587,26 @@ describe("query parameters", () => {
     expect(reportHref("/registries/registry-clean", { fixture: "astro", range: 90 })).toBe(
       "/registries/registry-clean?fixture=astro&range=90",
     );
+    expect(reportHref("/registries/registry-clean", { range: "1y" })).toBe(
+      "/registries/registry-clean?range=1y",
+    );
+  });
+
+  it("reads a preset or a legacy day count as the range, and nothing else", async () => {
+    const range = async (q: string) => (await loadReportParams(new URLSearchParams(q))).range;
+    expect(await range("")).toBe("1m");
+    expect(await range("range=1y")).toBe("1y");
+    expect(await range("range=all")).toBe("all");
+    expect(await range("range=today")).toBe("today");
+    expect(await range("range=90")).toBe(90);
+    expect(await range("range=7")).toBe("1m");
+    expect(await range("range=1M")).toBe("1m");
+    expect(await range("range=30.0")).toBe("1m");
   });
 
   it("a malformed value falls back to the default instead of erroring", async () => {
     const q = await loadReportParams(new URLSearchParams("range=7&scale=sideways&hide="));
-    expect(q.range).toBe(30);
+    expect(q.range).toBe("1m");
     expect(q.scale).toBe("linear");
     expect(q.hide).toEqual([]);
   });

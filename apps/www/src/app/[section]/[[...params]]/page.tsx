@@ -37,7 +37,8 @@ import { formatDuration, longDate } from "@/lib/findings";
 import { fixtureBars } from "@/lib/figures";
 import { pageMetadata } from "@/lib/metadata";
 import { ogFigure } from "@/lib/og-figure";
-import { loadReportParams, reportHref, reportParams } from "@/lib/params";
+import { toTrendColumns } from "@/lib/chart-model";
+import { loadReportParams, rangeLabel, reportHref, reportParams } from "@/lib/params";
 import { loadCatalog } from "@/lib/catalog";
 import { dataClient } from "@/lib/data";
 import { loadReport } from "@/lib/report";
@@ -196,14 +197,17 @@ const Report = async ({
 
   const timeBars = report.timeBars;
   const perPackageBars = report.perPackageBars;
-  /* What the chart needs of each run besides its plotted means. */
-  const trendDetail = trend.points.map(
-    ({
-      byTool: _byTool,
-      perPackage: _perPackage,
-      perPackageByFixture: _perPackageByFixture,
-      ...rest
-    }) => rest,
+  /* What the chart needs of each run besides its plotted means, by column: one
+     object, which both trend islands get and the page carries once. */
+  const trendDetail = toTrendColumns(
+    trend.points.map(
+      ({
+        byTool: _byTool,
+        perPackage: _perPackage,
+        perPackageByFixture: _perPackageByFixture,
+        ...rest
+      }) => rest,
+    ),
   );
   const fixtureCount = report.fixtures.length;
   const across =
@@ -322,7 +326,7 @@ const Report = async ({
       <TimeSeriesChart
         id="time-trend"
         title="Performance over time"
-        rows={trend.rows}
+        series={trend.series}
         perPackage={trend.perPackage}
         focus={trend.focus}
         /* Tools that completed nothing still ran: the chart marks their DNFs. */
@@ -565,7 +569,7 @@ const Report = async ({
         : [
             {
               label: "window",
-              value: `${query.range} days`,
+              value: rangeLabel(query.range),
               clear: ["range", "from", "to"] as const,
             },
           ]),

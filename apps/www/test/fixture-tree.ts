@@ -4,7 +4,7 @@
  * out loud -- zpm crashes on babylon (DNF, so partial and not ranked), npm
  * did not run on one date (a gap in the trend), and versions change.
  */
-import { DataClient } from "@benchmarks/data";
+import { buildSummary, DataClient, SUMMARY_PACKAGE_COUNTS } from "@benchmarks/data";
 
 export const DATA_URL = "http://data.test";
 export const DATES = ["2026-10-10", "2026-10-12", "2026-10-13"];
@@ -87,3 +87,46 @@ export const fakeFetch = async (url: string | URL | Request) => {
 };
 
 export const fixtureClient = () => new DataClient({ baseUrl: DATA_URL, fetch: fakeFetch });
+
+/**
+ * The same tree with each date's summary, built by apps/data from these files,
+ * and a log of every path fetched -- so a test can say both what a report
+ * drew and what it cost. `old` serves the shape published before summaries
+ * carried counts and versions: results only.
+ */
+export const summarisedClient = ({
+  old = false,
+  uncounted,
+}: {
+  old?: boolean;
+  /** A fixture whose count the summaries leave out, as the build does a count file it cannot parse. */
+  uncounted?: string;
+} = {}) => {
+  const fetched: string[] = [];
+  const fetch = async (url: string | URL | Request) => {
+    const path = decodeURIComponent(String(url).slice(DATA_URL.length + 1));
+    fetched.push(path);
+    const date = /^summary\/(.+)\.json$/.exec(path)?.[1];
+    if (date === undefined || !DATES.includes(date)) return fakeFetch(url);
+    const listing = {
+      name: date,
+      files: [...files.keys()]
+        .filter((p) => p.startsWith(`${date}/`))
+        .map((p) => p.slice(date.length + 1)),
+    };
+    const { summary } = buildSummary(listing, (file) =>
+      JSON.stringify(files.get(`${date}/${file}`)),
+    );
+    if (uncounted !== undefined) {
+      const counts = summary[SUMMARY_PACKAGE_COUNTS] as { [variation: string]: object } | undefined;
+      for (const byFixture of Object.values(counts ?? {})) {
+        delete (byFixture as { [fixture: string]: unknown })[uncounted];
+      }
+    }
+    const served = old
+      ? Object.fromEntries(Object.entries(summary).filter(([key]) => !key.startsWith("#")))
+      : summary;
+    return { ok: true, status: 200, json: async () => served };
+  };
+  return { client: new DataClient({ baseUrl: DATA_URL, fetch }), fetched };
+};

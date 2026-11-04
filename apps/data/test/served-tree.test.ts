@@ -72,7 +72,7 @@ describe.skipIf(skip)("served tree, built from real gh-pages data", () => {
     mkdirSync(join(root, "results-astro-clean"), { recursive: true });
     writeFileSync(join(root, "results-astro-clean", "benchmarks.json"), "{}\n");
     writeFileSync(join(root, "index.html"), "<!doctype html><title>live site</title>\n");
-    writeFileSync(join(root, "CNAME"), "benchmarks.vlt.sh\n");
+    writeFileSync(join(root, "CNAME"), "benchmarks-data.vlt.io\n");
 
     // Run the REAL CLI rather than reimplementing what it does. An earlier
     // version of this fixture built the index and shards inline, which meant a

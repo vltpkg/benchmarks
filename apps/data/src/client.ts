@@ -37,7 +37,7 @@ export type FetchLike = (url: string) => Promise<{
 }>;
 
 export interface DataClientOptions {
-  /** Base URL of the served tree, e.g. `https://benchmarks.vlt.sh`. */
+  /** Base URL of the served tree, e.g. `https://benchmarks-data.vlt.io`. */
   baseUrl: string;
   /** Injectable for tests; defaults to global fetch. */
   fetch?: FetchLike;

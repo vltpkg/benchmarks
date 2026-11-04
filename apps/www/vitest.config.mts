@@ -16,5 +16,7 @@ export default defineConfig({
   oxc: { jsx: { runtime: "automatic" } },
   test: {
     include: ["test/**/*.test.ts"],
+    // Run from apps/www whatever directory vitest starts in, as Next does (test/app-cwd.ts).
+    setupFiles: ["./test/app-cwd.ts"],
   },
 });

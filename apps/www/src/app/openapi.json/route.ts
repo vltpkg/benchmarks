@@ -1,4 +1,4 @@
-import { RANGES } from "@/lib/params";
+import { LEGACY_RANGES, PRESETS } from "@/lib/params";
 import { METRICS } from "@/lib/figures";
 import { SITE_DESCRIPTION, siteOrigin } from "@/lib/metadata";
 import { SECTIONS } from "@/lib/sections";
@@ -42,13 +42,13 @@ const viewParams = [
   ),
   query(
     "range",
-    { type: "integer", enum: RANGES, default: 30 },
-    "Trend window: this many calendar days ending at the run.",
+    { type: "string", enum: PRESETS.map((p) => p.value), default: "1m" },
+    `Trend window in rolling calendar days ending at the run: today (the run alone), 1w (7), 1m (30), 1y (365) or all (every published run up to it). Legacy day counts ${LEGACY_RANGES.join(", ")} are still accepted.`,
   ),
   query(
     "from",
     date,
-    "Exact trend window start; with `to`. Both must be published dates, less than 120 days apart.",
+    "Exact trend window start; with `to`. Both must be published dates, in order; any span.",
   ),
   query("to", date, "Exact trend window end; no later than the run."),
   query(

@@ -23,7 +23,7 @@ import {
   type ReactNode,
 } from "react";
 import { ChartLegend } from "@/components/chart-legend";
-import { PinnedRun, type PinnedNote, type TrendDetail } from "@/components/pinned-run";
+import { onFixture, PinnedRun, type PinnedNote, type TrendDetail } from "@/components/pinned-run";
 import { RangePicker } from "@/components/range-picker";
 import { usePending } from "@/components/report-pending";
 import { Callout, ChartFrame, Figure } from "@/components/report";
@@ -45,7 +45,7 @@ import {
   tooltipRow,
   tooltipShell,
 } from "@/components/ui/echarts-tooltip";
-import { toolColor } from "@/lib/chart-model";
+import { rowsOf, toolColor, trendOf, type DenseSeries, type TrendColumns } from "@/lib/chart-model";
 import { EVIL_AXIS_LABEL, EVIL_SPLIT_LINE, EVIL_TICK_DOT, escapeHtml } from "@/lib/chart-style";
 import {
   bridges,
@@ -187,7 +187,7 @@ export interface TimeSeriesTool {
 export const TimeSeriesChart = ({
   id,
   title,
-  rows,
+  series,
   tools,
   section,
   baseline,
@@ -195,7 +195,8 @@ export const TimeSeriesChart = ({
   yLabel,
   markers = [],
   versions = [],
-  trend = [],
+  trend: columns,
+  fixture,
   perPackage = true,
   focus = null,
   fixedMetric,
@@ -216,8 +217,12 @@ export const TimeSeriesChart = ({
   /** A tab row in place of the title tab (`FigureTabStrip`). */
   tabs?: ReactNode;
   firstTabActive?: boolean;
-  /** Dense rows from `toDenseChartRows`: holes as `null`, never as zero. */
-  rows: readonly { date: string; [tool: string]: string | number | null }[];
+  /**
+   * The plotted values by column (`toDenseSeries`): holes as `null`, never as
+   * zero. Sent this way rather than as a row per calendar day with every
+   * tool's key repeated -- the lighter page -- and unpacked here, once.
+   */
+  series: DenseSeries;
   /** Every tool these files contain, in ranking order -- hidden ones included. */
   tools: readonly TimeSeriesTool[];
   section: SectionId;
@@ -233,9 +238,12 @@ export const TimeSeriesChart = ({
   /**
    * Each run's coverage, failures, spread and per-fixture seconds (from
    * `loadScenario`), for the DNF marks, the band, the tooltip and the pinned
-   * run's panel.
+   * run's panel. By column (`toTrendColumns`), the lighter page, and unpacked
+   * here once.
    */
-  trend?: readonly TrendDetail[];
+  trend?: TrendColumns;
+  /** Each run as this one fixture saw it (the per-fixture chart's tab). */
+  fixture?: string;
   /**
    * Whether "Per package" can be offered: there are package counts for what
    * is plotted. Not for task runners: nothing is installed.
@@ -252,6 +260,12 @@ export const TimeSeriesChart = ({
     readonly custom: boolean;
   };
 }) => {
+  /* Once per series: a fixture tab remounts the chart with its own. */
+  const rows = useMemo(() => rowsOf(series), [series]);
+  const trend: readonly TrendDetail[] = useMemo(() => {
+    const runs = columns === undefined ? [] : trendOf(columns);
+    return fixture === undefined ? runs : onFixture(runs, fixture);
+  }, [columns, fixture]);
   const { resolvedTheme } = useTheme();
   /* Server writes run in the report's transitions; a tools change leaves the lines live. */
   const { data: reloading, startTransition, startToolsTransition } = usePending();
@@ -1376,7 +1390,7 @@ export const TimeSeriesChart = ({
                   color: failed.length === 1 ? paint(failed[0] ?? "") : "var(--foreground)",
                 }}
               >
-                <CircleX className="size-2.5" strokeWidth={2.5} />
+                <span className="mark-dnf" />
                 {failed.length === 1 ? null : failed.length}
               </span>
             ))}
@@ -1395,7 +1409,6 @@ export const TimeSeriesChart = ({
                   />
                 );
               /* A version change (a tag) or an unusual run (a warning): an icon on the line, in its colour. */
-              const Icon = kind === "ring" ? Tag : TriangleAlert;
               return (
                 <span
                   key={`${tool}:${i}:${kind}`}
@@ -1406,7 +1419,7 @@ export const TimeSeriesChart = ({
                   className={`absolute grid size-4 -translate-1/2 place-items-center rounded-full text-(--code-editor-background) ring-[1.5px] ring-(--code-editor-background) ${dim}`}
                   style={{ background: paint(tool) }}
                 >
-                  <Icon className="size-2.5" strokeWidth={2.5} />
+                  <span className={kind === "ring" ? "mark-version" : "mark-unusual"} />
                 </span>
               );
             })}

@@ -2,9 +2,9 @@
  * Minimal static server for the assembled tree.
  *
  * Deliberately dependency-free (`node:http` only) and deliberately does not
- * serve a directory index. The published root's `index.html` IS the live site
- * at benchmarks.vlt.sh, and this app must never be the thing that puts an
- * index page there.
+ * serve a directory index. The published root's `index.html` is a live page
+ * at benchmarks-data.vlt.io (the gh-pages CNAME), and this app must never be
+ * the thing that puts an index page there.
  */
 import { createServer, type Server } from "node:http";
 import { createReadStream, statSync } from "node:fs";

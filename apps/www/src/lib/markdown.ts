@@ -16,7 +16,8 @@ import {
 import { formatDuration, formatVersus } from "./findings";
 import { formatMs, type CountRow, type FixtureRow } from "./measurements";
 import { METHOD, RESOURCES, RUNNER, RUNNER_NOTE } from "./metadata";
-import { reportHref } from "./params";
+import { rowsOf } from "./chart-model";
+import { rangeLabel, reportHref } from "./params";
 import type { TrendPoint } from "./load";
 import type { ReportModel } from "./report";
 import type { VersionMarker } from "./version-markers";
@@ -107,12 +108,31 @@ const counts = (report: ReportModel, rows: readonly CountRow[]): string =>
       ]),
   );
 
+/*
+ * How a trend's CSV is laid out: a row a calendar day, or -- past
+ * MAX_DENSE_DAYS, where the chart stops spacing runs by date -- a row a run.
+ */
+const layout = (perDay: boolean) =>
+  perDay
+    ? { rows: "one row per calendar day", row: "day" }
+    : { rows: "one row per run (the window is too long for a row a day)", row: "run" };
+
+const sentence = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
+const DAY_MS = 86_400_000;
+
+/* Whether a history's rows are consecutive days, as a dense series' are. */
+const perDay = (rows: readonly { readonly date: string }[]): boolean =>
+  rows.every(
+    (r, i) => i === 0 || Date.parse(r.date) - Date.parse(rows[i - 1]?.date ?? "") === DAY_MS,
+  );
+
 const label = (report: ReportModel, tool: string): string =>
   report.leaderboard.find((r) => r.tool === tool)?.label ?? tool;
 
 /**
  * The trend as agents read it best: a CSV block, one row per calendar day
- * with empty cells for gaps, then the DNFs, coverage, version changes and
+ * (or per run, past MAX_DENSE_DAYS) with empty cells for gaps, then the DNFs, coverage, version changes and
  * outliers that explain them.
  */
 const trendLines = ({
@@ -220,7 +240,7 @@ export const reportMarkdown = (report: ReportModel, origin: string): string => {
     `- Measured: mean ${report.measure} time ${filters.fixture === null ? `across ${fixtureCount} ${fixtureCount === 1 ? "fixture" : "fixtures"}` : `on the ${fixtureLabel(filters.fixture)} fixture`}${scenario.averageOf === null ? "" : `, averaged over ${scenario.averageOf.scenarios.length} scenarios (derived, not measured)`}, on GitHub-hosted ubuntu-24.04-arm runners.${section.id === "registries" ? " Every registry is installed from with the same npm client." : ""}`,
     `- Filters in effect:`,
     `  - fixture: ${filters.fixture === null ? `all (${report.fixtures.join(", ")})` : filters.fixture}`,
-    `  - trend window: ${filters.window.custom ? "custom" : `last ${filters.range} days`}, ${filters.window.from} to ${filters.window.to}`,
+    `  - trend window: ${filters.window.custom ? "custom" : rangeLabel(filters.range).toLowerCase()}, ${filters.window.from} to ${filters.window.to}`,
     `  - trend metric: ${METRIC_TEXT[metric].name}`,
     `  - hidden tools: ${filters.hide.length === 0 ? "none" : filters.hide.join(", ")}`,
     `  - excluded runs: ${filters.exclude.length === 0 ? "none" : filters.exclude.join(", ")}`,
@@ -353,13 +373,19 @@ export const reportMarkdown = (report: ReportModel, origin: string): string => {
       "",
     );
   }
+  const grid = layout(trend.series.dense);
   add(
     "### Performance over time",
     "",
-    `${metric === "total" ? `Mean ${report.measure} time in seconds` : METRIC_TEXT[metric].unit}, one row per calendar day from ${filters.window.from} to ${filters.window.to}.${trend.cut === null ? "" : ` ${trend.cut}`} An empty cell is a day with no published value for that tool: no run, a DNF, a partial run or an exclusion. The chart bridges those with a dotted line by default; nothing is interpolated here. For other windows use the history endpoint: ${abs(`/api/v1/${section.id}/${encodeURIComponent(scenario.variation)}/history`)}`,
+    `${metric === "total" ? `Mean ${report.measure} time in seconds` : METRIC_TEXT[metric].unit}, ${grid.rows} from ${filters.window.from} to ${filters.window.to}.${trend.cut === null ? "" : ` ${trend.cut}`} An empty cell is a ${grid.row} with no published value for that tool: no run, a DNF, a partial run or an exclusion. The chart bridges those with a dotted line by default; nothing is interpolated here. For other windows use the history endpoint: ${abs(`/api/v1/${section.id}/${encodeURIComponent(scenario.variation)}/history`)}`,
     "",
     ...trendLines({
-      rows: metricRows(trend.rows, [...report.ranked, ...report.unranked], metric, report.baseline),
+      rows: metricRows(
+        rowsOf(trend.series),
+        [...report.ranked, ...report.unranked],
+        metric,
+        report.baseline,
+      ),
       runs: trend.points,
       markers: trend.markers,
       outliers: trend.outliers,
@@ -419,10 +445,11 @@ export const reportMarkdown = (report: ReportModel, origin: string): string => {
       add(
         "### Per-package time by fixture (ms per installed package, derived)",
         "",
-        "Each fixture's per-package time, run by run, one row per calendar day; an empty cell is no value for that tool on that day.",
+        `Each fixture's per-package time, run by run, ${grid.rows}; an empty cell is no value for that tool on that ${grid.row}.`,
         "",
       );
-      for (const { fixture, rows } of trend.perPackageByFixture) {
+      for (const { fixture, series } of trend.perPackageByFixture) {
+        const rows = rowsOf(series);
         add(
           `#### ${fixtureLabel(fixture)}`,
           "",
@@ -523,6 +550,7 @@ export const reportMarkdown = (report: ReportModel, origin: string): string => {
 /** A scenario's history (`historyOf`) as Markdown: what was asked, then the trend. */
 export const historyMarkdown = (history: History, origin: string): string => {
   const section = history.section as SectionId;
+  const grid = layout(perDay(history.rows));
   const label = (tool: string) => toolLabel(tool, section);
   return [
     `# ${SECTION_DEFS[section].label} — ${history.scenario}: history`,
@@ -534,7 +562,7 @@ export const historyMarkdown = (history: History, origin: string): string => {
     `- Tools: ${history.tools.map((t) => (label(t) === t ? t : `${label(t)} (${t})`)).join(", ")}`,
     `- Excluded runs: ${history.excluded.length === 0 ? "none" : history.excluded.join(", ")}`,
     "",
-    "One row per calendar day. An empty cell is a day with no comparable value for that tool: no run, a DNF, a partial run or an exclusion. Nothing is interpolated.",
+    `${sentence(grid.rows)}. An empty cell is a ${grid.row} with no comparable value for that tool: no run, a DNF, a partial run or an exclusion. Nothing is interpolated.`,
     "",
     ...trendLines({
       rows: history.rows,
