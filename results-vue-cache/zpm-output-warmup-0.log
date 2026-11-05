@@ -1,0 +1,5 @@
+➤ · Yarn 6.0.0-rc.20
+➤ ┌ Installing packages
+➤ │ @babel/parser@npm:^7.29.13: No candidates found for npm:^7.29.13
+➤ │ Resolved 613 packages, fetched 452 packages (200.14 MiB)
+➤ └ Completed in 1s 713ms
