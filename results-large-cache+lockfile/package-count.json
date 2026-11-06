@@ -20,6 +20,9 @@
   "bun": {
     "count": 1534
   },
+  "deno": {
+    "count": 1278
+  },
   "aube": {
     "count": 1084,
     "minCount": 1083,
