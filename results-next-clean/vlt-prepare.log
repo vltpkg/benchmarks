@@ -1,39 +1,39 @@
-(node:24978) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
+(node:24961) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/benchmarks/benchmarks/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
 No workspaces defined, nothing to do.
-(node:25540) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
+(node:25523) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/benchmarks/benchmarks/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
 No workspaces defined, nothing to do.
-(node:26102) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
+(node:26086) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/benchmarks/benchmarks/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
 No workspaces defined, nothing to do.
-(node:26666) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
+(node:26649) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/benchmarks/benchmarks/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
 No workspaces defined, nothing to do.
-(node:27229) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
+(node:27212) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/benchmarks/benchmarks/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
 No workspaces defined, nothing to do.
-(node:27791) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
+(node:27775) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/benchmarks/benchmarks/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
 No workspaces defined, nothing to do.
-(node:28359) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
+(node:28337) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/benchmarks/benchmarks/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
 No workspaces defined, nothing to do.
-(node:47466) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
+(node:47455) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/benchmarks/benchmarks/suite/scripts/add-workspace-protocol.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/benchmarks/benchmarks/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
