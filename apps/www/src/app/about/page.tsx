@@ -8,7 +8,7 @@ import Content from "./content.mdx";
 
 /* The site's front page: what the benchmarks are, how agents read them, and the
    latest headline of each. `/` itself opens on the default benchmark. Its
-   Markdown twin is llms.txt. */
+   Markdown twin is llms.txt (./markdown.ts). */
 export const metadata = pageMetadata({
   title: "About",
   description: SITE_DESCRIPTION,

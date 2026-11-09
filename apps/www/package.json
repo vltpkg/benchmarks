@@ -15,6 +15,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@affordances/md": "0.5.0",
     "@base-ui/react": "1.9.0",
     "@benchmarks/data": "workspace:*",
     "@benchmarks/types": "workspace:*",

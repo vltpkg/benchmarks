@@ -1,3 +1,6 @@
 # Next.js build output and the type shim it generates on first build.
 .next/
 next-env.d.ts
+
+# @affordances/md writes its route table here on each dev and build (next.config.ts).
+.affordances/

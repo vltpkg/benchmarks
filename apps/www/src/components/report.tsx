@@ -1,5 +1,6 @@
 import { BarChart3, Info, LineChart, ScatterChart, Table2 } from "lucide-react";
 import type { ReactNode } from "react";
+import { AgentSlot } from "@affordances/md/react";
 import { HeadingAnchor, HeadingLink } from "@/components/heading-anchor";
 
 /**
@@ -231,7 +232,8 @@ export const Figure = ({
             kind === "table" || !firstTabActive ? "" : "rounded-tl-none"
           }`}
         >
-          {children}
+          {/* Its Markdown twin's numbers: app/[section]/[[...params]]/markdown.ts fills this by id. */}
+          <AgentSlot name={id}>{children}</AgentSlot>
         </div>
         {footer === undefined ? null : (
           /* Inset as the panel is (the shell's 4px), so a control in a corner is
@@ -241,8 +243,10 @@ export const Figure = ({
       </div>
 
       {guide === undefined ? null : (
+        /* How to read the marks; the twin's slot says what its own numbers are. */
         <p
           data-narrative
+          data-affordances-md="skip"
           className="mt-4 max-w-[78ch] text-sm leading-relaxed text-muted-foreground"
         >
           {guide}

@@ -1041,3 +1041,48 @@ describe("a partial day is a gap on the trend, never a dip", () => {
     expect(p?.failed.zpm?.[0]?.fixture).toBe("babylon");
   });
 });
+
+/*
+ * The Markdown twin was the Markdown builder's alone (lib/markdown.ts); it is
+ * now the page's HTML, converted by @affordances/md, with the builder's
+ * numbers in each figure's slot. What moved, and where it is checked:
+ *
+ * - The numbers (leaderboard, every chart's values, the trend CSV with its
+ *   gaps as empty cells, DNFs, version changes, outliers, every table):
+ *   still the builder's, through `slots` -- twins.test.ts checks each fill is
+ *   the builder's lines for that figure, and these entries check the builder.
+ * - The run and filters in effect, a fallen-back selection, and an average's
+ *   scenarios: the `context` slot -- twins.test.ts, average.test.ts.
+ * - Caveats, method, environment, data and citation: the `reference` slot --
+ *   twins.test.ts.
+ * - That per-package numbers are derived, and why a tool without a count is
+ *   missing (PER_PACKAGE_DERIVED): an `<AgentOnly>` heading the section, since
+ *   the figures' guides, which say it on the page, are not the twin's --
+ *   twins.e2e.mjs, and below.
+ * - The headline, the lede, the stats and each figure's notes: the page's own
+ *   text, converted -- twins.e2e.mjs against a server, since only a render
+ *   has them.
+ * - A 404 an agent can act on: the default export, since the page streams its
+ *   `notFound()` as a 200 -- twins.test.ts and twins.e2e.mjs.
+ */
+describe("inventory 16 · the twin's numbers are the builder's, never a chart's markup", () => {
+  const read = (p: string) => readFileSync(new URL(p, import.meta.url), "utf8");
+
+  it("every figure's body is a slot named for the figure", () => {
+    expect(read("../src/components/report.tsx")).toMatch(
+      /<AgentSlot name=\{id\}>\{children\}<\/AgentSlot>/,
+    );
+  });
+
+  it("the per-package section still says its numbers are derived, in the builder's words", () => {
+    expect(read("../src/app/[section]/[[...params]]/page.tsx")).toMatch(
+      /part\.id === "per-package"[\s\S]{0,80}<AgentOnly>\s*<p>\{PER_PACKAGE_DERIVED\}<\/p>/,
+    );
+  });
+
+  it("a figure's guide, which describes the drawn marks, is not the twin's", () => {
+    expect(read("../src/components/report.tsx")).toMatch(
+      /data-narrative\n\s+data-affordances-md="skip"/,
+    );
+  });
+});
