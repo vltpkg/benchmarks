@@ -1,6 +1,7 @@
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import createMDX from "@next/mdx";
+import { withMd } from "@affordances/md/next";
 import type { NextConfig } from "next";
 
 /**
@@ -15,20 +16,6 @@ import type { NextConfig } from "next";
  */
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
-const acceptsMarkdown = {
-  type: "header",
-  key: "accept",
-  value: ".*text/markdown.*",
-} as const;
-
-/*
- * Extensionless pages, as the docs site has them. Skips the markdown route
- * itself, the API, MCP and social-card endpoints, Next's own assets, and anything with a
- * file extension (`.md` urls, llms.txt, openapi.json), which has no markdown
- * twin.
- */
-const pages = "/:path((?!llms\\.mdx/|(?:api|_next|mcp|og)(?:/|$))(?!.*\\.[a-z0-9]+$).+)";
-
 const nextConfig: NextConfig = {
   // Pages prerender a shell around cached data (lib/data.ts), and links prefetch that shell.
   cacheComponents: true,
@@ -42,24 +29,6 @@ const nextConfig: NextConfig = {
   // takumi's native renderer (app/og) is loaded by Node, not bundled -- as vlt.io has it.
   serverExternalPackages: ["@takumi-rs/image-response"],
   turbopack: { root: workspaceRoot },
-  // The docs' rewrites (vltpkg/www/docs/next.config.ts). The query survives a
-  // rewrite, so `/x.md?fixture=astro` is the markdown of that filtered view.
-  rewrites: async () => ({
-    // Agents that ask for markdown get it at the page's own url; runs before
-    // the filesystem, which would otherwise match the html page first.
-    beforeFiles: [
-      { source: "/", has: [acceptsMarkdown], destination: "/llms.mdx" },
-      { source: pages, has: [acceptsMarkdown], destination: "/llms.mdx/:path" },
-    ],
-    // `/package-managers/clean.md` serves that page as plain markdown.
-    afterFiles: [{ source: "/:path+.md", destination: "/llms.mdx/:path+" }],
-  }),
-  // Those urls answer with html or markdown depending on `Accept`, so caches must key on it.
-  headers: async () =>
-    ["/", pages].map((source) => ({
-      source,
-      headers: [{ key: "Vary", value: "Accept" }],
-    })),
   // Compare was removed; its links land on the same section's report.
   redirects: async () => [
     /* The front door is the default benchmark; what used to be here is /about.
@@ -76,4 +45,11 @@ const nextConfig: NextConfig = {
   ],
 };
 
-export default createMDX()(nextConfig);
+/*
+ * Every page's Markdown twin (`/x.md`, or the page's url with `Accept:
+ * text/markdown`) is @affordances/md's: its rewrites send both to
+ * app/api/affordances/md, which converts the page's own HTML, query and
+ * redirects included, and fills the figures' `<AgentSlot>`s from each route's
+ * markdown.ts.
+ */
+export default withMd(createMDX()(nextConfig));

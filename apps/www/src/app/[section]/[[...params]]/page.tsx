@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fragment, Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
 import { ArrowRight, ChartLine } from "lucide-react";
+import { AgentOnly, AgentSlot } from "@affordances/md/react";
 import { InlineCode, Marked } from "@/components/inline-code";
 import { Button } from "@/components/ui/button";
 import { TimeSeriesChart } from "@/components/charts-echarts";
@@ -41,6 +42,7 @@ import { toTrendColumns } from "@/lib/chart-model";
 import { loadReportParams, rangeLabel, reportHref, reportParams } from "@/lib/params";
 import { loadCatalog } from "@/lib/catalog";
 import { dataClient } from "@/lib/data";
+import { PER_PACKAGE_DERIVED } from "@/lib/markdown";
 import { loadReport } from "@/lib/report";
 import { withAverage } from "@/lib/scenarios";
 import { isSectionId, SECTION_DEFS, SECTIONS } from "@/lib/sections";
@@ -665,6 +667,8 @@ const Report = async ({
             </div>
           }
         />
+        {/* Empty for people; the twin's run and filters, as the menus and chips show them (./markdown.ts). */}
+        <AgentSlot name="context" />
         {caveats.qualifier === null ? null : (
           <div data-narrative className="mt-6">
             <Callout title="A faster mean is not ranked">
@@ -716,12 +720,21 @@ const Report = async ({
             id={part.id}
             title={part.items.every((item) => solo.has(item.id)) ? undefined : part.title}
           >
+            {/* For agents only: on the page, the guides and axis labels say it (lib/markdown.ts). */}
+            {part.id === "per-package" ? (
+              <AgentOnly>
+                <p>{PER_PACKAGE_DERIVED}</p>
+              </AgentOnly>
+            ) : null}
             {part.items.map((item) => (
               <Fragment key={item.id}>{bodies[item.id]}</Fragment>
             ))}
           </ReportSection>
         ))}
-        <DataAndSource raw={report.raw} />
+        {/* The raw files are a menu here; the twin lists them, with the method and a citation. */}
+        <AgentSlot name="reference">
+          <DataAndSource raw={report.raw} />
+        </AgentSlot>
       </PendingRegion>
       {/* Fixed to the viewport's right edge, in the page margin: no column. */}
       <TOCMinimap

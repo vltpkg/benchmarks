@@ -7,7 +7,7 @@ import { tocOf } from "@/lib/mdx";
 import { pageMetadata, siteOrigin } from "@/lib/metadata";
 import { Environment, Method, Reading, Resources, Scenarios, Trademark } from "./components";
 import Content from "./content.mdx";
-import { methodologyMarkdown } from "./markdown";
+import { methodologyMarkdown } from "@/lib/methodology-markdown";
 
 const description = "How the benchmarks are measured, where they run, and how to read the results.";
 

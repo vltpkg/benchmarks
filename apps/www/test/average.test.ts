@@ -3,8 +3,8 @@ import { DataClient } from "@benchmarks/data";
 import nextConfig from "../next.config.ts";
 import type { BenchmarkFile } from "@benchmarks/types";
 import { GET as api } from "../src/app/api/v1/[section]/[scenario]/route.ts";
+import reportTwin, { slots } from "../src/app/[section]/[[...params]]/markdown.ts";
 import { GET as llms } from "../src/app/llms.txt/route.ts";
-import { GET as markdown } from "../src/app/llms.mdx/[[...slug]]/route.ts";
 import { TREND_BUDGET, trendDates } from "../src/lib/load.ts";
 import { averageFiles } from "../src/lib/measurements.ts";
 import { treeFor } from "../src/lib/page-tree.ts";
@@ -202,24 +202,25 @@ describe("the average report's twins", () => {
     vi.unstubAllGlobals();
   });
 
-  it("Markdown says it is derived, and of what", async () => {
-    const res = await markdown(new Request(`${ORIGIN}/llms.mdx/package-managers/average`), {
-      params: Promise.resolve({ slug: ["package-managers", "average"] }),
-    });
-    const text = await res.text();
-    expect(text.split("\n")[0]).toBe(
-      `# Package managers — average (${ORIGIN}/package-managers/average)`,
-    );
-    expect(text).toContain("averaged over 2 scenarios (derived, not measured)");
-    expect(text).toContain("Mean of: clean, cache.");
-    expect(text).not.toContain("## Footprint");
+  /* The handler's args for `/package-managers/average`, as twins.test.ts builds them. */
+  const twin = (path: string) => {
+    const [section = "", ...rest] = path.split("/").slice(1);
+    return {
+      route: "/[section]/[[...params]]" as const,
+      params: rest.length === 0 ? { section } : { section, params: rest },
+      searchParams: new URLSearchParams(),
+      request: new Request(`${ORIGIN}/api/affordances/md${path}`),
+    };
+  };
+
+  it("its Markdown twin says it is derived, and of what", async () => {
+    const context = await slots.context(twin("/package-managers/average"));
+    expect(context).toContain("averaged over 2 scenarios (derived, not measured)");
+    expect(context).toContain("Mean of: clean, cache.");
   });
 
-  it("the section's own Markdown is the average", async () => {
-    const res = await markdown(new Request(`${ORIGIN}/llms.mdx/package-managers`), {
-      params: Promise.resolve({ slug: ["package-managers"] }),
-    });
-    expect(await res.text()).toMatch(/^# Package managers — average /);
+  it("the section's own twin is the page's redirect to the average", async () => {
+    expect(await reportTwin(twin("/package-managers"))).toBeUndefined();
   });
 
   it("the JSON API returns it", async () => {
