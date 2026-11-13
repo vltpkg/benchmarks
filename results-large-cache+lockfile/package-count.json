@@ -23,11 +23,6 @@
   "deno": {
     "count": 1277
   },
-  "aube": {
-    "count": 1083,
-    "minCount": 1082,
-    "maxCount": 1085
-  },
   "upm": {
     "count": 1291
   }
