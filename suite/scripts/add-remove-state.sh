@@ -53,11 +53,35 @@ add_var="BENCH_ADD_${PM_UPPER}"
 
 snapshot="$state_dir/project"
 
+# vlt removes replaced store entries asynchronously: it renames them to
+# node_modules/.vlt/.VLT.DELETE.* and deletes them in a detached process that
+# can outlive the vlt command. rsync racing that deletion fails with exit 24
+# ("some files vanished"). Wait for the trash to drain, never copy it, and
+# treat a vanished-file warning as success.
+wait_for_pm_trash() {
+  local i
+  for i in $(seq 1 100); do
+    if ! compgen -G "node_modules/.vlt/.VLT.DELETE.*" >/dev/null; then
+      return 0
+    fi
+    sleep 0.1
+  done
+}
+
+sync_tree() {
+  local rc=0
+  rsync -aH --delete --exclude='.VLT.DELETE.*' "$1" "$2" || rc=$?
+  if [ "$rc" -ne 0 ] && [ "$rc" -ne 24 ]; then
+    return "$rc"
+  fi
+}
+
 if [ -f "$state_dir/pm" ] && [ "$(cat "$state_dir/pm")" = "$pm-$mode" ] && [ -d "$snapshot" ]; then
   # Restore the exact baseline. -H keeps hard links (pnpm/bun), -a keeps
   # symlinks (aube, pnpm virtual store), --delete drops anything the timed
   # command created (e.g. node_modules/<new-pkg>).
-  rsync -aH --delete "$snapshot/" ./
+  wait_for_pm_trash
+  sync_tree "$snapshot/" ./
   exit 0
 fi
 
@@ -82,6 +106,7 @@ if [ "$mode" = "remove" ]; then
   eval "${!add_var}" >/dev/null 2>&1 || echo "[add-remove] warning: baseline add for $pm exited non-zero"
 fi
 
+wait_for_pm_trash
 mkdir -p "$snapshot"
-rsync -aH --delete ./ "$snapshot/"
+sync_tree ./ "$snapshot/"
 echo "$pm-$mode" > "$state_dir/pm"
