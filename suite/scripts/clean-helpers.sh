@@ -129,6 +129,10 @@ clean_aube_cache() {
   fi
   safe_remove "${XDG_CACHE_HOME:-$HOME/.cache}/aube"
   safe_remove "$HOME/.aube-store"
+  # aube's per-project install state (fast "already up to date" path) must go
+  # with the cache, or a cold-cache run can be short-circuited by it.
+  safe_remove "node_modules/.aube-state"
+  safe_remove ".aube/.state"
 }
 
 # Function to clean lockfiles for all package managers

@@ -45,6 +45,8 @@ describe("sectionOf", () => {
   it("files install variations under package-managers", () => {
     expect(sectionOf("clean")).toBe("package-managers");
     expect(sectionOf("cache+lockfile+node_modules")).toBe("package-managers");
+    expect(sectionOf("add-singleton")).toBe("package-managers");
+    expect(sectionOf("remove-overlap")).toBe("package-managers");
   });
 
   it("files a variation nobody has curated, without being edited", () => {
@@ -84,6 +86,8 @@ describe("scenarioKind", () => {
     expect(kind("cache+lockfile+node_modules")).toBe("warm");
     expect(kind("cache")).toBe("partial");
     expect(kind("lockfile+node_modules")).toBe("partial");
+    expect(kind("add-singleton")).toBe("warm");
+    expect(kind("remove-overlap")).toBe("warm");
   });
 
   it("labels the ci family", () => {
@@ -111,6 +115,10 @@ describe("scenariosFor", () => {
     "node_modules",
     "registry-clean",
     "registry-lockfile",
+    "add-singleton",
+    "remove-singleton",
+    "add-overlap",
+    "remove-overlap",
     "build",
     "build-cache",
     "run",

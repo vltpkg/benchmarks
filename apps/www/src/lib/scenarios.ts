@@ -41,6 +41,9 @@ export interface Scenario {
   readonly averageOf?: readonly string[];
 }
 
+/** `add-singleton`, `remove-overlap`, ...: one dependency added to / removed from an installed project. */
+export const isAddRemove = (variation: string): boolean => /^(add|remove)-/.test(variation);
+
 /**
  * Read the starting state out of the variation name.
  *
@@ -50,6 +53,9 @@ export interface Scenario {
  * requires a lockfile and refuses to run without one.
  */
 export const scenarioState = (variation: string): ScenarioState => {
+  // add-*/remove-* run against a fully installed project: cache, lockfile and
+  // node_modules are all present before the timed add/remove.
+  if (isAddRemove(variation)) return { cache: true, lockfile: true, nodeModules: true };
   const parts = variation.split("+");
   const has = (token: string): boolean => parts.includes(token);
   const ci = parts.includes("ci");
@@ -172,6 +178,14 @@ export const DESCRIPTIONS: { readonly [variation: string]: string } = {
   "lockfile+node_modules": "Lockfile and node_modules present, with a cold cache.",
   "cache+lockfile+node_modules":
     "Everything warm. The best case, and usually dominated by how fast a tool can decide it has nothing to do.",
+  "add-singleton":
+    "Add one new package with zero dependencies (@vltpkg/xdg) to an installed project: lockfile, node_modules and cache all present.",
+  "remove-singleton":
+    "Remove that zero-dependency package again from an installed project that has it.",
+  "add-overlap":
+    "Add one new package whose own dependencies are mostly already in the project's graph, so the tool must resolve and dedupe against what is installed.",
+  "remove-overlap":
+    "Remove that overlapping package again; its shared dependencies must stay, only what it alone needed goes.",
   ci: "The tool's CI-oriented install — npm ci and its equivalents. Requires a lockfile and installs strictly from it.",
   "registry-clean":
     "A cold install, holding the package manager constant and varying the registry.",

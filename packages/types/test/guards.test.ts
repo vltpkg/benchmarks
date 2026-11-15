@@ -15,7 +15,7 @@ describe("enumerations", () => {
   });
 
   it("lists the fifteen variations, five of which contain a plus", () => {
-    expect(VARIATIONS).toHaveLength(15);
+    expect(VARIATIONS).toHaveLength(19);
     expect(VARIATIONS.filter((v) => v.includes("+"))).toEqual([
       "cache+lockfile",
       "cache+lockfile+node_modules",
