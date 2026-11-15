@@ -56,6 +56,18 @@ case "$2" in
     build-cache)
         bash ../../scripts/variations/build-cache.sh "../../scripts" "../../results" "$1" "$2"
         ;;
+    add-singleton)
+        bash ../../scripts/variations/add-singleton.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
+    remove-singleton)
+        bash ../../scripts/variations/remove-singleton.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
+    add-overlap)
+        bash ../../scripts/variations/add-overlap.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
+    remove-overlap)
+        bash ../../scripts/variations/remove-overlap.sh "../../scripts" "../../results" "$1" "$2"
+        ;;
     run)
         bash ../../scripts/variations/run.sh "../../scripts" "../../results" "run" "run"
         ;;

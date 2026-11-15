@@ -32,7 +32,7 @@ export const SECTION_DEFS: { readonly [S in SectionId]: SectionDef } = {
     label: "Package managers",
     eyebrow: "Package managers · install performance",
     about:
-      "The same projects installed by each package manager, from every combination of warm and cold cache, lockfile and node_modules.",
+      "The same projects installed by each package manager, from every combination of warm and cold cache, lockfile and node_modules, plus adding and removing a single dependency in an installed project.",
     order: [
       "clean",
       "cache",
@@ -43,6 +43,10 @@ export const SECTION_DEFS: { readonly [S in SectionId]: SectionDef } = {
       "lockfile+node_modules",
       "cache+lockfile+node_modules",
       "ci",
+      "add-singleton",
+      "remove-singleton",
+      "add-overlap",
+      "remove-overlap",
     ],
   },
   registries: {

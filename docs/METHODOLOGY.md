@@ -63,6 +63,10 @@ are published; neither alone is the answer.
 | `lockfile+node_modules`       | lockfile and `node_modules`                                 |
 | `cache+lockfile+node_modules` | everything warm — best case                                 |
 | `ci`                          | the tool's CI-oriented install (`npm ci` and equivalents)   |
+| `add-singleton`               | add one zero-dependency package to an installed project     |
+| `remove-singleton`            | remove that package from an installed project               |
+| `add-overlap`                 | add one package whose deps overlap the existing graph       |
+| `remove-overlap`              | remove that package from an installed project               |
 | `build`                       | a project build after install (`next` only, see below)      |
 | `build-cache`                 | a project build with a warm build cache (same)              |
 | `run`                         | script-execution overhead (`run` fixture only)              |
@@ -82,6 +86,42 @@ The published data can also hold variations the suite does not run, and the two
 drift: `ci+setup` was published from 2026-09-30, before this workspace's suite
 caught up with it. Discover variations from the data, never from a hardcoded
 list.
+
+## Add / remove variations
+
+`add-singleton`, `remove-singleton`, `add-overlap` and `remove-overlap` time a
+single dependency change in a project that is already installed, using each
+manager's own command (`npm install <spec>` / `npm uninstall <name>`,
+`yarn add` / `yarn remove`, `pnpm add` / `pnpm remove`, `vlt install <spec>` /
+`vlt uninstall <name>`, `bun add` / `bun remove`, `deno add npm:<spec>` /
+`deno remove npm:<name>`, `aube add` / `aube remove`, `upm add` / `upm remove`;
+`-W`/`-w` at workspace roots). Shared logic lives in
+`suite/scripts/variations/add-remove.sh`.
+
+**Starting state.** Before a manager's first run its baseline is built from
+scratch: project files cleaned, a regular install (lockfile, `node_modules`,
+warm cache), and for `remove-*` the package added by that same manager. The
+whole fixture directory is then snapshotted, and every run (warmup or timed)
+starts from `rsync --delete` of that snapshot
+(`suite/scripts/add-remove-state.sh`), so each run sees byte-identical
+`package.json`, lockfile and `node_modules`. Caches are cleaned once before
+the first manager and after the last (`clean_all`), as in every variation, and
+stay warm in between: this is a `cache+lockfile+node_modules` project. "Remove"
+means removing the package from the project it was added to.
+
+**Packages** (versions pinned):
+
+| Fixture        | singleton           | overlap                        | already in graph                                     |
+| -------------- | ------------------- | ------------------------------ | ---------------------------------------------------- |
+| all            | `@vltpkg/xdg@1.8.0` | —                              | zero dependencies of any kind                        |
+| `next`         |                     | `log-symbols@4.1.0`            | 6 of 8 (chalk@4 and its deps)                        |
+| `astro`, `vue` |                     | `@rollup/plugin-replace@6.0.3` | 6 of 7 (pluginutils, magic-string, …, peer rollup)   |
+| `svelte`       |                     | `@rollup/plugin-replace@6.0.3` | 4 of 7 (magic-string, picomatch, peer rollup)        |
+| `large`        |                     | `react-redux@9.2.0`            | react, redux, use-sync-external-store                |
+| `babylon`      |                     | `del@9.0.1`                    | 18 of 28, several at other majors (nested placement) |
+
+None of the packages is itself in its fixture's graph. Package counts are taken
+after the add/remove, so `add-*` is baseline + new packages.
 
 ## Registry variations
 

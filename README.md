@@ -86,7 +86,7 @@ We do a best-effort job to configure each tool to behave as similar as possible 
 
 ## Testing Package Installation
 
-The installation tests we run today mimic a matrix of different variations (cold cache, warm cache, cold cache with lockfile, etc) for a variety of test fixtures (ie. we install the packages of a `next`, `vue`, `svelte` & `astro` starter project).
+The installation tests we run today mimic a matrix of different variations (cold cache, warm cache, cold cache with lockfile, etc) for a variety of test fixtures (ie. we install the packages of a `next`, `vue`, `svelte` & `astro` starter project). The `add-singleton`, `remove-singleton`, `add-overlap` and `remove-overlap` variations instead time adding/removing one dependency in an already-installed project — see [docs/METHODOLOGY.md](docs/METHODOLOGY.md#add--remove-variations).
 
 #### Supported Tools
 

@@ -48,6 +48,8 @@ export const FIXTURES = [
  * "is this a real entry in the tree".
  */
 export type Variation =
+  | "add-overlap"
+  | "add-singleton"
   | "build"
   | "build-cache"
   | "cache"
@@ -62,9 +64,13 @@ export type Variation =
   | "node_modules"
   | "registry-clean"
   | "registry-lockfile"
+  | "remove-overlap"
+  | "remove-singleton"
   | "run";
 
 export const VARIATIONS = [
+  "add-overlap",
+  "add-singleton",
   "build",
   "build-cache",
   "cache",
@@ -79,6 +85,8 @@ export const VARIATIONS = [
   "node_modules",
   "registry-clean",
   "registry-lockfile",
+  "remove-overlap",
+  "remove-singleton",
   "run",
 ] as const satisfies readonly Variation[];
 

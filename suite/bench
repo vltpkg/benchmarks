@@ -23,6 +23,10 @@ AVAILABLE_VARIATIONS=(
   run
   registry-clean
   registry-lockfile
+  add-singleton
+  remove-singleton
+  add-overlap
+  remove-overlap
 )
 
 AVAILABLE_PMS=(
