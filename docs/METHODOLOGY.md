@@ -104,9 +104,10 @@ warm cache), and for `remove-*` the package added by that same manager. The
 whole fixture directory is then snapshotted, and every run (warmup or timed)
 starts from `rsync --delete` of that snapshot
 (`suite/scripts/add-remove-state.sh`), so each run sees byte-identical
-`package.json`, lockfile and `node_modules`. Caches are cleaned once before
-the first manager and after the last (`clean_all`), as in every variation, and
-stay warm in between: this is a `cache+lockfile+node_modules` project. "Remove"
+`package.json`, lockfile and `node_modules`. Caches are cleaned (`clean_all`)
+before and after each manager's set of runs, as in every variation, and stay
+warm across that manager's runs: this is a `cache+lockfile+node_modules`
+project. "Remove"
 means removing the package from the project it was added to.
 
 **Packages** (versions pinned):
