@@ -14,7 +14,7 @@ describe("enumerations", () => {
     expect([...FIXTURES]).toEqual(["astro", "babylon", "large", "next", "run", "svelte", "vue"]);
   });
 
-  it("lists the fifteen variations, five of which contain a plus", () => {
+  it("lists the nineteen variations, five of which contain a plus", () => {
     expect(VARIATIONS).toHaveLength(19);
     expect(VARIATIONS.filter((v) => v.includes("+"))).toEqual([
       "cache+lockfile",
