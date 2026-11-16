@@ -120,6 +120,9 @@ BENCH_REMOVE_UPM="upm remove $AR_NAME --silent"
 
 PMS=(npm yarn berry zpm pnpm vlt bun deno aube upm)
 
+# Snapshot lives outside the results folder so it is never uploaded.
+BENCH_AR_STATE_DIR="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/bench-add-remove/$BENCH_FIXTURE-$BENCH_VARIATION"
+
 # The timed command per PM, and the bare command for process counting.
 for pm in "${PMS[@]}"; do
   P=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
@@ -129,12 +132,12 @@ for pm in "${PMS[@]}"; do
     bare_var="BENCH_REMOVE_$P"
   fi
   eval "BENCH_OP_$P=\"\${$bare_var}\""
-  eval "BENCH_COMMAND_$P=\"timeout $BENCH_TIMEOUT \${$bare_var} > $BENCH_OUTPUT_FOLDER/$pm-output-\\\${HYPERFINE_ITERATION}.log 2>&1\""
+  # A failed baseline (see add-remove-state.sh) fails the run instead of
+  # timing an add/remove against a broken project.
+  eval "BENCH_COMMAND_$P=\"[ ! -e $BENCH_AR_STATE_DIR/failed ] && timeout $BENCH_TIMEOUT \${$bare_var} > $BENCH_OUTPUT_FOLDER/$pm-output-\\\${HYPERFINE_ITERATION}.log 2>&1\""
   export "BENCH_SETUP_$P" "BENCH_INSTALL_$P" "BENCH_ADD_$P"
 done
-
-# Snapshot lives outside the results folder so it is never uploaded.
-BENCH_AR_STATE_DIR="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/bench-add-remove/$BENCH_FIXTURE-$BENCH_VARIATION"
+export BENCH_OUTPUT_FOLDER
 ar_prepare() {
   echo "sleep 1; bash $BENCH_SCRIPTS/add-remove-state.sh prepare $BENCH_AR_STATE_DIR $1 $BENCH_AR_MODE"
 }
@@ -180,7 +183,14 @@ if command -v strace &>/dev/null; then
     include_var="BENCH_INCLUDE_$P"
     op_var="BENCH_OP_$P"
     if [ -n "${!include_var:-}" ]; then
-      bash "$BENCH_SCRIPTS/process-count.sh" "$BENCH_OUTPUT_FOLDER" "$pm" "${!op_var}" "$(ar_prepare "$pm")"
+      # Prepare here rather than in process-count.sh so a failed baseline
+      # skips the count instead of counting a broken add/remove.
+      eval "$(ar_prepare "$pm")"
+      if [ -e "$BENCH_AR_STATE_DIR/failed" ]; then
+        echo "Warning: baseline failed for $pm, skipping process count"
+        continue
+      fi
+      bash "$BENCH_SCRIPTS/process-count.sh" "$BENCH_OUTPUT_FOLDER" "$pm" "${!op_var}"
     fi
   done
   eval "$BENCH_AR_DESTROY"

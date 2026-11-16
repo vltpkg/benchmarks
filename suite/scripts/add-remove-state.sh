@@ -16,13 +16,18 @@
 #   - Every later run for <pm>: rsync the snapshot back over the fixture with
 #     --delete, undoing whatever the previous timed add/remove changed
 #     (package.json, lockfile, node_modules, PM state files).
+#   - If the baseline install (or, for `remove`, the add) fails, no snapshot
+#     is taken and <state-dir>/failed is written instead. The timed command
+#     checks for it and exits non-zero, so that PM's runs are recorded as
+#     failures. prepare itself still exits 0: a failing --prepare aborts
+#     hyperfine for every PM, not just this one.
 #
 # Caches are never cleaned here: the variation is "warm project", matching
 # cache+lockfile+node_modules. The variation script cleans all caches once
 # before the first PM and after the last, like every other variation.
 #
 # Commands are read from the environment (exported by add-remove.sh):
-#   BENCH_SETUP_<PM>, BENCH_INSTALL_<PM>, BENCH_ADD_<PM>
+#   BENCH_SETUP_<PM>, BENCH_INSTALL_<PM>, BENCH_ADD_<PM>, BENCH_OUTPUT_FOLDER
 set -Eeuo pipefail
 
 SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -76,6 +81,11 @@ sync_tree() {
   fi
 }
 
+if [ -f "$state_dir/pm" ] && [ "$(cat "$state_dir/pm")" = "$pm-$mode" ] && [ -f "$state_dir/failed" ]; then
+  # The baseline failed: nothing to restore, the timed command will fail.
+  exit 0
+fi
+
 if [ -f "$state_dir/pm" ] && [ "$(cat "$state_dir/pm")" = "$pm-$mode" ] && [ -d "$snapshot" ]; then
   # Restore the exact baseline. -H keeps hard links (pnpm/bun), -a keeps
   # symlinks (aube, pnpm virtual store), --delete drops anything the timed
@@ -98,15 +108,26 @@ fi
 if [ -n "${!setup_var:-}" ]; then
   eval "${!setup_var}"
 fi
+mkdir -p "$state_dir"
+echo "$pm-$mode" > "$state_dir/pm"
+baseline_log="$BENCH_OUTPUT_FOLDER/$pm-baseline.log"
+
 echo "[add-remove] baseline install for $pm: ${!install_var}"
-eval "${!install_var}" >/dev/null 2>&1 || echo "[add-remove] warning: baseline install for $pm exited non-zero"
+if ! ( eval "${!install_var}" ) >>"$baseline_log" 2>&1; then
+  echo "[add-remove] baseline install for $pm failed, see $baseline_log"
+  echo "install" > "$state_dir/failed"
+  exit 0
+fi
 
 if [ "$mode" = "remove" ]; then
   echo "[add-remove] adding package under test for $pm: ${!add_var}"
-  eval "${!add_var}" >/dev/null 2>&1 || echo "[add-remove] warning: baseline add for $pm exited non-zero"
+  if ! ( eval "${!add_var}" ) >>"$baseline_log" 2>&1; then
+    echo "[add-remove] baseline add for $pm failed, see $baseline_log"
+    echo "add" > "$state_dir/failed"
+    exit 0
+  fi
 fi
 
 wait_for_pm_trash
 mkdir -p "$snapshot"
 sync_tree ./ "$snapshot/"
-echo "$pm-$mode" > "$state_dir/pm"
