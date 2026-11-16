@@ -23,8 +23,9 @@
 #     hyperfine for every PM, not just this one.
 #
 # Caches are never cleaned here: the variation is "warm project", matching
-# cache+lockfile+node_modules. The variation script cleans all caches once
-# before the first PM and after the last, like every other variation.
+# cache+lockfile+node_modules. The variation script cleans all caches before
+# and after each PM's set of runs (hyperfine --setup/--cleanup run once per
+# command), like every other variation.
 #
 # Commands are read from the environment (exported by add-remove.sh):
 #   BENCH_SETUP_<PM>, BENCH_INSTALL_<PM>, BENCH_ADD_<PM>, BENCH_OUTPUT_FOLDER
