@@ -1,0 +1,36 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "26"
+          package-manager-cache: false
+      - name: Install vlt
+        run: npm install -g vlt@latest
+      - name: Install dependencies
+        run: vlt ci
+      # apps/* and packages/* (vitest, via the root vitest.config.mts)
+      - name: Test workspaces
+        run: vlr test
+      # suite/scripts/*.test.js use node:test and are outside the vitest projects
+      - name: Test suite scripts
+        run: node --test suite/scripts/
