@@ -1,4 +1,4 @@
-(node:4338) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:4281) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
 warning jsdom > whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
@@ -6,12 +6,12 @@ warning jsdom > html-encoding-sniffer > whatwg-encoding@3.1.1: Use @exodus/bytes
 warning " > @vitest/eslint-plugin@1.1.10" has unmet peer dependency "@typescript-eslint/utils@>= 8.0".
 warning " > @vue/test-utils@2.6.0" has unmet peer dependency "@vue/compiler-dom@3.x".
 warning Ignored scripts due to flag.
-(node:4355) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:4300) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning " > @vitest/eslint-plugin@1.1.10" has unmet peer dependency "@typescript-eslint/utils@>= 8.0".
 warning " > @vue/test-utils@2.6.0" has unmet peer dependency "@vue/compiler-dom@3.x".
 warning Ignored scripts due to flag.
-(node:13499) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:13437) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
 warning jsdom > whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
@@ -19,7 +19,7 @@ warning jsdom > html-encoding-sniffer > whatwg-encoding@3.1.1: Use @exodus/bytes
 warning " > @vitest/eslint-plugin@1.1.10" has unmet peer dependency "@typescript-eslint/utils@>= 8.0".
 warning " > @vue/test-utils@2.6.0" has unmet peer dependency "@vue/compiler-dom@3.x".
 warning Ignored scripts due to flag.
-(node:13514) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:13452) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning " > @vitest/eslint-plugin@1.1.10" has unmet peer dependency "@typescript-eslint/utils@>= 8.0".
 warning " > @vue/test-utils@2.6.0" has unmet peer dependency "@vue/compiler-dom@3.x".
