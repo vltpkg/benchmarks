@@ -4,18 +4,10 @@
 set -e
 
 # Environment Configuration
-export COREPACK_ENABLE_STRICT=0
-export COREPACK_ENABLE_AUTO_PIN=0
 export YARN_ENABLE_IMMUTABLE_INSTALLS=false
 
-# Persist corepack env vars for subsequent CI steps (e.g., benchmark runs).
-# Without these, corepack 0.34+ auto-pins packageManager and refuses to run
-# a different PM than what packageManager specifies — breaking benchmarks
-# that cycle through multiple package managers on the same fixture.
-if [ -n "${GITHUB_ENV:-}" ]; then
-  echo "COREPACK_ENABLE_STRICT=0" >> "$GITHUB_ENV"
-  echo "COREPACK_ENABLE_AUTO_PIN=0" >> "$GITHUB_ENV"
-fi
+# Install locations for yarn classic and yarn berry (BENCH_YARN_PREFIX, ...)
+source "$(dirname "${BASH_SOURCE[0]}")/pm-bins.sh"
 
 # Check Node version
 REQUIRED_NODE_VERSION="26"
@@ -45,7 +37,28 @@ echo "hyperfine: $HYPERFINE_VERSION"
 
 # Install Node.js package managers and tools
 echo "Installing package managers and tools..."
-npm install -g --allow-scripts=bun,deno,nx npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
+npm install -g --allow-scripts=bun,deno,nx npm@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
+
+# Install pnpm with npm, one of the methods in https://pnpm.io/installation.
+# npm 12 blocks install scripts by default, but pnpm's postinstall is what puts
+# its native binary in place of the JavaScript launcher, so allow it.
+npm install -g --allow-scripts=pnpm pnpm@latest
+PNPM_BIN="$(command -v pnpm)"
+if [ "$PNPM_BIN" != "$(npm prefix -g)/bin/pnpm" ] || [ "$(head -c 4 "$(readlink -f "$PNPM_BIN")")" != $'\x7fELF' ]; then
+  echo "Error: expected pnpm on PATH to be the native binary installed by npm, got $PNPM_BIN ($(file -L "$PNPM_BIN" 2>/dev/null || true))"
+  exit 1
+fi
+
+# Install Yarn 1 the way https://classic.yarnpkg.com/en/docs/install
+# recommends (npm install --global yarn@1), into its own prefix: zpm's Yarn
+# Switch and berry's Corepack shim are also called `yarn` (see pm-bins.sh).
+# npm 12 skips yarn's preinstall script, which only removes a Corepack `yarn`
+# symlink from the prefix being installed into; there is none in this one.
+npm install -g --prefix "$BENCH_YARN_PREFIX" yarn@1
+
+# Install Corepack for Yarn 4, as https://yarnpkg.com/getting-started/install
+# recommends (npm install -g corepack), into its own prefix (see pm-bins.sh).
+npm install -g --prefix "$BENCH_COREPACK_PREFIX" corepack@latest
 
 # Install Vite+ (vp) via npm (available as the `vite-plus` package)
 npm install -g vite-plus@latest
@@ -75,9 +88,12 @@ if ! command -v aube &>/dev/null; then
   fi
 fi
 
-# Configure Package Managers
-echo "Configuring package managers..."
-corepack enable yarn pnpm
+# Resolve the berry version once, so every berry benchmark pins the same one
+# in package.json#packageManager (and Corepack downloads it now, not in a
+# timed run).
+BERRY_VERSION="$("$BENCH_COREPACK_BIN" yarn@latest -v)"
+mkdir -p "$BENCH_PM_HOME"
+echo "$BERRY_VERSION" > "$BENCH_BERRY_VERSION_FILE"
 
 # Install Yarn v6 Canary (zpm)
 curl -sS https://repo.yarnpkg.com/install | bash
@@ -92,10 +108,9 @@ mkdir -p ./results/
 echo "Logging package manager versions..."
 NPM_VERSION="$(npm -v)"
 VLT_VERSION="$(vlt -v)"
-YARN_VERSION="$(corepack yarn@1 -v)"
-BERRY_VERSION="$(corepack yarn@latest -v)"
+YARN_VERSION="$("$BENCH_YARN_BIN" -v)"
 ZPM_VERSION="${BENCH_ZPM_VERSION:-$(curl -fsSL https://repo.yarnpkg.com/channels/default/canary)}"
-PNPM_VERSION="$(corepack pnpm@latest -v)"
+PNPM_VERSION="$(pnpm -v)"
 BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
 NX_VERSION="$(npm view nx@latest version)"
@@ -120,6 +135,10 @@ echo "vp: $VP_VERSION"
 echo "aube: $AUBE_VERSION"
 echo "upm: $UPM_VERSION"
 echo "node: $NODE_VERSION"
+echo "pnpm binary: $PNPM_BIN"
+echo "yarn binary: $BENCH_YARN_BIN"
+echo "berry binary: $BENCH_BERRY_BIN (packageManager: yarn@$BERRY_VERSION)"
+echo "zpm binary: $BENCH_ZPM_BIN"
 
 # Save versions to JSON file
 echo "{

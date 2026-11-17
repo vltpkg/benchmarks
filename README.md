@@ -153,9 +153,21 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
 - 1. Setup:
   - 1.1 Install `jq` using your OS package manager
   - 1.2 Install `hyperfine`, version >= 1.19.0 is required
-  - 1.3 Install package managers and corepack:
+  - 1.3 Install the package managers the way `suite/scripts/setup.sh` does
+    (see "How each tool is installed and run" in
+    [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)). Yarn 1, Yarn 4 and Yarn 6
+    are all called `yarn`, so yarn 1 and Corepack go into their own prefixes
+    under `~/.bench-pms` (`suite/scripts/pm-bins.sh`):
     ```bash
-    npm install -g npm@latest corepack@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
+    npm install -g npm@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
+    # --allow-scripts lets pnpm's postinstall install its native binary
+    npm install -g --allow-scripts=pnpm pnpm@latest
+    npm install -g --prefix ~/.bench-pms/yarn yarn@1
+    npm install -g --prefix ~/.bench-pms/corepack corepack@latest
+    # the Yarn 4 version every berry benchmark pins in packageManager
+    ~/.bench-pms/corepack/bin/corepack yarn@latest -v > ~/.bench-pms/berry-version
+    # Yarn 6 (zpm), through Yarn Switch
+    curl -sS https://repo.yarnpkg.com/install | bash
     ```
   - 1.4 No directory setup is needed. `./suite/bench` creates its output tree at
     `suite/results/`, which is the only results tree there is.

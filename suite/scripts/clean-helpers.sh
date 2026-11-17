@@ -1,6 +1,9 @@
 # Exit on error
 set -Eeuxo pipefail
 
+# Where yarn classic, berry and zpm live (BENCH_YARN_BIN, BENCH_BERRY_BIN, ...)
+source "$(dirname "${BASH_SOURCE[0]}")/pm-bins.sh"
+
 # Function to safely remove files/directories
 safe_remove() {
   if [ -e "$1" ]; then
@@ -17,8 +20,8 @@ clean_npm_cache() {
 
 # Function to safely clean yarn cache
 clean_yarn_cache() {
-  if command -v corepack &> /dev/null; then
-    corepack yarn@1 cache clean --all --silent || true
+  if [ -x "$BENCH_YARN_BIN" ]; then
+    "$BENCH_YARN_BIN" cache clean --silent || true
   fi
 }
 
@@ -43,16 +46,16 @@ clean_zpm_cache() {
 
 # Function to safely clean pnpm cache
 clean_pnpm_cache() {
-  if command -v corepack &> /dev/null; then
-    corepack pnpm cache delete '*' --silent || true
+  if command -v pnpm &> /dev/null; then
+    pnpm cache delete '*' --silent || true
     # Remove the version-specific store directory reported by this pnpm
-    safe_remove "$(corepack pnpm store path 2>/dev/null | xargs)"
+    safe_remove "$(pnpm store path 2>/dev/null | xargs)"
   fi
   # Also wipe the entire metadata cache and store parent to catch any
   # leftover version directories (v3, v9, v10, v11 …) that a single
   # `pnpm store path` wouldn't return.
-  safe_remove "$HOME/.cache/pnpm"
-  safe_remove "$HOME/.local/share/pnpm/store"
+  safe_remove "${XDG_CACHE_HOME:-$HOME/.cache}/pnpm"
+  safe_remove "${XDG_DATA_HOME:-$HOME/.local/share}/pnpm/store"
 }
 
 
@@ -190,12 +193,15 @@ clean_lockfiles() {
 clean_package_manager_field() {
   echo "Removing packageManager / devEngines.packageManager from package.json..."
   if command -v vlt &> /dev/null; then
+    # The berry and zpm prepares pin packageManager to their own version;
+    # yarn classic and pnpm refuse to run in a project pinned to another
+    # package manager.
     vlt pkg rm packageManager
-    # Recent corepack/yarn auto-pin a devEngines.packageManager entry (e.g.
-    # yarn) into package.json. npm and pnpm enforce devEngines and refuse to
-    # run any command when it doesn't match (EBADDEVENGINES), which breaks
-    # every benchmark that isn't that package manager. Strip it so each PM can
-    # run. vlt is used because it doesn't enforce devEngines, whereas npm/pnpm
+    # Some package managers can write a devEngines.packageManager entry into
+    # package.json. npm and pnpm enforce devEngines and refuse to run any
+    # command when it doesn't match (EBADDEVENGINES), which breaks every
+    # benchmark that isn't that package manager. Strip it so each PM can run.
+    # vlt is used because it doesn't enforce devEngines, whereas npm/pnpm
     # would themselves fail on the field we're trying to remove.
     vlt pkg rm devEngines.packageManager
   fi
@@ -288,10 +294,9 @@ clean_all() {
   clean_package_manager_files
   clean_workspace_protocol
   clean_all_cache
-  # Strip packageManager / devEngines.packageManager AFTER the cache cleans:
-  # the corepack-based cache cleans in clean_all_cache can re-pin a
-  # devEngines.packageManager entry into package.json, so this must run last
-  # to guarantee a neutral manifest before the next benchmark.
+  # Strip packageManager / devEngines.packageManager AFTER the cache cleans,
+  # so nothing they write survives: this must run last to guarantee a
+  # neutral manifest before the next benchmark.
   clean_package_manager_field
   clean_build_files
   clean_build_output

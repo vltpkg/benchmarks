@@ -36,10 +36,10 @@ BENCH_INSTALL_PREPARE_VP="$(prepend_setup "$BENCH_INSTALL_COMMAND_VP" "$BENCH_SE
 # Run defines its own command scripts to actually run a test
 # script in the fixture directory instead of installing packages.
 BENCH_COMMAND_NPM="timeout $BENCH_TIMEOUT npm run test > $BENCH_OUTPUT_FOLDER/npm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_YARN="timeout $BENCH_TIMEOUT corepack yarn@1 run test > $BENCH_OUTPUT_FOLDER/yarn-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BERRY="timeout $BENCH_TIMEOUT corepack yarn@latest run test > $BENCH_OUTPUT_FOLDER/berry-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT yarn run test > $BENCH_OUTPUT_FOLDER/zpm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT corepack pnpm@latest run test > $BENCH_OUTPUT_FOLDER/pnpm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_YARN="timeout $BENCH_TIMEOUT $BENCH_YARN_BIN run test > $BENCH_OUTPUT_FOLDER/yarn-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BERRY="timeout $BENCH_TIMEOUT $BENCH_BERRY_BIN run test > $BENCH_OUTPUT_FOLDER/berry-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT $BENCH_ZPM_BIN run test > $BENCH_OUTPUT_FOLDER/zpm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT pnpm run test > $BENCH_OUTPUT_FOLDER/pnpm-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT vlt run test --view=human > $BENCH_OUTPUT_FOLDER/vlt-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT bun run test > $BENCH_OUTPUT_FOLDER/bun-run-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT deno run test > $BENCH_OUTPUT_FOLDER/deno-run-output-\${HYPERFINE_ITERATION}.log 2>&1"

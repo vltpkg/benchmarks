@@ -5,10 +5,10 @@ set -Eeuxo pipefail
 source "$1/registry/common.sh"
 
 # Prepare command base for each run: clean cache, node_modules, pm files, but keep lockfile.
-# clean_package_manager_field runs AFTER clean_all_cache: the corepack-based yarn
-# cache cleans re-pin a devEngines.packageManager entry into package.json, which
-# makes the subsequent `npm config set` prepare step fail with EBADDEVENGINES.
-# (It only touches package.json, never the lockfile, so the lockfile is preserved.)
+# clean_package_manager_field runs last, so package.json is neutral for the
+# `npm config set` prepare step (npm fails with EBADDEVENGINES on a mismatched
+# devEngines.packageManager). It only touches package.json, never the
+# lockfile, so the lockfile is preserved.
 BENCH_PREPARE_BASE="sleep 1; bash $BENCH_SCRIPTS/clean-helpers.sh clean_all_cache clean_package_manager_field clean_node_modules clean_package_manager_files clean_npmrc"
 
 # Run the benchmark suite
