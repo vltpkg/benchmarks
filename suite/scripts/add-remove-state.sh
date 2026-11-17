@@ -12,10 +12,14 @@
 #     lockfiles, PM files, package.json edits), run the PM's setup and a
 #     regular install (=> lockfile + node_modules + warm cache). For `remove`,
 #     the package under test is then added with the PM's own add command.
-#     The resulting fixture directory is snapshotted to <state-dir>.
+#     The resulting fixture directory is snapshotted to <state-dir>. For
+#     `add`, the PM's global cache directories are snapshotted too.
 #   - Every later run for <pm>: rsync the snapshot back over the fixture with
 #     --delete, undoing whatever the previous timed add/remove changed
-#     (package.json, lockfile, node_modules, PM state files).
+#     (package.json, lockfile, node_modules, PM state files). For `add`, the
+#     caches are restored the same way, so the package under test is never
+#     in the cache: every timed add fetches a net-new package, while the
+#     project's own packages stay cached.
 #   - If the baseline install (or, for `remove`, the add) fails, no snapshot
 #     is taken and <state-dir>/failed is written instead. The timed command
 #     checks for it and exits non-zero, so that PM's runs are recorded as
@@ -23,9 +27,10 @@
 #     hyperfine for every PM, not just this one.
 #
 # Caches are never cleaned here: the variation is "warm project", matching
-# cache+lockfile+node_modules. The variation script cleans all caches before
-# and after each PM's set of runs (hyperfine --setup/--cleanup run once per
-# command), like every other variation.
+# cache+lockfile+node_modules (minus the package under test, for `add`). The
+# variation script cleans all caches before and after each PM's set of runs
+# (hyperfine --setup/--cleanup run once per command), like every other
+# variation.
 #
 # Commands are read from the environment (exported by add-remove.sh):
 #   BENCH_SETUP_<PM>, BENCH_INSTALL_<PM>, BENCH_ADD_<PM>, BENCH_OUTPUT_FOLDER
@@ -58,20 +63,35 @@ install_var="BENCH_INSTALL_${PM_UPPER}"
 add_var="BENCH_ADD_${PM_UPPER}"
 
 snapshot="$state_dir/project"
+cache_snapshot="$state_dir/cache"
 
-# vlt removes replaced store entries asynchronously: it renames them to
-# node_modules/.vlt/.VLT.DELETE.* and deletes them in a detached process that
-# can outlive the vlt command. rsync racing that deletion fails with exit 24
-# ("some files vanished"). Wait for the trash to drain, never copy it, and
-# treat a vanished-file warning as success.
-wait_for_pm_trash() {
-  local i
-  for i in $(seq 1 100); do
-    if ! compgen -G "node_modules/.vlt/.VLT.DELETE.*" >/dev/null; then
-      return 0
+# vlt finishes some work in detached processes that can outlive the vlt
+# command:
+#   - It renames replaced store entries to node_modules/.vlt/.VLT.DELETE.*
+#     and deletes them in the background. rsync racing that deletion fails
+#     with exit 24 ("some files vanished").
+#   - It unpacks fetched tarballs into its cache in a process that renames
+#     itself `vlt-cache-unzip`. A snapshot or restore taken while that is
+#     still writing captures, or is undone by, a half-written cache, and the
+#     unpacking would overlap the next timed run.
+# Wait for both here (untimed), never copy the trash, and treat a
+# vanished-file warning as success. Two clear checks in a row are required,
+# since the unzip process is briefly named `node` before it renames itself.
+wait_for_pm_background() {
+  local i clear=0
+  for i in $(seq 1 1200); do
+    if ! compgen -G "node_modules/.vlt/.VLT.DELETE.*" >/dev/null &&
+      ! pgrep -u "$(id -u)" -x vlt-cache-unzip >/dev/null; then
+      clear=$((clear + 1))
+      if [ "$clear" -ge 2 ]; then
+        return 0
+      fi
+    else
+      clear=0
     fi
     sleep 0.1
   done
+  echo "[add-remove] warning: vlt background work still running after 120s"
 }
 
 sync_tree() {
@@ -80,6 +100,55 @@ sync_tree() {
   if [ "$rc" -ne 0 ] && [ "$rc" -ne 24 ]; then
     return "$rc"
   fi
+}
+
+# Global cache directories per PM, mirroring clean-helpers.sh. Both the XDG
+# and the default locations are listed, since which one a PM uses depends on
+# whether XDG_* is set. A directory that doesn't exist at snapshot time is
+# still recorded, so one the timed add creates is removed on restore.
+pm_cache_dirs() {
+  local cache="${XDG_CACHE_HOME:-$HOME/.cache}"
+  local data="${XDG_DATA_HOME:-$HOME/.local/share}"
+  case "$1" in
+    npm) printf '%s\n' "${npm_config_cache:-$HOME/.npm}" "$cache/npm" ;;
+    yarn) printf '%s\n' "$cache/yarn" ;;
+    berry) printf '%s\n' "$data/yarn" "$HOME/.yarn/berry" ;;
+    zpm) printf '%s\n' "$HOME/.yarn/zpm" ;;
+    pnpm) printf '%s\n' "$data/pnpm" "$cache/pnpm" ;;
+    vlt) printf '%s\n' "$cache/vlt" ;;
+    bun) printf '%s\n' "${BUN_INSTALL_CACHE_DIR:-$HOME/.bun/install/cache}" "$cache/.bun/install" ;;
+    deno) printf '%s\n' "${DENO_DIR:-$cache/deno}" ;;
+    aube) printf '%s\n' "$data/aube" "$cache/aube" "$HOME/.aube-store" ;;
+    upm) printf '%s\n' "$HOME/.upm" "$data/upm" "$cache/upm" ;;
+  esac
+}
+
+snapshot_caches() {
+  local i=0 dir
+  mkdir -p "$cache_snapshot"
+  : > "$cache_snapshot/dirs"
+  while IFS= read -r dir; do
+    i=$((i + 1))
+    if [ -d "$dir" ]; then
+      mkdir -p "$cache_snapshot/$i"
+      sync_tree "$dir/" "$cache_snapshot/$i/"
+    fi
+    printf '%s\t%s\n' "$i" "$dir" >> "$cache_snapshot/dirs"
+  done < <(pm_cache_dirs "$pm" | awk '!seen[$0]++')
+}
+
+restore_caches() {
+  local i dir
+  [ -f "$cache_snapshot/dirs" ] || return 0
+  while IFS=$'\t' read -r i dir; do
+    [ -n "$dir" ] || continue
+    if [ -d "$cache_snapshot/$i" ]; then
+      mkdir -p "$dir"
+      sync_tree "$cache_snapshot/$i/" "$dir/"
+    else
+      rm -rf "$dir"
+    fi
+  done < "$cache_snapshot/dirs"
 }
 
 if [ -f "$state_dir/pm" ] && [ "$(cat "$state_dir/pm")" = "$pm-$mode" ] && [ -f "$state_dir/failed" ]; then
@@ -91,8 +160,11 @@ if [ -f "$state_dir/pm" ] && [ "$(cat "$state_dir/pm")" = "$pm-$mode" ] && [ -d 
   # Restore the exact baseline. -H keeps hard links (pnpm/bun), -a keeps
   # symlinks (aube, pnpm virtual store), --delete drops anything the timed
   # command created (e.g. node_modules/<new-pkg>).
-  wait_for_pm_trash
+  wait_for_pm_background
   sync_tree "$snapshot/" ./
+  if [ "$mode" = "add" ]; then
+    restore_caches
+  fi
   exit 0
 fi
 
@@ -129,6 +201,9 @@ if [ "$mode" = "remove" ]; then
   fi
 fi
 
-wait_for_pm_trash
+wait_for_pm_background
 mkdir -p "$snapshot"
 sync_tree ./ "$snapshot/"
+if [ "$mode" = "add" ]; then
+  snapshot_caches
+fi

@@ -179,11 +179,11 @@ export const DESCRIPTIONS: { readonly [variation: string]: string } = {
   "cache+lockfile+node_modules":
     "Everything warm. The best case, and usually dominated by how fast a tool can decide it has nothing to do.",
   "add-singleton":
-    "Add one new package with zero dependencies (@vltpkg/xdg) to an installed project: lockfile, node_modules and cache all present.",
+    "Add one never-before-fetched package with zero dependencies (@vltpkg/xdg) to an installed project: lockfile, node_modules and the project's cache all present.",
   "remove-singleton":
     "Remove that zero-dependency package again from an installed project that has it.",
   "add-overlap":
-    "Add one new package whose own dependencies are mostly already in the project's graph, so the tool must resolve and dedupe against what is installed.",
+    "Add one never-before-fetched package whose own dependencies are mostly already in the project's graph, so the tool must resolve and dedupe against what is installed.",
   "remove-overlap":
     "Remove that overlapping package again; its shared dependencies must stay, only what it alone needed goes.",
   ci: "The tool's CI-oriented install — npm ci and its equivalents. Requires a lockfile and installs strictly from it.",

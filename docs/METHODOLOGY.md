@@ -52,26 +52,26 @@ are published; neither alone is the answer.
 
 ## Variations
 
-| Variation                     | Starting state / what it measures                           |
-| ----------------------------- | ----------------------------------------------------------- |
-| `clean`                       | nothing cached, no lockfile, no `node_modules` — worst case |
-| `cache`                       | warm cache only                                             |
-| `lockfile`                    | lockfile present, no cache, no `node_modules`               |
-| `node_modules`                | `node_modules` present                                      |
-| `cache+lockfile`              | cache and lockfile                                          |
-| `cache+node_modules`          | cache and `node_modules`                                    |
-| `lockfile+node_modules`       | lockfile and `node_modules`                                 |
-| `cache+lockfile+node_modules` | everything warm — best case                                 |
-| `ci`                          | the tool's CI-oriented install (`npm ci` and equivalents)   |
-| `add-singleton`               | add one zero-dependency package to an installed project     |
-| `remove-singleton`            | remove that package from an installed project               |
-| `add-overlap`                 | add one package whose deps overlap the existing graph       |
-| `remove-overlap`              | remove that package from an installed project               |
-| `build`                       | a project build after install (`next` only, see below)      |
-| `build-cache`                 | a project build with a warm build cache (same)              |
-| `run`                         | script-execution overhead (`run` fixture only)              |
-| `registry-clean`              | `clean`, comparing **registries** instead of managers       |
-| `registry-lockfile`           | `lockfile`, comparing **registries**                        |
+| Variation                     | Starting state / what it measures                                |
+| ----------------------------- | ---------------------------------------------------------------- |
+| `clean`                       | nothing cached, no lockfile, no `node_modules` — worst case      |
+| `cache`                       | warm cache only                                                  |
+| `lockfile`                    | lockfile present, no cache, no `node_modules`                    |
+| `node_modules`                | `node_modules` present                                           |
+| `cache+lockfile`              | cache and lockfile                                               |
+| `cache+node_modules`          | cache and `node_modules`                                         |
+| `lockfile+node_modules`       | lockfile and `node_modules`                                      |
+| `cache+lockfile+node_modules` | everything warm — best case                                      |
+| `ci`                          | the tool's CI-oriented install (`npm ci` and equivalents)        |
+| `add-singleton`               | add one uncached zero-dependency package to an installed project |
+| `remove-singleton`            | remove that package from an installed project                    |
+| `add-overlap`                 | add one uncached package whose deps overlap the existing graph   |
+| `remove-overlap`              | remove that package from an installed project                    |
+| `build`                       | a project build after install (`next` only, see below)           |
+| `build-cache`                 | a project build with a warm build cache (same)                   |
+| `run`                         | script-execution overhead (`run` fixture only)                   |
+| `registry-clean`              | `clean`, comparing **registries** instead of managers            |
+| `registry-lockfile`           | `lockfile`, comparing **registries**                             |
 
 Each has a script in `suite/scripts/variations/`. **The variation name is the
 filename in the published data**, and several contain `+`, which must be
@@ -104,11 +104,16 @@ warm cache), and for `remove-*` the package added by that same manager. The
 whole fixture directory is then snapshotted, and every run (warmup or timed)
 starts from `rsync --delete` of that snapshot
 (`suite/scripts/add-remove-state.sh`), so each run sees byte-identical
-`package.json`, lockfile and `node_modules`. Caches are cleaned (`clean_all`)
-before and after each manager's set of runs, as in every variation, and stay
-warm across that manager's runs: this is a `cache+lockfile+node_modules`
-project. "Remove"
-means removing the package from the project it was added to.
+`package.json`, lockfile and `node_modules`. For `add-*`, the manager's global
+cache directories are snapshotted with the project and restored before every
+run too, so the cache holds the project's packages but never the package
+being added: each timed add fetches a net-new package, as adding a
+dependency you have never installed would. vlt's detached cache unpacking is
+waited out before each snapshot and restore (untimed), so one run's
+background work never overlaps the next. Caches are also cleaned
+(`clean_all`) before and after each manager's set of runs, as in every
+variation. "Remove" means removing the package from the project it was added
+to; whether it is cached doesn't matter there.
 
 **Packages** (versions pinned):
 
