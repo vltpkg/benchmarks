@@ -78,7 +78,7 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_AUBE:+--command-name="aube" "$BENCH_COMMAND_AUBE"} \
   ${BENCH_INCLUDE_UPM:+--prepare="$BENCH_INSTALL_PREPARE_UPM || true; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_UPM:+--command-name="upm" "$BENCH_COMMAND_UPM"} \
-  ${BENCH_INCLUDE_NX:+--prepare="$BENCH_INSTALL_PREPARE_NPM || true; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
+  ${BENCH_INCLUDE_NX:+--prepare="$BENCH_INSTALL_PREPARE_NPM || true; $BENCH_SETUP_NX; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_NX:+--command-name="nx" "$BENCH_COMMAND_NX"} \
   ${BENCH_INCLUDE_TURBO:+--prepare="$BENCH_INSTALL_PREPARE_NPM || true; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_TURBO:+--command-name="turbo" "$BENCH_COMMAND_TURBO"} \

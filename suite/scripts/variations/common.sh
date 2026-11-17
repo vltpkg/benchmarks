@@ -80,7 +80,15 @@ BENCH_SETUP_BUN=""
 BENCH_SETUP_DENO=""
 BENCH_SETUP_AUBE="npm pkg delete packageManager >/dev/null 2>&1 || true"
 BENCH_SETUP_UPM=""
-BENCH_SETUP_NX=""
+# nx needs a local copy of itself and an Nx workspace; a global nx alone fails
+# with "isn't part of an Nx workspace" / "Could not find Nx modules". The next
+# fixture has neither, and adding nx as a devDependency would change what every
+# install variation on next measures. So the nx build prepares install the same
+# nx version as the global one (setup.sh) without saving it, and mark
+# package.json as a workspace. Cleanup restores package.json (git checkout) and
+# removes node_modules.
+BENCH_NX_VERSION="$(node -p "require('$(npm root -g)/nx/package.json').version" 2>/dev/null || echo latest)"
+BENCH_SETUP_NX="npm install --no-save --no-audit --no-fund --ignore-scripts --silent nx@$BENCH_NX_VERSION && npm pkg set nx='{}' --json"
 BENCH_SETUP_TURBO=""
 # vp install delegates to Yarn 4, so it needs the same yarn.lock as berry above.
 BENCH_SETUP_VP="touch yarn.lock"
