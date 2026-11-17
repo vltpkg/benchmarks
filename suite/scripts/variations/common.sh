@@ -121,6 +121,10 @@ BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT $BENCH_INSTALL_DENO > $BENCH_OUTPUT_F
 BENCH_COMMAND_AUBE="timeout $BENCH_TIMEOUT $BENCH_INSTALL_AUBE > $BENCH_OUTPUT_FOLDER/aube-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_UPM="timeout $BENCH_TIMEOUT $BENCH_INSTALL_UPM > $BENCH_OUTPUT_FOLDER/upm-output-\${HYPERFINE_ITERATION}.log 2>&1"
 
+# hyperfine waits for vlt's background cache unpacking around every
+# prepare/setup/cleanup. See hyperfine-wait.sh.
+source "$BENCH_SCRIPTS/hyperfine-wait.sh"
+
 # Clean up & create the results directory
 rm -rf "$BENCH_OUTPUT_FOLDER"
 mkdir -p "$BENCH_OUTPUT_FOLDER"

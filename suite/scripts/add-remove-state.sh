@@ -70,20 +70,20 @@ cache_snapshot="$state_dir/cache"
 #   - It renames replaced store entries to node_modules/.vlt/.VLT.DELETE.*
 #     and deletes them in the background. rsync racing that deletion fails
 #     with exit 24 ("some files vanished").
-#   - It unpacks fetched tarballs into its cache in a process that renames
-#     itself `vlt-cache-unzip`. A snapshot or restore taken while that is
-#     still writing captures, or is undone by, a half-written cache, and the
-#     unpacking would overlap the next timed run.
+#   - It unpacks fetched tarballs into its cache (vlt_background_running in
+#     clean-helpers.sh). A snapshot or restore taken while that is still
+#     writing captures, or is undone by, a half-written cache.
 # Wait for both here (untimed), never copy the trash, and treat a
-# vanished-file warning as success. Two clear checks in a row are required,
-# since the unzip process is briefly named `node` before it renames itself.
-# Returns non-zero if the work is still running after 120s; the caller then
-# fails this PM rather than snapshot or restore a cache still being written.
+# vanished-file warning as success. Two clear checks in a row are required.
+# Unlike wait_for_vlt_background in clean-helpers.sh, this returns non-zero if
+# the work is still running after 300s, and the caller then fails this PM
+# rather than snapshot or restore a cache still being written.
 wait_for_pm_background() {
   local i clear=0
-  for i in $(seq 1 1200); do
+  for i in $(seq 1 3000); do
     if ! compgen -G "node_modules/.vlt/.VLT.DELETE.*" >/dev/null &&
-      ! pgrep -u "$(id -u)" -x vlt-cache-unzip >/dev/null; then
+      ! pgrep -u "$(id -u)" -x vlt-cache-unzip >/dev/null &&
+      ! pgrep -u "$(id -u)" -f 'cache-unzip-src-unzip[.]js' >/dev/null; then
       clear=$((clear + 1))
       if [ "$clear" -ge 2 ]; then
         return 0
@@ -93,7 +93,7 @@ wait_for_pm_background() {
     fi
     sleep 0.1
   done
-  echo "[add-remove] vlt background work still running after 120s"
+  echo "[add-remove] vlt background work still running after 300s"
   return 1
 }
 

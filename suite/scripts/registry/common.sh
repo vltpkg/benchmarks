@@ -30,6 +30,10 @@ else
   BENCH_VARIATION="$4"
 fi
 
+# hyperfine waits for vlt's background cache unpacking around every
+# prepare/setup/cleanup. See hyperfine-wait.sh.
+source "$BENCH_SCRIPTS/hyperfine-wait.sh"
+
 # Special handling for babylon fixture - setup the repository
 if [ "$BENCH_FIXTURE" = "babylon" ]; then
   echo "Setting up Babylon.js fixture..."
