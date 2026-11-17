@@ -56,6 +56,40 @@ clean_vlt_cache() {
   fi
 }
 
+# Whether vlt's background cache unpacking is running. vlt spawns it as a
+# detached `node .../cache-unzip-src-unzip.js` process as it exits, and the
+# process then renames itself `vlt-cache-unzip`, so match either form. The
+# [.] keeps a shell whose arguments contain this pattern from matching itself.
+vlt_background_running() {
+  pgrep -u "$(id -u)" -x vlt-cache-unzip >/dev/null ||
+    pgrep -u "$(id -u)" -f 'cache-unzip-src-unzip[.]js' >/dev/null
+}
+
+# Wait for vlt's background cache unpacking to finish. It outlives the vlt
+# command (about 19s after a cold babylon install), so without this it
+# overlaps the next timed run and writes into a cache that is being cleaned.
+# Waiting is untimed: in real use nobody starts the next install that soon.
+# Requires two clear checks in a row; returns non-zero after $1 seconds
+# (default 300).
+wait_for_vlt_background() {
+  local limit="${1:-300}" clear=0 i
+  { set +x; } 2>/dev/null
+  for i in $(seq 1 $((limit * 10))); do
+    if vlt_background_running; then
+      clear=0
+    else
+      clear=$((clear + 1))
+      if [ "$clear" -ge 2 ]; then
+        set -x
+        return 0
+      fi
+    fi
+    sleep 0.1
+  done
+  set -x
+  return 1
+}
+
 # Function to safely clean bun cache
 clean_bun_cache() {
   if command -v bun &> /dev/null; then
@@ -282,6 +316,7 @@ show_help() {
   echo "  clean_build_output"
   echo "  clean_git"
   echo "  clean_all"
+  echo "  wait_for_vlt_background"
   echo ""
   echo "Usage: $0 [function_name1] [function_name2] ..."
   echo "Example: $0 clean_npm_cache clean_lockfiles"
@@ -361,6 +396,15 @@ else
         ;;
       clean_all)
         clean_all
+        ;;
+      wait_for_vlt_background)
+        # Never block a benchmark forever: past the limit, stop the process
+        # so it can't overlap what comes next.
+        if ! wait_for_vlt_background; then
+          echo "Warning: vlt-cache-unzip still running after 300s, stopping it"
+          pkill -u "$(id -u)" -x vlt-cache-unzip || true
+          pkill -u "$(id -u)" -f 'cache-unzip-src-unzip[.]js' || true
+        fi
         ;;
       help|--help|-h)
         show_help

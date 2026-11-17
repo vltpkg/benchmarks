@@ -36,6 +36,17 @@ Only the first row publishes. Between runs the suite resets state with
 counts are taken from a real installed tree rather than inferred from a
 lockfile.
 
+vlt unpacks fetched tarballs into its cache in a detached process
+(`vlt-cache-unzip`) that keeps running after the `vlt` command exits — about
+19 seconds after a cold `babylon` install. The timed run ends when `vlt`
+exits, which is when a user gets their prompt back. So that this deferred work
+can't overlap the next timed run (of any manager) or write into a cache that
+is being cleaned, every `--prepare`, `--setup` and `--cleanup` first waits for
+it to finish, and every `--prepare` waits again right before the timed command
+(`suite/scripts/hyperfine-wait.sh`, `wait_for_vlt_background` in
+`clean-helpers.sh`). The waits are untimed; in real use, the next install
+rarely starts that soon.
+
 ## Normalization: why per-package time matters
 
 Package managers disagree about what a dependency graph contains. Comparing
