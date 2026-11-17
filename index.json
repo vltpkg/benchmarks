@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-16T11:34:56.627Z",
-  "latest": "2026-11-16",
+  "generatedAt": "2026-11-17T05:50:47.013Z",
+  "latest": "2026-11-17",
   "hasLatestDir": true,
   "dates": [
     "2025-08-22",
@@ -400,7 +400,8 @@
     "2026-11-13",
     "2026-11-14",
     "2026-11-15",
-    "2026-11-16"
+    "2026-11-16",
+    "2026-11-17"
   ],
   "fixtures": [
     "astro",
@@ -412,6 +413,8 @@
     "vue"
   ],
   "variations": [
+    "add-overlap",
+    "add-singleton",
     "build",
     "build-cache",
     "cache",
@@ -426,6 +429,8 @@
     "node_modules",
     "registry-clean",
     "registry-lockfile",
+    "remove-overlap",
+    "remove-singleton",
     "run"
   ]
 }

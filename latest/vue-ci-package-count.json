@@ -1,9 +1,9 @@
 {
   "npm": {
-    "count": 446
+    "count": 449
   },
   "yarn": {
-    "count": 444
+    "count": 443
   },
   "berry": {
     "count": 443
@@ -15,16 +15,18 @@
     "count": 425
   },
   "vlt": {
-    "count": 423
+    "count": 425
   },
   "bun": {
-    "count": 440
+    "count": 441
   },
   "deno": {
     "count": 423
   },
   "aube": {
-    "count": 391
+    "count": 391,
+    "minCount": 391,
+    "maxCount": 392
   },
   "upm": {
     "count": 427

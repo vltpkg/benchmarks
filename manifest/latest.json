@@ -1,9 +1,11 @@
 {
   "name": "latest",
   "isLatest": true,
-  "fileCount": 208,
+  "fileCount": 280,
   "benchmarks": {
     "astro": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -15,9 +17,13 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "babylon": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -29,9 +35,13 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "large": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -43,9 +53,13 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "next": [
+      "add-overlap",
+      "add-singleton",
       "build",
       "build-cache",
       "cache",
@@ -59,12 +73,16 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "run": [
       "run"
     ],
     "svelte": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -76,9 +94,13 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "vue": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -90,11 +112,15 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ]
   },
   "packageCounts": {
     "astro": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -106,9 +132,13 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "babylon": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -120,9 +150,13 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "large": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -134,9 +168,13 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "next": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -148,9 +186,13 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "svelte": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -162,9 +204,13 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "vue": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -176,11 +222,15 @@
       "lockfile+node_modules",
       "node_modules",
       "registry-clean",
-      "registry-lockfile"
+      "registry-lockfile",
+      "remove-overlap",
+      "remove-singleton"
     ]
   },
   "processCounts": {
     "astro": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -190,9 +240,13 @@
       "clean",
       "lockfile",
       "lockfile+node_modules",
-      "node_modules"
+      "node_modules",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "babylon": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -202,9 +256,13 @@
       "clean",
       "lockfile",
       "lockfile+node_modules",
-      "node_modules"
+      "node_modules",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "large": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -214,9 +272,13 @@
       "clean",
       "lockfile",
       "lockfile+node_modules",
-      "node_modules"
+      "node_modules",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "next": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -226,9 +288,13 @@
       "clean",
       "lockfile",
       "lockfile+node_modules",
-      "node_modules"
+      "node_modules",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "svelte": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -238,9 +304,13 @@
       "clean",
       "lockfile",
       "lockfile+node_modules",
-      "node_modules"
+      "node_modules",
+      "remove-overlap",
+      "remove-singleton"
     ],
     "vue": [
+      "add-overlap",
+      "add-singleton",
       "cache",
       "cache+lockfile",
       "cache+lockfile+node_modules",
@@ -250,7 +320,9 @@
       "clean",
       "lockfile",
       "lockfile+node_modules",
-      "node_modules"
+      "node_modules",
+      "remove-overlap",
+      "remove-singleton"
     ]
   },
   "hasChartData": true,

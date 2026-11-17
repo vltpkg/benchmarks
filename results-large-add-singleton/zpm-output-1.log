@@ -1,0 +1,18 @@
+➤ · Yarn 6.0.0-rc.20
+➤ ┌ Installing packages
+➤ │ Resolved 1 package, fetched 1 package (8.64 KiB)
+➤ └ Completed in 201ms
+➤ ┌ Validating peer dependencies
+➤ │ ajv is listed by your project with version 8.20.0 (p602b43), which doesn't satisfy what ajv-keywords and other dependencies request (^6.9.1 && ^8.8.2).
+➤ │ alotta-modules@workspace:alotta-modules doesn't provide @babel/core (p660982), requested by babel-loader.
+➤ │ alotta-modules@workspace:alotta-modules doesn't provide create-react-class (pa79dd1), requested by react-tappable.
+➤ │ alotta-modules@workspace:alotta-modules doesn't provide draft-convert (p9d38d1), requested by medium-draft.
+➤ │ alotta-modules@workspace:alotta-modules doesn't provide eslint-plugin-react-hooks (p9b6d14), requested by eslint-config-airbnb.
+➤ │ alotta-modules@workspace:alotta-modules doesn't provide immutable (p68c604), requested by react-draft-wysiwyg and other dependencies.
+➤ │ alotta-modules@workspace:alotta-modules doesn't provide prop-types (p45b631), requested by medium-draft and other dependencies.
+➤ │ alotta-modules@workspace:alotta-modules doesn't provide webpack (p1c7536), requested by babel-loader and other dependencies.
+➤ │ moment-range is listed by your project with version 4.0.2 (p0203da), which doesn't satisfy what react-input-calendar requests (^2.1.0).
+➤ │ react is listed by your project with version 18.3.1 (p1557cb), which doesn't satisfy what medium-draft and other dependencies request (* && 0.13.x || 0.14.x || ^15.0.0-0 || 15.x.x || ^16.0.0-0 || ^16.x.x || ^17.x.x || ^18.x.x && >0.13.0 && >= 16.14 && >= 16.3 && >= 16.3.0 && >= 16.8 || 18.0.0 && >=0.14.0 && >=15.0.0 && >=16.14.0 && >=16.8 && >=16.8.0 && >=16.9.0 && ^0.14 || ^15.0.0-rc || ^15.0 && ^0.14 || ^15.0.0-rc || ^15.0.0 || ^16.0.0 && ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 && ^0.14.0 || ^15.0.0 || ^16.0.0-beta || ^16.0.0 && ^0.14.0 || ^15.0.0-rc || ^16.0.0-rc || ^16.0.0 && ^0.14.0 || ^15.0.1 || ^16.3.0 && ^0.14.7 || ^15.0.0 || ^16.0.0 && ^15.0.0 || ^16.0.0 && ^15.0.0 || ^16.0.0 || ^17.0.0 && ^15.1.0 || ^16.0.0 || ^17.0.0 && ^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 && ^15.4.2 && ^16.0.0 || ^17.0.0 && ^16.3.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 && ^16.8.0 || ^17 || ^18 || ^19 && ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 && ^18.3.1).
+➤ │ react-dom is listed by your project with version 18.3.1 (p42844a), which doesn't satisfy what medium-draft and other dependencies request (* && 0.13.x || 0.14.x || ^15.0.0-0 || 15.x.x || ^16.0.0-0 || ^16.x.x || ^17.x.x || ^18.x.x && >0.13.0 && >= 16.3 && >= 16.3.0 && >=0.14.0 && >=15.0.0 && >=16.14.0 && >=16.8 && >=16.9.0 && ^0.14 || ^15.0.0-rc || ^15.0 && ^0.14 || ^15.0.0-rc || ^15.0.0 || ^16.0.0 && ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 && ^0.14.0 || ^15.0.0 || ^16.0.0-beta || ^16.0.0 && ^0.14.0 || ^15.0.0-rc || ^16.0.0-rc || ^16.0.0 && ^15.0.0 || ^16.0.0 && ^15.0.0 || ^16.0.0 || ^17.0.0 && ^15.1.0 || ^16.0.0 || ^17.0.0 && ^16.0.0 || ^17.0.0 && ^16.3.0 || ^17.0.0 || ^18.0.0 || ^19.0.0).
+➤ │ Some peer dependencies are incorrectly met by your project; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code.
+➤ └ Completed in 0ms
