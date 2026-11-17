@@ -57,7 +57,7 @@ else
 fi
 
 # if we couldn't determine the package count, then just exit, no count file will be created
-if [ -z "${BENCH_PACKAGE_COUNT+x}" ] || [ "$BENCH_PACKAGE_COUNT" = "0" ]; then
+if [ -z "${BENCH_PACKAGE_COUNT:-}" ] || [ "$BENCH_PACKAGE_COUNT" = "0" ]; then
   # if the package count couldn't be determined, the install likely failed
   # and we can't infer the package manager, so we'll skip this run
   echo "Warning: Could not determine the package count"

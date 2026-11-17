@@ -56,6 +56,7 @@ function findWorkspaces(root) {
       : manifest.workspaces?.packages || []),
     ...pnpmWorkspacePatterns(root),
   ];
+  const excluded = patterns.filter((p) => p.startsWith('!')).map((p) => p.slice(1));
   const dirs = new Set();
   for (const pattern of patterns) {
     if (pattern.startsWith('!')) continue;
@@ -63,6 +64,7 @@ function findWorkspaces(root) {
       cwd: root,
       exclude: (name) => name === 'node_modules',
     })) {
+      if (excluded.some((p) => path.matchesGlob(match, p))) continue;
       const dir = path.join(root, match);
       if (fs.existsSync(path.join(dir, 'package.json'))) {
         dirs.add(fs.realpathSync(dir));

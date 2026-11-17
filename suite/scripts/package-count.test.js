@@ -47,7 +47,9 @@ test("follows symlinks into a store outside the project", (t) => {
 
 test("walks workspaces without counting them", (t) => {
   const dir = project(t, {
-    "package.json": { workspaces: ["packages/*"] },
+    "package.json": { workspaces: ["packages/*", "!packages/excluded"] },
+    "packages/excluded/package.json": { dependencies: { c: "1" } },
+    "node_modules/c/package.json": {},
     "pnpm-workspace.yaml": "packages:\n  - 'tools/*'\n",
     "packages/one/package.json": { dependencies: { a: "1", two: "workspace:*" } },
     "packages/one/node_modules/a/package.json": {},
