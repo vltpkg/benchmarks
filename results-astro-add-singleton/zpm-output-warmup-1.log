@@ -1,7 +1,7 @@
 ➤ · Yarn 6.0.0-rc.20
 ➤ ┌ Installing packages
 ➤ │ Resolved 1 package, fetched 1 package (8.64 KiB)
-➤ └ Completed in 169ms
+➤ └ Completed in 150ms
 ➤ ┌ Validating peer dependencies
 ➤ │ my-astro-project@workspace:my-astro-project doesn't provide typescript (p5a5129), requested by zod-to-ts.
 ➤ │ Some peer dependencies are incorrectly met by your project; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code.

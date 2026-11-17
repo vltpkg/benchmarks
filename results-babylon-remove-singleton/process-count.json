@@ -8,6 +8,9 @@
   "berry": {
     "count": 4
   },
+  "zpm": {
+    "count": 3
+  },
   "pnpm": {
     "count": 7
   },

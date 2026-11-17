@@ -1,0 +1,68 @@
+➤ · Yarn 6.0.0-rc.20
+➤ ┌ Project validation
+➤ │ @dev/shared-ui-components: Resolutions field will be ignored
+➤ └ Completed in 0ms
+➤ ┌ Installing packages
+➤ │ Resolved 1 package, fetched 1 package (8.64 KiB)
+➤ └ Completed in 345ms
+➤ ┌ Validating peer dependencies
+➤ │ @babylonjs/inspector-legacy@workspace:@babylonjs/inspector-legacy doesn't provide @types/react (pa0f1f9), requested by @babylonjs/gui-editor.
+➤ │ @babylonjs/inspector-legacy@workspace:@babylonjs/inspector-legacy doesn't provide @types/react-dom (p1c834a), requested by @babylonjs/gui-editor.
+➤ │ @babylonjs/inspector@workspace:@babylonjs/inspector doesn't provide typescript (p97420f), requested by @rollup/plugin-typescript and other dependencies.
+➤ │ @babylonjs/node-particle-editor@workspace:@babylonjs/node-particle-editor doesn't provide react-dnd (p96837c), requested by @dev/shared-ui-components.
+➤ │ @babylonjs/node-particle-editor@workspace:@babylonjs/node-particle-editor doesn't provide react-dnd-touch-backend (p64d802), requested by @dev/shared-ui-components.
+➤ │ @babylonjs/node-particle-editor@workspace:@babylonjs/node-particle-editor doesn't provide scheduler (p40427c), requested by @fluentui/react-context-selector.
+➤ │ @babylonjs/root@workspace:@babylonjs/root doesn't provide @types/node (p7f14e4), requested by ts-node.
+➤ │ @babylonjs/smart-filters-blocks@workspace:@babylonjs/smart-filters-blocks doesn't provide @babylonjs/core (p7519f8), requested by @babylonjs/smart-filters.
+➤ │ @babylonjs/smart-filters@workspace:@babylonjs/smart-filters doesn't provide react (p9ad051), requested by @dev/shared-ui-components.
+➤ │ @babylonjs/smart-filters@workspace:@babylonjs/smart-filters doesn't provide react-dnd (p2196e0), requested by @dev/shared-ui-components.
+➤ │ @babylonjs/smart-filters@workspace:@babylonjs/smart-filters doesn't provide react-dnd-touch-backend (pf0a9dd), requested by @dev/shared-ui-components.
+➤ │ @babylonjs/smart-filters@workspace:@babylonjs/smart-filters doesn't provide react-dom (p257271), requested by @dev/shared-ui-components.
+➤ │ @dev/inspector-legacy@workspace:@dev/inspector-legacy doesn't provide react-dnd (p5c4da3), requested by @dev/shared-ui-components.
+➤ │ @dev/inspector-legacy@workspace:@dev/inspector-legacy doesn't provide react-dnd-touch-backend (paef3b3), requested by @dev/shared-ui-components.
+➤ │ @dev/inspector@workspace:@dev/inspector doesn't provide @fluentui/react-shared-contexts (pb4c048), requested by @fluentui-contrib/react-virtualizer.
+➤ │ @dev/inspector@workspace:@dev/inspector doesn't provide scheduler (pdb4ec6), requested by @fluentui/react-context-selector.
+➤ │ @dev/inspector@workspace:@dev/inspector doesn't provide typescript (pa90c8d), requested by react-refresh-typescript.
+➤ │ @dev/shared-ui-components@workspace:@dev/shared-ui-components doesn't provide react (p7457e5), requested by @fluentui/react-components and other dependencies.
+➤ │ @dev/shared-ui-components@workspace:@dev/shared-ui-components doesn't provide react-dom (pd1d7ad), requested by @fluentui/react-combobox and other dependencies.
+➤ │ @dev/shared-ui-components@workspace:@dev/shared-ui-components doesn't provide scheduler (p7463d2), requested by @fluentui/react-context-selector.
+➤ │ @fortawesome/fontawesome-svg-core is listed by your project with version 6.7.2 (p1edc0d), which doesn't satisfy what @fortawesome/react-fontawesome requests (~1 || ~6 || ~7).
+➤ │ @fortawesome/fontawesome-svg-core is listed by your project with version 6.7.2 (p4d59ee), which doesn't satisfy what @fortawesome/react-fontawesome and other dependencies request (^6.1.0 && ~1 || ~6 || ~7).
+➤ │ @fortawesome/fontawesome-svg-core is listed by your project with version 6.7.2 (pc82ae9), which doesn't satisfy what @fortawesome/react-fontawesome (via @dev/shared-ui-components) and other dependencies request (^6.1.0 && ~1 || ~6 || ~7).
+➤ │ @fortawesome/fontawesome-svg-core is listed by your project with version 6.7.2 (pfe0f75), which doesn't satisfy what @fortawesome/react-fontawesome (via @dev/shared-ui-components) and other dependencies request (^6.1.0 && ~1 || ~6 || ~7).
+➤ │ @tools/babylon-server@workspace:@tools/babylon-server doesn't provide typescript (p4febc5), requested by ts-loader.
+➤ │ @tools/dev-host@workspace:@tools/dev-host doesn't provide typescript (pca5d34), requested by ts-loader.
+➤ │ @tools/gui-editor@workspace:@tools/gui-editor doesn't provide react-dnd (p7f0390), requested by @dev/shared-ui-components.
+➤ │ @tools/gui-editor@workspace:@tools/gui-editor doesn't provide react-dnd-touch-backend (p29f02f), requested by @dev/shared-ui-components.
+➤ │ @tools/ktx2decoder@workspace:@tools/ktx2decoder doesn't provide typescript (pe435c0), requested by ts-loader.
+➤ │ @tools/playground@workspace:@tools/playground doesn't provide typescript (p9bc9ec), requested by @typescript/ata.
+➤ │ @tools/reflector@workspace:@tools/reflector doesn't provide typescript (p5b3d84), requested by ts-loader.
+➤ │ @tools/smart-filters-debugger@workspace:@tools/smart-filters-debugger doesn't provide @babylonjs/core (p8bc8ae), requested by @tools/smart-filters-editor-control.
+➤ │ @tools/smart-filters-debugger@workspace:@tools/smart-filters-debugger doesn't provide @babylonjs/shared-ui-components (pe2ba7e), requested by @tools/smart-filters-editor-control.
+➤ │ @tools/smart-filters-debugger@workspace:@tools/smart-filters-debugger doesn't provide typescript (p80bd94), requested by ts-loader.
+➤ │ @tools/smart-filters-editor@workspace:@tools/smart-filters-editor doesn't provide typescript (p1f0b48), requested by ts-loader.
+➤ │ @tools/tests@workspace:@tools/tests doesn't provide react (p3c9fbe), requested by @dev/shared-ui-components and other dependencies.
+➤ │ @tools/tests@workspace:@tools/tests doesn't provide react-dnd (pf535c2), requested by @dev/shared-ui-components.
+➤ │ @tools/tests@workspace:@tools/tests doesn't provide react-dnd-touch-backend (pc35cd8), requested by @dev/shared-ui-components.
+➤ │ @tools/tests@workspace:@tools/tests doesn't provide react-dom (p7dc47e), requested by @dev/shared-ui-components and other dependencies.
+➤ │ @tools/tests@workspace:@tools/tests doesn't provide scheduler (pb9fd0b), requested by @fluentui/react-context-selector.
+➤ │ @tools/viewer-configurator@workspace:@tools/viewer-configurator doesn't provide @dnd-kit/core (p5fed60), requested by @dnd-kit/modifiers and other dependencies.
+➤ │ babylonjs-accessibility@workspace:babylonjs-accessibility doesn't provide typescript (pddeeac), requested by ts-loader.
+➤ │ babylonjs-addons@workspace:babylonjs-addons doesn't provide typescript (p9efa05), requested by ts-loader.
+➤ │ babylonjs-gui-editor@workspace:babylonjs-gui-editor doesn't provide typescript (p8900a9), requested by ts-loader.
+➤ │ babylonjs-gui@workspace:babylonjs-gui doesn't provide typescript (pbb06bc), requested by ts-loader.
+➤ │ babylonjs-inspector-legacy@workspace:babylonjs-inspector-legacy doesn't provide typescript (pcbae60), requested by ts-loader.
+➤ │ babylonjs-inspector@workspace:babylonjs-inspector doesn't provide typescript (p4c3bdc), requested by ts-loader.
+➤ │ babylonjs-ktx2decoder@workspace:babylonjs-ktx2decoder doesn't provide typescript (pa249ac), requested by ts-loader.
+➤ │ babylonjs-loaders@workspace:babylonjs-loaders doesn't provide typescript (pdac2eb), requested by ts-loader.
+➤ │ babylonjs-materials@workspace:babylonjs-materials doesn't provide typescript (p72da4a), requested by ts-loader.
+➤ │ babylonjs-node-editor@workspace:babylonjs-node-editor doesn't provide typescript (p2c3e38), requested by ts-loader.
+➤ │ babylonjs-node-geometry-editor@workspace:babylonjs-node-geometry-editor doesn't provide typescript (pcf9699), requested by ts-loader.
+➤ │ babylonjs-node-particle-editor@workspace:babylonjs-node-particle-editor doesn't provide typescript (p2b1290), requested by ts-loader.
+➤ │ babylonjs-node-render-graph-editor@workspace:babylonjs-node-render-graph-editor doesn't provide typescript (p7104aa), requested by ts-loader.
+➤ │ babylonjs-post-process@workspace:babylonjs-post-process doesn't provide typescript (p4144c2), requested by ts-loader.
+➤ │ babylonjs-procedural-textures@workspace:babylonjs-procedural-textures doesn't provide typescript (pb8f588), requested by ts-loader.
+➤ │ babylonjs-serializers@workspace:babylonjs-serializers doesn't provide typescript (p7d0572), requested by ts-loader.
+➤ │ babylonjs@workspace:babylonjs doesn't provide typescript (p853a55), requested by ts-loader.
+➤ │ Some peer dependencies are incorrectly met by your project; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code.
+➤ └ Completed in 0ms
