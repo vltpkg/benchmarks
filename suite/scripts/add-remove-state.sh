@@ -77,6 +77,8 @@ cache_snapshot="$state_dir/cache"
 # Wait for both here (untimed), never copy the trash, and treat a
 # vanished-file warning as success. Two clear checks in a row are required,
 # since the unzip process is briefly named `node` before it renames itself.
+# Returns non-zero if the work is still running after 120s; the caller then
+# fails this PM rather than snapshot or restore a cache still being written.
 wait_for_pm_background() {
   local i clear=0
   for i in $(seq 1 1200); do
@@ -91,7 +93,8 @@ wait_for_pm_background() {
     fi
     sleep 0.1
   done
-  echo "[add-remove] warning: vlt background work still running after 120s"
+  echo "[add-remove] vlt background work still running after 120s"
+  return 1
 }
 
 sync_tree() {
@@ -152,7 +155,8 @@ restore_caches() {
 }
 
 if [ -f "$state_dir/pm" ] && [ "$(cat "$state_dir/pm")" = "$pm-$mode" ] && [ -f "$state_dir/failed" ]; then
-  # The baseline failed: nothing to restore, the timed command will fail.
+  # The baseline (or a wait for background work) failed: nothing to restore,
+  # the timed command will fail.
   exit 0
 fi
 
@@ -160,7 +164,10 @@ if [ -f "$state_dir/pm" ] && [ "$(cat "$state_dir/pm")" = "$pm-$mode" ] && [ -d 
   # Restore the exact baseline. -H keeps hard links (pnpm/bun), -a keeps
   # symlinks (aube, pnpm virtual store), --delete drops anything the timed
   # command created (e.g. node_modules/<new-pkg>).
-  wait_for_pm_background
+  if ! wait_for_pm_background; then
+    echo "background" > "$state_dir/failed"
+    exit 0
+  fi
   sync_tree "$snapshot/" ./
   if [ "$mode" = "add" ]; then
     restore_caches
@@ -201,7 +208,10 @@ if [ "$mode" = "remove" ]; then
   fi
 fi
 
-wait_for_pm_background
+if ! wait_for_pm_background; then
+  echo "background" > "$state_dir/failed"
+  exit 0
+fi
 mkdir -p "$snapshot"
 sync_tree ./ "$snapshot/"
 if [ "$mode" = "add" ]; then
