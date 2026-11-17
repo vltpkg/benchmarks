@@ -57,6 +57,10 @@ for (const fixture of [
     const packageDir = path.join(tempDir, "node_modules", "example");
     fs.mkdirSync(packageDir, { recursive: true });
     fs.writeFileSync(
+      path.join(tempDir, "package.json"),
+      '{"dependencies":{"example":"1.0.0"}}\n',
+    );
+    fs.writeFileSync(
       path.join(tempDir, "pnpm-lock.yaml"),
       "lockfileVersion: '9.0'\n",
     );

@@ -44,38 +44,11 @@ infer_package_manager() {
 
 # If the node_modules directory exists, count the number of packages
 if [ -d "node_modules" ]; then
-  # upm stores packages via hardlinks inside node_modules/.upm/. The
-  # standard find traverses hardlinks correctly.
-  if [ -d "node_modules/.upm" ]; then
-    BENCH_PACKAGE_COUNT=$(
-      find node_modules -name package.json -type f \
-      | grep -E 'node_modules/([a-zA-Z0-9_-]+)/package\.json$|node_modules/@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/package\.json$' \
-      | sort -u \
-      | wc -l \
-      | xargs
-    ) || true
-  # aube uses symlinks inside node_modules/.aube/ (unlike pnpm which uses
-  # hard links inside .pnpm/), so the standard `find -type f` cannot
-  # traverse them.  When .aube/ is present, use `find -L` scoped to
-  # node_modules/.aube to follow symlinks and extract unique package names.
-  elif [ -d "node_modules/.aube" ]; then
-    BENCH_PACKAGE_COUNT=$(
-      find -L node_modules/.aube -name package.json -type f \
-      | grep -E 'node_modules/([a-zA-Z0-9_-]+)/package\.json$|node_modules/@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/package\.json$' \
-      | sed 's|.*node_modules/||; s|/package\.json$||' \
-      | sort -u \
-      | wc -l \
-      | xargs
-    ) || true
-  else
-    BENCH_PACKAGE_COUNT=$(
-      find node_modules -name package.json -type f \
-      | grep -E 'node_modules/([a-zA-Z0-9_-]+)/package\.json$|node_modules/@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/package\.json$' \
-      | sort -u \
-      | wc -l \
-      | xargs
-    ) || true
-  fi
+  # Walk the dependency graph rather than scanning node_modules: package
+  # manager stores (.aube, .upm, .vlt, .pnpm) can keep removed packages.
+  BENCH_PACKAGE_COUNT=$(
+    node "$(dirname "${BASH_SOURCE[0]}")/package-count.js" .
+  ) || true
 else
   # if there is no node_modules directory, the install failed
   # and we can't infer the package manager, so we'll skip this run
