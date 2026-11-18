@@ -134,6 +134,31 @@ clean_deno_cache() {
   fi
 }
 
+# Deno keeps compiled code for the CommonJS files it runs in
+# $DENO_DIR/v8_code_cache_v2 (a SQLite database, with -wal/-shm sidecars).
+# When a build writes a file with the same path and size as the previous
+# build but different content (`next build` emits `.next/server/chunks/961.js`
+# in two such variants), Deno runs the old compiled code against the new file
+# and webpack's runtime throws `TypeError: e[o] is not a function`. A failed
+# run doesn't refresh the entry, so it keeps failing until the variant flips
+# back. Remove just the compiled-code cache, not the npm cache or the rest of
+# $DENO_DIR, so the next build compiles from the files on disk. (#215)
+#
+# `deno info --json` reports the directory wherever it is (DENO_DIR, XDG_CACHE_HOME
+# or the platform default); fall back to the Linux default if it can't be asked.
+clean_deno_code_cache() {
+  local deno_dir="" entry
+  if command -v deno &> /dev/null; then
+    deno_dir="$(deno info --json 2>/dev/null | sed -n 's/^ *"denoDir": *"\(.*\)",\{0,1\}$/\1/p' || true)"
+  fi
+  if [ -z "$deno_dir" ]; then
+    deno_dir="${DENO_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/deno}"
+  fi
+  for entry in "$deno_dir"/v8_code_cache_v2*; do
+    safe_remove "$entry"
+  done
+}
+
 # Function to safely clean vp cache
 clean_vp_cache() {
   if command -v vp &> /dev/null; then
@@ -322,6 +347,7 @@ show_help() {
   echo "  clean_bun_cache"
   echo "  clean_nx_cache"
   echo "  clean_deno_cache"
+  echo "  clean_deno_code_cache"
   echo "  clean_aube_cache"
   echo "  clean_aube_metadata_cache"
   echo "  clean_upm_cache"
@@ -373,6 +399,9 @@ else
         ;;
       clean_deno_cache)
         clean_deno_cache
+        ;;
+      clean_deno_code_cache)
+        clean_deno_code_cache
         ;;
       clean_aube_cache)
         clean_aube_cache

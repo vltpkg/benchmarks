@@ -281,6 +281,75 @@ test("clean_berry_cache removes berry's global folder, with and without XDG_DATA
   ]);
 });
 
+// Run clean_deno_code_cache against a fake deno dir and record what it
+// removes. `denoDir` is what the fake `deno info --json` reports, or null for
+// no deno on PATH (the fallback to DENO_DIR / XDG_CACHE_HOME / ~/.cache).
+const denoCodeCacheRemovedBy = (denoDir, env = {}) => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "deno-clean-test-"));
+  try {
+    const binDir = path.join(tempDir, "bin");
+    const removeLog = path.join(tempDir, "removed.txt");
+    fs.mkdirSync(binDir);
+    fs.writeFileSync(removeLog, "");
+    if (denoDir) {
+      fs.writeFileSync(
+        path.join(binDir, "deno"),
+        `#!/bin/sh\n[ "$1 $2" = "info --json" ] || exit 1\nprintf '{\\n  "version": 1,\\n  "denoDir": "%s",\\n  "npmCache": "%s/npm"\\n}\\n' "$FAKE_DENO_DIR" "$FAKE_DENO_DIR"\n`,
+        { mode: 0o755 },
+      );
+      // The code cache is a SQLite database with -wal and -shm sidecars; the
+      // npm cache sits next to it and must stay.
+      fs.mkdirSync(path.join(denoDir, "npm"), { recursive: true });
+      for (const name of ["v8_code_cache_v2", "v8_code_cache_v2-wal", "v8_code_cache_v2-shm"]) {
+        fs.writeFileSync(path.join(denoDir, name), "");
+      }
+    }
+    const result = spawnSync(
+      "bash",
+      ["-c", `source "$HELPERS" >/dev/null; safe_remove() { printf '%s\\n' "$1" >> "$REMOVE_LOG"; }; clean_deno_code_cache`],
+      {
+        encoding: "utf8",
+        env: {
+          // Only the fake bin dir (plus sed), so a real deno is never asked.
+          PATH: `${binDir}${path.delimiter}/usr/bin${path.delimiter}/bin`,
+          HOME: "/home/runner",
+          HELPERS: path.join(__dirname, "clean-helpers.sh"),
+          REMOVE_LOG: removeLog,
+          FAKE_DENO_DIR: denoDir ?? "",
+          ...env,
+        },
+      },
+    );
+    assert.equal(result.status, 0, result.stderr);
+    return fs.readFileSync(removeLog, "utf8").trim().split("\n").filter(Boolean);
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
+};
+
+test("clean_deno_code_cache removes only v8_code_cache_v2* from the dir deno reports", () => {
+  const denoDir = path.join(os.tmpdir(), `deno dir ${process.pid}`);
+  try {
+    assert.deepEqual(denoCodeCacheRemovedBy(denoDir).sort(), [
+      path.join(denoDir, "v8_code_cache_v2"),
+      path.join(denoDir, "v8_code_cache_v2-shm"),
+      path.join(denoDir, "v8_code_cache_v2-wal"),
+    ]);
+  } finally {
+    fs.rmSync(denoDir, { recursive: true, force: true });
+  }
+});
+
+test("clean_deno_code_cache falls back to DENO_DIR, XDG_CACHE_HOME, then ~/.cache", () => {
+  // Without deno nothing exists to glob, so the literal pattern is what
+  // safe_remove is asked about.
+  assert.deepEqual(denoCodeCacheRemovedBy(null, { DENO_DIR: "/deno dir" }), ["/deno dir/v8_code_cache_v2*"]);
+  assert.deepEqual(denoCodeCacheRemovedBy(null, { XDG_CACHE_HOME: "/xdg/cache" }), [
+    "/xdg/cache/deno/v8_code_cache_v2*",
+  ]);
+  assert.deepEqual(denoCodeCacheRemovedBy(null), ["/home/runner/.cache/deno/v8_code_cache_v2*"]);
+});
+
 test("clean_nx_cache does nothing outside an Nx workspace", () => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "nx-clean-test-"));
   try {
