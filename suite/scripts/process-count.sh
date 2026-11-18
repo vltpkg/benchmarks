@@ -4,7 +4,7 @@
 # Usage:
 #   bash process-count.sh <output-folder> <pm-name> <install-command> [prepare-command]
 #
-# Runs a single install wrapped in `strace -f -e trace=execve` and counts the
+# Runs a single install wrapped in `strace -f -e trace=execve,execveat` and counts the
 # processes it started (see count-processes.js for what counts). The count is
 # appended to <output-folder>/<pm-name>-process-count.txt (one number per
 # line, matching the pattern used by package-count.sh). Nothing is recorded if
@@ -57,20 +57,28 @@ if [ -n "$PREPARE_CMD" ]; then
   $WAIT_CMD
 fi
 
-# Run the install command under strace
+# Run the install command under strace. The timeout wraps strace, not the
+# command: `strace -f` waits for every traced process, detached ones included,
+# so a stuck background child would otherwise hang the counting pass. strace
+# ignores SIGTERM while it has tracees, hence -k. A timed-out run exits 124 or
+# 137 and is skipped like any other failure.
 echo "[process-count] Running strace'd install for $PM_NAME..."
 EXIT_CODE=0
-strace -f -e trace=execve -o "$STRACE_LOG" \
+timeout -k 10 "${BENCH_TIMEOUT:-300}" \
+  strace -f -e trace=execve,execveat -o "$STRACE_LOG" \
   bash -c "$INSTALL_CMD" > /dev/null 2>&1 || EXIT_CODE=$?
 
 if [ "$EXIT_CODE" -ne 0 ]; then
-  echo "Warning: install exited with $EXIT_CODE for $PM_NAME, skipping process count"
-elif [ -f "$STRACE_LOG" ]; then
-  COUNT=$(node "$(dirname "$0")/count-processes.js" "$STRACE_LOG")
+  # strace passes the command's exit status through, but exits non-zero on its
+  # own if it can't trace (e.g. no ptrace permission), so name both.
+  echo "Warning: strace'd install exited with $EXIT_CODE for $PM_NAME, skipping process count"
+elif [ ! -f "$STRACE_LOG" ]; then
+  echo "Warning: strace log not found for $PM_NAME"
+elif ! COUNT=$(node "$(dirname "$0")/count-processes.js" "$STRACE_LOG"); then
+  echo "Warning: could not count processes from the strace log for $PM_NAME, skipping process count"
+else
   echo "$COUNT" >> "$PROCESS_COUNT_FILE"
   echo "[process-count] $PM_NAME started $COUNT processes"
-else
-  echo "Warning: strace log not found for $PM_NAME"
 fi
 
 # Remove strace log to save space (can be large)

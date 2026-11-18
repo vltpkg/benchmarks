@@ -1,10 +1,10 @@
-// Counts the processes a command started, from an `strace -f -e trace=execve`
-// log.
+// Counts the processes a command started, from an
+// `strace -f -e trace=execve,execveat` log.
 //
 // A process is counted once if it ran a program, i.e. made at least one
-// successful execve. Failed execve calls aren't processes: they are lookups
-// along PATH (e.g. `/usr/bin/env node` trying each PATH entry). A process that
-// execs more than once, like a `#!/usr/bin/env node` script becoming `env` and
+// successful execve or execveat. Failed calls aren't processes: they are
+// lookups along PATH (e.g. `/usr/bin/env node` trying each PATH entry). A
+// process that execs more than once, like a `#!/usr/bin/env node` script becoming `env` and
 // then `node`, is still one process, so a JS tool's interpreter isn't counted
 // on its own.
 //
@@ -49,7 +49,7 @@ function countProcesses(log) {
 // command itself.
 function successfulExecs(log) {
   const execs = new Map();
-  // execve calls split by another thread's syscall:
+  // calls split by another thread's syscall:
   //   12 execve("/bin/x", [...] <unfinished ...>
   //   12 <... execve resumed>) = 0
   const unfinished = new Map();
@@ -62,14 +62,14 @@ function successfulExecs(log) {
 
     let program;
     let result;
-    if (rest.startsWith('execve(')) {
-      program = /^execve\("((?:[^"\\]|\\.)*)"/.exec(rest)?.[1];
+    if (/^execve(at)?\(/.test(rest)) {
+      program = execPath(rest);
       if (rest.endsWith('<unfinished ...>')) {
         unfinished.set(pid, program);
         continue;
       }
       result = rest;
-    } else if (rest.startsWith('<... execve resumed>')) {
+    } else if (/^<\.\.\. execve(at)? resumed>/.test(rest)) {
       program = unfinished.get(pid);
       unfinished.delete(pid);
       result = rest;
@@ -83,4 +83,10 @@ function successfulExecs(log) {
   }
 
   return execs;
+}
+
+// The program an execve or execveat line runs: the first string argument,
+// i.e. execve's path or execveat's path after the directory fd.
+function execPath(call) {
+  return /^execve(?:at)?\((?:[^,"]*, )?"((?:[^"\\]|\\.)*)"/.exec(call)?.[1];
 }

@@ -72,6 +72,18 @@ test("follows execve calls split across lines", () => {
   assert.equal(countProcesses(log), 2);
 });
 
+test("counts execveat like execve", () => {
+  const log = [
+    `1 execve("/usr/bin/bash", ["bash", "-c", "x"], 0x1 /* 1 vars */) = 0`,
+    `1 execve("/opt/bin/x", ["x"], 0x1 /* 1 vars */) = 0`,
+    `2 execveat(AT_FDCWD, "/opt/bin/missing", ["missing"], 0x1 /* 1 vars */, 0) = -1 ENOENT (No such file or directory)`,
+    `3 execveat(3, "", ["child"], 0x1 /* 1 vars */, AT_EMPTY_PATH) = 0`,
+    `4 execveat(AT_FDCWD, "/opt/bin/split", ["split"], 0x1 /* 1 vars */, 0 <unfinished ...>`,
+    `4 <... execveat resumed>) = 0`,
+  ].join("\n");
+  assert.equal(countProcesses(log), 3);
+});
+
 test("counts nothing for an empty log", () => {
   assert.equal(countProcesses(""), 0);
 });

@@ -193,9 +193,10 @@ if command -v strace &>/dev/null; then
       bash "$BENCH_SCRIPTS/process-count.sh" "$BENCH_OUTPUT_FOLDER" "$pm" "${!op_var}"
     fi
   done
+  # Collect first, so a failing clean can't lose the counts
+  node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
   eval "$BENCH_AR_DESTROY"
   bash "$BENCH_SCRIPTS/clean-helpers.sh" clean_all
-  node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
 else
   echo "Warning: strace not available, skipping process count collection"
 fi

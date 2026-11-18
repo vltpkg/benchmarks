@@ -38,6 +38,8 @@ BENCH_RUNS="${BENCH_RUNS:=5}"
 # If a single install exceeds this, it is killed. hyperfine --ignore-failure
 # lets the suite continue; the timed-out run records as a failure.
 BENCH_TIMEOUT="${BENCH_TIMEOUT:=300}"
+# process-count.sh runs as its own script and times its counted command too
+export BENCH_TIMEOUT
 for pm in npm yarn berry zpm pnpm vlt bun deno aube upm nx turbo vp node; do
   CHOICE=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
   if echo "$BENCH_INCLUDE" | grep -qw "$pm"; then
@@ -248,9 +250,10 @@ collect_process_count() {
     fi
   done
 
-  # Don't leave the last tool's node_modules, lockfile and cache behind
-  bash "$BENCH_SCRIPTS/clean-helpers.sh" wait_for_vlt_background clean_all
+  # Collect first, so a failing clean can't lose the counts. Then don't leave
+  # the last tool's node_modules, lockfile and cache behind.
   node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
+  bash "$BENCH_SCRIPTS/clean-helpers.sh" wait_for_vlt_background clean_all
 }
 
 # Like collect_process_count, but each package manager gets its own prepare,
@@ -279,7 +282,8 @@ collect_process_count_per_pm() {
     fi
   done
 
-  # Don't leave the last tool's node_modules, lockfile and cache behind
-  bash "$BENCH_SCRIPTS/clean-helpers.sh" wait_for_vlt_background clean_all
+  # Collect first, so a failing clean can't lose the counts. Then don't leave
+  # the last tool's node_modules, lockfile and cache behind.
   node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
+  bash "$BENCH_SCRIPTS/clean-helpers.sh" wait_for_vlt_background clean_all
 }
