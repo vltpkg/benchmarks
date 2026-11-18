@@ -151,12 +151,16 @@ once.
   background cache unpacking only when there is something to unpack: **2** in
   `clean`, **1** in `ci` on a warm cache. Its update-check and revalidate
   processes may add to that, depending on timing.
-- If the command exits non-zero or runs past `BENCH_TIMEOUT`, nothing is
-  recorded for that tool.
+- If the command, or the install that sets up its starting state, exits
+  non-zero or runs past `BENCH_TIMEOUT`, nothing is recorded for that tool.
 
 Earlier counts (issue #209) counted every `execve` line, including the
 wrapper, failed lookups and the interpreter, and `ci` counted most tools
-against npm's lockfile. Don't compare them with later counts.
+against npm's lockfile. Until issue #214, the lockfile, `node_modules` and
+cache variations counted each tool from what earlier tools left, not its own
+lockfile, `node_modules` or cache, and upm, which refuses more than one
+lockfile, had no count in the lockfile variations. Don't compare them with
+later counts.
 
 ## Variations
 

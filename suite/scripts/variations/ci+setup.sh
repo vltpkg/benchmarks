@@ -167,7 +167,7 @@ ci_setup_prepare() {
   fi
 
   # Generate lockfile via regular install
-  result="$result; $install_cmd >/dev/null 2>&1 || true"
+  result="$result; timeout $BENCH_TIMEOUT $install_cmd >/dev/null 2>&1 || true"
 
   # Clean node_modules (ci starts fresh)
   result="$result; $BENCH_CLEAN_POST"

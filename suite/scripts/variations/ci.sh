@@ -74,7 +74,7 @@ ci_prepare() {
   if [ -n "$setup_cmd" ]; then
     result="$result; $setup_cmd"
   fi
-  result="$result; $install_cmd >/dev/null 2>&1 || true; $BENCH_CLEAN_POST"
+  result="$result; timeout $BENCH_TIMEOUT $install_cmd >/dev/null 2>&1 || true; $BENCH_CLEAN_POST"
   echo "$result"
 }
 

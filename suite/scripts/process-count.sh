@@ -8,12 +8,14 @@
 # processes it started (see count-processes.js for what counts). The count is
 # appended to <output-folder>/<pm-name>-process-count.txt (one number per
 # line, matching the pattern used by package-count.sh). Nothing is recorded if
-# the install fails: a failed command's processes aren't the ones the timed
-# runs measure.
+# the prepare or the install fails: a failed prepare leaves the wrong starting
+# state, and a failed command's processes aren't the ones the timed runs
+# measure.
 #
 # This script is meant to run OUTSIDE the timed benchmark (strace adds
-# overhead). It is invoked by `collect_process_count` in common.sh after
-# the hyperfine run completes.
+# overhead). It is invoked after the hyperfine run completes by
+# `collect_process_count` and `collect_process_count_per_pm` in common.sh, and
+# by add-remove.sh.
 
 set -Eeuo pipefail
 
@@ -50,11 +52,18 @@ fi
 # for vlt's background work before and after it, so it can't overlap the
 # counted install (see hyperfine-wait.sh).
 WAIT_CMD="bash $(dirname "$0")/clean-helpers.sh wait_for_vlt_background"
+# The prepare runs in a subshell, so one that exits (set_per_pm_prepares does
+# when its warmup install fails) ends only the prepare.
 if [ -n "$PREPARE_CMD" ]; then
   echo "[process-count] Running prepare for $PM_NAME..."
   $WAIT_CMD
-  eval "$PREPARE_CMD" || true
+  PREPARE_EXIT=0
+  (eval "$PREPARE_CMD") || PREPARE_EXIT=$?
   $WAIT_CMD
+  if [ "$PREPARE_EXIT" -ne 0 ]; then
+    echo "Warning: prepare exited with $PREPARE_EXIT for $PM_NAME, skipping process count"
+    exit 0
+  fi
 fi
 
 # Run the install command under strace. The timeout wraps strace, not the
