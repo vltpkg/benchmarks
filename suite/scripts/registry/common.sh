@@ -67,6 +67,14 @@ fi
 # relying on any cached metadata, so we measure actual registry performance.
 BENCH_NPM_INSTALL="npm install --prefer-online --no-audit --no-fund --no-update-notifier --ignore-scripts --loglevel=$BENCH_LOGLEVEL $FORCE_FLAG"
 
+# Only the selected registries need their variables (checked below). With
+# `set -u`, the `${VAR#//}` expansions below abort on an unset one, so give the
+# optional registry URLs an empty default first: `--registries=npm` must run
+# without CLOUDSMITH_REGISTRY, GH_REGISTRY and JFROG_REGISTRY.
+CLOUDSMITH_REGISTRY="${CLOUDSMITH_REGISTRY:-}"
+GH_REGISTRY="${GH_REGISTRY:-}"
+JFROG_REGISTRY="${JFROG_REGISTRY:-}"
+
 # Registry definitions
 BENCH_REGISTRY_NPM_URL="https://registry.npmjs.org/"
 BENCH_REGISTRY_VLT_URL="https://registry.vlt.io/vlt-benchmarks/npm/"

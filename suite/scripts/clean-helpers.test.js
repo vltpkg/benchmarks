@@ -339,11 +339,15 @@ for (const [label, opts] of [
 }
 
 // Record what a cleaner removes, without touching anything real.
-const removedBy = (command, env = {}) => {
+const removedBy = (command, env = {}, bins = {}) => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cleaner-test-"));
   try {
     const removeLog = path.join(tempDir, "removed.txt");
     fs.writeFileSync(removeLog, "");
+    fs.mkdirSync(path.join(tempDir, "bin"));
+    for (const [name, script] of Object.entries(bins)) {
+      fs.writeFileSync(path.join(tempDir, "bin", name), script, { mode: 0o755 });
+    }
     const result = spawnSync(
       "bash",
       ["-c", `source "$HELPERS" >/dev/null; safe_remove() { printf '%s\\n' "$1" >> "$REMOVE_LOG"; }; ${command}`],
@@ -381,14 +385,117 @@ test("clean_zpm_cache removes ~/.yarn/zpm", () => {
 });
 
 test("clean_berry_cache removes berry's global folder, with and without XDG_DATA_HOME", () => {
-  assert.deepEqual(removedBy("clean_berry_cache", { XDG_DATA_HOME: "" }).slice(-2), [
+  assert.deepEqual(removedBy("clean_berry_cache", { XDG_DATA_HOME: "" }), [
     "/home/runner/.yarn/berry",
     "/home/runner/.local/share/yarn/berry",
   ]);
-  assert.deepEqual(removedBy("clean_berry_cache", { XDG_DATA_HOME: "/xdg/data" }).slice(-2), [
+  assert.deepEqual(removedBy("clean_berry_cache", { XDG_DATA_HOME: "/xdg/data" }), [
     "/home/runner/.yarn/berry",
     "/xdg/data/yarn/berry",
   ]);
+});
+
+test("clean_bun_cache removes bun's install folder, under $HOME and under XDG_CACHE_HOME", () => {
+  // a `bun` that does nothing, so the test never touches a real bun cache
+  const bins = { bun: "#!/bin/sh\nexit 0\n" };
+  assert.deepEqual(removedBy("clean_bun_cache", { XDG_CACHE_HOME: "" }, bins), [
+    "/home/runner/.bun/install",
+  ]);
+  assert.deepEqual(removedBy("clean_bun_cache", { XDG_CACHE_HOME: "/xdg/cache" }, bins), [
+    "/home/runner/.bun/install",
+    "/xdg/cache/.bun/install",
+  ]);
+  assert.deepEqual(
+    removedBy("clean_bun_cache", { XDG_CACHE_HOME: "", BUN_INSTALL_CACHE_DIR: "/custom" }, bins),
+    ["/home/runner/.bun/install", "/custom"],
+  );
+});
+
+// A git repository with the given files committed: what a fixture looks like.
+const committedRepo = (dir, files) => {
+  fs.mkdirSync(dir, { recursive: true });
+  for (const [name, content] of Object.entries(files)) fs.writeFileSync(path.join(dir, name), content);
+  const git = (...args) =>
+    execFileSync("git", args, {
+      cwd: dir,
+      env: {
+        ...process.env,
+        GIT_AUTHOR_NAME: "t",
+        GIT_AUTHOR_EMAIL: "t@t",
+        GIT_COMMITTER_NAME: "t",
+        GIT_COMMITTER_EMAIL: "t@t",
+      },
+    });
+  git("init", "-q");
+  git("add", ".");
+  git("commit", "-q", "-m", "fixture");
+};
+
+test("clean_fixture_config restores a tracked .gitignore and .yarnrc.yml, removes an untracked .yarnrc.yml", (t) => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "fixture-config-test-"));
+  t.after(() => fs.rmSync(tempDir, { recursive: true, force: true }));
+  const run = (cwd) => {
+    const result = spawnSync("bash", ["-c", 'source "$HELPERS" >/dev/null; clean_fixture_config'], {
+      cwd,
+      encoding: "utf8",
+      env: { ...process.env, HELPERS: path.join(__dirname, "clean-helpers.sh") },
+    });
+    assert.equal(result.status, 0, result.stderr);
+  };
+
+  // like next: both files committed; turbo's build appends to .gitignore
+  const next = path.join(tempDir, "next");
+  committedRepo(next, { ".gitignore": "/node_modules\n", ".yarnrc.yml": "nodeLinker: node-modules\n" });
+  fs.appendFileSync(path.join(next, ".gitignore"), "\n# Turborepo\n.turbo\n");
+  fs.writeFileSync(path.join(next, ".yarnrc.yml"), "enableMirror: false\n");
+  run(next);
+  assert.equal(fs.readFileSync(path.join(next, ".gitignore"), "utf8"), "/node_modules\n");
+  assert.equal(fs.readFileSync(path.join(next, ".yarnrc.yml"), "utf8"), "nodeLinker: node-modules\n");
+
+  // like run: no .yarnrc.yml committed; berry's prepare writes one
+  const run_ = path.join(tempDir, "run");
+  committedRepo(run_, { ".gitignore": "/node_modules\n", "package.json": "{}" });
+  fs.writeFileSync(path.join(run_, ".yarnrc.yml"), "enableMirror: false\n");
+  run(run_);
+  assert.equal(fs.existsSync(path.join(run_, ".yarnrc.yml")), false);
+  assert.equal(fs.readFileSync(path.join(run_, ".gitignore"), "utf8"), "/node_modules\n");
+
+  // outside a repository nothing is touched
+  const plain = path.join(tempDir, "plain");
+  fs.mkdirSync(plain);
+  fs.writeFileSync(path.join(plain, ".yarnrc.yml"), "x\n");
+  run(plain);
+  assert.equal(fs.existsSync(path.join(plain, ".yarnrc.yml")), true);
+});
+
+test("registry-package-count.sh counts by walking the graph, dotted names included", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "registry-count-test-"));
+  try {
+    const project = path.join(tempDir, "project");
+    const out = path.join(tempDir, "out");
+    for (const [name, manifest] of [
+      ["a", { name: "a", dependencies: { "lodash.merge": "1" } }],
+      ["lodash.merge", { name: "lodash.merge" }],
+      ["@scope.x/b", { name: "@scope.x/b" }],
+      [".store/unreachable", { name: "unreachable" }],
+    ]) {
+      fs.mkdirSync(path.join(project, "node_modules", name), { recursive: true });
+      fs.writeFileSync(path.join(project, "node_modules", name, "package.json"), JSON.stringify(manifest));
+    }
+    fs.writeFileSync(
+      path.join(project, "package.json"),
+      JSON.stringify({ name: "x", dependencies: { a: "1", "@scope.x/b": "1" } }),
+    );
+    const script = path.join(__dirname, "registry-package-count.sh");
+    for (const registry of ["npm", "aws"]) {
+      const result = spawnSync("bash", [script, out, registry], { cwd: project, encoding: "utf8" });
+      assert.equal(result.status, 0, result.stderr);
+    }
+    assert.deepEqual(fs.readdirSync(out).sort(), ["aws-count.txt", "npm-count.txt"]);
+    assert.equal(fs.readFileSync(path.join(out, "npm-count.txt"), "utf8"), "3\n");
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
 });
 
 test("clean_nx_cache does nothing outside an Nx workspace", () => {

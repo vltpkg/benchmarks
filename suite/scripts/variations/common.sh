@@ -110,9 +110,12 @@ BENCH_SETUP_VP="touch yarn.lock"
 BENCH_SETUP_NODE=""
 
 # Bare install commands (no log redirection) — used by strace process counting.
-# Install scripts are disabled where the PM runs them by default, so benchmarks
-# measure dependency resolution + linking only (not arbitrary postinstall work).
-#   npm, yarn classic, bun: run scripts by default → --ignore-scripts
+# Install scripts are disabled so benchmarks measure dependency resolution +
+# linking only (not arbitrary postinstall work), whatever a tool's default.
+#   yarn classic: runs scripts by default → --ignore-scripts
+#   npm 12, bun: already block dependency scripts by default (npm 12 allows
+#     only explicitly listed ones; bun skipped esbuild's postinstall without
+#     the flag too), so --ignore-scripts is explicit, not load-bearing
 #   pnpm v11+: errors on ignored build scripts (ERR_PNPM_IGNORED_BUILDS) → --ignore-scripts
 #   aube: runs scripts for its default trusted dependencies → --ignore-scripts
 #   berry, zpm, vlt: don't run scripts by default → no flag needed

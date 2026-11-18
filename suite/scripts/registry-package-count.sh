@@ -17,12 +17,12 @@ fi
 
 # If the node_modules directory exists, count the number of packages
 if [ -d "node_modules" ]; then
+  # Walk the dependency graph, as package-count.sh does. Scanning node_modules
+  # with a name pattern skipped package names containing a dot (335 instead of
+  # 362 on next), so registry per-package times were computed from a smaller
+  # count than the package-manager ones.
   BENCH_PACKAGE_COUNT=$(
-    find node_modules -name package.json -type f \
-    | grep -E 'node_modules/([a-zA-Z0-9_-]+)/package\.json$|node_modules/@[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/package\.json$' \
-    | sort -u \
-    | wc -l \
-    | xargs
+    node "$(dirname "${BASH_SOURCE[0]}")/package-count.js" .
   ) || true
 else
   echo "Warning: node_modules directory does not exist"
