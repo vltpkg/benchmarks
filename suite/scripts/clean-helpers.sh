@@ -21,7 +21,7 @@ clean_npm_cache() {
 # Function to safely clean yarn cache
 clean_yarn_cache() {
   if [ -x "$BENCH_YARN_BIN" ]; then
-    "$BENCH_YARN_BIN" cache clean --silent || true
+    "$BENCH_YARN_BIN" cache clean --all --silent || true
   fi
 }
 
