@@ -126,7 +126,5 @@ hyperfine --ignore-failure \
 
 collect_package_count
 
-# For process counting, use a representative prepare base.
-# collect_process_count needs BENCH_PREPARE_BASE to set up state before strace.
-BENCH_PREPARE_BASE="$BENCH_PREPARE_NPM"
-collect_process_count
+# Each tool's ci command needs its own lockfile, so each gets its own prepare.
+collect_process_count_per_pm

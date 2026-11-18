@@ -235,67 +235,6 @@ hyperfine --ignore-failure \
 collect_package_count
 
 # --- Process count collection ---
-# Unlike other variations that use a single BENCH_PREPARE_BASE for all PMs,
-# ci+setup needs per-PM prepare commands because each PM's prepare includes
-# PM-specific uninstall/cache-purge steps. Using a single base (e.g. npm's
-# prepare) would leave the wrong lockfile and skip the uninstall/purge steps
-# for non-npm PMs, producing inaccurate process counts.
-collect_process_count_per_pm() {
-  if ! command -v strace &>/dev/null; then
-    echo "Warning: strace not available, skipping process count collection"
-    return 0
-  fi
-
-  echo "=== Collecting spawned process counts (per-PM prepare) ==="
-
-  local -A PM_PREPARE=(
-    [npm]="$BENCH_PREPARE_NPM"
-    [yarn]="$BENCH_PREPARE_YARN"
-    [berry]="$BENCH_PREPARE_BERRY"
-    [zpm]="$BENCH_PREPARE_ZPM"
-    [pnpm]="$BENCH_PREPARE_PNPM"
-    [vlt]="$BENCH_PREPARE_VLT"
-    [bun]="$BENCH_PREPARE_BUN"
-    [deno]="$BENCH_PREPARE_DENO"
-    [aube]="$BENCH_PREPARE_AUBE"
-    [upm]="$BENCH_PREPARE_UPM"
-  )
-  local -A PM_INSTALL=(
-    [npm]="$BENCH_INSTALL_NPM"
-    [yarn]="$BENCH_INSTALL_YARN"
-    [berry]="$BENCH_INSTALL_BERRY"
-    [zpm]="$BENCH_INSTALL_ZPM"
-    [pnpm]="$BENCH_INSTALL_PNPM"
-    [vlt]="$BENCH_INSTALL_VLT"
-    [bun]="$BENCH_INSTALL_BUN"
-    [deno]="$BENCH_INSTALL_DENO"
-    [aube]="$BENCH_INSTALL_AUBE"
-    [upm]="$BENCH_INSTALL_UPM"
-  )
-  local -A PM_INCLUDE=(
-    [npm]="$BENCH_INCLUDE_NPM"
-    [yarn]="$BENCH_INCLUDE_YARN"
-    [berry]="$BENCH_INCLUDE_BERRY"
-    [zpm]="$BENCH_INCLUDE_ZPM"
-    [pnpm]="$BENCH_INCLUDE_PNPM"
-    [vlt]="$BENCH_INCLUDE_VLT"
-    [bun]="$BENCH_INCLUDE_BUN"
-    [deno]="$BENCH_INCLUDE_DENO"
-    [aube]="$BENCH_INCLUDE_AUBE"
-    [upm]="$BENCH_INCLUDE_UPM"
-  )
-
-  for pm in npm yarn berry zpm pnpm vlt bun deno aube upm; do
-    if [ -n "${PM_INCLUDE[$pm]:-}" ]; then
-      bash "$BENCH_SCRIPTS/process-count.sh" \
-        "$BENCH_OUTPUT_FOLDER" \
-        "$pm" \
-        "${PM_INSTALL[$pm]}" \
-        "${PM_PREPARE[$pm]}"
-    fi
-  done
-
-  node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
-}
-
+# Each PM's prepare includes PM-specific uninstall/cache-purge steps and its
+# own lockfile, so each gets its own prepare.
 collect_process_count_per_pm
