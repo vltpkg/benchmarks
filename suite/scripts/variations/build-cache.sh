@@ -65,12 +65,12 @@ BENCH_COMMAND_NODE="timeout $BENCH_TIMEOUT node --run build > $BENCH_OUTPUT_FOLD
 # Run the benchmark build-cache benchmarks.
 # Prepare: install deps + run a warm build (populates .next/ cache).
 # Timed command: rebuild with .next/ cache present.
-# deno's prepare drops Deno's compiled-code cache twice: before the warm build,
-# so it can't fail on a stale entry from the previous iteration and leave a
-# half-written .next/, and again right before the timed rebuild, in case the
-# rebuild emits the other variant of a server chunk than its warm build did
-# (see clean_deno_code_cache). A cached rebuild loads little code, so a cold
-# compile cache costs it nothing measurable.
+# deno's prepare drops the .next/ entries from Deno's compiled-code cache twice:
+# before the warm build, so it can't fail on a stale entry from the previous
+# iteration and leave a half-written .next/, and again right before the timed
+# rebuild, in case the rebuild emits the other variant of a server chunk than
+# its warm build did (see clean_deno_code_cache). The entries for next's own
+# code stay, so the rebuild runs with the warm compile cache a user's would.
 hyperfine --ignore-failure \
   --time-unit=millisecond \
   --export-json="$BENCH_OUTPUT_FOLDER/benchmarks.json" \

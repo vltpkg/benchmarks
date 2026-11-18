@@ -141,8 +141,11 @@ clean_deno_cache() {
 # in two such variants), Deno runs the old compiled code against the new file
 # and webpack's runtime throws `TypeError: e[o] is not a function`. A failed
 # run doesn't refresh the entry, so it keeps failing until the variant flips
-# back. Remove just the compiled-code cache, not the npm cache or the rest of
-# $DENO_DIR, so the next build compiles from the files on disk. (#215)
+# back. Only the entries for the regenerated files can go stale, so remove just
+# those for the current project's .next/ (deno-code-cache.js) and keep the rest:
+# the entries for next's own files in node_modules are what a user's build runs
+# with. If the database isn't shaped as expected, remove the whole code cache
+# instead; the npm cache and the rest of $DENO_DIR always stay. (#215)
 #
 # `deno info --json` reports the directory wherever it is (DENO_DIR, XDG_CACHE_HOME
 # or the platform default); fall back to the Linux default if it can't be asked.
@@ -154,6 +157,11 @@ clean_deno_code_cache() {
   if [ -z "$deno_dir" ]; then
     deno_dir="${DENO_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/deno}"
   fi
+  [ -e "$deno_dir/v8_code_cache_v2" ] || return 0
+  if node "$(dirname "${BASH_SOURCE[0]}")/deno-code-cache.js" "$deno_dir/v8_code_cache_v2" "$PWD"; then
+    return 0
+  fi
+  echo "Warning: couldn't prune Deno's code cache for $PWD/.next, removing all of it"
   for entry in "$deno_dir"/v8_code_cache_v2*; do
     safe_remove "$entry"
   done
