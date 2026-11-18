@@ -110,8 +110,11 @@ BENCH_SETUP_UPM=""
 BENCH_NX_VERSION="$(node -p "require('$(npm root -g)/nx/package.json').version" 2>/dev/null || echo latest)"
 BENCH_SETUP_NX="npm install --no-save --no-audit --no-fund --ignore-scripts --silent nx@$BENCH_NX_VERSION && npm pkg set nx='{}' --json"
 BENCH_SETUP_TURBO=""
-# vp install delegates to Yarn 4, so it needs the same yarn.lock as berry above.
-BENCH_SETUP_VP="touch yarn.lock"
+# vp install delegates to Yarn 4, so it needs the same yarn.lock and
+# .yarnrc.yml (nodeLinker: node-modules) as berry above. It used to get the
+# .yarnrc.yml only because berry's prepare left one behind in fixtures that
+# don't commit one; clean_fixture_config now removes that between tools.
+BENCH_SETUP_VP="touch yarn.lock; echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml"
 BENCH_SETUP_NODE=""
 
 # Bare install commands (no log redirection) — used by strace process counting.
