@@ -212,10 +212,14 @@ export interface LeftOut {
   readonly scenario: string;
   /** The fixtures it is left out on. */
   readonly fixtures: readonly string[];
-  /** The window's runs without it, ascending. */
+  /** The runs considered that lack it, ascending. */
   readonly missing: readonly string[];
-  /** Its first run in the window, when every run without it is earlier; else `null`. */
-  readonly since: string | null;
+  /**
+   * Where `missing` sits among the runs considered: all before every run that
+   * has it, all after, or neither. Only those runs: the scenario's real first
+   * run may be excluded, or outside the window.
+   */
+  readonly when: "before" | "after" | "between";
 }
 
 /** The scenarios a window's average covers on each fixture. */
@@ -225,20 +229,21 @@ export interface CommonPlan {
   readonly leftOut: readonly LeftOut[];
   /**
    * Fixtures where too few scenarios ran on every run to average, so they keep
-   * the shown run's and a run without one of them draws no point for them.
+   * the shown run's, and are left out of the runs without one of them.
    */
   readonly fallback: readonly string[];
 }
 
 /**
- * The scenarios of `plan` every run in the window published, per fixture.
+ * The scenarios of `plan` every run considered published, per fixture.
  *
  * `averageFiles` drops a fixture missing any planned scenario, so a plan taken
  * from the shown run drew no point on any run before a scenario was added.
  * Averaging only what each fixture has on every run it ran keeps the trend and
- * the shown run's numbers over the same scenarios. A fixture left with fewer
- * than two (when its plan has two or more) keeps the shown run's set, and is
- * named in `fallback`.
+ * the shown run's numbers over the same scenarios. `plan` is every candidate
+ * (the curated list); one no run has is not offered, and is not named. The
+ * shown run is one of `runs` like any other. A fixture left with fewer than
+ * two keeps the scenarios the `shown` run has, and is named in `fallback`.
  */
 export const commonPlan = (
   plan: { readonly [fixture: string]: readonly string[] },
@@ -246,6 +251,7 @@ export const commonPlan = (
     readonly date: string;
     readonly cells: readonly { readonly fixture: string; readonly variation: string }[];
   }[],
+  shown?: string,
 ): CommonPlan => {
   const has = (cells: (typeof runs)[number]["cells"], fixture: string, variation: string) =>
     cells.some((c) => c.fixture === fixture && c.variation === variation);
@@ -255,17 +261,19 @@ export const commonPlan = (
     string,
     { fixtures: string[]; missing: Set<string>; present: string[] }
   >();
-  for (const [fixture, variations] of Object.entries(plan)) {
+  for (const [fixture, candidates] of Object.entries(plan)) {
     /* A run the fixture did not run on at all says nothing about its scenarios. */
-    const ran = runs.filter((r) => variations.some((v) => has(r.cells, fixture, v)));
-    const kept = variations.filter((v) => ran.every((r) => has(r.cells, fixture, v)));
-    if (kept.length < Math.min(2, variations.length)) {
-      common[fixture] = variations;
+    const ran = runs.filter((r) => candidates.some((v) => has(r.cells, fixture, v)));
+    const offered = candidates.filter((v) => ran.some((r) => has(r.cells, fixture, v)));
+    const kept = offered.filter((v) => ran.every((r) => has(r.cells, fixture, v)));
+    if (kept.length < Math.min(2, offered.length)) {
+      const own = runs.find((r) => r.date === shown)?.cells;
+      common[fixture] = own === undefined ? offered : offered.filter((v) => has(own, fixture, v));
       fallback.push(fixture);
       continue;
     }
     common[fixture] = kept;
-    for (const v of variations.filter((v) => !kept.includes(v))) {
+    for (const v of offered.filter((v) => !kept.includes(v))) {
       const entry = dropped.get(v) ?? { fixtures: [], missing: new Set(), present: [] };
       entry.fixtures.push(fixture);
       for (const r of ran) {
@@ -279,9 +287,15 @@ export const commonPlan = (
     const entry = dropped.get(scenario);
     if (entry === undefined) return [];
     const missing = [...entry.missing].sort();
-    const first = entry.present.sort()[0];
-    const since = first !== undefined && missing.every((d) => d < first) ? first : null;
-    return [{ scenario, fixtures: entry.fixtures, missing, since }];
+    const present = entry.present.sort();
+    const first = present[0] ?? "";
+    const last = present.at(-1) ?? "";
+    const when: LeftOut["when"] = missing.every((d) => d < first)
+      ? "before"
+      : missing.every((d) => d > last)
+        ? "after"
+        : "between";
+    return [{ scenario, fixtures: entry.fixtures, missing, when }];
   });
   return { plan: common, leftOut, fallback };
 };

@@ -388,7 +388,8 @@ const loadCells = async (
 
 /**
  * The derived "average" view, as a scenario: `plan` maps each fixture to the
- * scenarios that may be averaged on it, and `averaged` to the ones that are:
+ * scenarios that may be averaged on it (the curated list, whether or not the
+ * shown run has them), and `averaged` to the ones that are:
  * those every drawn run has (`commonPlan`), so the trend and the shown run
  * cover the same scenarios. `cells` are the shown run's per-scenario files.
  * No count files -- a package or process count is a fact about one scenario,
@@ -426,6 +427,7 @@ export const loadAverage = async (
     dates.flatMap((d, i) =>
       d !== date && whole.has(d) ? [] : [{ date: d, cells: loaded[i] ?? [] }],
     ),
+    date,
   );
   const trend = drawn.flatMap(
     (d, i) => trendPoint(d, averageFiles(loaded[i] ?? [], averaged.plan)) ?? [],

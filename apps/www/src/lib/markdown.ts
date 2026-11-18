@@ -463,13 +463,16 @@ export const averagedNote = (
   /* Where it applies, when that is not every fixture shown. */
   const on = (some: readonly string[]) =>
     some.length === fixtures.length ? [] : [`on ${some.map(fixtureLabel).join(", ")}`];
-  /* Scenarios with the same reason share it: the add/remove four all start the same day. */
+  /* Scenarios with the same reason share it: the add/remove four all start on the same run. */
   const reasons = new Map<string, string[]>();
   for (const l of leftOut) {
+    /* Said of the runs considered only: its real first run may be excluded or outside the window. */
     const why =
-      l.since === null
-        ? `missing on ${l.missing.map(date).join(", ")}`
-        : `first run ${date(l.since)}`;
+      l.when === "before"
+        ? `not in runs through ${date(l.missing.at(-1) ?? "")}`
+        : l.when === "after"
+          ? `not in runs since ${date(l.missing[0] ?? "")}`
+          : `not in the runs of ${l.missing.map(date).join(", ")}`;
     const key = [...on(l.fixtures), why].join(", ");
     reasons.set(key, [...(reasons.get(key) ?? []), `\`${l.scenario}\``]);
   }
@@ -484,7 +487,7 @@ export const averagedNote = (
     ...(fallback.length === 0
       ? []
       : [
-          `${["Too few scenarios ran on every run in the window", ...on(fallback)].join(" ")} to average, so this run's are averaged there, and runs without one of them have no point.`,
+          `${["Too few scenarios ran on every run in the window", ...on(fallback)].join(" ")} to average, so this run's are averaged there, and ${fallback.length === 1 ? "that fixture is" : "those fixtures are"} left out of runs without one of them.`,
         ]),
   ];
   return notes.length === 0 ? null : notes.join(" ");

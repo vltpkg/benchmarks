@@ -316,14 +316,16 @@ export const loadReport = async ({
   }
 
   const averageOf = selected.averageOf ?? null;
-  /* The derived view: each fixture, and the scenarios averaged on it. */
+  /*
+   * The derived view: each fixture the shown run averages anything on, and
+   * every curated scenario as a candidate, published by this run or not.
+   * `loadAverage` keeps those every run in the window has, so a scenario this
+   * run lacks and others have is named as left out, not silently missing.
+   */
   const plan: { [fixture: string]: readonly string[] } = Object.fromEntries(
     Object.entries(entry.benchmarks)
-      .map(([f, published]): [string, string[]] => [
-        f,
-        (averageOf ?? []).filter((v) => published?.includes(v)),
-      ])
-      .filter(([, averaged]) => averaged.length > 0)
+      .filter(([, published]) => (averageOf ?? []).some((v) => published?.includes(v)))
+      .map(([f]): [string, readonly string[]] => [f, def.order])
       .sort(([a], [b]) => a.localeCompare(b)),
   );
   const publishedFixtures =
@@ -594,7 +596,7 @@ export const loadReport = async ({
           averageOf === null || average === null
             ? null
             : {
-                scenarios: averageOf.filter((v) =>
+                scenarios: def.order.filter((v) =>
                   Object.values(average.averaged.plan).flat().includes(v),
                 ),
                 byFixture: average.averaged.plan,
