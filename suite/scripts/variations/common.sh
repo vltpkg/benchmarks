@@ -90,7 +90,12 @@ BENCH_SETUP_BERRY="touch yarn.lock; echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" >
 BENCH_SETUP_ZPM="touch yarn.lock; echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; { echo '[zpm prepare]'; echo 'cwd:'; pwd; echo 'package.json:'; ls -la package.json || true; echo 'yarn path:'; echo $BENCH_ZPM_BIN; echo 'yarn version:'; $BENCH_ZPM_BIN -v || true; echo 'canary version:'; echo \"$BENCH_ZPM_VERSION\"; echo 'packageManager (before):'; npm pkg get packageManager || true; echo 'set packageManager=yarn@'"$BENCH_ZPM_VERSION"':' ; npm pkg set packageManager=\"yarn@$BENCH_ZPM_VERSION\" || true; echo 'packageManager (after):'; npm pkg get packageManager || true; } >> $BENCH_OUTPUT_FOLDER/zpm-prepare.log 2>&1"
 BENCH_SETUP_PNPM="npm pkg delete packageManager >/dev/null 2>&1 || true"
 
-BENCH_SETUP_VLT=""
+# Migrate babylon's workspace ranges to `workspace:*` before vlt's first
+# install of a set, untimed, the way a vlt user's repo stays after its first
+# install (see migrate_workspace_protocol). Appended to vlt's --prepare only,
+# never to hyperfine's shared --setup, which runs for every tool. clean.sh
+# sets this empty: there the migration is part of a first install's cost.
+BENCH_SETUP_VLT="bash $BENCH_SCRIPTS/clean-helpers.sh migrate_workspace_protocol"
 BENCH_SETUP_BUN=""
 BENCH_SETUP_DENO=""
 BENCH_SETUP_AUBE="npm pkg delete packageManager >/dev/null 2>&1 || true"

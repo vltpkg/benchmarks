@@ -487,3 +487,88 @@ test("package-count.sh tells zpm from berry by the packageManager pin", () => {
     }
   }
 });
+
+// migrate_workspace_protocol, with a fake vlt that does what
+// `vlt install --lockfile-only` does to a workspace: rewrites a sibling range
+// to workspace:* and writes vlt-lock.json.
+const migrateWorkspaceProtocol = (t, { packages = true, migrated = false, lockfile } = {}) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "migrate-ws-test-"));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const binDir = path.join(dir, "bin");
+  const project = path.join(dir, "project");
+  const vltLog = path.join(dir, "vlt-calls.txt");
+  fs.mkdirSync(binDir);
+  fs.mkdirSync(project);
+  fs.writeFileSync(
+    path.join(binDir, "vlt"),
+    `#!/bin/sh
+echo "$*" >> "${vltLog}"
+sed -i 's/"\\^1\\.0\\.0"/"workspace:*"/' packages/b/package.json
+echo '{"lockfileVersion":1,"fake":true}' > vlt-lock.json
+`,
+    { mode: 0o755 },
+  );
+  fs.writeFileSync(path.join(project, "package.json"), '{"name":"x","workspaces":["packages/*"]}');
+  if (packages) {
+    fs.mkdirSync(path.join(project, "packages", "a"), { recursive: true });
+    fs.mkdirSync(path.join(project, "packages", "b"), { recursive: true });
+    fs.writeFileSync(path.join(project, "packages", "a", "package.json"), '{"name":"a","version":"1.0.0"}');
+    fs.writeFileSync(
+      path.join(project, "packages", "b", "package.json"),
+      `{"name":"b","dependencies":{"a":${migrated ? '"workspace:*"' : '"^1.0.0"'}}}`,
+    );
+    // A workspace's node_modules can hold manifests that use workspace:
+    // (dependencies installed from a pnpm-style project); they don't count.
+    fs.mkdirSync(path.join(project, "packages", "a", "node_modules", "dep"), { recursive: true });
+    fs.writeFileSync(
+      path.join(project, "packages", "a", "node_modules", "dep", "package.json"),
+      '{"name":"dep","dependencies":{"peer":"workspace:^"}}',
+    );
+  }
+  if (lockfile !== undefined) {
+    fs.writeFileSync(path.join(project, "vlt-lock.json"), lockfile);
+  }
+  const result = spawnSync("bash", [path.join(__dirname, "clean-helpers.sh"), "migrate_workspace_protocol"], {
+    cwd: project,
+    encoding: "utf8",
+    env: { ...process.env, PATH: `${binDir}${path.delimiter}${process.env.PATH}` },
+  });
+  assert.equal(result.status, 0, result.stderr);
+  const read = (file) => (fs.existsSync(path.join(project, file)) ? fs.readFileSync(path.join(project, file), "utf8") : null);
+  return {
+    vltCalls: fs.existsSync(vltLog) ? fs.readFileSync(vltLog, "utf8").trim().split("\n") : [],
+    manifest: read("packages/b/package.json"),
+    lockfile: read("vlt-lock.json"),
+    tempLockfile: read(".bench-vlt-lock.json"),
+  };
+};
+
+test("migrate_workspace_protocol: migrates the manifests and discards the lockfile", (t) => {
+  const out = migrateWorkspaceProtocol(t);
+  assert.deepEqual(out.vltCalls, ["install --lockfile-only --view=silent"]);
+  assert.equal(out.manifest, '{"name":"b","dependencies":{"a":"workspace:*"}}');
+  assert.equal(out.lockfile, null, "the lockfile --lockfile-only wrote was kept");
+  assert.equal(out.tempLockfile, null);
+});
+
+test("migrate_workspace_protocol: keeps a pre-existing lockfile byte for byte", (t) => {
+  const lockfile = '{"lockfileVersion":1,"nodes":{"":["x"]}}\n';
+  const out = migrateWorkspaceProtocol(t, { lockfile });
+  assert.deepEqual(out.vltCalls, ["install --lockfile-only --view=silent"]);
+  assert.equal(out.manifest, '{"name":"b","dependencies":{"a":"workspace:*"}}');
+  assert.equal(out.lockfile, lockfile);
+  assert.equal(out.tempLockfile, null);
+});
+
+test("migrate_workspace_protocol: does nothing without packages/", (t) => {
+  const out = migrateWorkspaceProtocol(t, { packages: false, lockfile: "orig" });
+  assert.deepEqual(out.vltCalls, []);
+  assert.equal(out.lockfile, "orig");
+});
+
+test("migrate_workspace_protocol: does nothing once workspace: is present", (t) => {
+  const out = migrateWorkspaceProtocol(t, { migrated: true });
+  assert.deepEqual(out.vltCalls, []);
+  assert.equal(out.manifest, '{"name":"b","dependencies":{"a":"workspace:*"}}');
+  assert.equal(out.lockfile, null);
+});
