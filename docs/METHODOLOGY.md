@@ -145,8 +145,12 @@ once.
   `env` and then `node` in the same process, so npm with no child processes
   counts **1**.
 - The `bash -c` the harness wraps the command in doesn't count.
-- A launcher counts. yarn, berry and pnpm run through `corepack`, so pnpm's
-  **3** is `corepack`, `pnpm-native` and `node --version`.
+- A launcher counts only if it starts a separate process. pnpm runs as its
+  native binary and checks `node --version`, so it counts **2** where it
+  installs, and **1** in the `node_modules` variations, where there is
+  nothing to install. yarn 1 runs directly, and berry's Corepack shim runs
+  Yarn in the same Node.js process, so both count **1**. Until #211, all three
+  ran through `corepack`, which added a process (pnpm was **3**).
 - Detached processes count, so a count can depend on state. vlt counts its
   background cache unpacking only when there is something to unpack: **2** in
   `clean`, **1** in `ci` on a warm cache. Its update-check and revalidate
