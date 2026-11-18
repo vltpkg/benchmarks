@@ -16,9 +16,14 @@ and slowest fixture in the suite.
 **Workspace resolution at scale.** Every other fixture is a single package; this
 one is 86 of them with internal cross-dependencies, which is a different problem
 from installing a wide flat graph. It is the fixture that catches a tool handling
-`workspace:` protocol specifiers, hoisting, or link topology badly.
+cross-workspace ranges, hoisting, or link topology badly.
 
 It is also the only fixture whose own `vlt.json` declares workspaces.
+
+Its 323 references between workspace packages are plain semver ranges, not
+`workspace:`, and every tool gets them as committed. See
+[METHODOLOGY](../METHODOLOGY.md#what-a-benchmark-is-here) for how each tool
+links them.
 
 ## Variations
 
