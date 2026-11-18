@@ -46,14 +46,22 @@ vlt can also be pointed at `registry.npmjs.org`; these numbers don't measure
 that. The `registry-*` variations are the ones that hold the client constant
 and compare registries.
 
-Fixtures are installed as committed, with the same manifests for every tool.
+Fixtures are installed as committed, with the same dependency specs for every
+tool (berry and zpm still get their `packageManager` pin and `.yarnrc.yml`).
 In `babylon`, workspace packages depend on each other by plain semver range
 (`"@dev/core": "^1.0.0"`), not `workspace:`, and each tool links them its own
 way:
 
-- vlt rewrites those ranges to `workspace:*` in `package.json` on its first
-  install. That rewrite is part of its timed run wherever the manifests start
-  out unmigrated, such as `clean`.
+- vlt rewrites most of those ranges (257 of 323) to `workspace:*` in
+  `package.json` on its first install. That rewrite is part of its timed run
+  wherever the manifests start out unmigrated, which is `clean`; in the other
+  variations the untimed first warmup migrates them. vlt 1.8.0 leaves the 66
+  exact and peer specs on the published `@babylonjs/*` names as they are, and
+  in about half of cold installs it resolves four of them (`gui`, `loaders`,
+  `materials`, `serializers`) to registry copies instead of the workspace,
+  downloading 4 extra tarballs ([vltpkg/vltpkg#2154](https://github.com/vltpkg/vltpkg/issues/2154)).
+  So vlt's `babylon` `clean` results can differ between runs until that is
+  fixed.
 - pnpm links them (the fixture's `pnpm-workspace.yaml` sets
   `linkWorkspacePackages: true`), but first asks the registry for each one:
   about 240 lookups per cold install, most answered 404 for private packages.
