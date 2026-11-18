@@ -70,20 +70,21 @@ cache_snapshot="$state_dir/cache"
 #   - It renames replaced store entries to node_modules/.vlt/.VLT.DELETE.*
 #     and deletes them in the background. rsync racing that deletion fails
 #     with exit 24 ("some files vanished").
-#   - It unpacks fetched tarballs into its cache (vlt_background_running in
-#     clean-helpers.sh). A snapshot or restore taken while that is still
-#     writing captures, or is undone by, a half-written cache.
+#   - Its other detached children (vlt-background.sh) keep writing to its
+#     cache, e.g. unpacking tarballs. A snapshot or restore taken while that
+#     is still writing captures, or is undone by, a half-written cache.
 # Wait for both here (untimed), never copy the trash, and treat a
 # vanished-file warning as success. Two clear checks in a row are required.
 # Unlike wait_for_vlt_background in clean-helpers.sh, this returns non-zero if
 # the work is still running after 300s, and the caller then fails this PM
 # rather than snapshot or restore a cache still being written.
+source "$SCRIPTS_DIR/vlt-background.sh"
+
 wait_for_pm_background() {
   local i clear=0
   for i in $(seq 1 3000); do
     if ! compgen -G "node_modules/.vlt/.VLT.DELETE.*" >/dev/null &&
-      ! pgrep -u "$(id -u)" -x vlt-cache-unzip >/dev/null &&
-      ! pgrep -u "$(id -u)" -f 'cache-unzip-src-unzip[.]js' >/dev/null; then
+      ! vlt_background_running; then
       clear=$((clear + 1))
       if [ "$clear" -ge 2 ]; then
         return 0

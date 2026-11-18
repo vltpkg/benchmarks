@@ -1,6 +1,6 @@
 # Sourced by variations/common.sh and registry/common.sh.
 #
-# Wraps hyperfine so vlt's background cache unpacking (see
+# Wraps hyperfine so vlt's detached background work (see vlt-background.sh and
 # wait_for_vlt_background in clean-helpers.sh) can't spill into the next run.
 # Every --setup and --cleanup waits for it first, and every --prepare waits
 # both first (before it cleans caches) and last, right before the timed

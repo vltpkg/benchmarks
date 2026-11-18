@@ -36,16 +36,28 @@ Only the first row publishes. Between runs the suite resets state with
 counts are taken from a real installed tree rather than inferred from a
 lockfile.
 
-vlt unpacks fetched tarballs into its cache in a detached process
-(`vlt-cache-unzip`) that keeps running after the `vlt` command exits — about
-19 seconds after a cold `babylon` install. The timed run ends when `vlt`
-exits, which is when a user gets their prompt back. So that this deferred work
-can't overlap the next timed run (of any manager) or write into a cache that
-is being cleaned, every `--prepare`, `--setup` and `--cleanup` first waits for
-it to finish, and every `--prepare` waits again right before the timed command
+Each tool is measured in its **default configuration**, the experience a user
+gets out of the box. For vlt that is its own registry: every fixture's
+`vlt.json` points vlt at `https://registry.vlt.io/vlt-benchmarks/npm/`, and the
+workflow authenticates to it (`VLT_REGISTRY`, `VLT_TOKEN`), while the other
+tools use `registry.npmjs.org`. Some of vlt's features, such as server-side
+resolution, only exist on its registry, so this is the comparison we intend.
+vlt can also be pointed at `registry.npmjs.org`; these numbers don't measure
+that. The `registry-*` variations are the ones that hold the client constant
+and compare registries.
+
+vlt finishes some work in detached processes that keep running after the
+`vlt` command exits: unpacking fetched tarballs into its cache (about 19
+seconds after a cold `babylon` install), revalidating cached manifests,
+deleting replaced `node_modules` entries, and update checks
+(`suite/scripts/vlt-background.sh`). The timed run ends when `vlt` exits,
+which is when a user gets their prompt back. So that this deferred work can't
+overlap the next timed run (of any manager) or write into a cache that is
+being cleaned, every `--prepare`, `--setup` and `--cleanup` first waits for it
+to finish, and every `--prepare` waits again right before the timed command
 (`suite/scripts/hyperfine-wait.sh`, `wait_for_vlt_background` in
 `clean-helpers.sh`). The waits are untimed; in real use, the next install
-rarely starts that soon.
+rarely starts that soon. No other tool was seen leaving processes behind.
 
 ## Normalization: why per-package time matters
 

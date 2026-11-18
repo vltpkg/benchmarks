@@ -26,12 +26,19 @@ clean_berry_cache() {
   if command -v corepack &> /dev/null; then
     corepack yarn@latest cache clean --all >/dev/null || true
   fi
+  # `cache clean --all` leaves berry's metadata cache (packuments) in its
+  # global folder, so cold runs skipped every packument download. The global
+  # folder is ~/.yarn/berry, or under $XDG_DATA_HOME when that is set.
+  safe_remove "$HOME/.yarn/berry"
+  safe_remove "${XDG_DATA_HOME:-$HOME/.local/share}/yarn/berry"
 }
 
+# zpm keeps its cache and metadata in ~/.yarn/zpm (with or without XDG_*).
+# `yarn cache clean` doesn't reach it: without a packageManager field the
+# Yarn Switch `yarn` runs Yarn 1, and with one zpm reports "No entries to
+# clear". The Yarn Switch binaries (~/.yarn/switch) are the tool, not cache.
 clean_zpm_cache() {
-  if command -v yarn &> /dev/null; then
-    yarn cache clean >/dev/null || true
-  fi
+  safe_remove "$HOME/.yarn/zpm"
 }
 
 # Function to safely clean pnpm cache
@@ -56,17 +63,12 @@ clean_vlt_cache() {
   fi
 }
 
-# Whether vlt's background cache unpacking is running. vlt spawns it as a
-# detached `node .../cache-unzip-src-unzip.js` process as it exits, and the
-# process then renames itself `vlt-cache-unzip`, so match either form. The
-# [.] keeps a shell whose arguments contain this pattern from matching itself.
-vlt_background_running() {
-  pgrep -u "$(id -u)" -x vlt-cache-unzip >/dev/null ||
-    pgrep -u "$(id -u)" -f 'cache-unzip-src-unzip[.]js' >/dev/null
-}
+# vlt_background_running: whether any of vlt's detached children is running.
+source "$(dirname "${BASH_SOURCE[0]}")/vlt-background.sh"
 
-# Wait for vlt's background cache unpacking to finish. It outlives the vlt
-# command (about 19s after a cold babylon install), so without this it
+# Wait for vlt's detached children to finish (cache unpacking, manifest
+# revalidation, rollback-remove, ...). Unpacking alone runs about 19s after a
+# cold babylon install, so without this they
 # overlaps the next timed run and writes into a cache that is being cleaned.
 # Waiting is untimed: in real use nobody starts the next install that soon.
 # Requires two clear checks in a row; returns non-zero after $1 seconds
@@ -105,8 +107,13 @@ clean_bun_cache() {
 }
 
 # Function to safely clean nx cache
+# Outside an Nx workspace these commands fail ("not part of an Nx workspace")
+# and nx also runs `npm view nx@latest`, writing nx's packument into the npm
+# cache that was just cleaned. nx's own cache lives in .nx, which
+# clean_build_files removes.
 clean_nx_cache() {
-  if command -v nx &> /dev/null; then
+  if command -v nx &> /dev/null &&
+    { [ -f nx.json ] || grep -q '"nx"' package.json 2>/dev/null; }; then
     nx daemon --stop >/dev/null || true
     nx clear-cache >/dev/null || true
     nx reset >/dev/null || true
