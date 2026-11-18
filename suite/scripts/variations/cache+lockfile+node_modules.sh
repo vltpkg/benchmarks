@@ -42,5 +42,5 @@ hyperfine --ignore-failure \
 collect_package_count
 
 # Each tool starts from its own lockfile, so each gets its own prepare.
-set_lockfile_prepares
+set_per_pm_prepares
 collect_process_count_per_pm

@@ -194,9 +194,11 @@ collect_package_count() {
 }
 
 # Function to collect spawned process counts via strace.
-# Runs a single strace'd install for each included package manager under the
-# same state as the benchmark variation. BENCH_PREPARE_BASE must be set by the
-# calling variation script before invoking this function.
+# Runs a single strace'd install for each included package manager, one after
+# another, with one shared prepare. Only right when that prepare resets
+# everything (clean); otherwise a tool starts from what the previous one left,
+# so use set_per_pm_prepares and collect_process_count_per_pm. BENCH_PREPARE_BASE
+# must be set by the calling variation script before invoking this function.
 collect_process_count() {
   if ! command -v strace &>/dev/null; then
     echo "Warning: strace not available, skipping process count collection"
@@ -297,14 +299,13 @@ collect_process_count_per_pm() {
   bash "$BENCH_SCRIPTS/clean-helpers.sh" wait_for_vlt_background clean_all
 }
 
-# For variations that start from the tool's own lockfile (lockfile,
-# cache+lockfile, lockfile+node_modules, cache+lockfile+node_modules): sets
-# each BENCH_PREPARE_<PM> to what the timed runs do before a measured run.
-# That is clean_all (hyperfine --setup), one install that writes the tool's
-# lockfile (a warmup run), then the variation's prepare again. So the counted
-# install finds its own lockfile and no other tool's. BENCH_PREPARE_BASE must
-# be set before calling this.
-set_lockfile_prepares() {
+# For variations whose starting state is what the tool itself left behind:
+# its own lockfile, node_modules or cache. Sets each BENCH_PREPARE_<PM> to what
+# the timed runs do before a measured run: clean_all (hyperfine --setup), one
+# install that leaves that state (a warmup run), then the variation's prepare
+# again. So the counted install starts from its own state and nothing another
+# tool left. BENCH_PREPARE_BASE must be set before calling this.
+set_per_pm_prepares() {
   local pm P setup_var install_var prepare
   for pm in npm yarn berry zpm pnpm vlt bun deno aube upm; do
     P=$(echo "$pm" | tr '[:lower:]' '[:upper:]')

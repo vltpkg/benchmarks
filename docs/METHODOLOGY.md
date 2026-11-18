@@ -156,9 +156,11 @@ once.
 
 Earlier counts (issue #209) counted every `execve` line, including the
 wrapper, failed lookups and the interpreter, and `ci` counted most tools
-against npm's lockfile. Until issue #214, the four lockfile variations counted
-each tool against the lockfiles earlier tools left, and upm, which refuses more
-than one lockfile, had no count. Don't compare them with later counts.
+against npm's lockfile. Until issue #214, the lockfile, `node_modules` and
+cache variations counted each tool from what earlier tools left, not its own
+lockfile, `node_modules` or cache, and upm, which refuses more than one
+lockfile, had no count in the lockfile variations. Don't compare them with
+later counts.
 
 ## Variations
 
