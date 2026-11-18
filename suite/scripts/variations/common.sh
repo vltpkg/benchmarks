@@ -248,5 +248,38 @@ collect_process_count() {
     fi
   done
 
+  # Don't leave the last tool's node_modules, lockfile and cache behind
+  bash "$BENCH_SCRIPTS/clean-helpers.sh" wait_for_vlt_background clean_all
+  node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
+}
+
+# Like collect_process_count, but each package manager gets its own prepare,
+# BENCH_PREPARE_<PM>, as in the timed runs. For variations whose prepare
+# depends on the tool, e.g. `ci` needs the tool's own lockfile.
+collect_process_count_per_pm() {
+  if ! command -v strace &>/dev/null; then
+    echo "Warning: strace not available, skipping process count collection"
+    return 0
+  fi
+
+  echo "=== Collecting spawned process counts (per-PM prepare) ==="
+
+  local pm P include_var install_var prepare_var
+  for pm in npm yarn berry zpm pnpm vlt bun deno aube upm; do
+    P=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
+    include_var="BENCH_INCLUDE_$P"
+    install_var="BENCH_INSTALL_$P"
+    prepare_var="BENCH_PREPARE_$P"
+    if [ -n "${!include_var:-}" ]; then
+      bash "$BENCH_SCRIPTS/process-count.sh" \
+        "$BENCH_OUTPUT_FOLDER" \
+        "$pm" \
+        "${!install_var}" \
+        "${!prepare_var}"
+    fi
+  done
+
+  # Don't leave the last tool's node_modules, lockfile and cache behind
+  bash "$BENCH_SCRIPTS/clean-helpers.sh" wait_for_vlt_background clean_all
   node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
 }
