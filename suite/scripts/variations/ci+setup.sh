@@ -38,11 +38,15 @@ SETUP_INSTALL_BERRY="" # corepack auto-downloads on first invocation
 # zpm is installed via the Yarn Switch installer (same as setup.sh)
 SETUP_INSTALL_ZPM="curl -sS https://repo.yarnpkg.com/install | bash >/dev/null 2>&1"
 SETUP_INSTALL_PNPM=""  # corepack auto-downloads on first invocation
-SETUP_INSTALL_VLT="npm install -g vlt@latest >/dev/null 2>&1"
-SETUP_INSTALL_BUN="npm install -g --allow-scripts=bun bun@latest >/dev/null 2>&1"
-SETUP_INSTALL_DENO="npm install -g --allow-scripts=deno deno@latest >/dev/null 2>&1"
-SETUP_INSTALL_AUBE="npm install -g --allow-scripts=@endevco/aube @endevco/aube@latest >/dev/null 2>&1"
-SETUP_INSTALL_UPM="npm install -g upm@latest >/dev/null 2>&1"
+# The tools installed with npm get their own npm cache, deleted with the tool
+# below, like npm's. Otherwise the timed install is served from ~/.npm, which
+# the prepare's own install of the same tool just filled.
+TOOL_SETUP_CACHE="/tmp/bench-tool-setup-cache"
+SETUP_INSTALL_VLT="npm install -g --cache $TOOL_SETUP_CACHE vlt@latest >/dev/null 2>&1"
+SETUP_INSTALL_BUN="npm install -g --cache $TOOL_SETUP_CACHE --allow-scripts=bun bun@latest >/dev/null 2>&1"
+SETUP_INSTALL_DENO="npm install -g --cache $TOOL_SETUP_CACHE --allow-scripts=deno deno@latest >/dev/null 2>&1"
+SETUP_INSTALL_AUBE="npm install -g --cache $TOOL_SETUP_CACHE --allow-scripts=@endevco/aube @endevco/aube@latest >/dev/null 2>&1"
+SETUP_INSTALL_UPM="npm install -g --cache $TOOL_SETUP_CACHE upm@latest >/dev/null 2>&1"
 
 # --- PM uninstall commands (run at end of prepare to force re-install) ---
 SETUP_UNINSTALL_NPM="rm -rf $NPM_SETUP_PREFIX $NPM_SETUP_CACHE"
@@ -50,11 +54,11 @@ SETUP_UNINSTALL_YARN="" # corepack managed; cache purged below
 SETUP_UNINSTALL_BERRY=""
 SETUP_UNINSTALL_ZPM="rm -rf \$HOME/.yarn/switch >/dev/null 2>&1 || true"
 SETUP_UNINSTALL_PNPM=""
-SETUP_UNINSTALL_VLT="npm uninstall -g vlt >/dev/null 2>&1 || true"
-SETUP_UNINSTALL_BUN="npm uninstall -g bun >/dev/null 2>&1 || true"
-SETUP_UNINSTALL_DENO="npm uninstall -g deno >/dev/null 2>&1 || true"
-SETUP_UNINSTALL_AUBE="npm uninstall -g @endevco/aube >/dev/null 2>&1 || true"
-SETUP_UNINSTALL_UPM="npm uninstall -g upm >/dev/null 2>&1 || true"
+SETUP_UNINSTALL_VLT="npm uninstall -g vlt >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
+SETUP_UNINSTALL_BUN="npm uninstall -g bun >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
+SETUP_UNINSTALL_DENO="npm uninstall -g deno >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
+SETUP_UNINSTALL_AUBE="npm uninstall -g @endevco/aube >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
+SETUP_UNINSTALL_UPM="npm uninstall -g upm >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
 
 # Purge the isolated corepack home so corepack-managed PMs must re-download.
 COREPACK_PURGE="rm -rf $COREPACK_HOME"

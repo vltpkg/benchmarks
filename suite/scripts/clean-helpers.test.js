@@ -87,17 +87,28 @@ safe_remove() { printf '%s\\n' "$1" >> "$REMOVE_LOG"; }
   });
 }
 
-// A stand-in for vlt's background unzip: a copy of `sleep` named
-// vlt-cache-unzip, so pgrep -x sees the same process name. Started from a
-// throwaway sh, like vlt's detached child, so it is reaped when it exits
-// instead of lingering as a zombie of this (blocked) test process.
-const startFakeUnzip = (t, seconds) => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "vlt-unzip-test-"));
-  const bin = path.join(dir, "vlt-cache-unzip");
-  fs.copyFileSync(execFileSync("sh", ["-c", "command -v sleep"], { encoding: "utf8" }).trim(), bin);
-  fs.chmodSync(bin, 0o755);
+// A stand-in for one of vlt's detached children: `sleep` copied to a file
+// with the given name, so pgrep sees that process name (truncated to 15
+// characters, as Linux does), or a node script at a vlt-style path when
+// `script` is set. Started from a throwaway sh, like vlt's detached children,
+// so it is reaped when it exits instead of lingering as a zombie of this
+// (blocked) test process.
+const startFake = (t, seconds, { name = "vlt-cache-unzip", script } = {}) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "vlt-child-test-"));
+  let argv;
+  if (script) {
+    const file = path.join(dir, "node_modules", "vlt", script);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, `setTimeout(() => {}, ${seconds * 1000});\n`);
+    argv = [process.execPath, file];
+  } else {
+    const bin = path.join(dir, name);
+    fs.copyFileSync(execFileSync("sh", ["-c", "command -v sleep"], { encoding: "utf8" }).trim(), bin);
+    fs.chmodSync(bin, 0o755);
+    argv = [bin, String(seconds)];
+  }
   const pid = Number(
-    execFileSync("sh", ["-c", `"$0" "$1" >/dev/null 2>&1 & echo $!`, bin, String(seconds)], {
+    execFileSync("sh", ["-c", `"$@" >/dev/null 2>&1 & echo $!`, "sh", ...argv], {
       encoding: "utf8",
     }),
   );
@@ -108,6 +119,7 @@ const startFakeUnzip = (t, seconds) => {
     fs.rmSync(dir, { recursive: true, force: true });
   });
 };
+const startFakeUnzip = (t, seconds) => startFake(t, seconds);
 
 const waitForVltBackground = (limit) =>
   spawnSync(
@@ -189,6 +201,137 @@ test("hyperfine-wait.sh: wraps prepare, setup and cleanup", () => {
     assert.equal(run(args[2]), 127); // `p1` doesn't exist
     assert.equal(run(args[3]), 3);
     assert.equal(run(`--prepare=${wait}; true\nbench_prepare_rc=$?; ${wait}; exit $bench_prepare_rc`), 0);
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+const vltBackgroundRunning = () =>
+  spawnSync("bash", ["-c", `source "$VB"; vlt_background_running`], {
+    env: { ...process.env, VB: path.join(__dirname, "vlt-background.sh") },
+  }).status;
+
+test("vlt_background_running: false when nothing is running", () => {
+  assert.equal(vltBackgroundRunning(), 1);
+});
+
+for (const [label, opts] of [
+  ["a renamed child, by its truncated name (vlt-cache-revalidate)", { name: "vlt-cache-revalidate" }],
+  ["a child that keeps its command line (rollback-remove)", { script: "rollback-remove-src-remove.js" }],
+  ["a child before it renames itself", { script: "registry-client-src-revalidate.js" }],
+]) {
+  test(`vlt_background_running: matches ${label}`, (t) => {
+    startFake(t, 30, opts);
+    // Give sh a moment to exec the child.
+    execFileSync("sleep", ["0.3"]);
+    assert.equal(vltBackgroundRunning(), 0);
+  });
+}
+
+// Record what a cleaner removes, without touching anything real.
+const removedBy = (command, env = {}) => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "cleaner-test-"));
+  try {
+    const removeLog = path.join(tempDir, "removed.txt");
+    fs.writeFileSync(removeLog, "");
+    const result = spawnSync(
+      "bash",
+      ["-c", `source "$HELPERS" >/dev/null; safe_remove() { printf '%s\\n' "$1" >> "$REMOVE_LOG"; }; ${command}`],
+      {
+        encoding: "utf8",
+        cwd: tempDir,
+        env: {
+          ...process.env,
+          PATH: `${path.join(tempDir, "bin")}${path.delimiter}${process.env.PATH}`,
+          HOME: "/home/runner",
+          HELPERS: path.join(__dirname, "clean-helpers.sh"),
+          REMOVE_LOG: removeLog,
+          ...env,
+        },
+      },
+    );
+    assert.equal(result.status, 0, result.stderr);
+    return fs.readFileSync(removeLog, "utf8").trim().split("\n").filter(Boolean);
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
+};
+
+test("clean_zpm_cache removes ~/.yarn/zpm", () => {
+  assert.deepEqual(removedBy("clean_zpm_cache"), ["/home/runner/.yarn/zpm"]);
+});
+
+test("clean_berry_cache removes berry's global folder, with and without XDG_DATA_HOME", () => {
+  assert.deepEqual(removedBy("clean_berry_cache", { XDG_DATA_HOME: "" }).slice(-2), [
+    "/home/runner/.yarn/berry",
+    "/home/runner/.local/share/yarn/berry",
+  ]);
+  assert.deepEqual(removedBy("clean_berry_cache", { XDG_DATA_HOME: "/xdg/data" }).slice(-2), [
+    "/home/runner/.yarn/berry",
+    "/xdg/data/yarn/berry",
+  ]);
+});
+
+test("clean_nx_cache does nothing outside an Nx workspace", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "nx-clean-test-"));
+  try {
+    const binDir = path.join(tempDir, "bin");
+    const log = path.join(tempDir, "nx-calls.txt");
+    fs.mkdirSync(binDir);
+    fs.writeFileSync(path.join(binDir, "nx"), `#!/bin/sh\necho "$*" >> "${log}"\n`, { mode: 0o755 });
+    const run = (cwd) =>
+      spawnSync("bash", ["-c", `source "$HELPERS" >/dev/null; clean_nx_cache`], {
+        cwd,
+        env: {
+          ...process.env,
+          PATH: `${binDir}${path.delimiter}${process.env.PATH}`,
+          HELPERS: path.join(__dirname, "clean-helpers.sh"),
+        },
+      }).status;
+    const plain = path.join(tempDir, "plain");
+    fs.mkdirSync(plain);
+    fs.writeFileSync(path.join(plain, "package.json"), '{"name":"x"}');
+    assert.equal(run(plain), 0);
+    assert.equal(fs.existsSync(log), false, "nx ran outside a workspace");
+    const ws = path.join(tempDir, "ws");
+    fs.mkdirSync(ws);
+    fs.writeFileSync(path.join(ws, "package.json"), '{"name":"x","nx":{}}');
+    assert.equal(run(ws), 0);
+    assert.deepEqual(fs.readFileSync(log, "utf8").trim().split("\n"), [
+      "daemon --stop",
+      "clear-cache",
+      "reset",
+    ]);
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("package-count.sh files a Yarn 1 lockfile under yarn even with a .yarnrc.yml", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "count-test-"));
+  try {
+    const project = path.join(tempDir, "project");
+    const out = path.join(tempDir, "out");
+    fs.mkdirSync(path.join(project, "node_modules", "a"), { recursive: true });
+    fs.writeFileSync(
+      path.join(project, "node_modules", "a", "package.json"),
+      '{"name":"a","version":"1.0.0"}',
+    );
+    fs.writeFileSync(
+      path.join(project, "package.json"),
+      '{"name":"x","dependencies":{"a":"1.0.0"}}',
+    );
+    fs.writeFileSync(path.join(project, ".yarnrc.yml"), "nodeLinker: node-modules\n");
+    fs.writeFileSync(
+      path.join(project, "yarn.lock"),
+      "# THIS IS AN AUTOGENERATED FILE. DO NOT EDIT THIS FILE DIRECTLY.\n# yarn lockfile v1\n",
+    );
+    const result = spawnSync("bash", [path.join(__dirname, "package-count.sh"), out], {
+      cwd: project,
+      encoding: "utf8",
+    });
+    assert.equal(result.status, 0, result.stderr);
+    assert.deepEqual(fs.readdirSync(out), ["yarn-count.txt"]);
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
   }
