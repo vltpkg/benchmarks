@@ -22,18 +22,15 @@ infer_package_manager() {
   elif [[ -f "pnpm-lock.yaml" ]]; then
     echo "pnpm"
   elif [[ -f "yarn.lock" ]]; then
+    # The zpm and berry setups pin their own version in packageManager.
+    package_manager=$(node -p 'require("./package.json").packageManager || ""' 2>/dev/null || echo "")
     # Yarn 1 writes a v1 lockfile header; berry and zpm write __metadata.
     # Check it first: next and babylon commit a .yarnrc.yml, which used to
     # file Yarn 1's counts under berry.
     if grep -q "^# yarn lockfile v1" yarn.lock 2>/dev/null; then
       echo "yarn"
-    elif [[ -f ".yarnrc.yml" ]] && command -v yarn >/dev/null 2>&1; then
-      yarn_version=$(yarn -v 2>/dev/null || echo "")
-      if [[ "$yarn_version" =~ ^6\. ]]; then
-        echo "zpm"
-      else
-        echo "berry"
-      fi
+    elif [[ "$package_manager" =~ ^yarn@6\. ]]; then
+      echo "zpm"
     elif [[ -d ".yarn" ]] || [[ -f ".yarnrc.yml" ]]; then
       echo "berry"
     else

@@ -83,6 +83,40 @@ to finish, and every `--prepare` waits again right before the timed command
 `clean-helpers.sh`). The waits are untimed; in real use, the next install
 rarely starts that soon. No other tool was seen leaving processes behind.
 
+## How each tool is installed and run
+
+Each package manager is installed the way its maintainers recommend
+(`suite/scripts/setup.sh`), and every timed command runs that tool directly,
+the way a user would, with no extra launcher in front of it.
+
+| Tool                | Installed with                                                                                                              | Timed command runs                                                                 |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| npm, vlt, bun, deno | `npm install -g <tool>@latest`                                                                                              | `<tool>` on `PATH`                                                                 |
+| pnpm                | `npm install -g --allow-scripts=pnpm pnpm@latest` ([pnpm.io](https://pnpm.io/installation))                                 | `pnpm` on `PATH`, pnpm's native binary                                             |
+| yarn (1)            | `npm install --global yarn@1` ([classic.yarnpkg.com](https://classic.yarnpkg.com/en/docs/install))                          | that `yarn`, by full path                                                          |
+| berry (Yarn 4)      | `npm install -g corepack` ([yarnpkg.com](https://yarnpkg.com/getting-started/install))                                      | Corepack's `yarn` shim, by full path, with `packageManager: yarn@<version>` pinned |
+| zpm (Yarn 6)        | Yarn Switch (`curl -sS https://repo.yarnpkg.com/install \| bash`, [v6.yarnpkg.com](https://v6.yarnpkg.com/getting-started)) | Yarn Switch's `yarn`, by full path, with `packageManager: yarn@<version>` pinned   |
+
+Yarn 1, Yarn 4 and Yarn 6 all install a command called `yarn`, so yarn 1 and
+Corepack get their own npm prefixes (`suite/scripts/pm-bins.sh`) and all three
+are called by full path. npm 12 blocks install scripts by default; without
+`--allow-scripts=pnpm`, pnpm's postinstall doesn't put its native binary in
+place and `pnpm` runs through a JavaScript launcher instead. The berry version
+is resolved once per job (`yarn@latest`) and pinned in `package.json` for each
+berry run, as `yarn set version` would; `clean-helpers.sh` removes the pin
+before the next tool runs. In `ci+setup`, the "setup" part of each timed
+command is the same install (into a fresh prefix with an empty npm cache, so
+it downloads every time); for berry that is installing Corepack plus
+Corepack's download of Yarn.
+
+Until [#207](https://github.com/vltpkg/benchmarks/issues/207), pnpm, yarn and
+berry ran through `corepack pnpm@latest`, `corepack yarn@1` and
+`corepack yarn@latest`. That put a Node.js process (Corepack) in front of every
+timed command, and for the `@latest` forms a registry lookup too: about half a
+second per pnpm command, less for yarn. pnpm's (and to a lesser degree yarn's)
+results drop at that point because that overhead is gone, not because pnpm
+got faster.
+
 ## Normalization: why per-package time matters
 
 Package managers disagree about what a dependency graph contains. Comparing

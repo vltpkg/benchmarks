@@ -28,16 +28,28 @@ export COREPACK_HOME="/tmp/bench-corepack-home"
 # --- PM install commands ---
 # These mirror what scripts/setup.sh does for each PM.
 
-# npm: install into a dedicated prefix so the bootstrap npm and its cache are
-# separate from the dependency-level npm cache used by `npm ci`.
+# npm, yarn classic, pnpm and berry's corepack: install into a dedicated prefix
+# with a dedicated npm cache, both removed by the uninstall step, so every
+# timed install downloads the package manager again. This also keeps the
+# bootstrap npm and the copies installed by setup.sh untouched, and the npm
+# cache used by `npm ci` separate.
 NPM_SETUP_PREFIX="/tmp/bench-npm"
 NPM_SETUP_CACHE="/tmp/bench-npm-cache"
+YARN_SETUP_PREFIX="/tmp/bench-yarn"
+YARN_SETUP_CACHE="/tmp/bench-yarn-npm-cache"
+PNPM_SETUP_PREFIX="/tmp/bench-pnpm"
+PNPM_SETUP_CACHE="/tmp/bench-pnpm-npm-cache"
+COREPACK_SETUP_PREFIX="/tmp/bench-corepack"
+COREPACK_SETUP_CACHE="/tmp/bench-corepack-npm-cache"
 SETUP_INSTALL_NPM="npm install -g npm@latest --prefix $NPM_SETUP_PREFIX --cache $NPM_SETUP_CACHE >/dev/null 2>&1"
-SETUP_INSTALL_YARN=""  # corepack auto-downloads on first invocation
-SETUP_INSTALL_BERRY="" # corepack auto-downloads on first invocation
+SETUP_INSTALL_YARN="npm install -g yarn@1 --prefix $YARN_SETUP_PREFIX --cache $YARN_SETUP_CACHE >/dev/null 2>&1"
+# berry: install corepack; its yarn shim then downloads the pinned yarn on
+# first use (COREPACK_HOME is purged too).
+SETUP_INSTALL_BERRY="npm install -g corepack@latest --prefix $COREPACK_SETUP_PREFIX --cache $COREPACK_SETUP_CACHE >/dev/null 2>&1"
 # zpm is installed via the Yarn Switch installer (same as setup.sh)
 SETUP_INSTALL_ZPM="curl -sS https://repo.yarnpkg.com/install | bash >/dev/null 2>&1"
-SETUP_INSTALL_PNPM=""  # corepack auto-downloads on first invocation
+# --allow-scripts=pnpm lets pnpm's postinstall put its native binary in place.
+SETUP_INSTALL_PNPM="npm install -g --allow-scripts=pnpm pnpm@latest --prefix $PNPM_SETUP_PREFIX --cache $PNPM_SETUP_CACHE >/dev/null 2>&1"
 # The tools installed with npm get their own npm cache, deleted with the tool
 # below, like npm's. Otherwise the timed install is served from ~/.npm, which
 # the prepare's own install of the same tool just filled.
@@ -50,17 +62,17 @@ SETUP_INSTALL_UPM="npm install -g --cache $TOOL_SETUP_CACHE upm@latest >/dev/nul
 
 # --- PM uninstall commands (run at end of prepare to force re-install) ---
 SETUP_UNINSTALL_NPM="rm -rf $NPM_SETUP_PREFIX $NPM_SETUP_CACHE"
-SETUP_UNINSTALL_YARN="" # corepack managed; cache purged below
-SETUP_UNINSTALL_BERRY=""
+SETUP_UNINSTALL_YARN="rm -rf $YARN_SETUP_PREFIX $YARN_SETUP_CACHE"
+SETUP_UNINSTALL_BERRY="rm -rf $COREPACK_SETUP_PREFIX $COREPACK_SETUP_CACHE"
 SETUP_UNINSTALL_ZPM="rm -rf \$HOME/.yarn/switch >/dev/null 2>&1 || true"
-SETUP_UNINSTALL_PNPM=""
+SETUP_UNINSTALL_PNPM="rm -rf $PNPM_SETUP_PREFIX $PNPM_SETUP_CACHE"
 SETUP_UNINSTALL_VLT="npm uninstall -g vlt >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
 SETUP_UNINSTALL_BUN="npm uninstall -g bun >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
 SETUP_UNINSTALL_DENO="npm uninstall -g deno >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
 SETUP_UNINSTALL_AUBE="npm uninstall -g @endevco/aube >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
 SETUP_UNINSTALL_UPM="npm uninstall -g upm >/dev/null 2>&1 || true; rm -rf $TOOL_SETUP_CACHE"
 
-# Purge the isolated corepack home so corepack-managed PMs must re-download.
+# Purge the isolated corepack home so berry must be downloaded again.
 COREPACK_PURGE="rm -rf $COREPACK_HOME"
 
 # --- CI commands (same as ci variation) ---
@@ -68,10 +80,10 @@ BENCH_CI_NPM="$NPM_SETUP_PREFIX/bin/npm ci --no-audit --no-fund --ignore-scripts
 if [ "$BENCH_FIXTURE" = "large" ]; then
   BENCH_CI_NPM="$BENCH_CI_NPM --legacy-peer-deps"
 fi
-BENCH_CI_YARN="corepack yarn@1 install --frozen-lockfile --ignore-scripts --silent"
-BENCH_CI_BERRY="corepack yarn@latest install --immutable"
-BENCH_CI_ZPM="yarn install --immutable --silent"
-BENCH_CI_PNPM="corepack pnpm@latest install --frozen-lockfile --ignore-scripts --silent"
+BENCH_CI_YARN="$YARN_SETUP_PREFIX/bin/yarn install --frozen-lockfile --ignore-scripts --silent"
+BENCH_CI_BERRY="$COREPACK_SETUP_PREFIX/bin/yarn install --immutable"
+BENCH_CI_ZPM="$BENCH_ZPM_BIN install --immutable --silent"
+BENCH_CI_PNPM="$PNPM_SETUP_PREFIX/bin/pnpm install --frozen-lockfile --ignore-scripts --silent"
 BENCH_CI_VLT="vlt ci --view=silent"
 BENCH_CI_BUN="bun install --frozen-lockfile --ignore-scripts --silent"
 BENCH_CI_DENO="deno install --frozen --quiet"
@@ -93,10 +105,10 @@ setup_and_ci() {
 }
 
 BENCH_COMBINED_NPM="$(setup_and_ci "$SETUP_INSTALL_NPM" "$BENCH_CI_NPM")"
-BENCH_COMBINED_YARN="$(setup_and_ci "" "$BENCH_CI_YARN")"       # corepack download is part of the yarn invocation
-BENCH_COMBINED_BERRY="$(setup_and_ci "" "$BENCH_CI_BERRY")"
+BENCH_COMBINED_YARN="$(setup_and_ci "$SETUP_INSTALL_YARN" "$BENCH_CI_YARN")"
+BENCH_COMBINED_BERRY="$(setup_and_ci "$SETUP_INSTALL_BERRY" "$BENCH_CI_BERRY")" # + corepack's download of yarn
 BENCH_COMBINED_ZPM="$(setup_and_ci "$SETUP_INSTALL_ZPM" "$BENCH_CI_ZPM")"
-BENCH_COMBINED_PNPM="$(setup_and_ci "" "$BENCH_CI_PNPM")"
+BENCH_COMBINED_PNPM="$(setup_and_ci "$SETUP_INSTALL_PNPM" "$BENCH_CI_PNPM")"
 BENCH_COMBINED_VLT="$(setup_and_ci "$SETUP_INSTALL_VLT" "$BENCH_CI_VLT")"
 BENCH_COMBINED_BUN="$(setup_and_ci "$SETUP_INSTALL_BUN" "$BENCH_CI_BUN")"
 BENCH_COMBINED_DENO="$(setup_and_ci "$SETUP_INSTALL_DENO" "$BENCH_CI_DENO")"
@@ -144,7 +156,7 @@ ci_setup_prepare() {
 
   local result="sleep 1; $BENCH_CLEAN_PRE"
 
-  # Install PM binary if needed (for non-corepack PMs)
+  # Install PM binary
   if [ -n "$pm_install" ]; then
     result="$result; $pm_install"
   fi
@@ -181,10 +193,10 @@ if [ "$BENCH_FIXTURE" = "large" ]; then
 fi
 
 BENCH_PREPARE_NPM="$(ci_setup_prepare "$SETUP_INSTALL_NPM" "$BENCH_SETUP_NPM" "$_INSTALL_NPM" "$SETUP_UNINSTALL_NPM" "")"
-BENCH_PREPARE_YARN="$(ci_setup_prepare "$SETUP_INSTALL_YARN" "$BENCH_SETUP_YARN" "corepack yarn@1 install --ignore-scripts --silent" "$SETUP_UNINSTALL_YARN" "$COREPACK_PURGE")"
-BENCH_PREPARE_BERRY="$(ci_setup_prepare "$SETUP_INSTALL_BERRY" "$BENCH_SETUP_BERRY" "corepack yarn@latest install" "$SETUP_UNINSTALL_BERRY" "$COREPACK_PURGE")"
-BENCH_PREPARE_ZPM="$(ci_setup_prepare "$SETUP_INSTALL_ZPM" "$BENCH_SETUP_ZPM" "yarn install --silent" "$SETUP_UNINSTALL_ZPM" "")"
-BENCH_PREPARE_PNPM="$(ci_setup_prepare "$SETUP_INSTALL_PNPM" "$BENCH_SETUP_PNPM" "corepack pnpm@latest install --ignore-scripts --silent" "$SETUP_UNINSTALL_PNPM" "$COREPACK_PURGE")"
+BENCH_PREPARE_YARN="$(ci_setup_prepare "$SETUP_INSTALL_YARN" "$BENCH_SETUP_YARN" "$YARN_SETUP_PREFIX/bin/yarn install --ignore-scripts --silent" "$SETUP_UNINSTALL_YARN" "")"
+BENCH_PREPARE_BERRY="$(ci_setup_prepare "$SETUP_INSTALL_BERRY" "$BENCH_SETUP_BERRY" "$COREPACK_SETUP_PREFIX/bin/yarn install" "$SETUP_UNINSTALL_BERRY" "$COREPACK_PURGE")"
+BENCH_PREPARE_ZPM="$(ci_setup_prepare "$SETUP_INSTALL_ZPM" "$BENCH_SETUP_ZPM" "$BENCH_ZPM_BIN install --silent" "$SETUP_UNINSTALL_ZPM" "")"
+BENCH_PREPARE_PNPM="$(ci_setup_prepare "$SETUP_INSTALL_PNPM" "$BENCH_SETUP_PNPM" "$PNPM_SETUP_PREFIX/bin/pnpm install --ignore-scripts --silent" "$SETUP_UNINSTALL_PNPM" "")"
 BENCH_PREPARE_VLT="$(ci_setup_prepare "$SETUP_INSTALL_VLT" "$BENCH_SETUP_VLT" "vlt install --view=silent" "$SETUP_UNINSTALL_VLT" "")"
 BENCH_PREPARE_BUN="$(ci_setup_prepare "$SETUP_INSTALL_BUN" "$BENCH_SETUP_BUN" "bun install --ignore-scripts --silent" "$SETUP_UNINSTALL_BUN" "")"
 BENCH_PREPARE_DENO="$(ci_setup_prepare "$SETUP_INSTALL_DENO" "$BENCH_SETUP_DENO" "deno install --quiet" "$SETUP_UNINSTALL_DENO" "")"

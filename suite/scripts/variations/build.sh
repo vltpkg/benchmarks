@@ -35,10 +35,10 @@ BENCH_INSTALL_PREPARE_UPM="$(prepend_setup "$BENCH_INSTALL_COMMAND_UPM" "$BENCH_
 # Build commands — run `<pm> run build` and log output.
 # Each prepare also removes .next/ so every iteration is a cold build.
 BENCH_COMMAND_NPM="timeout $BENCH_TIMEOUT npm run build > $BENCH_OUTPUT_FOLDER/npm-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_YARN="timeout $BENCH_TIMEOUT corepack yarn@1 run build > $BENCH_OUTPUT_FOLDER/yarn-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_BERRY="timeout $BENCH_TIMEOUT corepack yarn@latest run build > $BENCH_OUTPUT_FOLDER/berry-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT yarn run build > $BENCH_OUTPUT_FOLDER/zpm-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
-BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT corepack pnpm@latest run build > $BENCH_OUTPUT_FOLDER/pnpm-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_YARN="timeout $BENCH_TIMEOUT $BENCH_YARN_BIN run build > $BENCH_OUTPUT_FOLDER/yarn-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_BERRY="timeout $BENCH_TIMEOUT $BENCH_BERRY_BIN run build > $BENCH_OUTPUT_FOLDER/berry-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_ZPM="timeout $BENCH_TIMEOUT $BENCH_ZPM_BIN run build > $BENCH_OUTPUT_FOLDER/zpm-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
+BENCH_COMMAND_PNPM="timeout $BENCH_TIMEOUT pnpm run build > $BENCH_OUTPUT_FOLDER/pnpm-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_VLT="timeout $BENCH_TIMEOUT vlt run build --view=human > $BENCH_OUTPUT_FOLDER/vlt-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_BUN="timeout $BENCH_TIMEOUT bun run build > $BENCH_OUTPUT_FOLDER/bun-build-output-\${HYPERFINE_ITERATION}.log 2>&1"
 BENCH_COMMAND_DENO="timeout $BENCH_TIMEOUT deno run build > $BENCH_OUTPUT_FOLDER/deno-build-output-\${HYPERFINE_ITERATION}.log 2>&1"

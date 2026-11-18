@@ -58,6 +58,12 @@ for pm in npm yarn berry zpm pnpm vlt bun deno aube upm nx turbo vp node; do
   fi
 done
 BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
+# Where yarn classic, berry and zpm live (BENCH_YARN_BIN, BENCH_BERRY_BIN, ...)
+source "$BENCH_SCRIPTS/pm-bins.sh"
+if [ -n "$BENCH_INCLUDE_BERRY" ] && [ -z "$BENCH_BERRY_VERSION" ]; then
+  echo "Error: no berry version in $BENCH_BERRY_VERSION_FILE; run scripts/setup.sh first"
+  exit 1
+fi
 BENCH_COMMAND_YARN_MODERN_CONFIG=$(cat <<EOF
 enableImmutableInstalls: false
 enableMirror: false
@@ -69,12 +75,15 @@ if [ -z "$BENCH_ZPM_VERSION" ]; then
   BENCH_ZPM_VERSION="6.0.0-rc.13"
 fi
 BENCH_SETUP_NPM=""
-BENCH_SETUP_YARN=""
+# Yarn 1 refuses to run when packageManager names another yarn (berry/zpm pins).
+BENCH_SETUP_YARN="npm pkg delete packageManager >/dev/null 2>&1 || true"
 # Yarn walks up to the repo-root package.json and refuses to install a fixture
 # that is not one of its workspaces. An empty yarn.lock marks the fixture as its
 # own project; touch leaves an existing (restored) lockfile untouched.
-BENCH_SETUP_BERRY="touch yarn.lock; echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml"
-BENCH_SETUP_ZPM="touch yarn.lock; echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; { echo '[zpm prepare]'; echo 'cwd:'; pwd; echo 'package.json:'; ls -la package.json || true; echo 'yarn path:'; command -v yarn || true; echo 'yarn version:'; yarn -v || true; echo 'canary version:'; echo \"$BENCH_ZPM_VERSION\"; echo 'packageManager (before):'; npm pkg get packageManager || true; echo 'set packageManager=yarn@'"$BENCH_ZPM_VERSION"':' ; npm pkg set packageManager=\"yarn@$BENCH_ZPM_VERSION\" || true; echo 'packageManager (after):'; npm pkg get packageManager || true; } >> $BENCH_OUTPUT_FOLDER/zpm-prepare.log 2>&1"
+# The packageManager pin is how a Yarn 4 project selects its version through
+# Corepack (what `yarn set version` writes).
+BENCH_SETUP_BERRY="touch yarn.lock; echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; npm pkg set packageManager=yarn@$BENCH_BERRY_VERSION"
+BENCH_SETUP_ZPM="touch yarn.lock; echo \"$BENCH_COMMAND_YARN_MODERN_CONFIG\" > .yarnrc.yml; { echo '[zpm prepare]'; echo 'cwd:'; pwd; echo 'package.json:'; ls -la package.json || true; echo 'yarn path:'; echo $BENCH_ZPM_BIN; echo 'yarn version:'; $BENCH_ZPM_BIN -v || true; echo 'canary version:'; echo \"$BENCH_ZPM_VERSION\"; echo 'packageManager (before):'; npm pkg get packageManager || true; echo 'set packageManager=yarn@'"$BENCH_ZPM_VERSION"':' ; npm pkg set packageManager=\"yarn@$BENCH_ZPM_VERSION\" || true; echo 'packageManager (after):'; npm pkg get packageManager || true; } >> $BENCH_OUTPUT_FOLDER/zpm-prepare.log 2>&1"
 BENCH_SETUP_PNPM="npm pkg delete packageManager >/dev/null 2>&1 || true"
 
 BENCH_SETUP_VLT=""
@@ -109,10 +118,10 @@ BENCH_INSTALL_NPM="npm install --no-audit --no-fund --ignore-scripts --silent"
 if [ "$BENCH_FIXTURE" = "large" ]; then
   BENCH_INSTALL_NPM="$BENCH_INSTALL_NPM --legacy-peer-deps"
 fi
-BENCH_INSTALL_YARN="corepack yarn@1 install --ignore-scripts --silent"
-BENCH_INSTALL_BERRY="corepack yarn@latest install"
-BENCH_INSTALL_ZPM="yarn install --silent"
-BENCH_INSTALL_PNPM="corepack pnpm@latest install --ignore-scripts --silent"
+BENCH_INSTALL_YARN="$BENCH_YARN_BIN install --ignore-scripts --silent"
+BENCH_INSTALL_BERRY="$BENCH_BERRY_BIN install"
+BENCH_INSTALL_ZPM="$BENCH_ZPM_BIN install --silent"
+BENCH_INSTALL_PNPM="pnpm install --ignore-scripts --silent"
 # vlt uses the npm registry alias configured by each fixture's vlt.json.
 BENCH_INSTALL_VLT="vlt install --view=silent"
 BENCH_INSTALL_BUN="bun install --ignore-scripts --silent"
