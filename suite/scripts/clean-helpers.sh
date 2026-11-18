@@ -70,7 +70,8 @@ clean_vlt_cache() {
   fi
 }
 
-# vlt_background_running: whether any of vlt's detached children is running.
+# vlt_background_running / vlt_background_pids: vlt's detached children of
+# this run (BENCH_RUN_ID), or of the user when that is unset.
 source "$(dirname "${BASH_SOURCE[0]}")/vlt-background.sh"
 
 # Wait for vlt's detached children to finish (cache unpacking, manifest
@@ -97,6 +98,15 @@ wait_for_vlt_background() {
   done
   set -x
   return 1
+}
+
+# Stop the vlt children wait_for_vlt_background gave up on: only the matched
+# processes, so a run on a shared machine never stops another run's (or the
+# user's) vlt.
+stop_vlt_background() {
+  local pids
+  pids=$(vlt_background_pids)
+  [ -z "$pids" ] || echo "$pids" | xargs kill || true
 }
 
 # Function to safely clean bun cache
@@ -420,9 +430,8 @@ else
         # Never block a benchmark forever: past the limit, stop the process
         # so it can't overlap what comes next.
         if ! wait_for_vlt_background; then
-          echo "Warning: vlt-cache-unzip still running after 300s, stopping it"
-          pkill -u "$(id -u)" -x vlt-cache-unzip || true
-          pkill -u "$(id -u)" -f 'cache-unzip-src-unzip[.]js' || true
+          echo "Warning: vlt background work still running after 300s, stopping it"
+          stop_vlt_background
         fi
         ;;
       help|--help|-h)
