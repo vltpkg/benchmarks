@@ -159,8 +159,11 @@ wrapper, failed lookups and the interpreter, and `ci` counted most tools
 against npm's lockfile. Until issue #214, the lockfile, `node_modules` and
 cache variations counted each tool from what earlier tools left, not its own
 lockfile, `node_modules` or cache, and upm, which refuses more than one
-lockfile, had no count in the lockfile variations. Don't compare them with
-later counts.
+lockfile, had no count in the lockfile variations. Until November 2026,
+cleaning `node_modules` left the workspaces' `node_modules` behind on
+`babylon`, so in the lockfile and cache variations every tool but the first
+started from what earlier tools had put there, and npm's `lockfile` count was
+missing. Don't compare them with later counts.
 
 ## Variations
 
