@@ -1,32 +1,29 @@
 {
-  "npm": {
-    "count": 8
-  },
   "yarn": {
-    "count": 5
+    "count": 2
   },
   "berry": {
-    "count": 7
+    "count": 3
   },
   "zpm": {
-    "count": 66
+    "count": 17
   },
   "pnpm": {
-    "count": 8
+    "count": 7
   },
   "vlt": {
-    "count": 14
+    "count": 8
   },
   "bun": {
-    "count": 30
+    "count": 5
   },
   "deno": {
-    "count": 32
+    "count": 7
   },
   "aube": {
-    "count": 47
+    "count": 7
   },
   "upm": {
-    "count": 8
+    "count": 2
   }
 }

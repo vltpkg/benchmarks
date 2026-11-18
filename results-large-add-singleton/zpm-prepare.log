@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3626 Nov 18 01:00 package.json
+-rw-r--r-- 1 runner runner 3626 Nov 18 03:38 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,7 +17,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/large
 package.json:
--rw-r--r-- 1 runner runner 3626 Nov 18 01:09 package.json
+-rw-r--r-- 1 runner runner 3626 Nov 18 03:44 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
