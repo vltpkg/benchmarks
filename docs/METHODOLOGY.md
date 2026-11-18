@@ -73,6 +73,33 @@ variation, and the site reports both total time and time per package:
 B is faster on the clock and ten times slower per unit of work. Both numbers
 are published; neither alone is the answer.
 
+## Process counts
+
+After the timed runs, each tool's command runs once more, untimed, under
+`strace -f -e trace=execve,execveat`, from the same starting state as its timed
+runs (`suite/scripts/process-count.sh`). The count is the number of processes
+that ran a program: each process with at least one successful `execve` counts
+once.
+
+- Failed `execve` calls don't count. They are lookups along `PATH`, so they
+  depend on the machine, not the tool.
+- An interpreter doesn't count on its own. A `#!/usr/bin/env node` script runs
+  `env` and then `node` in the same process, so npm with no child processes
+  counts **1**.
+- The `bash -c` the harness wraps the command in doesn't count.
+- A launcher counts. yarn, berry and pnpm run through `corepack`, so pnpm's
+  **3** is `corepack`, `pnpm-native` and `node --version`.
+- Detached processes count, so a count can depend on state. vlt counts its
+  background cache unpacking only when there is something to unpack: **2** in
+  `clean`, **1** in `ci` on a warm cache. Its update-check and revalidate
+  processes may add to that, depending on timing.
+- If the command exits non-zero or runs past `BENCH_TIMEOUT`, nothing is
+  recorded for that tool.
+
+Earlier counts (issue #209) counted every `execve` line, including the
+wrapper, failed lookups and the interpreter, and `ci` counted most tools
+against npm's lockfile. Don't compare them with later counts.
+
 ## Variations
 
 | Variation                     | Starting state / what it measures                                |
