@@ -284,6 +284,31 @@ export const GET = (request: Request) =>
           properties: {
             section: { type: "string" },
             scenario: { type: "string" },
+            averageOf: {
+              type: ["object", "null"],
+              description:
+                "On the derived average: the scenarios averaged (those every run in the window has), in all and per fixture, the ones left out and why, and the fixtures that fell back to the shown run's set. Null on a measured scenario.",
+              properties: {
+                scenarios: { type: "array", items: { type: "string" } },
+                byFixture: {
+                  type: "object",
+                  additionalProperties: { type: "array", items: { type: "string" } },
+                },
+                leftOut: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      scenario: { type: "string" },
+                      fixtures: { type: "array", items: { type: "string" } },
+                      missing: { type: "array", items: date },
+                      when: { type: "string", enum: ["before", "after", "between"] },
+                    },
+                  },
+                },
+                fallback: { type: "array", items: { type: "string" } },
+              },
+            },
             run: date,
             fixture: { type: ["string", "null"] },
             fixtures: { type: "array", items: { type: "string" } },

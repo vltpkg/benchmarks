@@ -23,6 +23,7 @@ import {
   countRows,
   perPackageByFixture,
   ratioTo,
+  type CommonPlan,
   type CountRow,
   type FixtureRow,
   type ToolMean,
@@ -96,10 +97,17 @@ export interface ReportModel {
     readonly state: ScenarioState;
     /** What was on disk before each run; `null` where the name encodes no state. */
     readonly stateParts: ReturnType<typeof stateParts> | null;
-    /** On the derived view, the scenarios averaged, in all and on each fixture shown; `null` on a measured one. */
+    /**
+     * On the derived view, the scenarios averaged, in all and on each fixture
+     * shown: those every run in the trend window has, so they depend on the
+     * window. `leftOut` and `fallback` say what that cost (`commonPlan`).
+     * `null` on a measured one.
+     */
     readonly averageOf: {
       readonly scenarios: readonly string[];
       readonly byFixture: { readonly [fixture: string]: readonly string[] };
+      readonly leftOut: CommonPlan["leftOut"];
+      readonly fallback: CommonPlan["fallback"];
     } | null;
   };
   readonly run: {
@@ -308,14 +316,16 @@ export const loadReport = async ({
   }
 
   const averageOf = selected.averageOf ?? null;
-  /* The derived view: each fixture, and the scenarios averaged on it. */
+  /*
+   * The derived view: each fixture the shown run averages anything on, and
+   * every curated scenario as a candidate, published by this run or not.
+   * `loadAverage` keeps those every run in the window has, so a scenario this
+   * run lacks and others have is named as left out, not silently missing.
+   */
   const plan: { [fixture: string]: readonly string[] } = Object.fromEntries(
     Object.entries(entry.benchmarks)
-      .map(([f, published]): [string, string[]] => [
-        f,
-        (averageOf ?? []).filter((v) => published?.includes(v)),
-      ])
-      .filter(([, averaged]) => averaged.length > 0)
+      .filter(([, published]) => (averageOf ?? []).some((v) => published?.includes(v)))
+      .map(([f]): [string, readonly string[]] => [f, def.order])
       .sort(([a], [b]) => a.localeCompare(b)),
   );
   const publishedFixtures =
@@ -583,11 +593,15 @@ export const loadReport = async ({
         state: selected.state,
         stateParts: selected.kind === "other" ? null : stateParts(selected.state),
         averageOf:
-          averageOf === null
+          averageOf === null || average === null
             ? null
             : {
-                scenarios: averageOf.filter((v) => Object.values(shownPlan).flat().includes(v)),
-                byFixture: shownPlan,
+                scenarios: def.order.filter((v) =>
+                  Object.values(average.averaged.plan).flat().includes(v),
+                ),
+                byFixture: average.averaged.plan,
+                leftOut: average.averaged.leftOut,
+                fallback: average.averaged.fallback,
               },
       },
       run: { date, latest: index.latest, isLatest: date === index.latest, dates: index.dates },

@@ -16,7 +16,7 @@ import {
 } from "@benchmarks/data";
 import { probe } from "./data";
 import { applyExclusions } from "./figures";
-import { averageFiles, usable } from "./measurements";
+import { averageFiles, commonPlan, usable, type CommonPlan } from "./measurements";
 
 export interface FixtureBundle {
   readonly fixture: string;
@@ -388,9 +388,12 @@ const loadCells = async (
 
 /**
  * The derived "average" view, as a scenario: `plan` maps each fixture to the
- * scenarios averaged on it. `cells` are the shown run's per-scenario files it
- * was averaged from. No count files -- a package or process count is a
- * fact about one scenario, and a mean of them describes no install.
+ * scenarios that may be averaged on it (the curated list, whether or not the
+ * shown run has them), and `averaged` to the ones that are:
+ * those every drawn run has (`commonPlan`), so the trend and the shown run
+ * cover the same scenarios. `cells` are the shown run's per-scenario files.
+ * No count files -- a package or process count is a fact about one scenario,
+ * and a mean of them describes no install.
  */
 export const loadAverage = async (
   client: DataClient,
@@ -402,7 +405,9 @@ export const loadAverage = async (
     /** From `loadSummaries`, possibly still loading, as for `loadScenario`. */
     readonly summaries?: Summaries | Promise<Summaries>;
   } = {},
-): Promise<ScenarioData & { readonly cells: readonly RunCell[] }> => {
+): Promise<
+  ScenarioData & { readonly cells: readonly RunCell[]; readonly averaged: CommonPlan }
+> => {
   // The run shown is usually the trend's last date; fetched once either way,
   // and from its files, which the report reads in full, without waiting for
   // the summaries.
@@ -415,12 +420,26 @@ export const loadAverage = async (
   const loaded = await Promise.all(
     dates.map((d) => (d === date ? shown : loadCells(client, d, plan, summaryOf(d)))),
   );
-  const trend = drawn.flatMap((d, i) => trendPoint(d, averageFiles(loaded[i] ?? [], plan)) ?? []);
-  const cells = loaded[dates.indexOf(date)] ?? [];
+  /* The runs the trend draws, and the shown one: an excluded run does not narrow the set. */
+  const whole = new Set((options.exclude ?? []).filter((e) => !e.includes("@")));
+  const averaged = commonPlan(
+    plan,
+    dates.flatMap((d, i) =>
+      d !== date && whole.has(d) ? [] : [{ date: d, cells: loaded[i] ?? [] }],
+    ),
+    date,
+  );
+  const trend = drawn.flatMap(
+    (d, i) => trendPoint(d, averageFiles(loaded[i] ?? [], averaged.plan)) ?? [],
+  );
+  const cells = (loaded[dates.indexOf(date)] ?? []).filter((c) =>
+    averaged.plan[c.fixture]?.includes(c.variation),
+  );
 
   return {
     cells,
-    bundles: averageFiles(cells, plan).map((b) => ({
+    averaged,
+    bundles: averageFiles(cells, averaged.plan).map((b) => ({
       ...b,
       counts: null,
       processes: null,

@@ -42,7 +42,7 @@ import { toTrendColumns } from "@/lib/chart-model";
 import { loadReportParams, rangeLabel, reportHref, reportParams } from "@/lib/params";
 import { loadCatalog } from "@/lib/catalog";
 import { dataClient } from "@/lib/data";
-import { PER_PACKAGE_DERIVED } from "@/lib/markdown";
+import { averagedNote, PER_PACKAGE_DERIVED } from "@/lib/markdown";
 import { loadReport } from "@/lib/report";
 import { withAverage } from "@/lib/scenarios";
 import { isSectionId, SECTION_DEFS, SECTIONS } from "@/lib/sections";
@@ -188,6 +188,7 @@ const Report = async ({
 
   const report = result.report;
   const { scenario, run, filters, finding, baseline, caveats, trend } = report;
+  const note = scenario.averageOf === null ? null : averagedNote(scenario.averageOf, longDate);
   const { date } = run;
   const { fixture, hide: hidden } = filters;
   const { measure, isScript, outline, ranked, publishedFixtures, path } = report;
@@ -641,6 +642,12 @@ const Report = async ({
                 ? " Every registry is installed from with the same npm client."
                 : ""}
               {run.isLatest ? null : " This is not the latest run."}
+              {note === null ? null : (
+                <>
+                  {" "}
+                  <Marked text={note} />
+                </>
+              )}
             </>
           }
           action={

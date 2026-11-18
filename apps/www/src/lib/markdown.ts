@@ -438,16 +438,60 @@ export const figureMarkdown = (report: ReportModel, origin: string): FigureMarkd
 export const PER_PACKAGE_DERIVED =
   "Derived: install time divided by the number of packages the tool installed. A tool with a time but no published package count is left out rather than divided by a guess.";
 
-/** What a derived average is the mean of: its scenarios, per fixture where they differ. */
-export const meanOf = ({
-  scenarios,
-  byFixture,
-}: NonNullable<ReportModel["scenario"]["averageOf"]>): string =>
-  Object.values(byFixture).every((v) => v.length === scenarios.length)
+/** What a derived average is the mean of: its scenarios, per fixture where they differ, and what it leaves out. */
+export const meanOf = (averageOf: NonNullable<ReportModel["scenario"]["averageOf"]>): string => {
+  const { scenarios, byFixture } = averageOf;
+  const mean = Object.values(byFixture).every((v) => v.length === scenarios.length)
     ? `Mean of: ${scenarios.join(", ")}.`
     : `Mean of, per fixture: ${Object.entries(byFixture)
         .map(([f, v]) => `${fixtureLabel(f)}: ${v.join(", ")}`)
         .join("; ")}.`;
+  const note = averagedNote(averageOf);
+  return note === null ? mean : `${mean} ${note}`;
+};
+
+/**
+ * Which curated scenarios the average leaves out because some run in the trend
+ * window lacks them, and why; `null` when it leaves none out. Names between
+ * backticks, for the page's `Marked` and for Markdown alike.
+ */
+export const averagedNote = (
+  { byFixture, leftOut, fallback }: NonNullable<ReportModel["scenario"]["averageOf"]>,
+  date: (d: string) => string = (d) => d,
+): string | null => {
+  const fixtures = Object.keys(byFixture);
+  /* Where it applies, when that is not every fixture shown. */
+  const on = (some: readonly string[]) =>
+    some.length === fixtures.length ? [] : [`on ${some.map(fixtureLabel).join(", ")}`];
+  /* Scenarios with the same reason share it: the add/remove four all start on the same run. */
+  const reasons = new Map<string, string[]>();
+  for (const l of leftOut) {
+    /* Said of the runs considered only: its real first run may be excluded or outside the window. */
+    const why =
+      l.when === "before"
+        ? `not in runs through ${date(l.missing.at(-1) ?? "")}`
+        : l.when === "after"
+          ? `not in runs since ${date(l.missing[0] ?? "")}`
+          : `not in the runs of ${l.missing.map(date).join(", ")}`;
+    const key = [...on(l.fixtures), why].join(", ");
+    reasons.set(key, [...(reasons.get(key) ?? []), `\`${l.scenario}\``]);
+  }
+  const notes = [
+    ...(reasons.size === 0
+      ? []
+      : [
+          `Left out, so every run in the trend window averages the same scenarios: ${[...reasons]
+            .map(([why, names]) => `${names.join(", ")} (${why})`)
+            .join("; ")}.`,
+        ]),
+    ...(fallback.length === 0
+      ? []
+      : [
+          `${["Too few scenarios ran on every run in the window", ...on(fallback)].join(" ")} to average, so this run's are averaged there, and ${fallback.length === 1 ? "that fixture is" : "those fixtures are"} left out of runs without one of them.`,
+        ]),
+  ];
+  return notes.length === 0 ? null : notes.join(" ");
+};
 
 /** The run and the filters a report is for: what the page's menus, picker and chips show. */
 export const runMarkdown = (report: ReportModel): string[] => {
@@ -625,6 +669,7 @@ export const historyMarkdown = (history: History, origin: string): string => {
     `- Window: ${history.window.from} to ${history.window.to}${history.window.custom ? "" : " (a preset window ending at the run)"}`,
     `- Fixture: ${history.fixture ?? `all (${history.fixtures.join(", ")})`}`,
     `- Values: ${history.unit}${history.derived ? " (derived from total time)" : ""}`,
+    ...(history.averageOf === null ? [] : [`- Averaged: ${meanOf(history.averageOf)}`]),
     `- Tools: ${history.tools.map((t) => (label(t) === t ? t : `${label(t)} (${t})`)).join(", ")}`,
     `- Excluded runs: ${history.excluded.length === 0 ? "none" : history.excluded.join(", ")}`,
     "",
