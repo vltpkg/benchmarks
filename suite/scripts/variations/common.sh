@@ -296,3 +296,21 @@ collect_process_count_per_pm() {
   node "$BENCH_SCRIPTS/collect-process-count.js" "$BENCH_OUTPUT_FOLDER"
   bash "$BENCH_SCRIPTS/clean-helpers.sh" wait_for_vlt_background clean_all
 }
+
+# For variations that start from the tool's own lockfile (lockfile,
+# cache+lockfile, lockfile+node_modules, cache+lockfile+node_modules): sets
+# each BENCH_PREPARE_<PM> to what the timed runs do before a measured run.
+# That is clean_all (hyperfine --setup), one install that writes the tool's
+# lockfile (a warmup run), then the variation's prepare again. So the counted
+# install finds its own lockfile and no other tool's. BENCH_PREPARE_BASE must
+# be set before calling this.
+set_lockfile_prepares() {
+  local pm P setup_var install_var prepare
+  for pm in npm yarn berry zpm pnpm vlt bun deno aube upm; do
+    P=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
+    setup_var="BENCH_SETUP_$P"
+    install_var="BENCH_INSTALL_$P"
+    prepare="$(append_setup "$BENCH_PREPARE_BASE" "${!setup_var}")"
+    printf -v "BENCH_PREPARE_$P" '%s' "bash $BENCH_SCRIPTS/clean-helpers.sh clean_all; $prepare; ${!install_var} >/dev/null 2>&1 || true; bash $BENCH_SCRIPTS/clean-helpers.sh wait_for_vlt_background; $prepare"
+  done
+}
