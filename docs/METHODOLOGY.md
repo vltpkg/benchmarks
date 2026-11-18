@@ -283,8 +283,20 @@ performance. Registries observed in the published data: `npm`, `vlt`, `aws`,
 
 Spawning a process is a small part of any real build, but it is a workflow
 developers hit constantly: start up, read `package.json`, spawn the command. The
-`run` fixture exists only for that. Its `package.json` has no dependencies and
-one script that echoes, so the measurement is startup and spawn, nothing else.
+`run` fixture exists only for that. Its `package.json` has one script that
+echoes, no dependencies, and two devDependencies: the task runners `nx` and
+`turbo`, on their current majors (`^24` and `^2`). That is how both recommend
+being installed, and it is what their global commands expect: a global `nx` or
+`turbo` finds the project's copy and hands off to it. Every tool's untimed
+prepare installs the fixture (about 130 packages, nx's and turbo's trees), so
+each timed `run` starts from an installed project and `nx` and `turbo` run from
+the fixture's own `node_modules`.
+
+`versions.json` reports, for `nx` and `turbo`, the version the fixture's range
+resolved to when the job was set up: the version that ran, not the global
+`nx@latest` and `turbo@latest` `setup.sh` also installs. The two agree while the
+latest release is on the fixture's major; a new nx or turbo major moves the
+global command first and the fixture only when its range is bumped.
 
 `node`, `nx` and `turbo` appear as series here and not in install benchmarks.
 

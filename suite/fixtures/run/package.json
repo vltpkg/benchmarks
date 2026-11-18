@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "nx": "20.3.1",
+    "nx": "^24.0.6",
     "turbo": "^2.3.3"
   },
   "nx": {}

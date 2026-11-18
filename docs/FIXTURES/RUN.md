@@ -1,10 +1,11 @@
 # `run`
 
-The script-execution fixture. It installs essentially nothing on purpose.
+The script-execution fixture. It installs only the task runners it times.
 
 - Directory: `suite/fixtures/run`
 - Manifest name: `run`
-- Dependencies: 0 runtime, 2 development
+- Dependencies: 0 runtime, 2 development (`nx` and `turbo`, on their current
+  majors, so the global `nx` and `turbo` hand off to the project's copies)
 - One script: `test`, which echoes a line and exits
 
 ## What it exercises
