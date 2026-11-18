@@ -29,13 +29,12 @@ clean_yarn_cache() {
   safe_remove "${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
 }
 
+# berry's cache and its metadata cache (packuments) both live in its global
+# folder: ~/.yarn/berry, or under $XDG_DATA_HOME when that is set. Removing
+# the folder covers both. `yarn cache clean --all` would leave the metadata
+# behind (so cold runs skipped every packument download), and Corepack is not
+# on PATH anyway since it got its own prefix (BENCH_COREPACK_BIN).
 clean_berry_cache() {
-  if command -v corepack &> /dev/null; then
-    corepack yarn@latest cache clean --all >/dev/null || true
-  fi
-  # `cache clean --all` leaves berry's metadata cache (packuments) in its
-  # global folder, so cold runs skipped every packument download. The global
-  # folder is ~/.yarn/berry, or under $XDG_DATA_HOME when that is set.
   safe_remove "$HOME/.yarn/berry"
   safe_remove "${XDG_DATA_HOME:-$HOME/.local/share}/yarn/berry"
 }
@@ -114,12 +113,16 @@ clean_bun_cache() {
   if command -v bun &> /dev/null; then
     bun pm cache rm -g || true
     bun pm cache rm || true
-    # Remove the entire install directory (includes cache/ and metadata files)
-    safe_remove "$HOME/.bun/install"
-    # Also remove BUN_INSTALL_CACHE_DIR if set to a custom location
-    if [ -n "${BUN_INSTALL_CACHE_DIR:-}" ]; then
-      safe_remove "$BUN_INSTALL_CACHE_DIR"
-    fi
+  fi
+  # Remove the entire install directory (includes cache/ and metadata files):
+  # ~/.bun/install, or $XDG_CACHE_HOME/.bun/install when that is set.
+  safe_remove "$HOME/.bun/install"
+  if [ -n "${XDG_CACHE_HOME:-}" ]; then
+    safe_remove "$XDG_CACHE_HOME/.bun/install"
+  fi
+  # Also remove BUN_INSTALL_CACHE_DIR if set to a custom location
+  if [ -n "${BUN_INSTALL_CACHE_DIR:-}" ]; then
+    safe_remove "$BUN_INSTALL_CACHE_DIR"
   fi
 }
 
@@ -345,6 +348,26 @@ clean_workspace_protocol() {
   fi
 }
 
+# Tools also touch the fixture's config files: turbo's build on `next` appends
+# `.turbo` to .gitignore (the `run` fixture already ignores it), and the berry,
+# zpm and vp prepares write a .yarnrc.yml. Restore a tracked file to what is
+# committed and remove an untracked one (next and babylon commit a .yarnrc.yml;
+# the other fixtures don't), so the next tool starts from the fixture as
+# committed.
+clean_fixture_config() {
+  echo "Restoring fixture config files (.gitignore, .yarnrc.yml)..."
+  if command -v git &> /dev/null && git rev-parse --git-dir > /dev/null 2>&1; then
+    local file
+    for file in .gitignore .yarnrc.yml; do
+      if git ls-files --error-unmatch "$file" > /dev/null 2>&1; then
+        git checkout -- "$file" 2>/dev/null || true
+      elif [ -e "$file" ]; then
+        rm -f "$file"
+      fi
+    done
+  fi
+}
+
 # The inverse of clean_workspace_protocol: migrate the workspace ranges the
 # way vlt's first install does, untimed, before vlt's first install of a set.
 # A vlt user's repo stays migrated after that first install (the rewritten
@@ -390,6 +413,7 @@ clean_all() {
   clean_lockfiles
   clean_package_manager_files
   clean_workspace_protocol
+  clean_fixture_config
   clean_all_cache
   # Strip packageManager / devEngines.packageManager AFTER the cache cleans,
   # so nothing they write survives: this must run last to guarantee a
@@ -424,6 +448,8 @@ show_help() {
   echo "  clean_all_cache"
   echo "  clean_build_files"
   echo "  clean_build_output"
+  echo "  clean_workspace_protocol"
+  echo "  clean_fixture_config"
   echo "  clean_git"
   echo "  clean_all"
   echo "  migrate_workspace_protocol"
@@ -504,6 +530,9 @@ else
         ;;
       clean_workspace_protocol)
         clean_workspace_protocol
+        ;;
+      clean_fixture_config)
+        clean_fixture_config
         ;;
       migrate_workspace_protocol)
         migrate_workspace_protocol
