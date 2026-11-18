@@ -87,6 +87,48 @@ safe_remove() { printf '%s\\n' "$1" >> "$REMOVE_LOG"; }
   });
 }
 
+test("clean_node_modules removes the workspaces' node_modules too, not the tools' stores", (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "clean-node-modules-test-"));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const files = [
+    "node_modules/.vlt/a/node_modules/a/package.json",
+    "packages/dev/core/node_modules/.bin/a",
+    "packages/dev/core/src/index.ts",
+    "packages/public/@scope/gui/node_modules/@scope/core/package.json",
+    "packages/public/@scope/gui/package.json",
+    ".aube/store/node_modules/b/package.json",
+    ".upm-store/b/node_modules/b/package.json",
+  ];
+  for (const file of files) {
+    fs.mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
+    fs.writeFileSync(path.join(dir, file), "");
+  }
+  // what vlt leaves once the root node_modules is gone: a dangling symlink
+  fs.symlinkSync(
+    "../../../../node_modules/.vlt/a/node_modules/a",
+    path.join(dir, "packages/dev/core/node_modules/a"),
+  );
+
+  const result = spawnSync(
+    "bash",
+    ["-c", `source "$HELPERS" >/dev/null; clean_node_modules`],
+    {
+      cwd: dir,
+      encoding: "utf8",
+      env: { ...process.env, HELPERS: path.join(__dirname, "clean-helpers.sh") },
+    },
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const exists = (file) => fs.existsSync(path.join(dir, file));
+  assert.equal(exists("node_modules"), false);
+  assert.equal(exists("packages/dev/core/node_modules"), false);
+  assert.equal(exists("packages/public/@scope/gui/node_modules"), false);
+  assert.equal(exists("packages/dev/core/src/index.ts"), true);
+  assert.equal(exists("packages/public/@scope/gui/package.json"), true);
+  assert.equal(exists(".aube/store/node_modules/b/package.json"), true);
+  assert.equal(exists(".upm-store/b/node_modules/b/package.json"), true);
+});
+
 // A stand-in for one of vlt's detached children: `sleep` copied to a file
 // with the given name, so pgrep sees that process name (truncated to 15
 // characters, as Linux does), or a node script at a vlt-style path when
