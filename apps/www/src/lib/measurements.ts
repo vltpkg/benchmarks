@@ -207,6 +207,85 @@ export const averageFiles = (
     return [{ fixture, file: { results } }];
   });
 
+/** A scenario the window's average leaves out, and why. */
+export interface LeftOut {
+  readonly scenario: string;
+  /** The fixtures it is left out on. */
+  readonly fixtures: readonly string[];
+  /** The window's runs without it, ascending. */
+  readonly missing: readonly string[];
+  /** Its first run in the window, when every run without it is earlier; else `null`. */
+  readonly since: string | null;
+}
+
+/** The scenarios a window's average covers on each fixture. */
+export interface CommonPlan {
+  readonly plan: { readonly [fixture: string]: readonly string[] };
+  /** In `plan`'s scenario order. */
+  readonly leftOut: readonly LeftOut[];
+  /**
+   * Fixtures where too few scenarios ran on every run to average, so they keep
+   * the shown run's and a run without one of them draws no point for them.
+   */
+  readonly fallback: readonly string[];
+}
+
+/**
+ * The scenarios of `plan` every run in the window published, per fixture.
+ *
+ * `averageFiles` drops a fixture missing any planned scenario, so a plan taken
+ * from the shown run drew no point on any run before a scenario was added.
+ * Averaging only what each fixture has on every run it ran keeps the trend and
+ * the shown run's numbers over the same scenarios. A fixture left with fewer
+ * than two (when its plan has two or more) keeps the shown run's set, and is
+ * named in `fallback`.
+ */
+export const commonPlan = (
+  plan: { readonly [fixture: string]: readonly string[] },
+  runs: readonly {
+    readonly date: string;
+    readonly cells: readonly { readonly fixture: string; readonly variation: string }[];
+  }[],
+): CommonPlan => {
+  const has = (cells: (typeof runs)[number]["cells"], fixture: string, variation: string) =>
+    cells.some((c) => c.fixture === fixture && c.variation === variation);
+  const common: { [fixture: string]: readonly string[] } = {};
+  const fallback: string[] = [];
+  const dropped = new Map<
+    string,
+    { fixtures: string[]; missing: Set<string>; present: string[] }
+  >();
+  for (const [fixture, variations] of Object.entries(plan)) {
+    /* A run the fixture did not run on at all says nothing about its scenarios. */
+    const ran = runs.filter((r) => variations.some((v) => has(r.cells, fixture, v)));
+    const kept = variations.filter((v) => ran.every((r) => has(r.cells, fixture, v)));
+    if (kept.length < Math.min(2, variations.length)) {
+      common[fixture] = variations;
+      fallback.push(fixture);
+      continue;
+    }
+    common[fixture] = kept;
+    for (const v of variations.filter((v) => !kept.includes(v))) {
+      const entry = dropped.get(v) ?? { fixtures: [], missing: new Set(), present: [] };
+      entry.fixtures.push(fixture);
+      for (const r of ran) {
+        if (has(r.cells, fixture, v)) entry.present.push(r.date);
+        else entry.missing.add(r.date);
+      }
+      dropped.set(v, entry);
+    }
+  }
+  const leftOut = [...new Set(Object.values(plan).flat())].flatMap((scenario) => {
+    const entry = dropped.get(scenario);
+    if (entry === undefined) return [];
+    const missing = [...entry.missing].sort();
+    const first = entry.present.sort()[0];
+    const since = first !== undefined && missing.every((d) => d < first) ? first : null;
+    return [{ scenario, fixtures: entry.fixtures, missing, since }];
+  });
+  return { plan: common, leftOut, fallback };
+};
+
 const failedIn = (file: BenchmarkFile, tools: readonly string[]): string[] =>
   file.results.filter((r) => tools.includes(r.command) && !usable(r)).map((r) => r.command);
 

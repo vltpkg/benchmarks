@@ -112,6 +112,8 @@ export const historyOf = (report: ReportModel, tools?: readonly string[]) => {
   return {
     section: report.section.id,
     scenario: report.scenario.variation,
+    /* On the derived view, what the trend averages: the scenarios every run in the window has. */
+    averageOf: report.scenario.averageOf,
     run: report.run.date,
     fixture: report.filters.fixture,
     fixtures: report.fixtures,
