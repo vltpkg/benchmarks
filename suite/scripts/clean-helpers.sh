@@ -312,6 +312,46 @@ clean_workspace_protocol() {
   fi
 }
 
+# The inverse of clean_workspace_protocol: migrate the workspace ranges the
+# way vlt's first install does, untimed, before vlt's first install of a set.
+# A vlt user's repo stays migrated after that first install (the rewritten
+# manifests get committed), so in the warm variations vlt starts from
+# already-migrated manifests. `clean` is the exception: there the migration is
+# part of what a first install costs, so clean.sh sets BENCH_SETUP_VLT empty.
+#
+# `vlt install --lockfile-only` rewrites the manifests exactly as a full
+# install does (on `babylon`, 80 package.json files, plus 36 unrelated `bugs`
+# field rewrites, a vlt quirk), with no node_modules and no tarballs. The
+# lockfile it writes is not what the variation wants: discard it, or put back
+# the one that was there byte for byte. Runs once per set: every later
+# prepare finds `workspace:` already present and does nothing. On a fixture
+# without workspaces (no packages/) there is nothing to migrate.
+#
+# If `--lockfile-only` fails (registry or token trouble), warn and carry on:
+# vlt's first install then migrates the manifests as part of its timed run,
+# as it did before this step existed.
+migrate_workspace_protocol() {
+  if ! command -v vlt &> /dev/null || [ ! -d packages ]; then
+    return 0
+  fi
+  if grep -rqs --include=package.json --exclude-dir=node_modules '"workspace:' package.json packages; then
+    return 0
+  fi
+  echo "Migrating workspace ranges to workspace:* (vlt install --lockfile-only)..."
+  local had_lockfile=""
+  if [ -f vlt-lock.json ]; then
+    had_lockfile=1
+    cp vlt-lock.json .bench-vlt-lock.json
+  fi
+  vlt install --lockfile-only --view=silent >/dev/null 2>&1 ||
+    echo "Warning: vlt install --lockfile-only failed; vlt's first install will migrate instead"
+  if [ -n "$had_lockfile" ]; then
+    mv .bench-vlt-lock.json vlt-lock.json
+  else
+    rm -f vlt-lock.json
+  fi
+}
+
 clean_all() {
   clean_node_modules
   clean_lockfiles
@@ -352,6 +392,7 @@ show_help() {
   echo "  clean_build_output"
   echo "  clean_git"
   echo "  clean_all"
+  echo "  migrate_workspace_protocol"
   echo "  wait_for_vlt_background"
   echo ""
   echo "Usage: $0 [function_name1] [function_name2] ..."
@@ -426,6 +467,9 @@ else
         ;;
       clean_workspace_protocol)
         clean_workspace_protocol
+        ;;
+      migrate_workspace_protocol)
+        migrate_workspace_protocol
         ;;
       clean_git)
         clean_git

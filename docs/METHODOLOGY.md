@@ -53,15 +53,32 @@ In `babylon`, workspace packages depend on each other by plain semver range
 way:
 
 - vlt rewrites most of those ranges (257 of 323) to `workspace:*` in
-  `package.json` on its first install. That rewrite is part of its timed run
-  wherever the manifests start out unmigrated, which is `clean`; in the other
-  variations the untimed first warmup migrates them. vlt 1.8.0 leaves the 66
-  exact and peer specs on the published `@babylonjs/*` names as they are, and
-  in about half of cold installs it resolves four of them (`gui`, `loaders`,
-  `materials`, `serializers`) to registry copies instead of the workspace,
-  downloading 4 extra tarballs ([vltpkg/vltpkg#2154](https://github.com/vltpkg/vltpkg/issues/2154)).
-  So vlt's `babylon` `clean` results can differ between runs until that is
-  fixed.
+  `package.json` on its first install. A vlt user's repo stays migrated after
+  that first install, because the rewritten manifests get committed. So in the
+  warm variations an untimed setup step migrates the manifests before vlt's
+  first install of a set (`vlt install --lockfile-only`, which rewrites the
+  manifests without installing anything; the manifests are kept and the
+  lockfile it writes is discarded, or the one that was there is put back), and
+  `clean` times the migration as part of the first install
+  (`migrate_workspace_protocol` in `suite/scripts/clean-helpers.sh`). The
+  migration does not make vlt's first warm run on `babylon` the same as the
+  later ones: on a first install without a lockfile, vlt 1.8.0 writes an
+  optional dependency (`canvas`, 17 packages with its dependencies) to the
+  lockfile but doesn't install it; the next install, from that lockfile, does
+  ([vltpkg/vltpkg#2155](https://github.com/vltpkg/vltpkg/issues/2155)). So in
+  the no-lockfile variations (`clean`, `cache`, `node_modules` and their
+  combinations without a lockfile) vlt installs about 17 fewer packages than
+  its own lockfile and the other tools, 1,601 vs 1,618, which flatters vlt
+  slightly until that is fixed; in the lockfile variations the first install
+  from the lockfile downloads those 17. The suite doesn't work around it,
+  because forcing `canvas` in would make vlt behave unlike vlt. Separately,
+  vlt leaves the 66 exact and peer specs on the published `@babylonjs/*`
+  names as they are, and in about half of cold installs it resolves four of
+  them (`gui`, `loaders`, `materials`, `serializers`) to registry copies
+  instead of the workspace, downloading 4 extra tarballs
+  ([vltpkg/vltpkg#2154](https://github.com/vltpkg/vltpkg/issues/2154)). So
+  vlt's `babylon` results in installs without a lockfile can differ between
+  runs until that is fixed, migrated manifests or not.
 - pnpm links them (the fixture's `pnpm-workspace.yaml` sets
   `linkWorkspacePackages: true`), but first asks the registry for each one:
   about 240 lookups per cold install, most answered 404 for private packages.
