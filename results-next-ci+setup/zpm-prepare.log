@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 564 Nov 18 10:26 package.json
+-rw-r--r-- 1 runner runner 564 Nov 18 15:24 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,97 +17,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/next
 package.json:
--rw-r--r-- 1 runner runner 564 Nov 18 10:26 package.json
-yarn path:
-/home/runner/.yarn/switch/bin/yarn
-yarn version:
-1.22.22
-canary version:
-6.0.0-rc.20
-packageManager (before):
-set packageManager=yarn@6.0.0-rc.20:
-packageManager (after):
-yarn@6.0.0-rc.20
-[zpm prepare]
-cwd:
-/home/runner/work/benchmarks/benchmarks/suite/fixtures/next
-package.json:
--rw-r--r-- 1 runner runner 564 Nov 18 10:26 package.json
-yarn path:
-/home/runner/.yarn/switch/bin/yarn
-yarn version:
-1.22.22
-canary version:
-6.0.0-rc.20
-packageManager (before):
-set packageManager=yarn@6.0.0-rc.20:
-packageManager (after):
-yarn@6.0.0-rc.20
-[zpm prepare]
-cwd:
-/home/runner/work/benchmarks/benchmarks/suite/fixtures/next
-package.json:
--rw-r--r-- 1 runner runner 564 Nov 18 10:26 package.json
-yarn path:
-/home/runner/.yarn/switch/bin/yarn
-yarn version:
-1.22.22
-canary version:
-6.0.0-rc.20
-packageManager (before):
-set packageManager=yarn@6.0.0-rc.20:
-packageManager (after):
-yarn@6.0.0-rc.20
-[zpm prepare]
-cwd:
-/home/runner/work/benchmarks/benchmarks/suite/fixtures/next
-package.json:
--rw-r--r-- 1 runner runner 564 Nov 18 10:26 package.json
-yarn path:
-/home/runner/.yarn/switch/bin/yarn
-yarn version:
-1.22.22
-canary version:
-6.0.0-rc.20
-packageManager (before):
-set packageManager=yarn@6.0.0-rc.20:
-packageManager (after):
-yarn@6.0.0-rc.20
-[zpm prepare]
-cwd:
-/home/runner/work/benchmarks/benchmarks/suite/fixtures/next
-package.json:
--rw-r--r-- 1 runner runner 564 Nov 18 10:27 package.json
-yarn path:
-/home/runner/.yarn/switch/bin/yarn
-yarn version:
-1.22.22
-canary version:
-6.0.0-rc.20
-packageManager (before):
-set packageManager=yarn@6.0.0-rc.20:
-packageManager (after):
-yarn@6.0.0-rc.20
-[zpm prepare]
-cwd:
-/home/runner/work/benchmarks/benchmarks/suite/fixtures/next
-package.json:
--rw-r--r-- 1 runner runner 564 Nov 18 10:27 package.json
-yarn path:
-/home/runner/.yarn/switch/bin/yarn
-yarn version:
-1.22.22
-canary version:
-6.0.0-rc.20
-packageManager (before):
-set packageManager=yarn@6.0.0-rc.20:
-packageManager (after):
-yarn@6.0.0-rc.20
-[zpm prepare]
-cwd:
-/home/runner/work/benchmarks/benchmarks/suite/fixtures/next
-package.json:
--rw-r--r-- 1 runner runner 564 Nov 18 10:33 package.json
+-rw-r--r-- 1 runner runner 564 Nov 18 15:31 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:

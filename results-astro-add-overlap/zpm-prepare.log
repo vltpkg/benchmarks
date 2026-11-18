@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/astro
 package.json:
--rw-r--r-- 1 runner runner 247 Nov 18 10:21 package.json
+-rw-r--r-- 1 runner runner 247 Nov 18 15:22 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,7 +17,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/astro
 package.json:
--rw-r--r-- 1 runner runner 247 Nov 18 10:25 package.json
+-rw-r--r-- 1 runner runner 247 Nov 18 15:26 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:

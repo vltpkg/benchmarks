@@ -27,7 +27,7 @@
 [7m[1m[32m NX [39m[22m[27m  [32mSuccessfully ran target [1mbuild[22m for project nextjs[39m
 
 
-  Run duration:      12.3s
+  Run duration:      7.5s
   Cache:             0/1 hit (0%)
-  Critical path:     12.3s (1 task)
+  Critical path:     7.5s (1 task)
   Recoverable time:  <1ms

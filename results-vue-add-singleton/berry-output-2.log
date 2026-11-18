@@ -16,7 +16,7 @@
 ::group::Fetch step
 [94m➤[39m YN0013: │ A package was added to the project ([38;5;160m+ 9.1 KiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 260ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 257ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 ::endgroup::
