@@ -10,20 +10,30 @@ source "$1/variations/common.sh"
 # the tool from scratch and running a CI install.
 #
 # Prepare step (not measured):
+#   Once per tool, on its first prepare (see ci_setup_prepare):
 #   1. Clean node_modules, lockfiles, PM files
 #   2. Install the PM binary (needed to generate the lockfile)
 #   3. Run a regular install to generate the lockfile + populate cache
+#   Before every timed run, this first one included:
 #   4. Clean node_modules (ci starts from scratch)
 #   5. Uninstall the PM binary (so the measured step re-installs it)
+#   The lockfile and the dependency cache stay from one run to the next: only
+#   the timed command's own work (the PM download and install, node_modules)
+#   is undone. hyperfine's --conclude must leave them too. hyperfine 1.19 has
+#   no per-command --setup, hence the marker file.
 #
 # Measured command:
 #   1. Install the PM binary
 #   2. Run the PM's ci/frozen-lockfile command
 
+# Where the PM prefixes, their npm caches and the corepack home live. Tests
+# point it somewhere private.
+BENCH_SETUP_TMP="${BENCH_SETUP_TMP:-/tmp}"
+
 # Use an isolated corepack home so purging it between runs doesn't affect
 # other benchmarks, and so the path is deterministic (no reliance on
 # `corepack cache path` which is not a documented subcommand).
-export COREPACK_HOME="/tmp/bench-corepack-home"
+export COREPACK_HOME="$BENCH_SETUP_TMP/bench-corepack-home"
 
 # --- PM install commands ---
 # These mirror what scripts/setup.sh does for each PM.
@@ -33,14 +43,14 @@ export COREPACK_HOME="/tmp/bench-corepack-home"
 # timed install downloads the package manager again. This also keeps the
 # bootstrap npm and the copies installed by setup.sh untouched, and the npm
 # cache used by `npm ci` separate.
-NPM_SETUP_PREFIX="/tmp/bench-npm"
-NPM_SETUP_CACHE="/tmp/bench-npm-cache"
-YARN_SETUP_PREFIX="/tmp/bench-yarn"
-YARN_SETUP_CACHE="/tmp/bench-yarn-npm-cache"
-PNPM_SETUP_PREFIX="/tmp/bench-pnpm"
-PNPM_SETUP_CACHE="/tmp/bench-pnpm-npm-cache"
-COREPACK_SETUP_PREFIX="/tmp/bench-corepack"
-COREPACK_SETUP_CACHE="/tmp/bench-corepack-npm-cache"
+NPM_SETUP_PREFIX="$BENCH_SETUP_TMP/bench-npm"
+NPM_SETUP_CACHE="$BENCH_SETUP_TMP/bench-npm-cache"
+YARN_SETUP_PREFIX="$BENCH_SETUP_TMP/bench-yarn"
+YARN_SETUP_CACHE="$BENCH_SETUP_TMP/bench-yarn-npm-cache"
+PNPM_SETUP_PREFIX="$BENCH_SETUP_TMP/bench-pnpm"
+PNPM_SETUP_CACHE="$BENCH_SETUP_TMP/bench-pnpm-npm-cache"
+COREPACK_SETUP_PREFIX="$BENCH_SETUP_TMP/bench-corepack"
+COREPACK_SETUP_CACHE="$BENCH_SETUP_TMP/bench-corepack-npm-cache"
 SETUP_INSTALL_NPM="npm install -g npm@latest --prefix $NPM_SETUP_PREFIX --cache $NPM_SETUP_CACHE >/dev/null 2>&1"
 SETUP_INSTALL_YARN="npm install -g yarn@1 --prefix $YARN_SETUP_PREFIX --cache $YARN_SETUP_CACHE >/dev/null 2>&1"
 # berry: install corepack; its yarn shim then downloads the pinned yarn on
@@ -53,7 +63,7 @@ SETUP_INSTALL_PNPM="npm install -g --allow-scripts=pnpm pnpm@latest --prefix $PN
 # The tools installed with npm get their own npm cache, deleted with the tool
 # below, like npm's. Otherwise the timed install is served from ~/.npm, which
 # the prepare's own install of the same tool just filled.
-TOOL_SETUP_CACHE="/tmp/bench-tool-setup-cache"
+TOOL_SETUP_CACHE="$BENCH_SETUP_TMP/bench-tool-setup-cache"
 SETUP_INSTALL_VLT="npm install -g --cache $TOOL_SETUP_CACHE vlt@latest >/dev/null 2>&1"
 SETUP_INSTALL_BUN="npm install -g --cache $TOOL_SETUP_CACHE --allow-scripts=bun bun@latest >/dev/null 2>&1"
 SETUP_INSTALL_DENO="npm install -g --cache $TOOL_SETUP_CACHE --allow-scripts=deno deno@latest >/dev/null 2>&1"
@@ -142,32 +152,54 @@ BENCH_INSTALL_UPM="bash -c '$BENCH_COMBINED_UPM'"
 # --- Prepare commands ---
 # Like the ci variation, prepare generates a lockfile. Additionally, it
 # uninstalls the PM binary so the measured command includes re-installing it.
+# The lockfile install runs once per tool, not before every timed run: it
+# cost an extra full install and two deletions of node_modules per run
+# (each about 5 minutes for zpm's 13 GB on babylon). --conclude keeps the
+# lockfile, the packageManager pin and the PM config it wrote (the state a
+# CI job checks out), so every later prepare only undoes the timed command.
 BENCH_CLEAN_PRE="bash $BENCH_SCRIPTS/clean-helpers.sh clean_node_modules clean_lockfiles clean_package_manager_files clean_package_manager_field"
 BENCH_CLEAN_POST="bash $BENCH_SCRIPTS/clean-helpers.sh clean_node_modules clean_package_manager_files"
 
-# Helper: build per-PM prepare that installs PM, generates lockfile, cleans
-# node_modules, then uninstalls the PM binary.
-ci_setup_prepare() {
-  local pm_install="$1"     # command to install the PM binary
-  local setup_cmd="$2"      # PM-specific setup (e.g. .yarnrc.yml)
-  local install_cmd="$3"    # regular install to generate lockfile
-  local pm_uninstall="$4"   # command to uninstall the PM binary
-  local corepack_purge="$5" # optional: purge corepack cache
+# The marker that says a tool's lockfile and cache are in place. Lives in the
+# results folder, which common.sh empties at the start of every run.
+ci_setup_marker() {
+  echo "$BENCH_OUTPUT_FOLDER/.ci-setup-ready-$1"
+}
 
-  local result="sleep 1; $BENCH_CLEAN_PRE"
+# Helper: build per-PM prepare. Its first run (no marker yet) cleans what the
+# previous tool left, installs the PM, runs the PM-specific setup and a
+# regular install that writes the lockfile and fills the cache. Every run,
+# that first one included, then cleans node_modules and uninstalls the PM
+# binary. A failed lockfile install leaves no marker, so the next prepare
+# tries again, as it did when every prepare ran the install.
+ci_setup_prepare() {
+  local pm="$1"             # tool name (marker)
+  local pm_install="$2"     # command to install the PM binary
+  local setup_cmd="$3"      # PM-specific setup (e.g. .yarnrc.yml)
+  local install_cmd="$4"    # regular install to generate lockfile
+  local pm_uninstall="$5"   # command to uninstall the PM binary
+  local corepack_purge="$6" # optional: purge corepack cache
+
+  local marker
+  marker="$(ci_setup_marker "$pm")"
+
+  # Once per tool: lockfile + cache
+  local once="$BENCH_CLEAN_PRE"
 
   # Install PM binary
   if [ -n "$pm_install" ]; then
-    result="$result; $pm_install"
+    once="$once; $pm_install"
   fi
 
   # PM-specific setup
   if [ -n "$setup_cmd" ]; then
-    result="$result; $setup_cmd"
+    once="$once; $setup_cmd"
   fi
 
   # Generate lockfile via regular install
-  result="$result; timeout $BENCH_TIMEOUT $install_cmd >/dev/null 2>&1 || true"
+  once="$once; timeout $BENCH_TIMEOUT $install_cmd >/dev/null 2>&1 && touch $marker || true"
+
+  local result="sleep 1; if [ ! -e $marker ]; then $once; fi"
 
   # Clean node_modules (ci starts fresh)
   result="$result; $BENCH_CLEAN_POST"
@@ -192,16 +224,16 @@ if [ "$BENCH_FIXTURE" = "large" ]; then
   _INSTALL_NPM="$_INSTALL_NPM --legacy-peer-deps"
 fi
 
-BENCH_PREPARE_NPM="$(ci_setup_prepare "$SETUP_INSTALL_NPM" "$BENCH_SETUP_NPM" "$_INSTALL_NPM" "$SETUP_UNINSTALL_NPM" "")"
-BENCH_PREPARE_YARN="$(ci_setup_prepare "$SETUP_INSTALL_YARN" "$BENCH_SETUP_YARN" "$YARN_SETUP_PREFIX/bin/yarn install --ignore-scripts --silent" "$SETUP_UNINSTALL_YARN" "")"
-BENCH_PREPARE_BERRY="$(ci_setup_prepare "$SETUP_INSTALL_BERRY" "$BENCH_SETUP_BERRY" "$COREPACK_SETUP_PREFIX/bin/yarn install" "$SETUP_UNINSTALL_BERRY" "$COREPACK_PURGE")"
-BENCH_PREPARE_ZPM="$(ci_setup_prepare "$SETUP_INSTALL_ZPM" "$BENCH_SETUP_ZPM" "$BENCH_ZPM_BIN install --silent" "$SETUP_UNINSTALL_ZPM" "")"
-BENCH_PREPARE_PNPM="$(ci_setup_prepare "$SETUP_INSTALL_PNPM" "$BENCH_SETUP_PNPM" "$PNPM_SETUP_PREFIX/bin/pnpm install --ignore-scripts --silent" "$SETUP_UNINSTALL_PNPM" "")"
-BENCH_PREPARE_VLT="$(ci_setup_prepare "$SETUP_INSTALL_VLT" "$BENCH_SETUP_VLT" "vlt install --view=silent" "$SETUP_UNINSTALL_VLT" "")"
-BENCH_PREPARE_BUN="$(ci_setup_prepare "$SETUP_INSTALL_BUN" "$BENCH_SETUP_BUN" "bun install --ignore-scripts --silent" "$SETUP_UNINSTALL_BUN" "")"
-BENCH_PREPARE_DENO="$(ci_setup_prepare "$SETUP_INSTALL_DENO" "$BENCH_SETUP_DENO" "deno install --quiet" "$SETUP_UNINSTALL_DENO" "")"
-BENCH_PREPARE_AUBE="$(ci_setup_prepare "$SETUP_INSTALL_AUBE" "$BENCH_SETUP_AUBE" "aube install --ignore-scripts --silent" "$SETUP_UNINSTALL_AUBE" "")"
-BENCH_PREPARE_UPM="$(ci_setup_prepare "$SETUP_INSTALL_UPM" "$BENCH_SETUP_UPM" "upm install --silent" "$SETUP_UNINSTALL_UPM" "")"
+BENCH_PREPARE_NPM="$(ci_setup_prepare npm "$SETUP_INSTALL_NPM" "$BENCH_SETUP_NPM" "$_INSTALL_NPM" "$SETUP_UNINSTALL_NPM" "")"
+BENCH_PREPARE_YARN="$(ci_setup_prepare yarn "$SETUP_INSTALL_YARN" "$BENCH_SETUP_YARN" "$YARN_SETUP_PREFIX/bin/yarn install --ignore-scripts --silent" "$SETUP_UNINSTALL_YARN" "")"
+BENCH_PREPARE_BERRY="$(ci_setup_prepare berry "$SETUP_INSTALL_BERRY" "$BENCH_SETUP_BERRY" "$COREPACK_SETUP_PREFIX/bin/yarn install" "$SETUP_UNINSTALL_BERRY" "$COREPACK_PURGE")"
+BENCH_PREPARE_ZPM="$(ci_setup_prepare zpm "$SETUP_INSTALL_ZPM" "$BENCH_SETUP_ZPM" "$BENCH_ZPM_BIN install --silent" "$SETUP_UNINSTALL_ZPM" "")"
+BENCH_PREPARE_PNPM="$(ci_setup_prepare pnpm "$SETUP_INSTALL_PNPM" "$BENCH_SETUP_PNPM" "$PNPM_SETUP_PREFIX/bin/pnpm install --ignore-scripts --silent" "$SETUP_UNINSTALL_PNPM" "")"
+BENCH_PREPARE_VLT="$(ci_setup_prepare vlt "$SETUP_INSTALL_VLT" "$BENCH_SETUP_VLT" "vlt install --view=silent" "$SETUP_UNINSTALL_VLT" "")"
+BENCH_PREPARE_BUN="$(ci_setup_prepare bun "$SETUP_INSTALL_BUN" "$BENCH_SETUP_BUN" "bun install --ignore-scripts --silent" "$SETUP_UNINSTALL_BUN" "")"
+BENCH_PREPARE_DENO="$(ci_setup_prepare deno "$SETUP_INSTALL_DENO" "$BENCH_SETUP_DENO" "deno install --quiet" "$SETUP_UNINSTALL_DENO" "")"
+BENCH_PREPARE_AUBE="$(ci_setup_prepare aube "$SETUP_INSTALL_AUBE" "$BENCH_SETUP_AUBE" "aube install --ignore-scripts --silent" "$SETUP_UNINSTALL_AUBE" "")"
+BENCH_PREPARE_UPM="$(ci_setup_prepare upm "$SETUP_INSTALL_UPM" "$BENCH_SETUP_UPM" "upm install --silent" "$SETUP_UNINSTALL_UPM" "")"
 
 # Run the benchmark suite
 hyperfine --ignore-failure \
@@ -209,7 +241,7 @@ hyperfine --ignore-failure \
   --export-json="$BENCH_OUTPUT_FOLDER/benchmarks.json" \
   --warmup="$BENCH_WARMUP" \
   --runs="$BENCH_RUNS" \
-  --conclude="sleep 1; bash $BENCH_SCRIPTS/package-count.sh $BENCH_OUTPUT_FOLDER; bash $BENCH_SCRIPTS/clean-helpers.sh clean_node_modules clean_lockfiles clean_package_manager_files clean_package_manager_field clean_build_files" \
+  --conclude="sleep 1; bash $BENCH_SCRIPTS/package-count.sh $BENCH_OUTPUT_FOLDER; bash $BENCH_SCRIPTS/clean-helpers.sh clean_node_modules clean_package_manager_files clean_build_files" \
   --cleanup="bash $BENCH_SCRIPTS/clean-helpers.sh clean_all" \
   ${BENCH_INCLUDE_NPM:+--prepare="$BENCH_PREPARE_NPM"} \
   ${BENCH_INCLUDE_NPM:+--command-name="npm" "$BENCH_COMMAND_NPM"} \
@@ -236,5 +268,12 @@ collect_package_count
 
 # --- Process count collection ---
 # Each PM's prepare includes PM-specific uninstall/cache-purge steps and its
-# own lockfile, so each gets its own prepare.
+# own lockfile, so each gets its own prepare. hyperfine's --cleanup removed
+# every lockfile and cache, so drop the markers: each counted install then
+# starts from what its first prepare makes, the state the timed runs saw.
+for pm in npm yarn berry zpm pnpm vlt bun deno aube upm; do
+  P=$(echo "$pm" | tr '[:lower:]' '[:upper:]')
+  prepare_var="BENCH_PREPARE_$P"
+  printf -v "$prepare_var" '%s' "rm -f $(ci_setup_marker "$pm"); ${!prepare_var}"
+done
 collect_process_count_per_pm

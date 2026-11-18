@@ -124,7 +124,11 @@ berry run, as `yarn set version` would; `clean-helpers.sh` removes the pin
 before the next tool runs. In `ci+setup`, the "setup" part of each timed
 command is the same install (into a fresh prefix with an empty npm cache, so
 it downloads every time); for berry that is installing Corepack plus
-Corepack's download of Yarn.
+Corepack's download of Yarn. The lockfile and the dependency cache are made
+once per tool, untimed, by a regular install on its first prepare; before
+every timed run the prepare then only removes `node_modules`, the tool's
+binary and its download cache, so each run starts from the same state: tool
+absent, lockfile present, cache warm, no `node_modules`.
 
 Until [#207](https://github.com/vltpkg/benchmarks/issues/207), pnpm, yarn and
 berry ran through `corepack pnpm@latest`, `corepack yarn@1` and
@@ -199,6 +203,7 @@ missing. Don't compare them with later counts.
 | `lockfile+node_modules`       | lockfile and `node_modules`                                      |
 | `cache+lockfile+node_modules` | everything warm — best case                                      |
 | `ci`                          | the tool's CI-oriented install (`npm ci` and equivalents)        |
+| `ci+setup`                    | `ci`, plus installing the tool itself first                      |
 | `add-singleton`               | add one uncached zero-dependency package to an installed project |
 | `remove-singleton`            | remove that package from an installed project                    |
 | `add-overlap`                 | add one uncached package whose deps overlap the existing graph   |
