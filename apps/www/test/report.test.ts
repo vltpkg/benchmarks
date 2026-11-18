@@ -203,8 +203,10 @@ describe("a trend's fetch budget", () => {
       // Two fixtures, each with its count: four files a run, so the newest 100 runs.
       expect(data.trendCost).toMatchObject({ perRun: 4, dates: TREND_BUDGET / 4 });
       const newest = new Set(window.slice(-TREND_BUDGET / 4));
+      /* The shown run's files and shard are not the trend's. */
       const trendFiles = fetched.filter(
-        (p) => !p.startsWith("summary/") && !p.startsWith("2026-10-13/"),
+        (p) =>
+          !p.startsWith("summary/") && !p.startsWith("manifest/") && !p.startsWith("2026-10-13/"),
       );
       expect(trendFiles.length).toBeLessThanOrEqual(TREND_BUDGET);
       expect(trendFiles.every((p) => newest.has(p.split("/")[0] ?? ""))).toBe(true);
