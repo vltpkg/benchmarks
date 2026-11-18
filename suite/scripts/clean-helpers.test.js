@@ -2,6 +2,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
+const { pathToFileURL } = require("node:url");
 const { execFileSync, spawnSync } = require("node:child_process");
 const test = require("node:test");
 
@@ -495,6 +496,129 @@ test("registry-package-count.sh counts by walking the graph, dotted names includ
     assert.equal(fs.readFileSync(path.join(out, "npm-count.txt"), "utf8"), "3\n");
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+// Run clean_deno_code_cache from `cwd` against a fake deno dir (reported by a
+// fake `deno info --json`, or found through env when `denoOnPath` is false)
+// and record what it removes and what is left in the code cache database.
+const { DatabaseSync } = require("node:sqlite");
+const CODECACHE_SCHEMA =
+  "CREATE TABLE codecache (specifier TEXT NOT NULL, type INTEGER NOT NULL, source_hash INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY (specifier, type))";
+const runDenoCodeCacheClean = ({ denoDir, denoOnPath = true, schema, rows = [], env = {} }) => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "deno-clean-test-"));
+  try {
+    const binDir = path.join(tempDir, "bin");
+    const cwd = path.join(tempDir, "my project");
+    const removeLog = path.join(tempDir, "removed.txt");
+    fs.mkdirSync(binDir);
+    fs.mkdirSync(cwd);
+    fs.writeFileSync(removeLog, "");
+    if (denoOnPath) {
+      fs.writeFileSync(
+        path.join(binDir, "deno"),
+        `#!/bin/sh\n[ "$1 $2" = "info --json" ] || exit 1\nprintf '{\\n  "version": 1,\\n  "denoDir": "%s",\\n  "npmCache": "%s/npm"\\n}\\n' "$FAKE_DENO_DIR" "$FAKE_DENO_DIR"\n`,
+        { mode: 0o755 },
+      );
+    }
+    const dbPath = path.join(denoDir, "v8_code_cache_v2");
+    if (schema) {
+      // Like Deno's: a WAL-mode database, with the npm cache next to it.
+      fs.mkdirSync(path.join(denoDir, "npm"), { recursive: true });
+      const db = new DatabaseSync(dbPath);
+      db.exec("PRAGMA journal_mode = WAL");
+      db.exec(schema);
+      for (const [specifier, type] of rows.map((r) => r.replace(/^<cwd>/, pathToFileURL(cwd).href).split(" "))) {
+        db.prepare("INSERT INTO codecache VALUES (?, ?, ?, ?)").run(specifier, Number(type), 1, Buffer.from("code"));
+      }
+      db.close();
+    }
+    const result = spawnSync(
+      "bash",
+      ["-c", `source "$HELPERS" >/dev/null; safe_remove() { printf '%s\\n' "$1" >> "$REMOVE_LOG"; }; clean_deno_code_cache`],
+      {
+        encoding: "utf8",
+        cwd,
+        env: {
+          // Only the fake bin dir, this node and sed, so a real deno is never asked.
+          PATH: [binDir, path.dirname(process.execPath), "/usr/bin", "/bin"].join(path.delimiter),
+          HOME: path.join(tempDir, "home"),
+          HELPERS: path.join(__dirname, "clean-helpers.sh"),
+          REMOVE_LOG: removeLog,
+          FAKE_DENO_DIR: denoDir,
+          ...env,
+        },
+      },
+    );
+    assert.equal(result.status, 0, result.stderr);
+    let left = null;
+    if (fs.existsSync(dbPath) && schema === CODECACHE_SCHEMA) {
+      const db = new DatabaseSync(dbPath, { readOnly: true });
+      left = db
+        .prepare("SELECT specifier, type FROM codecache ORDER BY specifier, type")
+        .all()
+        .map((r) => `${r.specifier.replace(pathToFileURL(cwd).href, "<cwd>")} ${r.type}`)
+        .sort();
+      db.close();
+    }
+    return {
+      removed: fs.readFileSync(removeLog, "utf8").trim().split("\n").filter(Boolean),
+      left,
+      stdout: result.stdout.replaceAll(cwd, "<cwd>"),
+    };
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    fs.rmSync(denoDir, { recursive: true, force: true });
+  }
+};
+const tempDenoDir = () => path.join(os.tmpdir(), `deno dir ${process.pid} ${Math.random().toString(36).slice(2)}`);
+
+test("clean_deno_code_cache removes only the entries under the project's .next/", () => {
+  const { removed, left, stdout } = runDenoCodeCacheClean({
+    denoDir: tempDenoDir(),
+    schema: CODECACHE_SCHEMA,
+    rows: [
+      "<cwd>/.next/server/chunks/961.js 0",
+      "<cwd>/.next/server/chunks/961.js 1",
+      "<cwd>/.next/server/webpack-runtime.js 1",
+      "<cwd>/node_modules/next/dist/build/index.js 1",
+      "<cwd>/.next-other/x.js 1",
+      "file:///other%20project/.next/server/a.js 1",
+    ],
+  });
+  assert.deepEqual(removed, [], "fell back to removing the whole cache");
+  assert.deepEqual(left, [
+    "<cwd>/.next-other/x.js 1",
+    "<cwd>/node_modules/next/dist/build/index.js 1",
+    "file:///other%20project/.next/server/a.js 1",
+  ]);
+  assert.match(stdout, /removed 3 of 6 entries under <cwd>\/\.next, kept 3/);
+});
+
+test("clean_deno_code_cache removes the whole code cache when the schema is not the expected one", () => {
+  const denoDir = tempDenoDir();
+  const { removed, stdout } = runDenoCodeCacheClean({
+    denoDir,
+    schema: "CREATE TABLE codecache (key TEXT PRIMARY KEY, data BLOB NOT NULL)",
+  });
+  // Closing the test database checkpointed its -wal and -shm away; the glob
+  // covers them when Deno leaves them behind.
+  assert.deepEqual(removed, [path.join(denoDir, "v8_code_cache_v2")]);
+  assert.match(stdout, /Warning: couldn't prune Deno's code cache/);
+});
+
+test("clean_deno_code_cache does nothing without a code cache", () => {
+  assert.deepEqual(runDenoCodeCacheClean({ denoDir: tempDenoDir() }).removed, []);
+});
+
+test("clean_deno_code_cache finds the cache through DENO_DIR or XDG_CACHE_HOME when deno isn't on PATH", () => {
+  const badSchema = "CREATE TABLE codecache (key TEXT PRIMARY KEY, data BLOB NOT NULL)";
+  for (const [denoDir, env] of [
+    [tempDenoDir(), (d) => ({ DENO_DIR: d })],
+    [path.join(tempDenoDir(), "deno"), (d) => ({ XDG_CACHE_HOME: path.dirname(d) })],
+  ]) {
+    const { removed } = runDenoCodeCacheClean({ denoDir, denoOnPath: false, schema: badSchema, env: env(denoDir) });
+    assert.deepEqual(removed, [path.join(denoDir, "v8_code_cache_v2")]);
   }
 });
 

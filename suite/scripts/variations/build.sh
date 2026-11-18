@@ -52,6 +52,10 @@ BENCH_COMMAND_NODE="timeout $BENCH_TIMEOUT node --run build > $BENCH_OUTPUT_FOLD
 # The install step is defined as a "prepare" option so that time spent
 # on the install is not accounted for in the benchmark results.
 # Before each timed run we also remove .next/ so every run is a cold build.
+# deno's prepare also drops the entries for .next/ from Deno's compiled-code
+# cache: left in place, they make the build fail whenever `next build` emits the
+# other variant of a server chunk (same path and size, different content; see
+# clean_deno_code_cache). The entries for next's own code stay.
 hyperfine --ignore-failure \
   --time-unit=millisecond \
   --export-json="$BENCH_OUTPUT_FOLDER/benchmarks.json" \
@@ -72,7 +76,7 @@ hyperfine --ignore-failure \
   ${BENCH_INCLUDE_VLT:+--command-name="vlt" "$BENCH_COMMAND_VLT"} \
   ${BENCH_INCLUDE_BUN:+--prepare="$BENCH_INSTALL_PREPARE_BUN; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_BUN:+--command-name="bun" "$BENCH_COMMAND_BUN"} \
-  ${BENCH_INCLUDE_DENO:+--prepare="$BENCH_INSTALL_PREPARE_DENO; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
+  ${BENCH_INCLUDE_DENO:+--prepare="$BENCH_INSTALL_PREPARE_DENO; bash $BENCH_SCRIPTS/clean-helpers.sh clean_deno_code_cache clean_build_output"} \
   ${BENCH_INCLUDE_DENO:+--command-name="deno" "$BENCH_COMMAND_DENO"} \
   ${BENCH_INCLUDE_AUBE:+--prepare="$BENCH_INSTALL_PREPARE_AUBE || true; bash $BENCH_SCRIPTS/clean-helpers.sh clean_build_output"} \
   ${BENCH_INCLUDE_AUBE:+--command-name="aube" "$BENCH_COMMAND_AUBE"} \

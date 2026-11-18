@@ -113,8 +113,18 @@ ZPM_VERSION="${BENCH_ZPM_VERSION:-$(curl -fsSL https://repo.yarnpkg.com/channels
 PNPM_VERSION="$(pnpm -v)"
 BUN_VERSION="$(bun -v)"
 DENO_VERSION="$(npm view deno@latest version)"
-NX_VERSION="$(npm view nx@latest version)"
-TURBO_VERSION="$(npm view turbo@latest version)"
+# nx and turbo run from the `run` fixture's own install (a global nx or turbo
+# hands off to the project's copy), so report the version the fixture's range
+# resolves to, not the global one. The fixture ranges track the current majors.
+RUN_FIXTURE_MANIFEST="$(dirname "${BASH_SOURCE[0]}")/../fixtures/run/package.json"
+resolve_fixture_dev_dependency() {
+  local range
+  range="$(jq -r ".devDependencies[\"$1\"]" "$RUN_FIXTURE_MANIFEST")"
+  # one version prints as a string, several as an ascending array
+  npm view "$1@$range" version --json | jq -r 'if type == "array" then last else . end'
+}
+NX_VERSION="$(resolve_fixture_dev_dependency nx)"
+TURBO_VERSION="$(resolve_fixture_dev_dependency turbo)"
 VP_VERSION="$(npm view vite-plus@latest version 2>/dev/null || echo "unknown")"
 AUBE_VERSION="$(aube --version 2>/dev/null | head -1 | grep -Eo '[0-9]+[.][0-9]+[.][0-9]+([-+][0-9A-Za-z.-]+)?' | head -1 || true)"
 UPM_VERSION="$(upm --version 2>/dev/null | grep -Eo '[0-9]+[.][0-9]+[.][0-9]+([-+][0-9A-Za-z.-]+)?' | head -1 || true)"
