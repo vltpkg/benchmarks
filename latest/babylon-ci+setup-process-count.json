@@ -1,4 +1,7 @@
 {
+  "npm": {
+    "count": 2
+  },
   "yarn": {
     "count": 2
   },
@@ -12,7 +15,7 @@
     "count": 7
   },
   "vlt": {
-    "count": 8
+    "count": 7
   },
   "bun": {
     "count": 5

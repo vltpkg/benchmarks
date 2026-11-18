@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Nov 18 03:46 package.json
+-rw-r--r-- 1 runner runner 8357 Nov 18 10:06 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,7 +17,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Nov 18 03:48 package.json
+-rw-r--r-- 1 runner runner 8357 Nov 18 10:08 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -32,7 +32,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Nov 18 03:50 package.json
+-rw-r--r-- 1 runner runner 8357 Nov 18 10:10 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -47,7 +47,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Nov 18 03:53 package.json
+-rw-r--r-- 1 runner runner 8357 Nov 18 10:12 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -62,15 +62,30 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8394 Nov 18 04:08 package.json
+-rw-r--r-- 1 runner runner 8357 Nov 18 10:27 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
-4.18.1
+1.22.22
 canary version:
 6.0.0-rc.20
 packageManager (before):
-yarn@4.18.1
+set packageManager=yarn@6.0.0-rc.20:
+packageManager (after):
+yarn@6.0.0-rc.20
+[zpm prepare]
+cwd:
+/home/runner/work/benchmarks/benchmarks/suite/fixtures/babylon
+package.json:
+-rw-r--r-- 1 runner runner 8399 Nov 18 10:27 package.json
+yarn path:
+/home/runner/.yarn/switch/bin/yarn
+yarn version:
+6.0.0-rc.20
+canary version:
+6.0.0-rc.20
+packageManager (before):
+yarn@6.0.0-rc.20
 set packageManager=yarn@6.0.0-rc.20:
 packageManager (after):
 yarn@6.0.0-rc.20

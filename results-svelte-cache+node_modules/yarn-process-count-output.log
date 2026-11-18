@@ -1,0 +1,4 @@
+warning package.json: No license field
+warning demo@0.0.1: No license field
+warning Workspaces can only be enabled in private projects.
+warning Ignored scripts due to flag.

@@ -1,10 +1,14 @@
 
-> nx run run:test
+[2m> [22m[2mnx run[22m run:test
 
 benchmarking script execution...
 
+[2m[32m[39m[22m
+
+[7m[1m[32m NX [39m[22m[27m  [32mSuccessfully ran target [1mtest[22m for project run[39m
 
 
- NX   Successfully ran target test for project run
-
-
+  Run duration:      284ms
+  Cache:             0/1 hit (0%)
+  Critical path:     282ms (1 task)
+  Recoverable time:  <1ms

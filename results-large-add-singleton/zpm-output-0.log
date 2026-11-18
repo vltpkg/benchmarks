@@ -1,7 +1,7 @@
 ➤ · Yarn 6.0.0-rc.20
 ➤ ┌ Installing packages
 ➤ │ Resolved 1 package, fetched 1 package (8.64 KiB)
-➤ └ Completed in 212ms
+➤ └ Completed in 196ms
 ➤ ┌ Validating peer dependencies
 ➤ │ ajv is listed by your project with version 8.20.0 (p602b43), which doesn't satisfy what ajv-keywords and other dependencies request (^6.9.1 && ^8.8.2).
 ➤ │ alotta-modules@workspace:alotta-modules doesn't provide @babel/core (p660982), requested by babel-loader.

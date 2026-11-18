@@ -2,6 +2,9 @@
   "npm": {
     "count": 1
   },
+  "yarn": {
+    "count": 1
+  },
   "berry": {
     "count": 2
   },
@@ -12,7 +15,7 @@
     "count": 2
   },
   "vlt": {
-    "count": 7
+    "count": 6
   },
   "bun": {
     "count": 1

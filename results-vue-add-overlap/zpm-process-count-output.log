@@ -1,0 +1,9 @@
+➤ · Yarn 6.0.0-rc.20
+➤ ┌ Installing packages
+➤ │ Resolved 3 packages, fetched 1 package (24.75 KiB)
+➤ └ Completed in 198ms
+➤ ┌ Validating peer dependencies
+➤ │ vue-project@workspace:vue-project doesn't provide @typescript-eslint/utils (pfe6533), requested by @vitest/eslint-plugin.
+➤ │ vue-project@workspace:vue-project doesn't provide @vue/compiler-dom (p7ab48e), requested by @vue/test-utils.
+➤ │ Some peer dependencies are incorrectly met by your project; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code.
+➤ └ Completed in 0ms

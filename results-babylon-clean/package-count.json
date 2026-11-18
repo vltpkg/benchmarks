@@ -1,14 +1,12 @@
 {
   "npm": {
-    "count": 1903,
-    "minCount": 1877,
-    "maxCount": 1921
+    "count": 1877
   },
   "yarn": {
     "count": 1831
   },
   "berry": {
-    "count": 1900
+    "count": 1898
   },
   "zpm": {
     "count": 3011
@@ -17,9 +15,7 @@
     "count": 1788
   },
   "vlt": {
-    "count": 1603,
-    "minCount": 1601,
-    "maxCount": 1605
+    "count": 1601
   },
   "bun": {
     "count": 1691
