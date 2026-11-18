@@ -40,6 +40,8 @@ INSTALL_CMD="$3"
 PREPARE_CMD="${4:-}"
 
 STRACE_LOG="$OUTPUT_FOLDER/${PM_NAME}-strace.log"
+# The counted install's own output, kept so a failure explains itself.
+INSTALL_LOG="$OUTPUT_FOLDER/${PM_NAME}-process-count-output.log"
 PROCESS_COUNT_FILE="$OUTPUT_FOLDER/${PM_NAME}-process-count.txt"
 
 # Ensure strace is available
@@ -75,12 +77,15 @@ echo "[process-count] Running strace'd install for $PM_NAME..."
 EXIT_CODE=0
 timeout -k 10 "${BENCH_TIMEOUT:-300}" \
   strace -f -e trace=execve,execveat -o "$STRACE_LOG" \
-  bash -c "$INSTALL_CMD" > /dev/null 2>&1 || EXIT_CODE=$?
+  bash -c "$INSTALL_CMD" > "$INSTALL_LOG" 2>&1 || EXIT_CODE=$?
 
 if [ "$EXIT_CODE" -ne 0 ]; then
   # strace passes the command's exit status through, but exits non-zero on its
   # own if it can't trace (e.g. no ptrace permission), so name both.
   echo "Warning: strace'd install exited with $EXIT_CODE for $PM_NAME, skipping process count"
+  echo "--- $INSTALL_LOG ---"
+  cat "$INSTALL_LOG"
+  echo "---"
 elif [ ! -f "$STRACE_LOG" ]; then
   echo "Warning: strace log not found for $PM_NAME"
 elif ! COUNT=$(node "$(dirname "$0")/count-processes.js" "$STRACE_LOG"); then

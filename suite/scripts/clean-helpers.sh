@@ -221,10 +221,17 @@ clean_package_manager_field() {
   fi
 }
 
-# Function to clean node_modules directory
+# Function to clean the node_modules directories: the project's and every
+# workspace's. On a monorepo (babylon), vlt, pnpm, bun and the yarns also
+# write packages/*/node_modules; vlt fills them with symlinks into the root
+# node_modules/.vlt store. Removing only the root left those behind, dangling,
+# for the next tool: npm's lockfile install then fails with
+# "Invalid Version: ". Hidden directories (.aube, .upm-store, ...) are the
+# tools' own stores, which clean_package_manager_files removes whole.
 clean_node_modules() {
-  echo "Cleaning node_modules directory..."
-  safe_remove "node_modules"
+  echo "Cleaning node_modules directories..."
+  find . -mindepth 1 \( -name '.*' -prune \) -o \
+    -type d -name node_modules -prune -exec rm -rf {} + || true
 }
 
 # Function to clean transient package manager artifacts.
