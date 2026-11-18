@@ -4,6 +4,12 @@ set -Eeuxo pipefail
 # Load common variables
 source "$1/variations/common.sh"
 
+# Every run starts from the manifests as committed, so on `babylon` vlt's
+# workspace:* migration is part of what a first install costs: no untimed
+# migration here (common.sh sets it for the warm variations). Set before
+# collect_process_count reads it, so the process-count pass matches.
+BENCH_SETUP_VLT=""
+
 # Prepare command base for each run
 BENCH_PREPARE_BASE="sleep 1; bash $BENCH_SCRIPTS/clean-helpers.sh clean_all"
 
