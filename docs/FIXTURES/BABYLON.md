@@ -20,6 +20,11 @@ from installing a wide flat graph. It is the fixture that catches a tool handlin
 
 It is also the only fixture whose own `vlt.json` declares workspaces.
 
+Its 323 references between workspace packages are plain semver ranges, not
+`workspace:`, and every tool gets them as committed. See
+[METHODOLOGY](../METHODOLOGY.md#what-a-benchmark-is-here) for how each tool
+links them.
+
 ## Variations
 
 All install variations. No `build`, `build-cache` or `run`.

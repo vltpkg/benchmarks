@@ -271,6 +271,9 @@ clean_git() {
   fi
 }
 
+# vlt rewrites plain ranges that link a workspace sibling to `workspace:*`
+# (on `babylon`, 80 package.json files) on its first install. Restore the
+# fixture's manifests so the next tool starts from the project as committed.
 clean_workspace_protocol() {
   echo "Restoring package.json files (undo workspace: protocol changes)..."
   if command -v git &> /dev/null && git rev-parse --git-dir > /dev/null 2>&1; then

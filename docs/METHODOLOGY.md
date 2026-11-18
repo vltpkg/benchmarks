@@ -46,6 +46,22 @@ vlt can also be pointed at `registry.npmjs.org`; these numbers don't measure
 that. The `registry-*` variations are the ones that hold the client constant
 and compare registries.
 
+Fixtures are installed as committed, with the same manifests for every tool.
+In `babylon`, workspace packages depend on each other by plain semver range
+(`"@dev/core": "^1.0.0"`), not `workspace:`, and each tool links them its own
+way:
+
+- vlt rewrites those ranges to `workspace:*` in `package.json` on its first
+  install. That rewrite is part of its timed run wherever the manifests start
+  out unmigrated, such as `clean`.
+- pnpm links them (the fixture's `pnpm-workspace.yaml` sets
+  `linkWorkspacePackages: true`), but first asks the registry for each one:
+  about 240 lookups per cold install, most answered 404 for private packages.
+  It also installs `@babylonjs/shared-ui-components`, a peer dependency, from
+  the registry.
+- Every tool downloads `babylonjs-gltf2interface@6` from the registry, because
+  `packages/tools/devHost` asks for `^6.42.0` and the workspace has 8.49.6.
+
 vlt finishes some work in detached processes that keep running after the
 `vlt` command exits: unpacking fetched tarballs into its cache (about 19
 seconds after a cold `babylon` install), revalidating cached manifests,
