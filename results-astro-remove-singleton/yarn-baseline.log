@@ -1,6 +1,6 @@
 warning package.json: No license field
 warning my-astro-project@0.0.1: No license field
-(node:4574) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:4355) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning astro > tsconfck@3.1.6: unmaintained
 warning astro@5.18.2: The engine "pnpm" appears to be invalid.
@@ -8,7 +8,7 @@ warning "astro > zod-to-ts@1.2.0" has unmet peer dependency "typescript@^4.9.4 |
 warning Workspaces can only be enabled in private projects.
 warning Ignored scripts due to flag.
 warning package.json: No license field
-(node:4589) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:4369) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning my-astro-project@0.0.1: No license field
 warning astro@5.18.2: The engine "pnpm" appears to be invalid.
@@ -19,7 +19,7 @@ warning my-astro-project@0.0.1: No license field
 warning Workspaces can only be enabled in private projects.
 warning package.json: No license field
 warning my-astro-project@0.0.1: No license field
-(node:15371) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:13856) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning astro > tsconfck@3.1.6: unmaintained
 warning astro@5.18.2: The engine "pnpm" appears to be invalid.
@@ -27,7 +27,7 @@ warning "astro > zod-to-ts@1.2.0" has unmet peer dependency "typescript@^4.9.4 |
 warning Workspaces can only be enabled in private projects.
 warning Ignored scripts due to flag.
 warning package.json: No license field
-(node:15384) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:13871) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 warning my-astro-project@0.0.1: No license field
 warning astro@5.18.2: The engine "pnpm" appears to be invalid.

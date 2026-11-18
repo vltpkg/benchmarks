@@ -2,10 +2,11 @@
   "npm": {
     "count": 362
   },
+  "yarn": {
+    "count": 364
+  },
   "berry": {
-    "count": 363,
-    "minCount": 362,
-    "maxCount": 364
+    "count": 362
   },
   "zpm": {
     "count": 363

@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1266 Nov 17 19:44 package.json
+-rw-r--r-- 1 runner runner 1266 Nov 18 00:59 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,7 +17,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/vue
 package.json:
--rw-r--r-- 1 runner runner 1266 Nov 17 19:49 package.json
+-rw-r--r-- 1 runner runner 1266 Nov 18 01:04 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:

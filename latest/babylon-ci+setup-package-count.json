@@ -4,13 +4,14 @@
     "minCount": 1877,
     "maxCount": 1921
   },
+  "yarn": {
+    "count": 1831
+  },
   "berry": {
-    "count": 1865,
-    "minCount": 1831,
-    "maxCount": 1899
+    "count": 1900
   },
   "zpm": {
-    "count": 3010
+    "count": 3011
   },
   "pnpm": {
     "count": 1788
@@ -28,6 +29,6 @@
     "count": 1625
   },
   "upm": {
-    "count": 1636
+    "count": 1637
   }
 }
