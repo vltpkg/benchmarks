@@ -23,6 +23,10 @@ clean_yarn_cache() {
   if [ -x "$BENCH_YARN_BIN" ]; then
     "$BENCH_YARN_BIN" cache clean --all --silent || true
   fi
+  # Yarn 1 refuses to run in a project whose packageManager names another
+  # yarn (a berry or zpm pin from the previous run), so also remove its cache
+  # directly: ~/.cache/yarn, or under $XDG_CACHE_HOME when that is set.
+  safe_remove "${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
 }
 
 clean_berry_cache() {

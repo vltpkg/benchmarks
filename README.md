@@ -158,6 +158,7 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
     [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)). Yarn 1, Yarn 4 and Yarn 6
     are all called `yarn`, so yarn 1 and Corepack go into their own prefixes
     under `~/.bench-pms` (`suite/scripts/pm-bins.sh`):
+
     ```bash
     npm install -g npm@latest vlt@latest bun@latest deno@latest nx@latest turbo@latest
     # --allow-scripts lets pnpm's postinstall install its native binary
@@ -169,6 +170,13 @@ This suite also tests the performance of basic script execution (ex. `npm run fo
     # Yarn 6 (zpm), through Yarn Switch
     curl -sS https://repo.yarnpkg.com/install | bash
     ```
+
+    `vlt` must be on `PATH` even when you don't benchmark it: the cleanup
+    uses it to remove the `packageManager` pins the berry and zpm runs set,
+    and yarn 1 and pnpm refuse to run while one is left. `setup.sh` also
+    requires the npm-installed pnpm to be the first `pnpm` on `PATH`, so it
+    fails if, for example, pnpm from the standalone installer comes first.
+
   - 1.4 No directory setup is needed. `./suite/bench` creates its output tree at
     `suite/results/`, which is the only results tree there is.
 

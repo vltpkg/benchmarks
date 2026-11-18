@@ -257,6 +257,15 @@ const removedBy = (command, env = {}) => {
   }
 };
 
+test("clean_yarn_cache removes Yarn 1's cache, with and without XDG_CACHE_HOME", () => {
+  assert.deepEqual(removedBy("clean_yarn_cache", { XDG_CACHE_HOME: "" }).slice(-1), [
+    "/home/runner/.cache/yarn",
+  ]);
+  assert.deepEqual(removedBy("clean_yarn_cache", { XDG_CACHE_HOME: "/xdg/cache" }).slice(-1), [
+    "/xdg/cache/yarn",
+  ]);
+});
+
 test("clean_zpm_cache removes ~/.yarn/zpm", () => {
   assert.deepEqual(removedBy("clean_zpm_cache"), ["/home/runner/.yarn/zpm"]);
 });
@@ -334,5 +343,37 @@ test("package-count.sh files a Yarn 1 lockfile under yarn even with a .yarnrc.ym
     assert.deepEqual(fs.readdirSync(out), ["yarn-count.txt"]);
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("package-count.sh tells zpm from berry by the packageManager pin", () => {
+  for (const [packageManager, expected] of [
+    ["yarn@6.0.0-rc.20", "zpm-count.txt"],
+    ["yarn@4.18.1", "berry-count.txt"],
+  ]) {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "count-test-"));
+    try {
+      const project = path.join(tempDir, "project");
+      const out = path.join(tempDir, "out");
+      fs.mkdirSync(path.join(project, "node_modules", "a"), { recursive: true });
+      fs.writeFileSync(
+        path.join(project, "node_modules", "a", "package.json"),
+        '{"name":"a","version":"1.0.0"}',
+      );
+      fs.writeFileSync(
+        path.join(project, "package.json"),
+        JSON.stringify({ name: "x", dependencies: { a: "1.0.0" }, packageManager }),
+      );
+      fs.writeFileSync(path.join(project, ".yarnrc.yml"), "nodeLinker: node-modules\n");
+      fs.writeFileSync(path.join(project, "yarn.lock"), "__metadata:\n  version: 8\n");
+      const result = spawnSync("bash", [path.join(__dirname, "package-count.sh"), out], {
+        cwd: project,
+        encoding: "utf8",
+      });
+      assert.equal(result.status, 0, result.stderr);
+      assert.deepEqual(fs.readdirSync(out), [expected]);
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
   }
 });
