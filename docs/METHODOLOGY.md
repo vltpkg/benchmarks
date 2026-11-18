@@ -151,8 +151,8 @@ once.
   background cache unpacking only when there is something to unpack: **2** in
   `clean`, **1** in `ci` on a warm cache. Its update-check and revalidate
   processes may add to that, depending on timing.
-- If the command exits non-zero or runs past `BENCH_TIMEOUT`, nothing is
-  recorded for that tool.
+- If the command, or the install that sets up its starting state, exits
+  non-zero or runs past `BENCH_TIMEOUT`, nothing is recorded for that tool.
 
 Earlier counts (issue #209) counted every `execve` line, including the
 wrapper, failed lookups and the interpreter, and `ci` counted most tools
