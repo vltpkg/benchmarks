@@ -58,6 +58,10 @@ for pm in npm yarn berry zpm pnpm vlt bun deno aube upm nx turbo vp node; do
   fi
 done
 BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
+# Marks every process this run starts, vlt's detached children included, so
+# waiting for (or stopping) vlt's background work only reaches this run's
+# processes, not another checkout's on the same machine. See vlt-background.sh.
+export BENCH_RUN_ID="${BENCH_RUN_ID:-$(date +%s)-$$-$RANDOM}"
 # Where yarn classic, berry and zpm live (BENCH_YARN_BIN, BENCH_BERRY_BIN, ...)
 source "$BENCH_SCRIPTS/pm-bins.sh"
 if [ -n "$BENCH_INCLUDE_BERRY" ] && [ -z "$BENCH_BERRY_VERSION" ]; then

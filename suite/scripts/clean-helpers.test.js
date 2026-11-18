@@ -129,13 +129,22 @@ test("clean_node_modules removes the workspaces' node_modules too, not the tools
   assert.equal(exists(".upm-store/b/node_modules/b/package.json"), true);
 });
 
+// The environment the helpers run in: the test process's, minus any
+// BENCH_RUN_ID, so a benchmark running on this machine can't scope the tests.
+const baseEnv = { ...process.env };
+delete baseEnv.BENCH_RUN_ID;
+// `runId` set: the helper runs as that benchmark run; unset: no run id.
+const helperEnv = (runId, extra = {}) =>
+  runId === undefined ? { ...baseEnv, ...extra } : { ...baseEnv, BENCH_RUN_ID: runId, ...extra };
+
 // A stand-in for one of vlt's detached children: `sleep` copied to a file
 // with the given name, so pgrep sees that process name (truncated to 15
 // characters, as Linux does), or a node script at a vlt-style path when
 // `script` is set. Started from a throwaway sh, like vlt's detached children,
 // so it is reaped when it exits instead of lingering as a zombie of this
-// (blocked) test process.
-const startFake = (t, seconds, { name = "vlt-cache-unzip", script } = {}) => {
+// (blocked) test process. `runId` puts BENCH_RUN_ID in its environment, as a
+// child of that benchmark run would have. Returns its pid.
+const startFake = (t, seconds, { name = "vlt-cache-unzip", script, runId } = {}) => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "vlt-child-test-"));
   let argv;
   if (script) {
@@ -152,6 +161,7 @@ const startFake = (t, seconds, { name = "vlt-cache-unzip", script } = {}) => {
   const pid = Number(
     execFileSync("sh", ["-c", `"$@" >/dev/null 2>&1 & echo $!`, "sh", ...argv], {
       encoding: "utf8",
+      env: helperEnv(runId),
     }),
   );
   t.after(() => {
@@ -160,18 +170,29 @@ const startFake = (t, seconds, { name = "vlt-cache-unzip", script } = {}) => {
     } catch {}
     fs.rmSync(dir, { recursive: true, force: true });
   });
+  return pid;
 };
-const startFakeUnzip = (t, seconds) => startFake(t, seconds);
+const startFakeUnzip = (t, seconds, opts) => startFake(t, seconds, opts);
 
-const waitForVltBackground = (limit) =>
-  spawnSync(
-    "bash",
-    ["-c", `source "$HELPERS" >/dev/null; wait_for_vlt_background ${limit}`],
-    {
-      encoding: "utf8",
-      env: { ...process.env, HELPERS: path.join(__dirname, "clean-helpers.sh") },
-    },
-  );
+const alive = (pid) => {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+// Runs `command` after sourcing clean-helpers.sh, as benchmark run `runId`
+// (unset: no run id).
+const runHelper = (command, runId) =>
+  spawnSync("bash", ["-c", `source "$HELPERS" >/dev/null; ${command}`], {
+    encoding: "utf8",
+    env: helperEnv(runId, { HELPERS: path.join(__dirname, "clean-helpers.sh") }),
+  });
+
+const waitForVltBackground = (limit, runId) =>
+  runHelper(`wait_for_vlt_background ${limit}`, runId);
 
 test("wait_for_vlt_background: returns at once when nothing is running", () => {
   const start = Date.now();
@@ -192,6 +213,46 @@ test("wait_for_vlt_background: fails after the limit", (t) => {
   startFakeUnzip(t, 30);
   const result = waitForVltBackground(1);
   assert.equal(result.status, 1);
+});
+
+test("wait_for_vlt_background: waits for a child of this run", (t) => {
+  startFakeUnzip(t, 1.5, { runId: "run-a" });
+  const start = Date.now();
+  const result = waitForVltBackground(10, "run-a");
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok(Date.now() - start >= 1200, "returned before the process exited");
+});
+
+test("wait_for_vlt_background: ignores children of other runs and of no run", (t) => {
+  startFakeUnzip(t, 30, { runId: "run-b" });
+  startFakeUnzip(t, 30);
+  const start = Date.now();
+  const result = waitForVltBackground(5, "run-a");
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok(Date.now() - start < 2000, "waited on another run's process");
+});
+
+test("wait_for_vlt_background: with no run id, waits for any run's child", (t) => {
+  startFakeUnzip(t, 1.5, { runId: "run-b" });
+  const start = Date.now();
+  const result = waitForVltBackground(10);
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok(Date.now() - start >= 1200, "returned before the process exited");
+});
+
+test("stop_vlt_background: stops only this run's children", (t) => {
+  const own = startFakeUnzip(t, 30, { runId: "run-a" });
+  const ownScript = startFake(t, 30, { script: "cache-unzip-src-unzip.js", runId: "run-a" });
+  const other = startFakeUnzip(t, 30, { runId: "run-b" });
+  const none = startFakeUnzip(t, 30);
+  execFileSync("sleep", ["0.3"]);
+  const result = runHelper("wait_for_vlt_background 1 || stop_vlt_background", "run-a");
+  assert.equal(result.status, 0, result.stderr);
+  execFileSync("sleep", ["0.3"]);
+  assert.equal(alive(own), false, "this run's child is still running");
+  assert.equal(alive(ownScript), false, "this run's script child is still running");
+  assert.equal(alive(other), true, "another run's child was stopped");
+  assert.equal(alive(none), true, "a child of no run was stopped");
 });
 
 test("hyperfine-wait.sh: wraps prepare, setup and cleanup", () => {
@@ -248,9 +309,9 @@ test("hyperfine-wait.sh: wraps prepare, setup and cleanup", () => {
   }
 });
 
-const vltBackgroundRunning = () =>
+const vltBackgroundRunning = (runId) =>
   spawnSync("bash", ["-c", `source "$VB"; vlt_background_running`], {
-    env: { ...process.env, VB: path.join(__dirname, "vlt-background.sh") },
+    env: helperEnv(runId, { VB: path.join(__dirname, "vlt-background.sh") }),
   }).status;
 
 test("vlt_background_running: false when nothing is running", () => {
@@ -267,6 +328,13 @@ for (const [label, opts] of [
     // Give sh a moment to exec the child.
     execFileSync("sleep", ["0.3"]);
     assert.equal(vltBackgroundRunning(), 0);
+  });
+  test(`vlt_background_running: matches ${label} only for its run`, (t) => {
+    startFake(t, 30, { ...opts, runId: "run-a" });
+    execFileSync("sleep", ["0.3"]);
+    assert.equal(vltBackgroundRunning("run-a"), 0);
+    assert.equal(vltBackgroundRunning("run-b"), 1);
+    assert.equal(vltBackgroundRunning(), 0, "no run id should match any run's child");
   });
 }
 

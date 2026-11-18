@@ -51,6 +51,10 @@ BENCH_RUNS="${BENCH_RUNS:=5}"
 BENCH_TIMEOUT="${BENCH_TIMEOUT:=300}"
 BENCH_LOGLEVEL="${BENCH_LOGLEVEL:=http}"
 BENCH_OUTPUT_FOLDER="$BENCH_RESULTS/$BENCH_FIXTURE/$BENCH_VARIATION"
+# Marks every process this run starts, vlt's detached children included, so
+# waiting for (or stopping) vlt's background work only reaches this run's
+# processes, not another checkout's on the same machine. See vlt-background.sh.
+export BENCH_RUN_ID="${BENCH_RUN_ID:-$(date +%s)-$$-$RANDOM}"
 
 # Add --force for large fixture to bypass peer dependency errors
 FORCE_FLAG=""
