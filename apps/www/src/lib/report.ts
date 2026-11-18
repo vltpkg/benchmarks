@@ -396,6 +396,7 @@ export const loadReport = async ({
       /* The per-package figures by fixture draw every run, so the counts are always wanted where there are any. */
       perPackage: section !== "task-runners",
       summaries,
+      entry,
     }));
   const facts = scenarioFacts(
     section,

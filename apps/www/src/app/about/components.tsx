@@ -281,7 +281,9 @@ export const LatestResults = async () => {
                 const scenario = scenarios[0];
                 if (scenario === undefined) return { section, scenario: null };
                 const fixtures = fixturesWith(entry.benchmarks, scenario.variation);
-                const data = await loadScenario(client, date, scenario.variation, fixtures, []);
+                const data = await loadScenario(client, date, scenario.variation, fixtures, [], {
+                  entry,
+                });
                 return {
                   section,
                   scenario,

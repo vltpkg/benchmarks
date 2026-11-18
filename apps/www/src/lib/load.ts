@@ -12,7 +12,9 @@ import {
   DataClient,
   summaryPackageCounts,
   type DateSummary,
+  type DirectoryEntry,
   type SummaryResult,
+  type VariationsByFixture,
 } from "@benchmarks/data";
 import { probe } from "./data";
 import { applyExclusions } from "./figures";
@@ -73,12 +75,23 @@ export interface ScenarioData {
 
 const asFixture = (name: string): Fixture => name as Fixture;
 
-/** One fixture's three files. The two count files are independently optional. */
+/** Whether the run's shard lists a file for this (fixture, variation). */
+const published = (listed: VariationsByFixture, fixture: string, variation: string): boolean =>
+  listed[fixture]?.includes(variation) ?? false;
+
+/**
+ * One fixture's three files. The two count files are independently optional,
+ * and only the ones the run's shard lists are requested: `registry-*` publishes
+ * no process count and `build` no count at all (docs/METHODOLOGY.md), and a
+ * request for a file that does not exist is a 404 on a good day and a 503
+ * from GitHub Pages under a burst.
+ */
 const loadFixture = async (
   client: DataClient,
   date: string,
   fixture: string,
   variation: string,
+  entry: DirectoryEntry,
 ): Promise<FixtureBundle | null> => {
   const file = await probe<BenchmarkFile>(() =>
     client.getBenchmark(date, asFixture(fixture), variation),
@@ -86,15 +99,19 @@ const loadFixture = async (
   if (file.state !== "present") return null;
 
   const [counts, processes] = await Promise.all([
-    probe<PackageCount>(() => client.getPackageCount(date, asFixture(fixture), variation)),
-    probe<ProcessCount>(() => client.getProcessCount(date, asFixture(fixture), variation)),
+    published(entry.packageCounts, fixture, variation)
+      ? probe<PackageCount>(() => client.getPackageCount(date, asFixture(fixture), variation))
+      : null,
+    published(entry.processCounts, fixture, variation)
+      ? probe<ProcessCount>(() => client.getProcessCount(date, asFixture(fixture), variation))
+      : null,
   ]);
 
   return {
     fixture,
     file: file.value,
-    counts: counts.state === "present" ? counts.value : null,
-    processes: processes.state === "present" ? processes.value : null,
+    counts: counts?.state === "present" ? counts.value : null,
+    processes: processes?.state === "present" ? processes.value : null,
   };
 };
 
@@ -280,13 +297,19 @@ export const loadScenario = async (
     readonly perPackage?: boolean;
     /** From `loadSummaries`: a summarised run costs one fetch, not one per fixture. */
     readonly summaries?: Summaries | Promise<Summaries>;
+    /**
+     * The shown run's shard (`getDirectoryEntry`), which says which count files
+     * it has. Every caller has fetched it already; left out, it is fetched here.
+     */
+    readonly entry?: DirectoryEntry | Promise<DirectoryEntry>;
   } = {},
 ): Promise<ScenarioData> => {
   const withCounts = options.perPackage === true;
   /* A run without a summary: a file per fixture, and its count where that is wanted. */
   const perRun = fixtures.length * (withCounts ? 2 : 1);
+  const entry = await (options.entry ?? client.getDirectoryEntry(date));
   const [bundles, trend] = await Promise.all([
-    Promise.all(fixtures.map((f) => loadFixture(client, date, f, variation))),
+    Promise.all(fixtures.map((f) => loadFixture(client, date, f, variation, entry))),
     (async () => {
       const summaries = await options.summaries;
       const dates = trendDates(windowDates, perRun, new Set(summaries?.keys()));

@@ -43,6 +43,11 @@ export const dataBaseUrl = (): string => {
  * fans out to hundreds of files, on every build worker at once. So at most
  * MAX_IN_FLIGHT requests run per process, and a 429 waits and tries again.
  *
+ * It also answers some requests with a 5xx that a retry does not see again --
+ * seen on 2026-11-18, where a path that does not exist was a 503 one minute
+ * and a 404 the next. A 5xx is tried SERVER_RETRIES more times with a short
+ * backoff before it is believed.
+ *
  * The queue is inside "use cache", in the fill: a prerender's second pass
  * must find every entry already filled, so nothing may wait before the cached
  * call. `next dev` skips it, since it reports a fill idle for 10s as a
@@ -52,6 +57,7 @@ export const dataBaseUrl = (): string => {
  */
 const MAX_IN_FLIGHT = 12;
 const RETRIES = 5;
+const SERVER_RETRIES = 2;
 let inFlight = 0;
 const waiting: (() => void)[] = [];
 
@@ -80,12 +86,16 @@ export const throttle = async <T>(task: () => Promise<T>): Promise<T> => {
 };
 
 export const fetchRetrying = async (url: string): Promise<Response> => {
-  for (let attempt = 0; ; attempt++) {
+  let limited = 0;
+  let broken = 0;
+  for (;;) {
     const response = await fetch(url);
-    if (response.status !== 429 || attempt === RETRIES) return response;
+    if (response.status === 429 && limited < RETRIES) limited++;
+    else if (response.status >= 500 && broken < SERVER_RETRIES) broken++;
+    else return response;
     await response.body?.cancel();
     const after = Number(response.headers.get("retry-after"));
-    const ms = after > 0 ? after * 1000 : 250 * 2 ** attempt;
+    const ms = after > 0 ? after * 1000 : 250 * 2 ** (limited + broken - 1);
     await new Promise((resolve) => setTimeout(resolve, ms));
   }
 };
@@ -99,12 +109,20 @@ const throttledFetch = (url: string): Promise<Response> =>
  * kept for a day and refreshed behind the reader; the index, the full
  * manifest and `latest/` move with each run, and a 404 may be a date not yet
  * published, so those are kept a minute -- the shortest life that still lets
- * a page prerender. A failure other than a 404 throws, and is not cached.
+ * a page prerender.
+ *
+ * A 5xx that outlasts `fetchRetrying` is returned like a 404, for the same
+ * minute, and `DataClient` turns it into a `DataFetchError` the caller sees.
+ * It is not thrown here: on 2026-11-18 every build failed on a 503 thrown from
+ * this function for a process-count file reached only through {@link probe},
+ * which catches it -- the prerender fails a page on an error thrown inside
+ * "use cache" whether or not the caller catches it. Any other failure throws,
+ * and is not cached.
  */
 const cachedGet = async (url: string) => {
   "use cache";
   const response = await throttledFetch(url);
-  if (!response.ok && response.status !== 404) {
+  if (!response.ok && response.status !== 404 && response.status < 500) {
     throw new Error(`Request for ${url} failed with status ${response.status}`);
   }
   if (response.ok && /\/\d{4}-\d{2}-\d{2}(\/|\.json$)/.test(url)) cacheLife("days");
@@ -133,6 +151,14 @@ export const dataClient = (): DataClient =>
  * every `registry-*` variation and `versions.json` is genuinely absent from
  * `latest/`, so a 404 there is the honest answer and must never be rendered as
  * a zero or an em dash. A 500 is a different thing and says so.
+ *
+ * Everything probed is data a page renders without: a count file, a run's
+ * `versions.json`, a summary. So a 5xx that outlasts the retries is reported
+ * as `failed` -- which every reader shows as missing -- and warned about on
+ * the server, rather than failing the page. Data a page cannot render without
+ * (the index, a run's shard) is never probed, and its `DataFetchError` is
+ * thrown, so a real outage still fails the build instead of publishing an
+ * empty site.
  */
 export type Probe<T> =
   | { readonly state: "present"; readonly value: T }
@@ -146,6 +172,8 @@ export const probe = async <T>(fetcher: () => Promise<T>): Promise<Probe<T>> => 
     if (error instanceof DataFetchError && error.status === 404) {
       return { state: "absent", status: error.status, url: error.url };
     }
-    return { state: "failed", message: error instanceof Error ? error.message : String(error) };
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`Treating optional data as missing: ${message}`);
+    return { state: "failed", message };
   }
 };
