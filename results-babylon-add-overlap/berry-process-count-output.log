@@ -131,9 +131,9 @@
 ::group::Fetch step
 [94m➤[39m YN0013: │ [38;5;220m9[39m packages were added to the project ([38;5;160m+ 253.75 KiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 3s 126ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 2s 687ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 824ms
-[93m➤[39m YN0000: · Done with warnings in 4s 789ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 871ms
+[93m➤[39m YN0000: · Done with warnings in 4s 411ms
