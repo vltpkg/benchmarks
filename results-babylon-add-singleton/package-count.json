@@ -1,9 +1,9 @@
 {
   "npm": {
-    "count": 1878
+    "count": 1877
   },
   "yarn": {
-    "count": 1832
+    "count": 1831
   },
   "berry": {
     "count": 1899
@@ -15,10 +15,10 @@
     "count": 1789
   },
   "vlt": {
-    "count": 1602
+    "count": 1601
   },
   "bun": {
-    "count": 1692
+    "count": 1691
   },
   "deno": {
     "count": 1562
