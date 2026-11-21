@@ -8,14 +8,7 @@ warning Ignored scripts due to flag.
 warning package.json: No license field
 warning my-astro-project@0.0.1: No license field
 warning astro > tsconfck@3.1.6: unmaintained
-error Error: https://registry.yarnpkg.com/mdast-util-gfm-autolink-literal/-/mdast-util-gfm-autolink-literal-2.1.1.tgz: Request failed "404 Not Found"
-    at ResponseError.ExtendableBuiltin (/home/runner/.bench-pms/yarn/lib/node_modules/yarn/lib/cli.js:696:66)
-    at new ResponseError (/home/runner/.bench-pms/yarn/lib/node_modules/yarn/lib/cli.js:802:124)
-    at Request.<anonymous> (/home/runner/.bench-pms/yarn/lib/node_modules/yarn/lib/cli.js:66750:16)
-    at Request.emit (node:events:514:20)
-    at module.exports.Request.onRequestResponse (/home/runner/.bench-pms/yarn/lib/node_modules/yarn/lib/cli.js:142287:10)
-    at ClientRequest.emit (node:events:514:20)
-    at HTTPParser.parserOnIncomingClient (node:_http_client:1002:27)
-    at HTTPParser.parserOnHeadersComplete (node:_http_common:125:17)
-    at TLSSocket.socketOnData (node:_http_client:837:22)
-    at TLSSocket.emit (node:events:514:20)
+warning astro@5.18.2: The engine "pnpm" appears to be invalid.
+warning "astro > zod-to-ts@1.2.0" has unmet peer dependency "typescript@^4.9.4 || ^5.0.2".
+warning Workspaces can only be enabled in private projects.
+warning Ignored scripts due to flag.

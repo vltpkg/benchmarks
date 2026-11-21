@@ -25,9 +25,9 @@
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 1s 184ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 1s 181ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 435ms
-[93m➤[39m YN0000: · Done with warnings in 1s 939ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 433ms
+[93m➤[39m YN0000: · Done with warnings in 1s 920ms

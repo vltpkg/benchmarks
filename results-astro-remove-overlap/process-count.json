@@ -1,4 +1,10 @@
 {
+  "npm": {
+    "count": 1
+  },
+  "yarn": {
+    "count": 1
+  },
   "berry": {
     "count": 1
   },
@@ -10,6 +16,9 @@
   },
   "vlt": {
     "count": 2
+  },
+  "bun": {
+    "count": 1
   },
   "deno": {
     "count": 1

@@ -2,7 +2,7 @@
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Nov 20 10:30 package.json
+-rw-r--r-- 1 runner runner 8357 Nov 21 10:32 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
@@ -17,7 +17,7 @@ yarn@6.0.0-rc.20
 cwd:
 /home/runner/work/benchmarks/benchmarks/suite/fixtures/babylon
 package.json:
--rw-r--r-- 1 runner runner 8357 Nov 20 10:54 package.json
+-rw-r--r-- 1 runner runner 8357 Nov 21 11:17 package.json
 yarn path:
 /home/runner/.yarn/switch/bin/yarn
 yarn version:
