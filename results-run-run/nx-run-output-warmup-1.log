@@ -8,7 +8,7 @@ benchmarking script execution...
 [7m[1m[32m NX [39m[22m[27m  [32mSuccessfully ran target [1mtest[22m for project run[39m
 
 
-  Run duration:      279ms
+  Run duration:      252ms
   Cache:             0/1 hit (0%)
-  Critical path:     277ms (1 task)
+  Critical path:     250ms (1 task)
   Recoverable time:  <1ms
