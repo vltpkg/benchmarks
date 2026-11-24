@@ -32,7 +32,7 @@ You can learn more, including how to opt-out if you'd not like to participate in
 [7m[1m[32m NX [39m[22m[27m  [32mSuccessfully ran target [1mbuild[22m for project nextjs[39m
 
 
-  Run duration:      17.1s
+  Run duration:      16.3s
   Cache:             0/1 hit (0%)
-  Critical path:     17.1s (1 task)
+  Critical path:     16.3s (1 task)
   Recoverable time:  <1ms
