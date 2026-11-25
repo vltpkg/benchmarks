@@ -62,4 +62,4 @@
 ➤ │ babylonjs-serializers@workspace:babylonjs-serializers doesn't provide typescript (p7d0572), requested by ts-loader.
 ➤ │ babylonjs@workspace:babylonjs doesn't provide typescript (p853a55), requested by ts-loader.
 ➤ │ Some peer dependencies are incorrectly met by your project; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code.
-➤ └ Completed in 0ms
+➤ └ Completed in 82ms
