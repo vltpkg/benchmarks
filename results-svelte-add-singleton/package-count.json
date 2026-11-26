@@ -1,9 +1,9 @@
 {
   "npm": {
-    "count": 59
+    "count": 60
   },
   "yarn": {
-    "count": 60
+    "count": 61
   },
   "berry": {
     "count": 59
@@ -15,10 +15,10 @@
     "count": 59
   },
   "vlt": {
-    "count": 59
+    "count": 60
   },
   "bun": {
-    "count": 59
+    "count": 60
   },
   "deno": {
     "count": 60

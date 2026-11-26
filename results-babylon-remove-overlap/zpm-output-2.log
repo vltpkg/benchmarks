@@ -8,7 +8,7 @@
 ➤ │ @babylonjs/inspector@workspace:@babylonjs/inspector doesn't provide typescript (p97420f), requested by @rollup/plugin-typescript and other dependencies.
 ➤ │ @babylonjs/node-particle-editor@workspace:@babylonjs/node-particle-editor doesn't provide react-dnd (p96837c), requested by @dev/shared-ui-components.
 ➤ │ @babylonjs/node-particle-editor@workspace:@babylonjs/node-particle-editor doesn't provide react-dnd-touch-backend (p64d802), requested by @dev/shared-ui-components.
-➤ │ @babylonjs/node-particle-editor@workspace:@babylonjs/node-particle-editor doesn't provide scheduler (p40427c), requested by @fluentui/react-context-selector.
+➤ │ @babylonjs/node-particle-editor@workspace:@babylonjs/node-particle-editor doesn't provide scheduler (p63e35b), requested by @fluentui/react-context-selector.
 ➤ │ @babylonjs/root@workspace:@babylonjs/root doesn't provide @types/node (p7f14e4), requested by ts-node.
 ➤ │ @babylonjs/smart-filters-blocks@workspace:@babylonjs/smart-filters-blocks doesn't provide @babylonjs/core (p7519f8), requested by @babylonjs/smart-filters.
 ➤ │ @babylonjs/smart-filters@workspace:@babylonjs/smart-filters doesn't provide react (p9ad051), requested by @dev/shared-ui-components.
@@ -18,11 +18,11 @@
 ➤ │ @dev/inspector-legacy@workspace:@dev/inspector-legacy doesn't provide react-dnd (p5c4da3), requested by @dev/shared-ui-components.
 ➤ │ @dev/inspector-legacy@workspace:@dev/inspector-legacy doesn't provide react-dnd-touch-backend (paef3b3), requested by @dev/shared-ui-components.
 ➤ │ @dev/inspector@workspace:@dev/inspector doesn't provide @fluentui/react-shared-contexts (pb4c048), requested by @fluentui-contrib/react-virtualizer.
-➤ │ @dev/inspector@workspace:@dev/inspector doesn't provide scheduler (pdb4ec6), requested by @fluentui/react-context-selector.
+➤ │ @dev/inspector@workspace:@dev/inspector doesn't provide scheduler (p87cbb7), requested by @fluentui/react-context-selector.
 ➤ │ @dev/inspector@workspace:@dev/inspector doesn't provide typescript (pa90c8d), requested by react-refresh-typescript.
-➤ │ @dev/shared-ui-components@workspace:@dev/shared-ui-components doesn't provide react (p7457e5), requested by @fluentui/react-components and other dependencies.
-➤ │ @dev/shared-ui-components@workspace:@dev/shared-ui-components doesn't provide react-dom (pd1d7ad), requested by @fluentui/react-combobox and other dependencies.
-➤ │ @dev/shared-ui-components@workspace:@dev/shared-ui-components doesn't provide scheduler (p7463d2), requested by @fluentui/react-context-selector.
+➤ │ @dev/shared-ui-components@workspace:@dev/shared-ui-components doesn't provide react (p732cef), requested by @fluentui/react-components and other dependencies.
+➤ │ @dev/shared-ui-components@workspace:@dev/shared-ui-components doesn't provide react-dom (pf05ea4), requested by @fluentui/react-combobox and other dependencies.
+➤ │ @dev/shared-ui-components@workspace:@dev/shared-ui-components doesn't provide scheduler (p750152), requested by @fluentui/react-context-selector.
 ➤ │ @fortawesome/fontawesome-svg-core is listed by your project with version 6.7.2 (p1edc0d), which doesn't satisfy what @fortawesome/react-fontawesome requests (~1 || ~6 || ~7).
 ➤ │ @fortawesome/fontawesome-svg-core is listed by your project with version 6.7.2 (p4d59ee), which doesn't satisfy what @fortawesome/react-fontawesome and other dependencies request (^6.1.0 && ~1 || ~6 || ~7).
 ➤ │ @fortawesome/fontawesome-svg-core is listed by your project with version 6.7.2 (pc82ae9), which doesn't satisfy what @fortawesome/react-fontawesome (via @dev/shared-ui-components) and other dependencies request (^6.1.0 && ~1 || ~6 || ~7).
@@ -42,7 +42,7 @@
 ➤ │ @tools/tests@workspace:@tools/tests doesn't provide react-dnd (pf535c2), requested by @dev/shared-ui-components.
 ➤ │ @tools/tests@workspace:@tools/tests doesn't provide react-dnd-touch-backend (pc35cd8), requested by @dev/shared-ui-components.
 ➤ │ @tools/tests@workspace:@tools/tests doesn't provide react-dom (p7dc47e), requested by @dev/shared-ui-components and other dependencies.
-➤ │ @tools/tests@workspace:@tools/tests doesn't provide scheduler (pb9fd0b), requested by @fluentui/react-context-selector.
+➤ │ @tools/tests@workspace:@tools/tests doesn't provide scheduler (p4ee947), requested by @fluentui/react-context-selector.
 ➤ │ @tools/viewer-configurator@workspace:@tools/viewer-configurator doesn't provide @dnd-kit/core (p5fed60), requested by @dnd-kit/modifiers and other dependencies.
 ➤ │ babylonjs-accessibility@workspace:babylonjs-accessibility doesn't provide typescript (pddeeac), requested by ts-loader.
 ➤ │ babylonjs-addons@workspace:babylonjs-addons doesn't provide typescript (p9efa05), requested by ts-loader.

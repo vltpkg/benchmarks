@@ -5,7 +5,7 @@
    • Remote caching disabled
 
 ::group::build
-cache miss, executing 2f2f76ea516faaff
+cache miss, executing b6199aa080d44e3b
    ▲ Next.js 15.0.3
 
    Creating an optimized production build ...
@@ -35,5 +35,5 @@ Route (app)                              Size     First Load JS
 
  Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    12.115s 
+  Time:    11.682s 
 
