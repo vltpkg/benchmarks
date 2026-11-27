@@ -4,7 +4,7 @@
 ➤ └ Completed in 0ms
 ➤ ┌ Installing packages
 ➤ │ Resolved 1 package, fetched 1 package (8.64 KiB)
-➤ └ Completed in 361ms
+➤ └ Completed in 272ms
 ➤ ┌ Validating peer dependencies
 ➤ │ @babylonjs/inspector-legacy@workspace:@babylonjs/inspector-legacy doesn't provide @types/react (pa0f1f9), requested by @babylonjs/gui-editor.
 ➤ │ @babylonjs/inspector-legacy@workspace:@babylonjs/inspector-legacy doesn't provide @types/react-dom (p1c834a), requested by @babylonjs/gui-editor.
@@ -72,7 +72,7 @@
 ➤ └ Completed in 0ms
 ➤ ┌ Installing packages
 ➤ │ Resolved 1 package, fetched 1 package (8.64 KiB)
-➤ └ Completed in 286ms
+➤ └ Completed in 245ms
 ➤ ┌ Validating peer dependencies
 ➤ │ @babylonjs/inspector-legacy@workspace:@babylonjs/inspector-legacy doesn't provide @types/react (pa0f1f9), requested by @babylonjs/gui-editor.
 ➤ │ @babylonjs/inspector-legacy@workspace:@babylonjs/inspector-legacy doesn't provide @types/react-dom (p1c834a), requested by @babylonjs/gui-editor.

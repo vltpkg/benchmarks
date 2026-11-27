@@ -1,10 +1,11 @@
 ➤ · Yarn 6.0.0-rc.20
 ➤ ┌ Project validation
 ➤ │ @dev/shared-ui-components: Resolutions field will be ignored
+➤ │ Resolved 1 package
 ➤ └ Completed in 0ms
 ➤ ┌ Installing packages
-➤ │ Resolved 10 packages, fetched 9 packages (251.62 KiB)
-➤ └ Completed in 277ms
+➤ │ Resolved 9 packages, fetched 9 packages (251.62 KiB)
+➤ └ Completed in 335ms
 ➤ ┌ Validating peer dependencies
 ➤ │ @babylonjs/inspector-legacy@workspace:@babylonjs/inspector-legacy doesn't provide @types/react (pa0f1f9), requested by @babylonjs/gui-editor.
 ➤ │ @babylonjs/inspector-legacy@workspace:@babylonjs/inspector-legacy doesn't provide @types/react-dom (p1c834a), requested by @babylonjs/gui-editor.

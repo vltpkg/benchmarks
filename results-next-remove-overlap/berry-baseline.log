@@ -3,51 +3,51 @@
 ::group::Resolution step
 [94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;166m@types/[39m[38;5;173mnode[39m[38;5;111m@[39m[38;5;111mnpm:20.19.43[39m, [38;5;166m@types/[39m[38;5;173mreact-dom[39m[38;5;111m@[39m[38;5;111mnpm:18.3.7[39m, [38;5;166m@types/[39m[38;5;173mreact[39m[38;5;111m@[39m[38;5;111mnpm:18.3.32[39m, [38;5;173meslint-config-next[39m[38;5;111m@[39m[38;5;111mnpm:15.0.3[39m, [38;5;173meslint[39m[38;5;111m@[39m[38;5;111mnpm:8.57.1[39m, [38;5;173mnext[39m[38;5;111m@[39m[38;5;111mnpm:15.0.3[39m, and [38;5;220m415[39m more.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 3s 839ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 4s 246ms
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 [94m➤[39m YN0013: │ [38;5;220m376[39m packages were added to the project ([38;5;160m+ 362.93 MiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 3s 171ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 3s 474ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [93m➤[39m YN0004: │ [38;5;173msharp[39m[38;5;111m@[39m[38;5;111mnpm:0.33.5[39m lists build scripts, but all build scripts have been disabled.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 2s 212ms
-[93m➤[39m YN0000: · Done with warnings in 9s 270ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 2s 766ms
+[93m➤[39m YN0000: · Done with warnings in 10s 534ms
 [94m➤[39m YN0000: · Yarn 4.19.0
 [94m➤[39m [90mYN0000[39m: ┌ Resolution step
 ::group::Resolution step
 [94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;173mlog-symbols[39m[38;5;111m@[39m[38;5;111mnpm:4.1.0[39m, [38;5;173mis-unicode-supported[39m[38;5;111m@[39m[38;5;111mnpm:0.1.0[39m
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 208ms
+[94m➤[39m [90mYN0000[39m: └ Completed
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 [94m➤[39m YN0013: │ [38;5;220m2[39m packages were added to the project ([38;5;160m+ 10.07 KiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 332ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 337ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 ::endgroup::
 [94m➤[39m [90mYN0000[39m: └ Completed
-[94m➤[39m YN0000: · Done in 0s 721ms
+[94m➤[39m YN0000: · Done in 0s 695ms
 [94m➤[39m YN0000: · Yarn 4.19.0
 [94m➤[39m [90mYN0000[39m: ┌ Resolution step
 ::group::Resolution step
 [94m➤[39m YN0085: │ [38;5;70m+[39m [38;5;166m@types/[39m[38;5;173mnode[39m[38;5;111m@[39m[38;5;111mnpm:20.19.43[39m, [38;5;166m@types/[39m[38;5;173mreact-dom[39m[38;5;111m@[39m[38;5;111mnpm:18.3.7[39m, [38;5;166m@types/[39m[38;5;173mreact[39m[38;5;111m@[39m[38;5;111mnpm:18.3.32[39m, [38;5;173meslint-config-next[39m[38;5;111m@[39m[38;5;111mnpm:15.0.3[39m, [38;5;173meslint[39m[38;5;111m@[39m[38;5;111mnpm:8.57.1[39m, [38;5;173mnext[39m[38;5;111m@[39m[38;5;111mnpm:15.0.3[39m, and [38;5;220m415[39m more.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 3s 987ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 4s 80ms
 [94m➤[39m [90mYN0000[39m: ┌ Fetch step
 ::group::Fetch step
 [94m➤[39m YN0013: │ [38;5;220m376[39m packages were added to the project ([38;5;160m+ 362.93 MiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 3s 315ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 3s 602ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 [93m➤[39m YN0004: │ [38;5;173msharp[39m[38;5;111m@[39m[38;5;111mnpm:0.33.5[39m lists build scripts, but all build scripts have been disabled.
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 2s 192ms
-[93m➤[39m YN0000: · Done with warnings in 9s 541ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 2s 311ms
+[93m➤[39m YN0000: · Done with warnings in 10s 41ms
 [94m➤[39m YN0000: · Yarn 4.19.0
 [94m➤[39m [90mYN0000[39m: ┌ Resolution step
 ::group::Resolution step
@@ -58,9 +58,9 @@
 ::group::Fetch step
 [94m➤[39m YN0013: │ [38;5;220m2[39m packages were added to the project ([38;5;160m+ 10.07 KiB[39m).
 ::endgroup::
-[94m➤[39m [90mYN0000[39m: └ Completed in 0s 327ms
+[94m➤[39m [90mYN0000[39m: └ Completed in 0s 338ms
 [94m➤[39m [90mYN0000[39m: ┌ Link step
 ::group::Link step
 ::endgroup::
 [94m➤[39m [90mYN0000[39m: └ Completed
-[94m➤[39m YN0000: · Done in 0s 697ms
+[94m➤[39m YN0000: · Done in 0s 704ms
