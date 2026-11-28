@@ -1,6 +1,6 @@
 warning package.json: No license field
 warning alotta-modules@0.0.1: No license field
-warning " > autoprefixer@10.7.0" has unmet peer dependency "postcss@^8.1.0".
+warning " > autoprefixer@10.7.1" has unmet peer dependency "postcss@^8.1.0".
 warning " > babel-loader@9.2.1" has unmet peer dependency "@babel/core@^7.12.0".
 warning " > babel-loader@9.2.1" has unmet peer dependency "webpack@>=5".
 warning "babel-preset-react-hmre > redbox-react@1.6.0" has incorrect peer dependency "react@^0.14.0 || ^15.0.0 || ^16.0.0-beta || ^16.0.0".
